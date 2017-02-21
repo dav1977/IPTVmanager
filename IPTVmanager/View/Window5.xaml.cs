@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MvvmExample.View
+namespace IPTVman.View
 {
     /// <summary>
     /// Interaction logic for Window5.xaml

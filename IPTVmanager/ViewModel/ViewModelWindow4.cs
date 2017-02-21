@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Threading;
-using MvvmExample.Helpers;
-using MvvmExample.Model;
-using MvvmExample.View;
+using IPTVman.Helpers;
+using IPTVman.Model;
+using IPTVman.View;
 
-namespace MvvmExample.ViewModel
+namespace IPTVman.ViewModel
 {
     class ViewModelWindow4 : ViewModelBase, IClosableViewModel
     {

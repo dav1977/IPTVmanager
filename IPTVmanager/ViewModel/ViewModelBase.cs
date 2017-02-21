@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace MvvmExample.ViewModel
+namespace IPTVman.ViewModel
 {
     class ViewModelBase : INotifyPropertyChanged
     {

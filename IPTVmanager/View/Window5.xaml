@@ -1,7 +1,7 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:helpers="clr-namespace:MvvmExample.Helpers" 
-        x:Class="MvvmExample.View.Window5" WindowStartupLocation="CenterScreen"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:helpers="clr-namespace:IPTVman.Helpers" 
+        x:Class="IPTVman.View.Window5" WindowStartupLocation="CenterScreen"
         Background="AliceBlue"
         Title="Window5" Height="350" Width="500">
     <Window.Resources>

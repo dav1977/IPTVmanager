@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using MvvmExample.Data;
+using IPTVman.Data;
 using System;
 using System.Threading;
 
-namespace MvvmExample.Model
+namespace IPTVman.Model
 {
     class PersonnelBusinessObject
     {

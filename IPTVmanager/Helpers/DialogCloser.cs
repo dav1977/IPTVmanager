@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace MvvmExample.Helpers
+namespace IPTVman.Helpers
 {
     public static class DialogCloser
     {

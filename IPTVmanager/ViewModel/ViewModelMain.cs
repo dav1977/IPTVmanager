@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
-using MvvmExample.Model;
-using MvvmExample.Helpers;
+using IPTVman.Model;
+using IPTVman.Helpers;
 using System.IO;
 using System.Windows;
 using Microsoft.Win32;
 
-namespace MvvmExample.ViewModel
+namespace IPTVman.ViewModel
 {
     class ViewModelMain : ViewModelBase
     {
@@ -21,7 +21,7 @@ namespace MvvmExample.ViewModel
         /// 
         /// Change 'object' to 'Person', and you will see the following:
         /// 
-        /// System.Windows.Data Error: 23 : Cannot convert '{NewItemPlaceholder}' from type 'NamedObject' to type 'MvvmExample.Model.Person' for 'en-US' culture with default conversions; consider using Converter property of Binding. NotSupportedException:'System.NotSupportedException: TypeConverter cannot convert from MS.Internal.NamedObject.
+        /// System.Windows.Data Error: 23 : Cannot convert '{NewItemPlaceholder}' from type 'NamedObject' to type 'IPTVman.Model.Person' for 'en-US' culture with default conversions; consider using Converter property of Binding. NotSupportedException:'System.NotSupportedException: TypeConverter cannot convert from MS.Internal.NamedObject.
         ///   at System.ComponentModel.TypeConverter.GetConvertFromException(Object value)
         ///   at System.ComponentModel.TypeConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)
         ///   at MS.Internal.Data.DefaultValueConverter.ConvertHelper(Object o, Type destinationType, DependencyObject targetElement, CultureInfo culture, Boolean isForward)'
@@ -67,6 +67,7 @@ namespace MvvmExample.ViewModel
 
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand key_OPENCommand { get; set; }
+        public RelayCommand key_delCommand { get; set; }
 
         /// <summary>
         /// *************************** MAIN *********************************
@@ -94,12 +95,20 @@ namespace MvvmExample.ViewModel
 
             key_ADDCommand = new RelayCommand(key_ADD);
             key_OPENCommand = new RelayCommand(key_OPEN);
+            key_delCommand = new RelayCommand(key_del);
         }
 
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
             People.Add(new Person { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+        }
+
+        void key_del(object parameter)
+        {
+            if (parameter == null) return;
+ 
+            People.Remove(new Person { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
         }
 
         void key_OPEN(object parameter)
@@ -127,5 +136,8 @@ namespace MvvmExample.ViewModel
 
             }
         }
+
+
+       
     }
 }

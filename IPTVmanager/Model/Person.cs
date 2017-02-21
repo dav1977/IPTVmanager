@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace MvvmExample.Model
+namespace IPTVman.Model
 {
     public class Person : INotifyPropertyChanged
     {

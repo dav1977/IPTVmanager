@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MvvmExample.Model;
+using IPTVman.Model;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
-using MvvmExample.Helpers;
+using IPTVman.Helpers;
 using System.Windows.Data;
 
-namespace MvvmExample.ViewModel
+namespace IPTVman.ViewModel
 {
     class ViewModelWindow5 : ViewModelBase
     {
@@ -41,8 +41,8 @@ namespace MvvmExample.ViewModel
             }
         }
 
-        MvvmExample.Model.PersonnelBusinessObject.StatusType _BoStatus;
-        public MvvmExample.Model.PersonnelBusinessObject.StatusType BoStatus
+        IPTVman.Model.PersonnelBusinessObject.StatusType _BoStatus;
+        public IPTVman.Model.PersonnelBusinessObject.StatusType BoStatus
         {
             get
             {

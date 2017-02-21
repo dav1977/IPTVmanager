@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace MvvmExample.Helpers
+namespace IPTVman.Helpers
 {
     /// <summary>
     /// Taken from http://msdn.microsoft.com/en-us/magazine/dd419663.aspx#id0090030

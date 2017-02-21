@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using MvvmExample.ViewModel;
+using IPTVman.ViewModel;
 
-namespace MvvmExample.ViewModel
+namespace IPTVman.ViewModel
 {
     public partial class MainWindow : Window
     {

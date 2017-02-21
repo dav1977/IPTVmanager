@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Data;
 using System.Windows.Controls;
 
-namespace MvvmExample.Helpers
+namespace IPTVman.Helpers
 {
     public class SelectedItemToItemsSource : IValueConverter
     {

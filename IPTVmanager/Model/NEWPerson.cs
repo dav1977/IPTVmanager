@@ -1,4 +1,4 @@
-﻿namespace MvvmExample.Model
+﻿namespace IPTVman.Model
 {
     /// <summary>
     /// A POCO class is one that does not need any special interfaces or inheritance

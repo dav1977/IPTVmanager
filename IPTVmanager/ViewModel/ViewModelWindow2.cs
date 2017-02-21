@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Collections.ObjectModel;
-using MvvmExample.Model;
-using MvvmExample.Helpers;
-using MvvmExample.View;
-using MvvmExample.Data;
+using IPTVman.Model;
+using IPTVman.Helpers;
+using IPTVman.View;
+using IPTVman.Data;
 
-namespace MvvmExample.ViewModel
+namespace IPTVman.ViewModel
 {
     class ViewModelWindow2 : DependencyObject
     {

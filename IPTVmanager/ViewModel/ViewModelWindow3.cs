@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Threading;
 using System.Collections.Generic;
-using MvvmExample.Model;
-using MvvmExample.Helpers;
-using MvvmExample.View;
+using IPTVman.Model;
+using IPTVman.Helpers;
+using IPTVman.View;
 
-namespace MvvmExample.ViewModel
+namespace IPTVman.ViewModel
 {
     class ViewModelWindow3
     {
