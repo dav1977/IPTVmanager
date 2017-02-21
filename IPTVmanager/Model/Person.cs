@@ -39,19 +39,19 @@ namespace MvvmExample.Model
             }
         }
 
-        string _param3;
-        public string param3
+        string _http;
+        public string http
         {
             get
             {
-                return _param3;
+                return _http;
             }
             set
             {
-                if (_param3 != value)
+                if (_http != value)
                 {
-                    _param3 = value;
-                    RaisePropertyChanged("param3");
+                    _http = value;
+                    RaisePropertyChanged("http");
                 }
             }
         }

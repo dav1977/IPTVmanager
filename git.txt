@@ -22,6 +22,6 @@ git config --local i18n.logoutputencoding cp1251
 5 git add .
 6 git status -s изменения ЗЕЛЕНЫМ!!!
 7 git commit -m"comment1"
-8 git remote add origin https://github.com/dav1977/RemoteAMP
-  git remote add my https://github.com/dav1977/RemoteAMP
+8 git remote add origin https://github.com/dav1977/IPTVmanager
+  git remote add my https://github.com/dav1977/IPTVmanager
 9 git push my master

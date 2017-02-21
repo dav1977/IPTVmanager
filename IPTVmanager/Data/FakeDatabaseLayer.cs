@@ -18,7 +18,7 @@ namespace MvvmExample.Data
                 //new Person { FirstName="Tom", LastName="Jones", Age=80 },
                 //new Person { FirstName="Dick", LastName="Tracey", Age=40 },
                 //new Person { FirstName="Harry", LastName="Hill", Age=60 },
-                //new Person { FirstName="param4", LastName="no param4", Age=99 },
+           
             };
         }
 
@@ -28,9 +28,9 @@ namespace MvvmExample.Data
             //For example from ADO DataSets or EF
             return new List<NEWperson>
             {
-                new NEWperson { FirstName="Tom", LastName="Jones", Age=80 },
-                new NEWperson { FirstName="Dick", LastName="Tracey", Age=40 },
-                new NEWperson { FirstName="Harry", LastName="Hill", Age=60 },
+                //new NEWperson { FirstName="Tom", LastName="Jones", Age=80 },
+                //new NEWperson { FirstName="Dick", LastName="Tracey", Age=40 },
+                //new NEWperson { FirstName="Harry", LastName="Hill", Age=60 },
             };
         }
     }

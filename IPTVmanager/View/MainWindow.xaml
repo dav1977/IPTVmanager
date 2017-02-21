@@ -19,7 +19,7 @@
             <RowDefinition Height="0.939*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Classic INotifyPropertyChanged Example" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Margin="5.5,42,130,99" Width="763" Height="398" Grid.ColumnSpan="2" Grid.Column="1">
+        <GroupBox Header="Classic INotifyPropertyChanged Example" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Margin="5,44,130,10" Width="763" Height="490" Grid.ColumnSpan="2" Grid.Column="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -30,14 +30,16 @@
                         <StackPanel Orientation="Horizontal">
                             <ListBox x:Name="box1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
                             <DataGrid x:Name="grid1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" HorizontalAlignment="Left" Margin="5,0,0,0" Width="314" SelectionChanged="DataGrid_SelectionChanged"/>
-                            <ComboBox x:Name="combo1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" DisplayMemberPath="FirstName" Margin="5,0,0,5" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="28" Width="157" SelectionChanged="ComboBox_SelectionChanged"/>
                         </StackPanel>
-                        <TextBox x:Name="tb1" Text="{Binding TextProperty1, UpdateSourceTrigger=PropertyChanged}" Margin="5" TextChanged="tb1_TextChanged" Width="400" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                     </StackPanel>
                 </ScrollViewer>
-                <Button Grid.Row="1" Content="Add person" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="5" Focusable="False"/>
+                <Button Grid.Row="1" Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="583,5,5,5" Focusable="False"/>
+                <TextBox x:Name="tb1" Text="новый канал" Margin="267,0,0,5" TextChanged="tb1_TextChanged" Width="311" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="1"/>
             </Grid>
         </GroupBox>
-        <Button Content="Next example" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Grid.Row="1" Margin="0,5,5,0" Grid.Column="2"/>
+        <Button Content="OpenFILE" Command="{Binding key_OPENCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="15,10,10,502" Focusable="False" Grid.Column="1"/>
+        <Button Content="Next example" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Grid.Row="1" Margin="0,0,36,0" Grid.Column="2"/>
+        <ComboBox x:Name="combo1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" DisplayMemberPath="FirstName" Margin="144,10,309,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="28" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2"/>
+
     </Grid>
 </Window>

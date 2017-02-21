@@ -5,6 +5,9 @@ using System.Text;
 using System.Collections.ObjectModel;
 using MvvmExample.Model;
 using MvvmExample.Helpers;
+using System.IO;
+using System.Windows;
+using Microsoft.Win32;
 
 namespace MvvmExample.ViewModel
 {
@@ -63,6 +66,7 @@ namespace MvvmExample.ViewModel
         }
 
         public RelayCommand key_ADDCommand { get; set; }
+        public RelayCommand key_OPENCommand { get; set; }
 
         /// <summary>
         /// *************************** MAIN *********************************
@@ -77,11 +81,11 @@ namespace MvvmExample.ViewModel
                 //new Person { FirstName="param4", LastName="Lastp4", Age=99 },
             };
 
-            Person p = new Person { FirstName = "wirte1", LastName = "Jones", Age = 80 };
-            People.Add(p);
+            //Person p = new Person { FirstName = "wirte1", LastName = "Jones", Age = 80 };
+            //People.Add(p);
 
-            p = new Person { FirstName = "wirte2", param3 = "iik", Age = 99 };
-            People.Add(p);
+            //p = new Person { FirstName = "wirte2", param3 = "iik", Age = 99 };
+            //People.Add(p);
 
 
 
@@ -89,6 +93,7 @@ namespace MvvmExample.ViewModel
             TextProperty1 = "новое значение";
 
             key_ADDCommand = new RelayCommand(key_ADD);
+            key_OPENCommand = new RelayCommand(key_OPEN);
         }
 
         void key_ADD(object parameter)
@@ -97,5 +102,30 @@ namespace MvvmExample.ViewModel
             People.Add(new Person { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
         }
 
+        void key_OPEN(object parameter)
+        {
+            uint ct = 0;
+            if (parameter == null) return;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+                {
+                    while (!sr.EndOfStream && ct<50)
+                    {
+                        // Read the stream to a string, and write the string to the console.
+                        String line = sr.ReadLine();
+                        string[] words = line.Split(new char[] { ',' });
+                        String http0 = sr.ReadLine();
+                        ct++;
+                        People.Add(new Person { FirstName = words[1], LastName = line, http=http0, Age = DateTime.Now.Second });
+                      
+                    }
+                }// string name = File.ReadAllText(openFileDialog.FileName);
+
+            }
+        }
     }
 }
