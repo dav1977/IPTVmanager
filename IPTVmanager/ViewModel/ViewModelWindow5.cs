@@ -133,6 +133,8 @@ namespace IPTVman.ViewModel
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                 {
                     RaisePropertyChanged("People");
+                    
+
                 }));
         }
 

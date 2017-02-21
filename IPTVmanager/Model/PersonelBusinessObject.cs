@@ -12,7 +12,7 @@ namespace IPTVman.Model
             Offline = 0,
             Online = 1
         }
-
+        
         public event EventHandler PeopleChanged;
 
         List<NEWperson> People { get; set; }
@@ -58,6 +58,8 @@ namespace IPTVman.Model
         {
             if (PeopleChanged != null)
                 PeopleChanged(this, null);
+            
+           
         }
     }
 }
