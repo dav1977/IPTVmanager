@@ -1,0 +1,27 @@
+git config --list
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+git help config
+git config --local core.editor "notepad.exe -multiInst -nosession -notabbar -noPlugin"
+
+
+
+
+0 git init - создание скрытой папки .git
+1 git clone https://github.com/dav1977/RemoteAMP
+2 перейти в каталог с программой
+русские файлы 
+git config --local core.quotepath false
+ls --show-control-chars
+git config --local core.pager "iconv.exe -f cp1251 -t utf-8 | less"
+git config --local i18n.commitEncoding utf8
+git config --local i18n.logoutputencoding cp1251
+
+3 git status ничего
+4 edit файлов
+5 git add .
+6 git status -s изменения ЗЕЛЕНЫМ!!!
+7 git commit -m"comment1"
+8 git remote add origin https://github.com/dav1977/RemoteAMP
+  git remote add my https://github.com/dav1977/RemoteAMP
+9 git push my master
