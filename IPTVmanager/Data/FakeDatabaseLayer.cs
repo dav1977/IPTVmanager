@@ -9,28 +9,28 @@ namespace IPTVman.Data
 {
     class FakeDatabaseLayer
     {
-        public static ObservableCollection<Person> GetPeopleFromDatabase()
+        public static ObservableCollection<ParamCanal> GetCanalFromDatabase()
         {
             //Simulate database extaction
             //For example from ADO DataSets or EF
-            return new ObservableCollection<Person>
+            return new ObservableCollection<ParamCanal>
             {
-                //new Person { FirstName="Tom", LastName="Jones", Age=80 },
-                //new Person { FirstName="Dick", LastName="Tracey", Age=40 },
-                //new Person { FirstName="Harry", LastName="Hill", Age=60 },
+                //new ParamCanal { FirstName="Tom", LastName="Jones", Age=80 },
+                //new ParamCanal { FirstName="Dick", LastName="Tracey", Age=40 },
+                //new ParamCanal { FirstName="Harry", LastName="Hill", Age=60 },
            
             };
         }
 
-        public static List<NEWperson> GetPocoPeopleFromDatabase()
+        public static List<NEWParamCanal> GetPocoCanalFromDatabase()
         {
             //Simulate legacy database extaction of POCO classes
             //For example from ADO DataSets or EF
-            return new List<NEWperson>
+            return new List<NEWParamCanal>
             {
-                //new NEWperson { FirstName="Tom", LastName="Jones", Age=80 },
-                //new NEWperson { FirstName="Dick", LastName="Tracey", Age=40 },
-                //new NEWperson { FirstName="Harry", LastName="Hill", Age=60 },
+                //new NEWParamCanal { FirstName="Tom", LastName="Jones", Age=80 },
+                //new NEWParamCanal { FirstName="Dick", LastName="Tracey", Age=40 },
+                //new NEWParamCanal { FirstName="Harry", LastName="Hill", Age=60 },
             };
         }
     }

@@ -15,25 +15,25 @@ namespace IPTVman.ViewModel
     {
         //just type propdp in VisualStudio, below this line, then press Tab to get the DependencyProperty snippet
 
-        public Person SelectedPerson
+        public ParamCanal SelectedParamCanal
         {
-            get { return (Person)GetValue(SelectedPersonProperty); }
-            set { SetValue(SelectedPersonProperty, value); }
+            get { return (ParamCanal)GetValue(SelectedParamCanalProperty); }
+            set { SetValue(SelectedParamCanalProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SelectedPerson.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectedPersonProperty =
-            DependencyProperty.Register("SelectedPerson", typeof(Person), typeof(ViewModelWindow2), new UIPropertyMetadata(null));
+        // Using a DependencyProperty as the backing store for SelectedParamCanal.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedParamCanalProperty =
+            DependencyProperty.Register("SelectedParamCanal", typeof(ParamCanal), typeof(ViewModelWindow2), new UIPropertyMetadata(null));
 
-        public ObservableCollection<Person> People
+        public ObservableCollection<ParamCanal> Canal
         {
-            get { return (ObservableCollection<Person>)GetValue(PeopleProperty); }
-            set { SetValue(PeopleProperty, value); }
+            get { return (ObservableCollection<ParamCanal>)GetValue(CanalProperty); }
+            set { SetValue(CanalProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for People.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PeopleProperty =
-            DependencyProperty.Register("People", typeof(ObservableCollection<Person>), typeof(ViewModelWindow2), new UIPropertyMetadata(null));
+        // Using a DependencyProperty as the backing store for Canal.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CanalProperty =
+            DependencyProperty.Register("Canal", typeof(ObservableCollection<ParamCanal>), typeof(ViewModelWindow2), new UIPropertyMetadata(null));
 
         public bool? CloseWindowFlag
         {
@@ -49,18 +49,18 @@ namespace IPTVman.ViewModel
 
         public ViewModelWindow2()
         {
-            People = FakeDatabaseLayer.GetPeopleFromDatabase();
+            Canal = FakeDatabaseLayer.GetCanalFromDatabase();
             NextExampleCommand = new RelayCommand(NextExample, NextExample_CanExecute);
         }
 
         bool NextExample_CanExecute(object parameter)
         {
-            return SelectedPerson != null;
+            return SelectedParamCanal != null;
         }
 
         void NextExample(object parameter)
         {
-            var win = new Window3(SelectedPerson);
+            var win = new Window3(SelectedParamCanal);
             win.Show();
             CloseWindowFlag = true;
         }

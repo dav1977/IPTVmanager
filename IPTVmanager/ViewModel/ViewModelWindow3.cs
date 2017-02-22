@@ -11,7 +11,7 @@ namespace IPTVman.ViewModel
     {
         public event EventHandler CloseWindowEvent;
 
-        public List<NEWperson> People { get; set; }
+        public List<NEWParamCanal> Canal { get; set; }
 
         string _TextProperty1;
         public string TextProperty1
@@ -29,19 +29,19 @@ namespace IPTVman.ViewModel
             }
         }
 
-        public object SelectedPerson { get; set; }
+        public object SelectedParamCanal { get; set; }
 
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand NextExampleCommand { get; set; }
 
         DispatcherTimer timer;
 
-        public ViewModelWindow3(Person person)
+        public ViewModelWindow3(ParamCanal ParamCanal)
         {
-            People = new List<NEWperson>
+            Canal = new List<NEWParamCanal>
             {
-                new NEWperson{ FirstName=person.FirstName, LastName=person.LastName, Age=person.Age },
-                new NEWperson{ FirstName="Grace", LastName="Jones", Age=21 },
+                new NEWParamCanal{ FirstName=ParamCanal.FirstName, LastName=ParamCanal.LastName, Age=ParamCanal.Age },
+                new NEWParamCanal{ FirstName="Grace", LastName="Jones", Age=21 },
             };
             TextProperty1 = "Only this TextBox's changes are reflected in bindings";
             NextExampleCommand = new RelayCommand(NextExample);
@@ -64,7 +64,7 @@ namespace IPTVman.ViewModel
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
-            People.Add(new NEWperson { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            Canal.Add(new NEWParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
         }
 
         void NextExample(object parameter)

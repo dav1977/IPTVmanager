@@ -10,12 +10,12 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.RowSpan="2">
-                <DataGrid x:Name="dg1" ItemsSource="{Binding People}" CanUserAddRows="False" SelectedItem="{Binding SelectedPerson}" HorizontalAlignment="Left"/>
-                <TextBlock DataContext="{Binding SelectedPerson}" FontWeight="Bold" Margin="5" Text="The Seleted person is '"><Run Text="{Binding FirstName}"/><Run Text=" "/><Run Text="{Binding LastName}"/><Run Text="'"/></TextBlock>
+                <DataGrid x:Name="dg1" ItemsSource="{Binding Canal}" CanUserAddRows="False" SelectedItem="{Binding SelectedParamCanal}" HorizontalAlignment="Left"/>
+                <TextBlock DataContext="{Binding SelectedParamCanal}" FontWeight="Bold" Margin="5" Text="The Seleted ParamCanal is '"><Run Text="{Binding FirstName}"/><Run Text=" "/><Run Text="{Binding LastName}"/><Run Text="'"/></TextBlock>
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" Margin="0,0,5,5" Orientation="Vertical" VerticalAlignment="Bottom" Grid.Row="1">
                 <Button Content="Next Example" Command="{Binding NextExampleCommand}" Foreground="Red" HorizontalAlignment="Right" FontWeight="Bold" Grid.Row="1" Margin="5"/>
-                <TextBlock Text="Select a person to enable the button"/>
+                <TextBlock Text="Select a ParamCanal to enable the button"/>
             </StackPanel>
         </Grid>
     </GroupBox>

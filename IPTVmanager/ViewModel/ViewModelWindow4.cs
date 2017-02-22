@@ -13,7 +13,7 @@ namespace IPTVman.ViewModel
     {
         public event EventHandler CloseWindowEvent;
 
-        public List<NEWperson> People { get; set; }
+        public List<NEWParamCanal> Canal { get; set; }
 
         string _TextProperty1;
         public string TextProperty1
@@ -32,7 +32,7 @@ namespace IPTVman.ViewModel
             }
         }
 
-        public object SelectedPerson { get; set; }
+        public object SelectedParamCanal { get; set; }
 
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand NextExampleCommand { get; set; }
@@ -41,11 +41,11 @@ namespace IPTVman.ViewModel
 
         public ViewModelWindow4()
         {
-            People = new List<NEWperson>
+            Canal = new List<NEWParamCanal>
             {
-                new NEWperson { FirstName="Tom", LastName="Jones", Age=80 },
-                new NEWperson { FirstName="Dick", LastName="Tracey", Age=40 },
-                new NEWperson { FirstName="Harry", LastName="Hill", Age=60 },
+                new NEWParamCanal { FirstName="Tom", LastName="Jones", Age=80 },
+                new NEWParamCanal { FirstName="Dick", LastName="Tracey", Age=40 },
+                new NEWParamCanal { FirstName="Harry", LastName="Hill", Age=60 },
             };
             TextProperty1 = "This will now update";
             NextExampleCommand = new RelayCommand(NextExample);
@@ -60,7 +60,7 @@ namespace IPTVman.ViewModel
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
-            People.Add(new NEWperson { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            Canal.Add(new NEWParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
         }
 
         void timer_Tick(object sender, EventArgs e)

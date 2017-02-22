@@ -13,15 +13,15 @@ namespace IPTVman.ViewModel
 {
     class ViewModelWindow5 : ViewModelBase
     {
-        PersonnelBusinessObject personnel; // The sealed business object (database layer, web service, etc)
+        ParamCanalnelBusinessObject ParamCanalnel; // The sealed business object (database layer, web service, etc)
 
-        ObservableCollection<NEWperson> _People;
-        public ObservableCollection<NEWperson> People
+        ObservableCollection<NEWParamCanal> _Canal;
+        public ObservableCollection<NEWParamCanal> Canal
         {
             get
             {
-                _People = new ObservableCollection<NEWperson>(personnel.GetEmployees());
-                return _People;
+                _Canal = new ObservableCollection<NEWParamCanal>(ParamCanalnel.GetEmployees());
+                return _Canal;
             }
         }
 
@@ -29,20 +29,20 @@ namespace IPTVman.ViewModel
         {
             get
             {
-                return personnel.ReportTitle;
+                return ParamCanalnel.ReportTitle;
             }
             set
             {
-                if (personnel.ReportTitle != value)
+                if (ParamCanalnel.ReportTitle != value)
                 {
-                    personnel.ReportTitle = value;
+                    ParamCanalnel.ReportTitle = value;
                     RaisePropertyChanged("ReportTitle");
                 }
             }
         }
 
-        IPTVman.Model.PersonnelBusinessObject.StatusType _BoStatus;
-        public IPTVman.Model.PersonnelBusinessObject.StatusType BoStatus
+        IPTVman.Model.ParamCanalnelBusinessObject.StatusType _BoStatus;
+        public IPTVman.Model.ParamCanalnelBusinessObject.StatusType BoStatus
         {
             get
             {
@@ -58,19 +58,19 @@ namespace IPTVman.ViewModel
             }
         }
 
-        object _SelectedPerson;
-        public object SelectedPerson
+        object _SelectedParamCanal;
+        public object SelectedParamCanal
         {
             get
             {
-                return _SelectedPerson;
+                return _SelectedParamCanal;
             }
             set
             {
-                if (_SelectedPerson != value)
+                if (_SelectedParamCanal != value)
                 {
-                    _SelectedPerson = value;
-                    RaisePropertyChanged("SelectedPerson");
+                    _SelectedParamCanal = value;
+                    RaisePropertyChanged("SelectedParamCanal");
                 }
             }
         }
@@ -103,8 +103,8 @@ namespace IPTVman.ViewModel
 
         public ViewModelWindow5()
         {
-            personnel = new PersonnelBusinessObject();
-            personnel.PeopleChanged += new EventHandler(personnel_PeopleChanged);
+            ParamCanalnel = new ParamCanalnelBusinessObject();
+            ParamCanalnel.CanalChanged += new EventHandler(ParamCanalnel_CanalChanged);
 
             CancelCommand = new RelayCommand(DoCancel);
             SaveCommand = new RelayCommand(DoSave);
@@ -124,15 +124,15 @@ namespace IPTVman.ViewModel
         void CheckStatus(object sender, EventArgs e)
         {
             //Periodically checks if the property has changed
-            if (_BoStatus != personnel.Status)
-                BoStatus = personnel.Status;
+            if (_BoStatus != ParamCanalnel.Status)
+                BoStatus = ParamCanalnel.Status;
         }
 
-        void personnel_PeopleChanged(object sender, EventArgs e)
+        void ParamCanalnel_CanalChanged(object sender, EventArgs e)
         {
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                 {
-                    RaisePropertyChanged("People");
+                    RaisePropertyChanged("Canal");
                     
 
                 }));
@@ -142,41 +142,41 @@ namespace IPTVman.ViewModel
         {
             UpdateBindingGroup.CancelEdit();
             if (SelectedIndex == -1)    //This only closes if new - just to show you how CancelEdit returns old values to bindings
-                SelectedPerson = null;
+                SelectedParamCanal = null;
         }
 
         void DoSave(object param)
         {
             UpdateBindingGroup.CommitEdit();
-            var person = SelectedPerson as NEWperson;
+            var ParamCanal = SelectedParamCanal as NEWParamCanal;
             if (SelectedIndex == -1)
             {
-                personnel.AddPerson(person);
-                RaisePropertyChanged("People"); // Update the list from the data source
+                ParamCanalnel.AddParamCanal(ParamCanal);
+                RaisePropertyChanged("Canal"); // Update the list from the data source
             }
             else
-                personnel.UpdatePerson(person);
+                ParamCanalnel.UpdateParamCanal(ParamCanal);
 
-            SelectedPerson = null;
+            SelectedParamCanal = null;
         }
 
         void key_ADD(object parameter)
         {
-            SelectedPerson = null; // Unselects last selection. Essential, as assignment below won't clear other control's SelectedItems
-            var person = new NEWperson();
-            SelectedPerson = person;
+            SelectedParamCanal = null; // Unselects last selection. Essential, as assignment below won't clear other control's SelectedItems
+            var ParamCanal = new NEWParamCanal();
+            SelectedParamCanal = ParamCanal;
         }
 
         void DeleteUser(object parameter)
         {
-            var person = SelectedPerson as NEWperson;
+            var ParamCanal = SelectedParamCanal as NEWParamCanal;
             if (SelectedIndex != -1)
             {
-                personnel.DeletePerson(person);
-                RaisePropertyChanged("People"); // Update the list from the data source
+                ParamCanalnel.DeleteParamCanal(ParamCanal);
+                RaisePropertyChanged("Canal"); // Update the list from the data source
             }
             else
-                SelectedPerson = null; // Simply discard the new object
+                SelectedParamCanal = null; // Simply discard the new object
         }
 
     }

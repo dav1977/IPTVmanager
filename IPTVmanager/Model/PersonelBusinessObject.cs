@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace IPTVman.Model
 {
-    class PersonnelBusinessObject
+    class ParamCanalnelBusinessObject
     {
         public enum StatusType
         {
@@ -13,17 +13,17 @@ namespace IPTVman.Model
             Online = 1
         }
         
-        public event EventHandler PeopleChanged;
+        public event EventHandler CanalChanged;
 
-        List<NEWperson> People { get; set; }
+        List<NEWParamCanal> Canal { get; set; }
         public StatusType Status { get; set; }
         public string ReportTitle { get; set; }
 
         Timer StatusTimer;
 
-        public PersonnelBusinessObject()
+        public ParamCanalnelBusinessObject()
         {
-            People = FakeDatabaseLayer.GetPocoPeopleFromDatabase();
+            Canal = FakeDatabaseLayer.GetPocoCanalFromDatabase();
             StatusTimer = new Timer(StatusChangeTick, null, 1000, 1000);
         }
 
@@ -32,32 +32,32 @@ namespace IPTVman.Model
             Status = Status == StatusType.Offline ? StatusType.Online : StatusType.Offline;
         }
 
-        public List<NEWperson> GetEmployees()
+        public List<NEWParamCanal> GetEmployees()
         {
-            return People;
+            return Canal;
         }
 
-        public void AddPerson(NEWperson person)
+        public void AddParamCanal(NEWParamCanal ParamCanal)
         {
-            People.Add(person);
-            OnPeopleChanged();
+            Canal.Add(ParamCanal);
+            OnCanalChanged();
         }
 
-        public void DeletePerson(NEWperson person)
+        public void DeleteParamCanal(NEWParamCanal ParamCanal)
         {
-            People.Remove(person);
-            OnPeopleChanged();
+            Canal.Remove(ParamCanal);
+            OnCanalChanged();
         }
 
-        public void UpdatePerson(NEWperson person)
+        public void UpdateParamCanal(NEWParamCanal ParamCanal)
         {
 
         }
 
-        void OnPeopleChanged()
+        void OnCanalChanged()
         {
-            if (PeopleChanged != null)
-                PeopleChanged(this, null);
+            if (CanalChanged != null)
+                CanalChanged(this, null);
             
            
         }

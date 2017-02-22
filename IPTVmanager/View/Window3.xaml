@@ -17,15 +17,15 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                         	<StackPanel Orientation="Horizontal">
-                        		<ListBox ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" />
-                        		<DataGrid ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-                            	<ComboBox ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" DisplayMemberPath="FirstName" Margin="5,0,0,5" VerticalAlignment="Top"/>
+                        		<ListBox ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" />
+                        		<DataGrid ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                            	<ComboBox ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" Margin="5,0,0,5" VerticalAlignment="Top"/>
                         	</StackPanel>
                             <TextBox x:Name="tb1" Text="{Binding TextProperty1, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
                             <TextBlock FontWeight="Bold" TextWrapping="Wrap" Margin="5" Text="The TextBox says '"><Run Text="{Binding TextProperty1}"/><Run Text="', but it should be showing the time"/></TextBlock>
                         </StackPanel>
                     </ScrollViewer>
-                    <Button Grid.Row="1" Content="Add Person" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="5" Focusable="False"/>
+                    <Button Grid.Row="1" Content="Add ParamCanal" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="5" Focusable="False"/>
                 </Grid>
             </GroupBox>
             <Button Content="Next example" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Grid.Row="1" Margin="5" Command="{Binding NextExampleCommand}"/>

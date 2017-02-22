@@ -29,8 +29,8 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,101">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <ListBox x:Name="box1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
-                            <DataGrid x:Name="grid1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" HorizontalAlignment="Left" Margin="5,0,0,0" Width="314" SelectionChanged="DataGrid_SelectionChanged"/>
+                            <ListBox x:Name="box1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
+                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" HorizontalAlignment="Left" Margin="5,0,0,0" Width="314" SelectionChanged="DataGrid_SelectionChanged"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
@@ -42,9 +42,9 @@
         </GroupBox>
         <Button Content="OpenFILE" Command="{Binding key_OPENCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="15,10,10,502" Focusable="False" Grid.Column="1"/>
         <Button Content="Next example" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Grid.Row="1" Margin="0,0,36,0" Grid.Column="2"/>
-        <ComboBox x:Name="combo1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" DisplayMemberPath="FirstName" Margin="144,10,309,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="28" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2"/>
+        <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" Margin="144,10,309,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="28" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2"/>
         <Label x:Name="label1" Content="Всего каналов:" Grid.Column="1" HorizontalAlignment="Left" Margin="49,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Grid.ColumnSpan="2"/>
-        <Label x:Name="label_kanals" Content="0" Grid.Column="2" HorizontalAlignment="Left" Margin="86,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Width="226"/>
+        <Label x:Name="label_kanals" Content="{Binding ElementName=grid1, Path=ItemsSource.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" HorizontalAlignment="Left" Margin="86,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Width="226"/>
 
     </Grid>
 </Window>

@@ -34,7 +34,8 @@ namespace IPTVman.ViewModel
 
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            label_kanals.Content = "none";
+            //label_kanals.Content = "none";
+          
 
         }
 

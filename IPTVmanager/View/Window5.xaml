@@ -57,8 +57,8 @@
                         
 						<!-- This is the master/slave pair, the user form is generated from the ItemTemplate of the ItemsControl -->
                     	<StackPanel Orientation="Horizontal" Margin="0,5">
-                    		<DataGrid x:Name="dg1" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" SelectedIndex="{Binding SelectedIndex}" VerticalAlignment="Top" />
-                    		<ItemsControl BindingGroup="{Binding UpdateBindingGroup, Mode=OneWay}" ItemTemplate="{StaticResource UserGrid}" ItemsSource="{Binding SelectedPerson, Converter={StaticResource SelectedItemToItemsSource}}" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                    		<DataGrid x:Name="dg1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" SelectedIndex="{Binding SelectedIndex}" VerticalAlignment="Top" />
+                    		<ItemsControl BindingGroup="{Binding UpdateBindingGroup, Mode=OneWay}" ItemTemplate="{StaticResource UserGrid}" ItemsSource="{Binding SelectedParamCanal, Converter={StaticResource SelectedItemToItemsSource}}" VerticalAlignment="Top" Margin="10,0,0,0"/>
                     	</StackPanel>
                         
                         <!-- This shows a wrapper property, for a POCO in the business object-->
@@ -66,7 +66,7 @@
                         <TextBlock FontWeight="Bold" TextWrapping="Wrap" Margin="5" Text="The TextBox says '"><Run Text="{Binding ReportTitle}"/><Run Text="'"/></TextBlock>
                     </StackPanel>
                 </ScrollViewer>
-                <Button Grid.Row="1" Content="Add person" Command="{Binding key_ADDCommand}" Margin="5" Focusable="False" HorizontalAlignment="Left" MinWidth="200"/>
+                <Button Grid.Row="1" Content="Add ParamCanal" Command="{Binding key_ADDCommand}" Margin="5" Focusable="False" HorizontalAlignment="Left" MinWidth="200"/>
             </Grid>
         </GroupBox>
     </Grid>

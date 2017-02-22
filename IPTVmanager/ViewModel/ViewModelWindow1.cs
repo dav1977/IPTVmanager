@@ -30,6 +30,8 @@ namespace IPTVman.ViewModel
             }
         }
 
+
+
         //This ViewModel is just to duplicate the last, but showing binding in code behind
         public ViewModelWindow1(string lastText)
         {
@@ -42,11 +44,11 @@ namespace IPTVman.ViewModel
         {
             //Setting the PUBLIC property 'TestText', so PropertyChanged event is fired
             if (selectedItem == null)
-                TestText = "Please select a person"; 
+                TestText = "Please select a ParamCanal"; 
             else
             {
-                var person = selectedItem as Person;
-                TestText = person.FirstName + " " + person.LastName;
+                var ParamCanal = selectedItem as ParamCanal;
+                TestText = ParamCanal.FirstName + " " + ParamCanal.LastName;
             }
         }
 

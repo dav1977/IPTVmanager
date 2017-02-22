@@ -10,7 +10,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.RowSpan="2">
-                <DataGrid x:Name="dg1" ItemsSource="{Binding People}" CanUserAddRows="False" HorizontalAlignment="Left"/>
+                <DataGrid x:Name="dg1" ItemsSource="{Binding Canal}" CanUserAddRows="False" HorizontalAlignment="Left"/>
                 <TextBlock FontWeight="Bold" Margin="5" Text="The TestText property says '"><Run Text="{Binding TestText}"/><Run Text="'"/></TextBlock>
                 <Button Content="Change Text" Command="{Binding ChangeTextCommand}" CommandParameter="{Binding SelectedItem, ElementName=dg1}"/>
             </StackPanel>

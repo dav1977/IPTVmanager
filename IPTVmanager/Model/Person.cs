@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace IPTVman.Model
 {
-    public class Person : INotifyPropertyChanged
+    public class ParamCanal : INotifyPropertyChanged
     {
         string _FirstName;
         public string FirstName
@@ -76,8 +76,10 @@ namespace IPTVman.Model
 
         void RaisePropertyChanged(string prop)
         {
-            if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
+            if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }//вызывется событие  изменение параметра
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+
+
+        public event PropertyChangedEventHandler PropertyChanged;//событие глобальное изменение параметра
     }
 }

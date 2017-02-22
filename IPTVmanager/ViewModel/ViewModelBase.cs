@@ -13,9 +13,13 @@ namespace IPTVman.ViewModel
         //basic ViewModelBase
         internal void RaisePropertyChanged(string prop)
         {
-            if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
+           if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+       public  event PropertyChangedEventHandler PropertyChanged; //событие выбора канала
+
+
+
+
 
         //Extra Stuff, shows why a base ViewModel is useful
         bool? _CloseWindowFlag;

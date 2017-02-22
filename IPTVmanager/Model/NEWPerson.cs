@@ -5,7 +5,7 @@
     /// In WPF MVVM terms, a POCO class is one that does not Fire PropertyChanged events
     /// </summary>
 
-    class NEWperson
+    class NEWParamCanal
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
