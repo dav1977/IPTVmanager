@@ -11,9 +11,31 @@ using Microsoft.Win32;
 
 namespace IPTVman.ViewModel
 {
+    //class MyCollection<T> : ObservableCollection<T>
+    //{
+    //    public MyCollection(object d)
+    //    {
+            
+    //    }
+    //    public void Sort(Comparison<T> comparison)
+    //    {
+    //        // Не лучший вариант, т.к. код зависит от детали реализации свойства Items.
+    //        // Вместо приведения типов лучше реализовать свой любимый алгоритм сортировки для IList<T>.
+    //        var items = this.Items as List<T>;
+
+    //        items.Sort(comparison);
+
+    //        //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+    //    }
+    //}
+
+
+
     class ViewModelMain : ViewModelBase
     {
         public ObservableCollection<ParamCanal> Canal { get; set; }
+      //  public MyCollection<ParamCanal> CanalOUT { get; set; }
+
 
         /// <summary>
         /// SelectedItem is an object instead of a ParamCanal, only because we are allowing "CanUserAddRows=true" 
@@ -45,7 +67,7 @@ namespace IPTVman.ViewModel
                     _SelectedParamCanal = value;
                     
                     RaisePropertyChanged("SelectedParamCanal");
-                   
+           
                 }
             }
         }
@@ -66,7 +88,7 @@ namespace IPTVman.ViewModel
             //    }
             //}
         }
-
+          
 
         string _TextProperty1;
         public string TextProperty1
@@ -90,9 +112,10 @@ namespace IPTVman.ViewModel
 
 
 
-
+        public RelayCommand key_SORTCommand { get; set; }
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand key_OPENCommand { get; set; }
+        public RelayCommand key_SAVECommand { get; set; }
         public RelayCommand key_delCommand { get; set; }
 
         /// <summary>
@@ -119,8 +142,10 @@ namespace IPTVman.ViewModel
 
             TextProperty1 = "новое значение";
 
+            key_SORTCommand = new RelayCommand(key_SORT);
             key_ADDCommand = new RelayCommand(key_ADD);
             key_OPENCommand = new RelayCommand(key_OPEN);
+            key_SAVECommand = new RelayCommand(key_SAVE);
             key_delCommand = new RelayCommand(key_del);
         }
 
@@ -132,6 +157,7 @@ namespace IPTVman.ViewModel
         {
             if (parameter == null) return;
             Canal.Add(new ParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            RaisePropertyChanged("numberCANALS");
         }
 
 
@@ -149,12 +175,12 @@ namespace IPTVman.ViewModel
             if (parameter == null) return;
  
             Canal.Remove(new ParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            RaisePropertyChanged("numberCANALS");
         }
 
         void key_OPEN(object parameter)
         {
             uint ct = 0;
-            if (parameter == null) return;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -175,9 +201,57 @@ namespace IPTVman.ViewModel
                 }// string name = File.ReadAllText(openFileDialog.FileName);
 
             }
+            RaisePropertyChanged("numberCANALS");
         }
 
 
-       
+
+        void key_SORT(object parameter)
+        {
+            // ascending
+            //collection = new ObservableCollection<int>(collection.OrderBy(a => a));
+
+            //// descending
+            //collection = new ObservableCollection<int>(collection.OrderByDescending(a => a));
+
+
+
+            //  ObservableCollection<string> _animals = new ObservableCollection<string>()
+            //{ "Cat", "Dog", "Bear", "Lion", "Mouse",
+            //"Horse", "Rat", "Elephant", "Kangaroo", "Lizard",
+            //"Snake", "Frog", "Fish", "Butterfly", "Human",
+            //"Cow", "Bumble Bee"};
+
+            //_animals = new ObservableCollection<string>(_animals.OrderBy(i => i));
+
+            Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.FirstName));
+
+        }
+
+
+
+
+
+        void key_SAVE(object parameter)
+        {
+           
+            SaveFileDialog openFileDialog = new SaveFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                using (StreamWriter sr = new StreamWriter(openFileDialog.FileName))
+                {
+                    foreach (var e in Canal)
+                    {
+                        sr.Write(e.LastName+'\n'+e.http + '\n');
+                       
+                    }
+                }// string name = File.ReadAllText(openFileDialog.FileName);
+
+            }
+        }
+
+
+
     }
 }

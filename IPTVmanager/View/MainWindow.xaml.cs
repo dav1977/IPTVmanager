@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using IPTVman.ViewModel;
+using System.Windows.Data;
 
 namespace IPTVman.ViewModel
 {
@@ -8,6 +9,12 @@ namespace IPTVman.ViewModel
         public MainWindow()
         {
             InitializeComponent();
+
+            //Binding bind = new Binding();
+            //bind.Source = grid1;
+            //bind.Path = new PropertyPath("grid1.ItemsSource.Count");  
+            //bind.Mode = BindingMode.OneWay;
+            //label_kanals.SetBinding(label_kanals.Content, bind);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

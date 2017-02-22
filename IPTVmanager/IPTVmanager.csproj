@@ -60,9 +60,9 @@
     <Compile Include="Helpers\DialogCloser.cs" />
     <Compile Include="Helpers\IClosableViewModel.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Model\PersonelBusinessObject.cs" />
-    <Compile Include="Model\Person.cs" />
-    <Compile Include="Model\NEWPerson.cs" />
+    <Compile Include="Model\ParamCanal_BusinessObject.cs" />
+    <Compile Include="Model\ParamCanal.cs" />
+    <Compile Include="Model\NEW_ParamCanal.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
     <Compile Include="ViewModel\ViewModelWindow1.cs" />

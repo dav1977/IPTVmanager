@@ -4,8 +4,9 @@
         xmlns:helpers="clr-namespace:IPTVman.Helpers"
         xmlns:vm="clr-namespace:IPTVman.ViewModel" 
         x:Class="IPTVman.ViewModel.MainWindow" WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="595.625" Width="998.708" Background="#FF282076" 
+        Title="IPTV manager v1.0" Height="595.625" Width="998.708" Background="#FF282076" 
         DataContext="{DynamicResource ViewModelMain}" Foreground="#FF20D10F">
+
     <Window.Resources>
         <vm:ViewModelMain x:Key="ViewModelMain"/>
     </Window.Resources>
@@ -19,7 +20,7 @@
             <RowDefinition Height="0.939*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Classic INotifyPropertyChanged Example" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Margin="5,44,130,10" Width="763" Height="490" Grid.ColumnSpan="2" Grid.Column="1">
+        <GroupBox Header="Classic INotifyPropertyChanged Example" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Margin="30,44,10,10" Height="490" Grid.ColumnSpan="2" Grid.Column="1" Width="858">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="139*" />
@@ -30,7 +31,7 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <ListBox x:Name="box1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
-                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" HorizontalAlignment="Left" Margin="5,0,0,0" Width="314" SelectionChanged="DataGrid_SelectionChanged"/>
+                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" HorizontalAlignment="Left" Margin="5,0,0,0" SelectionChanged="DataGrid_SelectionChanged"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
@@ -40,11 +41,13 @@
                 <Label x:Name="label" Content="Label" HorizontalAlignment="Left" Margin="84,160,0,0" Grid.Row="1" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
-        <Button Content="OpenFILE" Command="{Binding key_OPENCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="15,10,10,502" Focusable="False" Grid.Column="1"/>
+        <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="647,11,36,505" Focusable="False" Grid.Column="2"/>
+        <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="20,10,663,506" Focusable="False" Grid.Column="2"/>
+        <Button Content="Add File" Command="{Binding key_OPENCommand}" CommandParameter="" Margin="15,10,0,506" Focusable="False" Grid.Column="1"/>
         <Button Content="Next example" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Grid.Row="1" Margin="0,0,36,0" Grid.Column="2"/>
         <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" Margin="144,10,309,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="28" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2"/>
         <Label x:Name="label1" Content="Всего каналов:" Grid.Column="1" HorizontalAlignment="Left" Margin="49,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Grid.ColumnSpan="2"/>
-        <Label x:Name="label_kanals" Content="{Binding ElementName=grid1, Path=ItemsSource.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" HorizontalAlignment="Left" Margin="86,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Width="226"/>
+        <Label x:Name="label_kanals" Content="{Binding  numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="2" HorizontalAlignment="Left" Margin="86,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Width="226"/>
 
     </Grid>
 </Window>

@@ -13,7 +13,13 @@ namespace IPTVman.ViewModel
         //basic ViewModelBase
         internal void RaisePropertyChanged(string prop)
         {
-           if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
+           if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                PropertyChanged(this, new PropertyChangedEventArgs("numberCANALS"));
+            }
+         
+
         }
        public  event PropertyChangedEventHandler PropertyChanged; //событие выбора канала
 
