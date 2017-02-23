@@ -4,7 +4,7 @@
         xmlns:helpers="clr-namespace:IPTVman.Helpers"
         xmlns:vm="clr-namespace:IPTVman.ViewModel" 
         x:Class="IPTVman.ViewModel.MainWindow" WindowStartupLocation="CenterScreen"
-        Title="IPTV manager v1.0" Height="595.625" Width="998.708" Background="#FF282076" 
+        Title="IPTV manager v1.0" Height="639.341" Width="1040.602" Background="#FF282076" 
         DataContext="{DynamicResource ViewModelMain}" Foreground="#FF20D10F">
 
     <Window.Resources>
@@ -31,7 +31,7 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <ListBox x:Name="box1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
-                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" HorizontalAlignment="Left" Margin="5,0,0,0" SelectionChanged="DataGrid_SelectionChanged"/>
+                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" Margin="5,0,0,0" SelectionChanged="DataGrid_SelectionChanged"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
@@ -41,13 +41,13 @@
                 <Label x:Name="label" Content="Label" HorizontalAlignment="Left" Margin="84,160,0,0" Grid.Row="1" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
-        <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="647,11,36,505" Focusable="False" Grid.Column="2"/>
-        <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="20,10,663,506" Focusable="False" Grid.Column="2"/>
-        <Button Content="Add File" Command="{Binding key_OPENCommand}" CommandParameter="" Margin="15,10,0,506" Focusable="False" Grid.Column="1"/>
+        <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="561,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
+        <Button Content="Add File" Command="{Binding key_OPENCommand}" CommandParameter="" Margin="15,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Content="Next example" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Grid.Row="1" Margin="0,0,36,0" Grid.Column="2"/>
-        <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" Margin="144,10,309,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="28" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2"/>
-        <Label x:Name="label1" Content="Всего каналов:" Grid.Column="1" HorizontalAlignment="Left" Margin="49,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Grid.ColumnSpan="2"/>
-        <Label x:Name="label_kanals" Content="{Binding  numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="2" HorizontalAlignment="Left" Margin="86,478,0,0" VerticalAlignment="Top" FontSize="20" Foreground="#FF0FD63C" Width="226"/>
+        <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" Margin="151,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="25" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2" Width="320" HorizontalAlignment="Left"/>
+        <Label x:Name="label1" Content="Всего каналов:" Grid.Column="1" FontSize="20" Foreground="#FF0FD63C" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="37" Grid.RowSpan="2"/>
+        <Label x:Name="label_kanals" Content="{Binding  numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="2" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Bottom" FontSize="20" Foreground="#FF0FD63C" Width="226" Height="37" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>

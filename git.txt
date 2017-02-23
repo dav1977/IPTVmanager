@@ -21,7 +21,19 @@ git config --local i18n.logoutputencoding cp1251
 4 edit файлов
 5 git add .
 6 git status -s изменения ЗЕЛЕНЫМ!!!
-7 git commit -m"comment1"
+7 git commit -m"comment1"  (выход из редактора WQ)
 8 git remote add origin https://github.com/dav1977/IPTVmanager
   git remote add my https://github.com/dav1977/IPTVmanager
 9 git push my master
+
+
+
+ВЕТКИ
+git checkout ветка 
+git checkout -b ветка 
+
+
+
+СЛИЯНИЕ 
+git merge новая_ветка    (слияние коммитов(ПОСЛЕДОВАТЕЛЬНО) -> конфликты)
+git rebase новая_ветка   (добавление после текущих, коммитов из новой ветки)
