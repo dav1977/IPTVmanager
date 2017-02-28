@@ -76,7 +76,7 @@ namespace IPTVman.ViewModel
         {
             get
             {
-                return Canal.Count.ToString();
+                return "Всего каналов: "+Canal.Count.ToString();
             }
             //set
             //{
@@ -188,7 +188,9 @@ namespace IPTVman.ViewModel
             {
                 using (StreamReader sr = new StreamReader(openFileDialog.FileName))
                 {
-                    while (!sr.EndOfStream && ct<50)
+                    String header = sr.ReadLine();
+
+                    while (!sr.EndOfStream && ct<200)
                     {
                         // Read the stream to a string, and write the string to the console.
                         String line = sr.ReadLine();

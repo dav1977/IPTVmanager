@@ -20,34 +20,34 @@
             <RowDefinition Height="0.939*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Classic INotifyPropertyChanged Example" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Margin="30,44,10,10" Height="490" Grid.ColumnSpan="2" Grid.Column="1" Width="858">
+        <GroupBox Header="Classic INotifyPropertyChanged Example" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Grid.ColumnSpan="2" Grid.Column="1" RenderTransformOrigin="0.5,0.5" Margin="15,59,10,33">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="139*" />
                     <RowDefinition Height="85*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,101">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <ListBox x:Name="box1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
-                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" Margin="5,0,0,0" SelectionChanged="DataGrid_SelectionChanged"/>
+                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" Margin="5,0,0,0" SelectionChanged="DataGrid_SelectionChanged" Grid.IsSharedSizeScope="True" Height="Auto" Width="Auto" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" MaxWidth="Infinity" MaxHeight="Infinity"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
-                <Button Content="УДАЛИТЬ канал" Command="{Binding key_delCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="578,136.183,10,10" Focusable="False" Grid.Row="1"/>
-                <Button Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="578,106.183,10,40" Focusable="False" Grid.Row="1"/>
-                <TextBox x:Name="tb1" Text="новый канал" Margin="265,0,0,40" TextChanged="tb1_TextChanged" Width="311" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="1"/>
-                <Label x:Name="label" Content="Label" HorizontalAlignment="Left" Margin="84,160,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+                <TextBox x:Name="tb1" Text="новый канал" Margin="247,0,0,-43" TextChanged="tb1_TextChanged" Width="311" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22"/>
+                <TextBox x:Name="tb1_Copy1" Text="заголовок" Margin="-16,-47,0,0" TextChanged="tb1_TextChanged" Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
+
             </Grid>
         </GroupBox>
         <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="561,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
         <Button Content="Add File" Command="{Binding key_OPENCommand}" CommandParameter="" Margin="15,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="Next example" VerticalAlignment="Top" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Grid.Row="1" Margin="0,0,36,0" Grid.Column="2"/>
+        <Button Content="Next example" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Margin="0,0,10,4" Grid.Column="2"/>
         <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" Margin="151,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="25" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2" Width="320" HorizontalAlignment="Left"/>
-        <Label x:Name="label1" Content="Всего каналов:" Grid.Column="1" FontSize="20" Foreground="#FF0FD63C" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="37" Grid.RowSpan="2"/>
-        <Label x:Name="label_kanals" Content="{Binding  numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="2" HorizontalAlignment="Left" Margin="40,0,0,0" VerticalAlignment="Bottom" FontSize="20" Foreground="#FF0FD63C" Width="226" Height="37" Grid.RowSpan="2"/>
+        <Label x:Name="label_kanals" Content="{Binding  numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="15,0,0,0" VerticalAlignment="Bottom" FontSize="20" Foreground="#FF0FD63C" Width="226" Height="37" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Button Content="УДАЛИТЬ канал" Command="{Binding key_delCommand}" CommandParameter="" Margin="582,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.RowSpan="2"/>
+        <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="477,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>
