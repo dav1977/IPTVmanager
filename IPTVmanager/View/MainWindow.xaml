@@ -4,7 +4,7 @@
         xmlns:helpers="clr-namespace:IPTVman.Helpers"
         xmlns:vm="clr-namespace:IPTVman.ViewModel" 
         x:Class="IPTVman.ViewModel.MainWindow" WindowStartupLocation="CenterScreen"
-        Title="IPTV manager v1.0" Height="639.341" Width="1040.602" Background="#FF282076" 
+        Title="IPTV mangroup_titler v1.0" Height="639.341" Width="1040.602" Background="#FF282076" 
         DataContext="{DynamicResource ViewModelMain}" Foreground="#FF20D10F">
 
     <Window.Resources>
@@ -30,21 +30,32 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <ListBox x:Name="box1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
-                            <DataGrid x:Name="grid1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" Margin="5,0,0,0" SelectionChanged="DataGrid_SelectionChanged" Grid.IsSharedSizeScope="True" Height="Auto" Width="Auto" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" MaxWidth="Infinity" MaxHeight="Infinity"/>
+                            <ListBox x:Name="box1"  Width="60" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="Title" HorizontalAlignment="Left" SelectionChanged="ListBox_SelectionChanged"/>
+                            <DataGrid x:Name="grid1" AutoGenerateColumns="False" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" Margin="5,0,0,0" SelectionChanged="DataGrid_SelectionChanged" Grid.IsSharedSizeScope="True" Height="Auto" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" MaxWidth="Infinity" MaxHeight="Infinity" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Title"  Binding="{Binding Title}"  Width="250"  />
+                                    <DataGridTextColumn Header="ExtFilter" Binding="{Binding ExtFilter}" Width="150" />
+                                    <DataGridTextColumn Header="group_title" Binding="{Binding group_title}" Width="150"  />
+
+                                    <DataGridHyperlinkColumn Header="http" Binding="{Binding http}"  Width="150" />
+                                    <!-- rem -->
+                                    <!--<DataGridCheckBoxColumn Header="Member?" Binding="{Binding IsMember}" />-->
+                           
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
                 <TextBox x:Name="tb1" Text="новый канал" Margin="247,0,0,-43" TextChanged="tb1_TextChanged" Width="311" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22"/>
-                <TextBox x:Name="tb1_Copy1" Text="заголовок" Margin="-16,-47,0,0" TextChanged="tb1_TextChanged" Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-16,-47,0,0" TextChanged="tb1_TextChanged" Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
 
             </Grid>
         </GroupBox>
         <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="561,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
-        <Button Content="Add File" Command="{Binding key_OPENCommand}" CommandParameter="" Margin="15,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Add File" Command="{Binding key_OPENCommand}" CommandParameter="" Margin="15,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click_1"/>
         <Button Content="Next example" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Margin="0,0,10,4" Grid.Column="2"/>
-        <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="FirstName" Margin="151,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="25" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2" Width="320" HorizontalAlignment="Left"/>
+        <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="Title" Margin="151,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="25" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2" Width="320" HorizontalAlignment="Left"/>
         <Label x:Name="label_kanals" Content="{Binding  numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="15,0,0,0" VerticalAlignment="Bottom" FontSize="20" Foreground="#FF0FD63C" Width="226" Height="37" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
         <Button Content="УДАЛИТЬ канал" Command="{Binding key_delCommand}" CommandParameter="" Margin="582,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.RowSpan="2"/>
         <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="477,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.RowSpan="2"/>

@@ -48,7 +48,7 @@ namespace IPTVman.ViewModel
             else
             {
                 var ParamCanal = selectedItem as ParamCanal;
-                TestText = ParamCanal.FirstName + " " + ParamCanal.LastName;
+                TestText = ParamCanal.Title + " " + ParamCanal.ExtFilter;
             }
         }
 

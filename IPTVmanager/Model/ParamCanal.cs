@@ -5,39 +5,61 @@ namespace IPTVman.Model
 {
     public class ParamCanal : INotifyPropertyChanged//, IComparable<ParamCanal>
     {
-        string _FirstName;
-        public string FirstName
+        string _Title;
+        public string Title
         {
             get
             {
-                return _FirstName;
+                return _Title;
             }
             set
             {
-                if (_FirstName != value)
+                if (_Title != value)
                 {
-                    _FirstName = value;
-                    RaisePropertyChanged("FirstName");
+                    _Title = value;
+                    RaisePropertyChanged("Title");
                 }
             }
         }
 
-        string _LastName;
-        public string LastName
+        string _ExtFilter;
+        public string ExtFilter
         {
             get
             {
-                return _LastName;
+                return _ExtFilter;
             }
             set
             {
-                if (_LastName != value)
+                if (_ExtFilter != value)
                 {
-                    _LastName = value;
-                    RaisePropertyChanged("LastName");
+                    _ExtFilter = value;
+                    RaisePropertyChanged("ExtFilter");
                 }
             }
         }
+
+
+
+
+        int _group_title;
+        public int group_title
+        {
+            get
+            {
+                return _group_title;
+            }
+            set
+            {
+                if (_group_title != value)
+                {
+                    _group_title = value;
+                    RaisePropertyChanged("group_title");
+                }
+            }
+        }
+
+
 
         string _http;
         public string http
@@ -56,24 +78,8 @@ namespace IPTVman.Model
             }
         }
 
-
-        int _Age;
-        public int Age
-        {
-            get
-            {
-                return _Age;
-            }
-            set
-            {
-                if (_Age != value)
-                {
-                    _Age = value;
-                    RaisePropertyChanged("Age");
-                }
-            }
-        }
-
+      
+       
         void RaisePropertyChanged(string prop)
         {
             if (PropertyChanged != null)

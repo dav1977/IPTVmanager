@@ -7,8 +7,8 @@
 
     class NEWParamCanal
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int Age { get; set; }
+        public string Title { get; set; }
+        public string ExtFilter { get; set; }
+        public int group_title { get; set; }
     }
 }

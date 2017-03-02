@@ -15,9 +15,9 @@ namespace IPTVman.Data
             //For example from ADO DataSets or EF
             return new ObservableCollection<ParamCanal>
             {
-                //new ParamCanal { FirstName="Tom", LastName="Jones", Age=80 },
-                //new ParamCanal { FirstName="Dick", LastName="Tracey", Age=40 },
-                //new ParamCanal { FirstName="Harry", LastName="Hill", Age=60 },
+                //new ParamCanal { Title="Tom", ExtFilter="Jones", group_title=80 },
+                //new ParamCanal { Title="Dick", ExtFilter="Tracey", group_title=40 },
+                //new ParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
            
             };
         }
@@ -28,9 +28,9 @@ namespace IPTVman.Data
             //For example from ADO DataSets or EF
             return new List<NEWParamCanal>
             {
-                //new NEWParamCanal { FirstName="Tom", LastName="Jones", Age=80 },
-                //new NEWParamCanal { FirstName="Dick", LastName="Tracey", Age=40 },
-                //new NEWParamCanal { FirstName="Harry", LastName="Hill", Age=60 },
+                //new NEWParamCanal { Title="Tom", ExtFilter="Jones", group_title=80 },
+                //new NEWParamCanal { Title="Dick", ExtFilter="Tracey", group_title=40 },
+                //new NEWParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
             };
         }
     }

@@ -40,8 +40,8 @@ namespace IPTVman.ViewModel
         {
             Canal = new List<NEWParamCanal>
             {
-                new NEWParamCanal{ FirstName=ParamCanal.FirstName, LastName=ParamCanal.LastName, Age=ParamCanal.Age },
-                new NEWParamCanal{ FirstName="Grace", LastName="Jones", Age=21 },
+                new NEWParamCanal{ Title=ParamCanal.Title, ExtFilter=ParamCanal.ExtFilter, group_title=ParamCanal.group_title },
+                new NEWParamCanal{ Title="Grace", ExtFilter="Jones", group_title=21 },
             };
             TextProperty1 = "Only this TextBox's changes are reflected in bindings";
             NextExampleCommand = new RelayCommand(NextExample);
@@ -64,7 +64,7 @@ namespace IPTVman.ViewModel
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
-            Canal.Add(new NEWParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            Canal.Add(new NEWParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = DateTime.Now.Second });
         }
 
         void NextExample(object parameter)

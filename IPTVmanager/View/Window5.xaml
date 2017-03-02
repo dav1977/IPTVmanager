@@ -25,10 +25,10 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="First name"/>
                     <TextBlock Text="Last name" Grid.Row="1"/>
-                    <TextBlock Text="Age" Grid.Row="2"/>
-                    <TextBox Text="{Binding FirstName, BindingGroupName=Group1, UpdateSourceTrigger=Explicit}" Grid.Column="1"/>
-                    <TextBox Text="{Binding LastName, BindingGroupName=Group1, UpdateSourceTrigger=Explicit}" Grid.Column="1" Grid.Row="1"/>
-                    <TextBox Text="{Binding Age, BindingGroupName=Group1, UpdateSourceTrigger=Explicit}" Grid.Column="1" Grid.Row="2"/>
+                    <TextBlock Text="group_title" Grid.Row="2"/>
+                    <TextBox Text="{Binding Title, BindingGroupName=Group1, UpdateSourceTrigger=Explicit}" Grid.Column="1"/>
+                    <TextBox Text="{Binding ExtFilter, BindingGroupName=Group1, UpdateSourceTrigger=Explicit}" Grid.Column="1" Grid.Row="1"/>
+                    <TextBox Text="{Binding group_title, BindingGroupName=Group1, UpdateSourceTrigger=Explicit}" Grid.Column="1" Grid.Row="2"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Right">
                         <Button Foreground="Red" Content="Cancel" Command="{Binding DataContext.CancelCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Margin="4,0"/>
                         <Button Foreground="Red" Content="Delete" Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Margin="4,0"/>

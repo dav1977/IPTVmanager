@@ -8,6 +8,8 @@ using IPTVman.Helpers;
 using System.IO;
 using System.Windows;
 using Microsoft.Win32;
+using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace IPTVman.ViewModel
 {
@@ -108,7 +110,22 @@ namespace IPTVman.ViewModel
         }
 
 
-
+        string _text_title;
+        public string text_title
+        {
+            get
+            {
+                return _text_title;
+            }
+            set
+            {
+                if (_text_title != value)
+                {
+                    _text_title = value;
+                    RaisePropertyChanged("text_title");
+                }
+            }
+        }
 
 
 
@@ -125,16 +142,16 @@ namespace IPTVman.ViewModel
         {
             Canal = new ObservableCollection<ParamCanal>
             {
-                //new ParamCanal { FirstName="Tom1", LastName="Jones", Age=80 },
-                //new ParamCanal { FirstName="Dick", LastName="Tracey", Age=40 },
-                //new ParamCanal { FirstName="Harry", LastName="Hill", Age=60 },
-                //new ParamCanal { FirstName="param4", LastName="Lastp4", Age=99 },
+                //new ParamCanal { Title="Tom1", ExtFilter="Jones", group_title=80 },
+                //new ParamCanal { Title="Dick", ExtFilter="Tracey", group_title=40 },
+                //new ParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
+                //new ParamCanal { Title="param4", ExtFilter="Lastp4", group_title=99 },
             };
             
-            //ParamCanal p = new ParamCanal { FirstName = "wirte1", LastName = "Jones", Age = 80 };
+            //ParamCanal p = new ParamCanal { Title = "wirte1", ExtFilter = "Jones", group_title = 80 };
             //Canal.Add(p);
 
-            //p = new ParamCanal { FirstName = "wirte2", param3 = "iik", Age = 99 };
+            //p = new ParamCanal { Title = "wirte2", param3 = "iik", group_title = 99 };
             //Canal.Add(p);
 
 
@@ -156,7 +173,7 @@ namespace IPTVman.ViewModel
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
-            Canal.Add(new ParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            Canal.Add(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = DateTime.Now.Second });
             RaisePropertyChanged("numberCANALS");
         }
 
@@ -174,31 +191,103 @@ namespace IPTVman.ViewModel
         {
             if (parameter == null) return;
  
-            Canal.Remove(new ParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            Canal.Remove(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = DateTime.Now.Second });
             RaisePropertyChanged("numberCANALS");
         }
 
+
         void key_OPEN(object parameter)
         {
+            string line=null, http0=null;
             uint ct = 0;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             if (openFileDialog.ShowDialog() == true)
             {
+                Regex regex1 = new Regex("#EXTINF");
+                Regex regex2 = new Regex("#EXTM3U");
+                Match match;
+                bool badtitle = false;
+
+                Regex regex3 = new Regex("ExtFilter=");
+                
+
                 using (StreamReader sr = new StreamReader(openFileDialog.FileName))
                 {
-                    String header = sr.ReadLine();
+                    string header = sr.ReadLine();
+                    match = regex2.Match(header);
+                    if (!match.Success) badtitle = true;
 
-                    while (!sr.EndOfStream && ct<200)
+                    text_title = header;
+
+                    while (!sr.EndOfStream && ct<400)
                     {
-                        // Read the stream to a string, and write the string to the console.
-                        String line = sr.ReadLine();
-                        string[] words = line.Split(new char[] { ',' });
-                        String http0 = sr.ReadLine();
+                        while (true)
+                        {
+                            if (!badtitle)  line = sr.ReadLine();  else badtitle = false;
+                            if (sr.EndOfStream) break;
+
+                            if (line == null) continue;
+
+                            match = regex1.Match(line);
+                            if (match.Success) break;
+
+                            //while (match.Success)
+                            //{
+                            //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
+                            //    // ссылаемся на найденное значение через свойство Groups класса Match
+                            //    //Console.WriteLine(match.Groups[1].Value);
+                            //    y = true; break;
+                            //    // Переходим к следующему совпадению
+                            //    //match = match.NextMatch();
+                            //}
+
+
+
+                            //}
+                           
+                        }
+
+                        match = regex3.Match(line);
+                        if (match.Success)
+                        {
+
+
+
+                        }
+
+                        string[] words= { "",""};
+                        if (line != null) words = line.Split(new char[] { ',' });
+
+
+                        bool y = false;
+                        while (1 == 1)
+                        {
+                            // Read the stream to a string, and write the string to the console.
+                            http0 = sr.ReadLine();
+                           // if (sr.EndOfStream) break;
+
+                            if (http0 == null) continue;
+                            foreach (var c in http0)
+                            {
+                                if (char.IsPunctuation(c)) { y = true; break; }
+                               // else if (IsLatin(c)) { y = true; break; }
+                            }
+                            if (y) break;
+                        }
+
+
+
+                     
+
+
+
                         ct++;
-                        Canal.Add(new ParamCanal { FirstName = words[1], LastName = line, http=http0, Age = DateTime.Now.Second });
-                      
+                        Canal.Add(new ParamCanal { Title = words[1], ExtFilter = line, http=http0, group_title = DateTime.Now.Second });
+
+
+                        
                     }
                 }// string name = File.ReadAllText(openFileDialog.FileName);
 
@@ -226,7 +315,7 @@ namespace IPTVman.ViewModel
 
             //_animals = new ObservableCollection<string>(_animals.OrderBy(i => i));
 
-            Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.FirstName));
+            Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.Title));
 
         }
 
@@ -245,7 +334,7 @@ namespace IPTVman.ViewModel
                 {
                     foreach (var e in Canal)
                     {
-                        sr.Write(e.LastName+'\n'+e.http + '\n');
+                        sr.Write(e.ExtFilter+'\n'+e.http + '\n');
                        
                     }
                 }// string name = File.ReadAllText(openFileDialog.FileName);

@@ -43,9 +43,9 @@ namespace IPTVman.ViewModel
         {
             Canal = new List<NEWParamCanal>
             {
-                new NEWParamCanal { FirstName="Tom", LastName="Jones", Age=80 },
-                new NEWParamCanal { FirstName="Dick", LastName="Tracey", Age=40 },
-                new NEWParamCanal { FirstName="Harry", LastName="Hill", Age=60 },
+                new NEWParamCanal { Title="Tom", ExtFilter="Jones", group_title=80 },
+                new NEWParamCanal { Title="Dick", ExtFilter="Tracey", group_title=40 },
+                new NEWParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
             };
             TextProperty1 = "This will now update";
             NextExampleCommand = new RelayCommand(NextExample);
@@ -60,7 +60,7 @@ namespace IPTVman.ViewModel
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
-            Canal.Add(new NEWParamCanal { FirstName = parameter.ToString(), LastName = parameter.ToString(), Age = DateTime.Now.Second });
+            Canal.Add(new NEWParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = DateTime.Now.Second });
         }
 
         void timer_Tick(object sender, EventArgs e)
