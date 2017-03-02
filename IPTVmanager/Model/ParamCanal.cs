@@ -42,8 +42,8 @@ namespace IPTVman.Model
 
 
 
-        int _group_title;
-        public int group_title
+        string _group_title;
+        public string group_title
         {
             get
             {

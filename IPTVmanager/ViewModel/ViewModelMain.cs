@@ -173,7 +173,7 @@ namespace IPTVman.ViewModel
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
-            Canal.Add(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = DateTime.Now.Second });
+            Canal.Add(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             RaisePropertyChanged("numberCANALS");
         }
 
@@ -191,7 +191,7 @@ namespace IPTVman.ViewModel
         {
             if (parameter == null) return;
  
-            Canal.Remove(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = DateTime.Now.Second });
+            Canal.Remove(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             RaisePropertyChanged("numberCANALS");
         }
 
@@ -200,6 +200,8 @@ namespace IPTVman.ViewModel
         {
             string line=null, http0=null;
             uint ct = 0;
+       
+
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -211,7 +213,11 @@ namespace IPTVman.ViewModel
                 bool badtitle = false;
 
                 Regex regex3 = new Regex("ExtFilter=");
-                
+                Regex regex4 = new Regex("group-title=");
+                string[] words1 = { "", "" };
+                string[] words = { "", "" };
+                string str_ex="";
+                string str_gr = "";
 
                 using (StreamReader sr = new StreamReader(openFileDialog.FileName))
                 {
@@ -221,7 +227,7 @@ namespace IPTVman.ViewModel
 
                     text_title = header;
 
-                    while (!sr.EndOfStream && ct<400)
+                    while (!sr.EndOfStream /* && ct<400*/)
                     {
                         while (true)
                         {
@@ -248,16 +254,29 @@ namespace IPTVman.ViewModel
                             //}
                            
                         }
+                        str_gr = "";
+                        str_ex = "";
 
                         match = regex3.Match(line);
                         if (match.Success)
                         {
-
-
-
+                            words1 = line.Split(new char[] { '"' });
+                            str_ex = words1[1];
+                           
                         }
 
-                        string[] words= { "",""};
+                        match = regex4.Match(line);
+                        if (match.Success)
+                        {
+                            words1 = line.Split(new char[] { '"' });
+                            if (str_ex != "")
+                            {
+                                if (words1.Length > 3) str_gr = words1[3];
+                                else if (words1.Length > 2) str_gr = words1[2];
+                            }
+                            else str_gr = words1[1];
+                        }
+
                         if (line != null) words = line.Split(new char[] { ',' });
 
 
@@ -284,7 +303,7 @@ namespace IPTVman.ViewModel
 
 
                         ct++;
-                        Canal.Add(new ParamCanal { Title = words[1], ExtFilter = line, http=http0, group_title = DateTime.Now.Second });
+                        Canal.Add(new ParamCanal { Title = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
 
 
                         
