@@ -197,12 +197,12 @@ namespace IPTVman.ViewModel
         public IList<ParamCanal> FetchRange(int startIndex, int count)
         {
 
-            if (!ViewModelMain.load_ok) open();
-            ViewModelMain.load_ok = true;
+            if (!ViewModelMain.load_ok) { open(); ViewModelMain.load_ok = true; }
+           
 
 
             // Trace.WriteLine("FetchRange: " + startIndex + "," + count);
-            //  Thread.Sleep(_fetchDelay);
+            // Thread.Sleep(_fetchDelay);
 
 
 
@@ -224,10 +224,14 @@ namespace IPTVman.ViewModel
                 catch { }
 
                 ParamCanal customer = new ParamCanal
-                // { name = "100 " + (100 - i).ToString(), ExtFilter = "n " + i.ToString() };
+                //{ name = "100 " + (100 - i).ToString(), ExtFilter = "n " + i.ToString() };
                 { name = d, http=d2 };
 
-                ViewModelMain.myLIST.Add(customer);
+                try
+                {
+                    ViewModelMain.myLIST.Add(customer);
+                }
+                catch { }
             }
 
 
@@ -421,8 +425,25 @@ namespace IPTVman.ViewModel
                 if (_pages[pageIndex] == null)
                     return default(T);
 
+
+
+                /////fix crash
+                T retPAGE = default(T);
+
+                
+                bool ok = false;
+                try
+                {
+                    retPAGE = _pages[pageIndex][pageOffset];
+                }
+                catch { }
+                finally { ok = true; }
+
+                if (ok) return retPAGE;
+                else return default(T);
+
                 // return requested item
-                return _pages[pageIndex][pageOffset];
+
             }
             set { throw new NotSupportedException(); }
         }

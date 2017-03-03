@@ -87,7 +87,7 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
             <TextBlock Text="Memory Usage:" Margin="5" VerticalAlignment="Center" Foreground="#FF22C940"/>
-            <TextBlock x:Name="tbMemory" Margin="5" Width="80" VerticalAlignment="Center"/>
+            <TextBlock x:Name="tbMemory" Margin="5" Width="80" VerticalAlignment="Center" Foreground="#FF1DF04D"/>
 
             <Button Content="Refresh" Click="Button_Click" Margin="5" Width="100" VerticalAlignment="Center"/>
 
