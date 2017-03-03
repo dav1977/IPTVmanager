@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-d:\Proj\WPF\IPTVmanager\IPTVmanager\obj\x86\Debug\
+f:\Dulov\IPTVmanager\IPTVmanager\obj\x86\Debug\
 iptv
 none
 false
 DEBUG;TRACE
-d:\Proj\WPF\IPTVmanager\IPTVmanager\App.xaml
+f:\Dulov\IPTVmanager\IPTVmanager\App.xaml
 61307985581
 
-25-1964466582
-12-1381780322
+26-774592047
+12-1547151337
 View\MainWindow.xaml;View\Window1.xaml;View\Window2.xaml;View\Window3.xaml;View\Window4.xaml;View\Window5.xaml;
 
 False

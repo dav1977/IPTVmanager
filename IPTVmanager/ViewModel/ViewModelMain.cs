@@ -36,9 +36,12 @@ namespace IPTVman.ViewModel
     class ViewModelMain : ViewModelBase
     {
         public ObservableCollection<ParamCanal> Canal { get; set; }
-      //  public MyCollection<ParamCanal> CanalOUT { get; set; }
+        //  public MyCollection<ParamCanal> CanalOUT { get; set; }
+        public static List<ParamCanal> myLIST;
 
+        public static List<ParamCanal> myLISTbase;
 
+        public static  bool load_ok =false;
         /// <summary>
         /// SelectedItem is an object instead of a ParamCanal, only because we are allowing "CanUserAddRows=true" 
         /// NewItemPlaceHolder represents a new row, and this is not the same as ParamCanal class
@@ -78,7 +81,7 @@ namespace IPTVman.ViewModel
         {
             get
             {
-                return "Всего каналов: "+Canal.Count.ToString();
+                return "Всего каналов: "+ myLIST.Count.ToString();
             }
             //set
             //{
@@ -173,7 +176,7 @@ namespace IPTVman.ViewModel
         void key_ADD(object parameter)
         {
             if (parameter == null) return;
-            Canal.Add(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
+            Canal.Add(new ParamCanal { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             RaisePropertyChanged("numberCANALS");
         }
 
@@ -191,7 +194,7 @@ namespace IPTVman.ViewModel
         {
             if (parameter == null) return;
  
-            Canal.Remove(new ParamCanal { Title = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
+            Canal.Remove(new ParamCanal { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             RaisePropertyChanged("numberCANALS");
         }
 
@@ -303,7 +306,7 @@ namespace IPTVman.ViewModel
 
 
                         ct++;
-                        Canal.Add(new ParamCanal { Title = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
+                        Canal.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
 
 
                         
@@ -314,7 +317,7 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("numberCANALS");
         }
 
-
+       
 
         void key_SORT(object parameter)
         {
@@ -334,7 +337,7 @@ namespace IPTVman.ViewModel
 
             //_animals = new ObservableCollection<string>(_animals.OrderBy(i => i));
 
-            Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.Title));
+            Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.name));
 
         }
 

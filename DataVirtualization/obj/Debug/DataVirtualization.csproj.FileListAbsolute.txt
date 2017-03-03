@@ -1,0 +1,16 @@
+f:\Dulov\Downloads\5\DataVirtualization\bin\Debug\DataVirtualization.XML
+f:\Dulov\Downloads\5\DataVirtualization\bin\Debug\DataVirtualization.exe
+f:\Dulov\Downloads\5\DataVirtualization\bin\Debug\DataVirtualization.pdb
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DataVirtualization.csprojResolveAssemblyReference.cache
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DemoWindow.baml
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DemoWindow.g.cs
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\App.g.cs
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DataVirtualization_MarkupCompile.cache
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DataVirtualization.g.resources
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DataVirtualization.Properties.Resources.resources
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DataVirtualization.csproj.GenerateResource.Cache
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DataVirtualization.exe
+f:\Dulov\Downloads\5\DataVirtualization\obj\Debug\DataVirtualization.pdb
+f:\Dulov\IPTVmanager\DataVirtualization\bin\Debug\DataVirtualization.XML
+f:\Dulov\IPTVmanager\DataVirtualization\obj\Debug\DataVirtualization.exe
+f:\Dulov\IPTVmanager\DataVirtualization\obj\Debug\DataVirtualization.pdb

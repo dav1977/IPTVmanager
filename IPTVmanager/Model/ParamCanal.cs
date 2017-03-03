@@ -3,21 +3,50 @@ using System.ComponentModel;
 
 namespace IPTVman.Model
 {
+
+
+    //public class Customer
+    //{
+    //    /// <summary>
+    //    /// Gets or sets the id.
+    //    /// </summary>
+    //    /// <value>The id.</value>
+    //    public string Title { get; set; }
+
+    //    /// <summary>
+    //    /// Gets or sets the name.
+    //    /// </summary>
+    //    /// <value>The name.</value>
+    //    public string ExtFilter { get; set; }
+
+    //    /// <summary>
+    //    /// Some dummy data to give the instance a bigger memory footprint.
+    //    /// </summary>
+    //    //private byte[] data = new byte[100];
+    //}
+
+
     public class ParamCanal : INotifyPropertyChanged//, IComparable<ParamCanal>
     {
-        string _Title;
-        public string Title
+
+        /// <summary>
+        /// Some dummy data to give the instance a bigger memory footprint.
+        /// </summary>
+        //private byte[] data = new byte[100];
+
+        string _name;
+        public string name
         {
             get
             {
-                return _Title;
+                return _name;
             }
             set
             {
-                if (_Title != value)
+                if (_name != value)
                 {
-                    _Title = value;
-                    RaisePropertyChanged("Title");
+                    _name = value;
+                    RaisePropertyChanged("name");
                 }
             }
         }

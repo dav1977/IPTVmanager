@@ -40,7 +40,7 @@ namespace IPTVman.ViewModel
         {
             Canal = new List<NEWParamCanal>
             {
-                new NEWParamCanal{ Title=ParamCanal.Title, ExtFilter=ParamCanal.ExtFilter, group_title=ParamCanal.group_title },
+                new NEWParamCanal{ Title=ParamCanal.name, ExtFilter=ParamCanal.ExtFilter, group_title=ParamCanal.group_title },
                 new NEWParamCanal{ Title="Grace", ExtFilter="Jones", group_title="" },
             };
             TextProperty1 = "Only this TextBox's changes are reflected in bindings";

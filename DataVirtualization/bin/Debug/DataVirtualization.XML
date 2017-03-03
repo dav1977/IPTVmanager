@@ -1,0 +1,493 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DataVirtualization</name>
+    </assembly>
+    <members>
+        <member name="T:DataVirtualization.App">
+            <summary>
+            Interaction logic for App.xaml
+            </summary>
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:DataVirtualization.DemoWindow">
+            <summary>
+            Interaction logic for DemoWindow.xaml
+            </summary>
+            <summary>
+            DemoWindow
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.DemoWindow.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.DemoWindow"/> class.
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.DemoWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:DataVirtualization.AsyncVirtualizingCollection`1">
+            <summary>
+            Derived VirtualizatingCollection, performing loading asychronously.
+            </summary>
+            <typeparam name="T">The type of items in the collection</typeparam>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.#ctor(DataVirtualization.IItemsProvider{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.AsyncVirtualizingCollection`1"/> class.
+            </summary>
+            <param name="itemsProvider">The items provider.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.#ctor(DataVirtualization.IItemsProvider{`0},System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.AsyncVirtualizingCollection`1"/> class.
+            </summary>
+            <param name="itemsProvider">The items provider.</param>
+            <param name="pageSize">Size of the page.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.#ctor(DataVirtualization.IItemsProvider{`0},System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.AsyncVirtualizingCollection`1"/> class.
+            </summary>
+            <param name="itemsProvider">The items provider.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageTimeout">The page timeout.</param>
+        </member>
+        <member name="P:DataVirtualization.AsyncVirtualizingCollection`1.SynchronizationContext">
+            <summary>
+            Gets the synchronization context used for UI-related operations. This is obtained as
+            the current SynchronizationContext when the AsyncVirtualizingCollection is created.
+            </summary>
+            <value>The synchronization context.</value>
+        </member>
+        <member name="E:DataVirtualization.AsyncVirtualizingCollection`1.CollectionChanged">
+            <summary>
+            Occurs when the collection changes.
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:CollectionChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.FireCollectionReset">
+            <summary>
+            Fires the collection reset event.
+            </summary>
+        </member>
+        <member name="E:DataVirtualization.AsyncVirtualizingCollection`1.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:PropertyChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.FirePropertyChanged(System.String)">
+            <summary>
+            Fires the property changed event.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+        </member>
+        <member name="P:DataVirtualization.AsyncVirtualizingCollection`1.IsLoading">
+            <summary>
+            Gets or sets a value indicating whether the collection is loading.
+            </summary>
+            <value>
+            	<c>true</c> if this collection is loading; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.LoadCount">
+            <summary>
+            Asynchronously loads the count of items.
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.LoadCountWork(System.Object)">
+            <summary>
+            Performed on background thread.
+            </summary>
+            <param name="args">None required.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.LoadCountCompleted(System.Object)">
+            <summary>
+            Performed on UI-thread after LoadCountWork.
+            </summary>
+            <param name="args">Number of items returned.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.LoadPage(System.Int32)">
+            <summary>
+            Asynchronously loads the page.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.LoadPageWork(System.Object)">
+            <summary>
+            Performed on background thread.
+            </summary>
+            <param name="args">Index of the page to load.</param>
+        </member>
+        <member name="M:DataVirtualization.AsyncVirtualizingCollection`1.LoadPageCompleted(System.Object)">
+            <summary>
+            Performed on UI-thread after LoadPageWork.
+            </summary>
+            <param name="args">object[] { int pageIndex, IList(T) page }</param>
+        </member>
+        <member name="T:DataVirtualization.Customer">
+            <summary>
+            Demo customer object.
+            </summary>
+        </member>
+        <member name="P:DataVirtualization.Customer.Id">
+            <summary>
+            Gets or sets the id.
+            </summary>
+            <value>The id.</value>
+        </member>
+        <member name="P:DataVirtualization.Customer.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="T:DataVirtualization.IItemsProvider`1">
+            <summary>
+            Represents a provider of collection details.
+            </summary>
+            <typeparam name="T">The type of items in the collection.</typeparam>
+        </member>
+        <member name="M:DataVirtualization.IItemsProvider`1.FetchCount">
+            <summary>
+            Fetches the total number of items available.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DataVirtualization.IItemsProvider`1.FetchRange(System.Int32,System.Int32)">
+            <summary>
+            Fetches a range of items.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="count">The number of items to fetch.</param>
+            <returns></returns>
+        </member>
+        <member name="T:DataVirtualization.Properties.Resources">
+            <summary>
+              Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
+            </summary>
+        </member>
+        <member name="P:DataVirtualization.Properties.Resources.ResourceManager">
+            <summary>
+              Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
+            </summary>
+        </member>
+        <member name="P:DataVirtualization.Properties.Resources.Culture">
+            <summary>
+              Перезаписывает свойство CurrentUICulture текущего потока для всех
+              обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
+            </summary>
+        </member>
+        <member name="T:DataVirtualization.DemoCustomerProvider">
+            <summary>
+            Demo implementation of IItemsProvider returning dummy customer items after
+            a pause to simulate network/disk latency.
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.DemoCustomerProvider.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.DemoCustomerProvider"/> class.
+            </summary>
+            <param name="count">The count.</param>
+            <param name="fetchDelay">The fetch delay.</param>
+        </member>
+        <member name="M:DataVirtualization.DemoCustomerProvider.FetchCount">
+            <summary>
+            Fetches the total number of items available.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DataVirtualization.DemoCustomerProvider.FetchRange(System.Int32,System.Int32)">
+            <summary>
+            Fetches a range of items.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="count">The number of items to fetch.</param>
+            <returns></returns>
+        </member>
+        <member name="T:DataVirtualization.VirtualizingCollection`1">
+            <summary>
+            Specialized list implementation that provides data virtualization. The collection is divided up into pages,
+            and pages are dynamically fetched from the IItemsProvider when required. Stale pages are removed after a
+            configurable period of time.
+            Intended for use with large collections on a network or disk resource that cannot be instantiated locally
+            due to memory consumption or fetch latency.
+            </summary>
+            <remarks>
+            The IList implmentation is not fully complete, but should be sufficient for use as read only collection 
+            data bound to a suitable ItemsControl.
+            </remarks>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.#ctor(DataVirtualization.IItemsProvider{`0},System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.VirtualizingCollection`1"/> class.
+            </summary>
+            <param name="itemsProvider">The items provider.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageTimeout">The page timeout.</param>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.#ctor(DataVirtualization.IItemsProvider{`0},System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.VirtualizingCollection`1"/> class.
+            </summary>
+            <param name="itemsProvider">The items provider.</param>
+            <param name="pageSize">Size of the page.</param>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.#ctor(DataVirtualization.IItemsProvider{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:DataVirtualization.VirtualizingCollection`1"/> class.
+            </summary>
+            <param name="itemsProvider">The items provider.</param>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.ItemsProvider">
+            <summary>
+            Gets the items provider.
+            </summary>
+            <value>The items provider.</value>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.PageSize">
+            <summary>
+            Gets the size of the page.
+            </summary>
+            <value>The size of the page.</value>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.PageTimeout">
+            <summary>
+            Gets the page timeout.
+            </summary>
+            <value>The page timeout.</value>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.Count">
+            <summary>
+            Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            The first time this property is accessed, it will fetch the count from the IItemsProvider.
+            </summary>
+            <value></value>
+            <returns>
+            The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </returns>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.Item(System.Int32)">
+            <summary>
+            Gets the item at the specified index. This property will fetch
+            the corresponding page from the IItemsProvider if required.
+            </summary>
+            <value></value>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <remarks>
+            This method should be avoided on large collections due to poor performance.
+            </remarks>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.Add(`0)">
+            <summary>
+            Not supported.
+            </summary>
+            <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.Contains(`0)">
+            <summary>
+            Not supported.
+            </summary>
+            <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <returns>
+            Always false.
+            </returns>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.Clear">
+            <summary>
+            Not supported.
+            </summary>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.IndexOf(`0)">
+            <summary>
+            Not supported
+            </summary>
+            <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+            <returns>
+            Always -1.
+            </returns>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.Insert(System.Int32,`0)">
+            <summary>
+            Not supported.
+            </summary>
+            <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
+            <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.RemoveAt(System.Int32)">
+            <summary>
+            Not supported.
+            </summary>
+            <param name="index">The zero-based index of the item to remove.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.
+            </exception>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.Remove(`0)">
+            <summary>
+            Not supported.
+            </summary>
+            <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <returns>
+            true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </exception>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Not supported.
+            </summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
+            <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="array"/> is null.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="arrayIndex"/> is less than 0.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            	<paramref name="array"/> is multidimensional.
+            -or-
+            <paramref name="arrayIndex"/> is equal to or greater than the length of <paramref name="array"/>.
+            -or-
+            The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
+            -or-
+            Type <paramref name="T"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.
+            </exception>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.SyncRoot">
+            <summary>
+            Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.
+            </summary>
+            <value></value>
+            <returns>
+            An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.
+            </returns>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.IsSynchronized">
+            <summary>
+            Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe).
+            </summary>
+            <value></value>
+            <returns>Always false.
+            </returns>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+            </summary>
+            <value></value>
+            <returns>Always true.
+            </returns>
+        </member>
+        <member name="P:DataVirtualization.VirtualizingCollection`1.IsFixedSize">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.IList"/> has a fixed size.
+            </summary>
+            <value></value>
+            <returns>Always false.
+            </returns>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.CleanUpPages">
+            <summary>
+            Cleans up any stale pages that have not been accessed in the period dictated by PageTimeout.
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.PopulatePage(System.Int32,System.Collections.Generic.IList{`0})">
+            <summary>
+            Populates the page within the dictionary.
+            </summary>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="page">The page.</param>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.RequestPage(System.Int32)">
+            <summary>
+            Makes a request for the specified page, creating the necessary slots in the dictionary,
+            and updating the page touch time.
+            </summary>
+            <param name="pageIndex">Index of the page.</param>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.LoadCount">
+            <summary>
+            Loads the count of items.
+            </summary>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.LoadPage(System.Int32)">
+            <summary>
+            Loads the page of items.
+            </summary>
+            <param name="pageIndex">Index of the page.</param>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.FetchPage(System.Int32)">
+            <summary>
+            Fetches the requested page from the IItemsProvider.
+            </summary>
+            <param name="pageIndex">Index of the page.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DataVirtualization.VirtualizingCollection`1.FetchCount">
+            <summary>
+            Fetches the count of itmes from the IItemsProvider.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -63,6 +63,7 @@
     <Compile Include="Model\ParamCanal_BusinessObject.cs" />
     <Compile Include="Model\ParamCanal.cs" />
     <Compile Include="Model\NEW_ParamCanal.cs" />
+    <Compile Include="ViewModel\Virtulization.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
     <Compile Include="ViewModel\ViewModelWindow1.cs" />
