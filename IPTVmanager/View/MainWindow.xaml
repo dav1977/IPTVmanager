@@ -1,19 +1,17 @@
-﻿<Window 
-    x:Class="IPTVman.ViewModel.MainWindow" 
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    
-    xmlns:helpers="clr-namespace:IPTVman.Helpers"
-    xmlns:vm="clr-namespace:IPTVman.ViewModel" 
-    Title="IPTV manager v1.0" Background="#FF282076"  Height="556.5" Width="847.5">
-
-
-
+﻿<Window
+   
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:IPTVman.Helpers"
+        xmlns:vm="clr-namespace:IPTVman.ViewModel" 
+        x:Class="IPTVman.ViewModel.MainWindow" WindowStartupLocation="CenterScreen"
+        Title="IPTV manager v1.0" Height="639.341" Width="1040.602" Background="#FF282076" 
+        DataContext="{DynamicResource ViewModelMain}" Foreground="#FF20D10F">
 
     <Window.Resources>
         <vm:ViewModelMain x:Key="ViewModelMain"/>
-        
-        <Style x:Key="lvStyle" TargetType="{x:Type ListView}">
+
+        <Style x:Key="MYStyle" TargetType="{x:Type ListView}">
             <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
             <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
             <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True"/>
@@ -22,7 +20,7 @@
                 <Setter.Value>
                     <GridView>
 
-                        <GridViewColumn Header="Name" Width="100">
+                        <GridViewColumn Header="Name" Width="300">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding name}"/>
@@ -61,61 +59,108 @@
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
+
                 <DataTrigger Binding="{Binding IsLoading}" Value="True">
                     <Setter Property="ListView.Cursor" Value="Wait"/>
                     <Setter Property="ListView.Background" Value="LightGray"/>
                 </DataTrigger>
+
             </Style.Triggers>
         </Style>
 
-       
+
+
+
+
 
     </Window.Resources>
-
-    <Grid Margin="5">
+    <Grid Margin="0,0,65,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="336*"/>
-            <ColumnDefinition Width="79*"/>
+            <ColumnDefinition Width="29*"/>
+            <ColumnDefinition Width="187*"/>
+            <ColumnDefinition Width="752*"/>
         </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.939*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <GroupBox Header="Classic INotifyPropertyChanged Example" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Grid.ColumnSpan="2" Grid.Column="1" RenderTransformOrigin="0.5,0.5" Margin="15,180,10,33">
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="463*"/>
+                    <ColumnDefinition Width="420*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="139*" />
+                    <RowDefinition Height="85*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
+
+                <ListView Margin="26,0,25,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="2" Width="Auto" Height="Auto" Grid.ColumnSpan="2"/>
+
+                <!--   <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
+                -->
+
+                <!-- </ScrollViewer>-->
+                <TextBox x:Name="tb1" Text="новый канал" Margin="250,0,0,-212" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-16,-47,0,0" TextChanged="tb1_TextChanged" Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
+
+            </Grid>
+        </GroupBox>
+
+
+        <!-- <КВАДРАТ>-->
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
-            <TextBlock Text="Memory Usage:" Margin="5" VerticalAlignment="Center" Foreground="#FF22C940"/>
-            <TextBlock x:Name="tbMemory" Margin="5" Width="80" VerticalAlignment="Center" Foreground="#FF1DF04D"/>
-
-            <Button Content="Refresh" Click="Button_Click" Margin="5" Width="100" VerticalAlignment="Center"/>
-
-            <Rectangle Name="rectangle" Width="20" Height="20" Fill="Blue" Margin="5" VerticalAlignment="Center">
+            <Rectangle x:Name="rectangle" Width="20" Height="20" Fill="#FF8BF709" Margin="5,10" VerticalAlignment="Center">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="0" CenterX="10" CenterY="10"/>
                 </Rectangle.RenderTransform>
                 <Rectangle.Triggers>
-                    <EventTrigger RoutedEvent="Rectangle.Loaded">
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                         <BeginStoryboard>
                             <Storyboard>
-                                
-                                <DoubleAnimation Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" From="0" To="360" Duration="0:0:5" RepeatBehavior="Forever" />
+
+                                <DoubleAnimation Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" From="0" To="360" Duration="0:0:5" RepeatBehavior="Forever" />
+
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>
                 </Rectangle.Triggers>
             </Rectangle>
-            <Label x:Name="label" Content="gdgdfg" Width="149" Margin="0,0,0,17" Foreground="#FF34F920"/>
+
+            <Rectangle x:Name="rectangle2" Width="20" Height="20" Fill="#FF8BF709" Margin="2,10" VerticalAlignment="Center">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="0" CenterX="10" CenterY="10"/>
+                </Rectangle.RenderTransform>
+                <Rectangle.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+
+                                <DoubleAnimation Storyboard.TargetName="rectangle2" Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" From="360" To="0" Duration="0:0:5" RepeatBehavior="Forever" />
+
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Rectangle.Triggers>
+            </Rectangle>
+
 
         </StackPanel>
-     
-        
-        <ListView Grid.Row="3" Margin="5,106,5,56" Style="{DynamicResource lvStyle}" Grid.ColumnSpan="2"/>
 
+        <!-- <КНОПКИ>-->
+        <Button Content="Add" Click="Button_Click"  Margin="20,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
+        <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="561,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
+        <Button Content="Next example" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Margin="0,0,10,4" Grid.Column="2" Height="22" Width="84"/>
+        <ComboBox x:Name="combo1" ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="Title" Margin="151,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="6.068,0.97" Height="25" SelectionChanged="ComboBox_SelectionChanged" Grid.Column="2" Width="320" HorizontalAlignment="Left"/>
+        <Button Content="УДАЛИТЬ канал" Command="{Binding key_delCommand}" CommandParameter="" Margin="582,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="477,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Button Content="test&#xD;&#xA;" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="457,34,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click_2" RenderTransformOrigin="-4.24,0.8"/>
+
+        <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="2" HorizontalAlignment="Left" Margin="254,0,0,3" VerticalAlignment="Bottom" FontSize="20" Foreground="#FF0EE840" Width="196" Height="32"/>
+        <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Margin="403,0,149,0" FontSize="16" Foreground="#FF41E466" Width="200" Height="40" Grid.Row="1" />
 
     </Grid>
 </Window>
-
-
-    

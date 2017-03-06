@@ -81,7 +81,7 @@ namespace IPTVman.ViewModel
         {
             get
             {
-                return "Всего каналов: "+ myLIST.Count.ToString();
+                return "Всего каналов: "+ "2342";
             }
             //set
             //{
@@ -93,7 +93,24 @@ namespace IPTVman.ViewModel
             //    }
             //}
         }
-          
+
+
+        public object memory
+        {
+            get
+            {
+                return "Memory Usage: " + string.Format("{0:0.00} MB", GC.GetTotalMemory(true) / 1024.0 / 1024.0);
+            }
+            //set
+            //{
+            //    if (_numberCANALS != value)
+            //    {
+            //        _numberCANALS = value;
+            //        RaisePropertyChanged("numberCANALS");
+
+            //    }
+            //}
+        }
 
         string _TextProperty1;
         public string TextProperty1
@@ -167,6 +184,9 @@ namespace IPTVman.ViewModel
             key_OPENCommand = new RelayCommand(key_OPEN);
             key_SAVECommand = new RelayCommand(key_SAVE);
             key_delCommand = new RelayCommand(key_del);
+
+
+            CreateTimer1(500);
         }
 
 
@@ -197,6 +217,12 @@ namespace IPTVman.ViewModel
             Canal.Remove(new ParamCanal { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             RaisePropertyChanged("numberCANALS");
         }
+
+
+
+
+       
+
 
 
         void key_OPEN(object parameter)
