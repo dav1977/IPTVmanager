@@ -6,7 +6,10 @@
         xmlns:vm="clr-namespace:IPTVman.ViewModel" 
         x:Class="IPTVman.ViewModel.MainWindow" WindowStartupLocation="CenterScreen"
         Title="IPTV manager v1.0" Height="639.341" Width="1040.602" Background="#FF282076" 
+    
         DataContext="{DynamicResource ViewModelMain}" Foreground="#FF20D10F">
+
+
 
     <Window.Resources>
         <vm:ViewModelMain x:Key="ViewModelMain"/>
@@ -15,7 +18,7 @@
             <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
             <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
             <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True"/>
-            <Setter Property="ListView.ItemsSource" Value="{Binding}"/>
+            <Setter Property="ListView.ItemsSource" Value="{Binding mycol}"/>
             <Setter Property="ListView.View">
                 <Setter.Value>
                     <GridView>
@@ -150,7 +153,7 @@
         </StackPanel>
 
         <!-- <КНОПКИ>-->
-        <Button Content="Add" Click="Button_Click"  Margin="20,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
+        <Button Content="Add"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="20,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
         <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="561,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
         <Button Content="Next example" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Margin="0,0,10,4" Grid.Column="2" Height="22" Width="84"/>
@@ -159,7 +162,7 @@
         <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="477,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         <Button Content="test&#xD;&#xA;" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="457,34,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click_2" RenderTransformOrigin="-4.24,0.8"/>
 
-        <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="2" HorizontalAlignment="Left" Margin="254,0,0,3" VerticalAlignment="Bottom" FontSize="20" Foreground="#FF0EE840" Width="196" Height="32"/>
+        <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="41,0,0,8" VerticalAlignment="Bottom" FontSize="20" Foreground="#FF0EE840" Width="283" Height="32" Grid.ColumnSpan="2" Grid.Row="1"/>
         <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Margin="403,0,149,0" FontSize="16" Foreground="#FF41E466" Width="200" Height="40" Grid.Row="1" />
 
     </Grid>

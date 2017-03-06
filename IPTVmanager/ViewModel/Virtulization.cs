@@ -59,126 +59,126 @@ namespace IPTVman.ViewModel
 
 
 
-        void open()
-        {
+        //void open()
+        //{
+            //ViewModelMain.myLISTbase = new List<ParamCanal>();
 
+            //string line = "  ", http0 = "      ";
+            //uint ct = 0;
 
-            string line = "  ", http0 = "      ";
-            uint ct = 0;
+            //ViewModelMain.myLISTbase = new List<ParamCanal>();
 
-            ViewModelMain.myLISTbase = new List<ParamCanal>();
+            //OpenFileDialog openFileDialog = new OpenFileDialog();
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            //if (openFileDialog.ShowDialog() == true)
+            //{
+            //    Regex regex1 = new Regex("#EXTINF");
+            //    Regex regex2 = new Regex("#EXTM3U");
+            //    Match match;
+            //    bool badtitle = false;
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Regex regex1 = new Regex("#EXTINF");
-                Regex regex2 = new Regex("#EXTM3U");
-                Match match;
-                bool badtitle = false;
+            //    Regex regex3 = new Regex("ExtFilter=");
+            //    Regex regex4 = new Regex("group-title=");
+            //    string[] words1 = { "", "" };
+            //    string[] words = { "", "" };
+            //    string str_ex = "";
+            //    string str_gr = "";
 
-                Regex regex3 = new Regex("ExtFilter=");
-                Regex regex4 = new Regex("group-title=");
-                string[] words1 = { "", "" };
-                string[] words = { "", "" };
-                string str_ex = "";
-                string str_gr = "";
+            //    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+            //    {
+            //        string header = sr.ReadLine();
+            //        match = regex2.Match(header);
+            //        if (!match.Success) badtitle = true;
 
-                using (StreamReader sr = new StreamReader(openFileDialog.FileName))
-                {
-                    string header = sr.ReadLine();
-                    match = regex2.Match(header);
-                    if (!match.Success) badtitle = true;
+            //        string text_title = header;
 
-                    string text_title = header;
+            //        while (!sr.EndOfStream /* && ct<400*/)
+            //        {
+            //            while (true)
+            //            {
+            //                if (!badtitle) line = sr.ReadLine(); else badtitle = false;
+            //                if (sr.EndOfStream) break;
 
-                    while (!sr.EndOfStream /* && ct<400*/)
-                    {
-                        while (true)
-                        {
-                            if (!badtitle) line = sr.ReadLine(); else badtitle = false;
-                            if (sr.EndOfStream) break;
+            //                if (line == null) continue;
 
-                            if (line == null) continue;
+            //                match = regex1.Match(line);
+            //                if (match.Success) break;
 
-                            match = regex1.Match(line);
-                            if (match.Success) break;
-
-                            //while (match.Success)
-                            //{
-                            //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
-                            //    // ссылаемся на найденное значение через свойство Groups класса Match
-                            //    //Console.WriteLine(match.Groups[1].Value);
-                            //    y = true; break;
-                            //    // Переходим к следующему совпадению
-                            //    //match = match.NextMatch();
-                            //}
-
-
-
-                            //}
-
-                        }
-                        str_gr = "";
-                        str_ex = "";
-
-                        match = regex3.Match(line);
-                        if (match.Success)
-                        {
-                            words1 = line.Split(new char[] { '"' });
-                            str_ex = words1[1];
-
-                        }
-
-                        match = regex4.Match(line);
-                        if (match.Success)
-                        {
-                            words1 = line.Split(new char[] { '"' });
-                            if (str_ex != "")
-                            {
-                                if (words1.Length > 3) str_gr = words1[3];
-                                else if (words1.Length > 2) str_gr = words1[2];
-                            }
-                            else str_gr = words1[1];
-                        }
-
-                        if (line != null) words = line.Split(new char[] { ',' });
-
-
-                        bool y = false;
-                        while (1 == 1)
-                        {
-                            // Read the stream to a string, and write the string to the console.
-                            http0 = sr.ReadLine();
-                            // if (sr.EndOfStream) break;
-
-                            if (http0 == null) continue;
-                            foreach (var c in http0)
-                            {
-                                if (char.IsPunctuation(c)) { y = true; break; }
-                                // else if (IsLatin(c)) { y = true; break; }
-                            }
-                            if (y) break;
-                        }
+            //                //while (match.Success)
+            //                //{
+            //                //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
+            //                //    // ссылаемся на найденное значение через свойство Groups класса Match
+            //                //    //Console.WriteLine(match.Groups[1].Value);
+            //                //    y = true; break;
+            //                //    // Переходим к следующему совпадению
+            //                //    //match = match.NextMatch();
+            //                //}
 
 
 
+            //                //}
+
+            //            }
+            //            str_gr = "";
+            //            str_ex = "";
+
+            //            match = regex3.Match(line);
+            //            if (match.Success)
+            //            {
+            //                words1 = line.Split(new char[] { '"' });
+            //                str_ex = words1[1];
+
+            //            }
+
+            //            match = regex4.Match(line);
+            //            if (match.Success)
+            //            {
+            //                words1 = line.Split(new char[] { '"' });
+            //                if (str_ex != "")
+            //                {
+            //                    if (words1.Length > 3) str_gr = words1[3];
+            //                    else if (words1.Length > 2) str_gr = words1[2];
+            //                }
+            //                else str_gr = words1[1];
+            //            }
+
+            //            if (line != null) words = line.Split(new char[] { ',' });
+
+
+            //            bool y = false;
+            //            while (1 == 1)
+            //            {
+            //                // Read the stream to a string, and write the string to the console.
+            //                http0 = sr.ReadLine();
+            //                // if (sr.EndOfStream) break;
+
+            //                if (http0 == null) continue;
+            //                foreach (var c in http0)
+            //                {
+            //                    if (char.IsPunctuation(c)) { y = true; break; }
+            //                    // else if (IsLatin(c)) { y = true; break; }
+            //                }
+            //                if (y) break;
+            //            }
 
 
 
 
-                        ct++;
-                        ViewModelMain.myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
 
 
 
-                    }
-                }// string name = File.ReadAllText(openFileDialog.FileName);
-
-            }
+            //            ct++;
+            //            ViewModelMain.myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
 
 
-        }
+
+            //        }
+            //    }// string name = File.ReadAllText(openFileDialog.FileName);
+
+            //}
+
+
+      //  }
 
 
 
@@ -197,7 +197,7 @@ namespace IPTVman.ViewModel
         public IList<ParamCanal> FetchRange(int startIndex, int count)
         {
 
-            if (!ViewModelMain.load_ok) { open(); ViewModelMain.load_ok = true; }
+            //if (!ViewModelMain.load_ok) { open(); ViewModelMain.load_ok = true; }
            
 
 
@@ -214,15 +214,19 @@ namespace IPTVman.ViewModel
 
             for (int i = startIndex; i < startIndex + count; i++)
             {
+                if (i >= ViewModelMain.myLISTbase.Count) break;
+
+                bool err = false;
                 string d = "not"; string d2 = "not";
                 try
                 {
-                   d = ViewModelMain.myLISTbase[i].name;
+                    d = ViewModelMain.myLISTbase[i].name;
                     d2 = ViewModelMain.myLISTbase[i].http;
 
                 }
-                catch { }
+                catch { err = true; }
 
+                if (err) break;
                 ParamCanal customer = new ParamCanal
                 //{ name = "100 " + (100 - i).ToString(), ExtFilter = "n " + i.ToString() };
                 { name = d, http=d2 };
@@ -232,8 +236,10 @@ namespace IPTVman.ViewModel
                     ViewModelMain.myLIST.Add(customer);
                 }
                 catch { }
-            }
 
+              
+            }
+           
 
 
             //if (!ViewModelMain.load_ok) open();
@@ -244,11 +250,11 @@ namespace IPTVman.ViewModel
 
             //}
 
-            
+
 
 
             //RaisePropertyChanged("numberCANALS");
-           
+
 
 
             return ViewModelMain.myLIST;

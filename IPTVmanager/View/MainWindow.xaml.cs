@@ -76,28 +76,28 @@ namespace IPTVman.ViewModel
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // create the demo items provider according to specified parameters
-            int numItems = 10000;// int.Parse(tbNumItems.Text);
-            int fetchDelay = 10;// int.Parse(tbFetchDelay.Text);
-            CollectionProvider myProvider = new CollectionProvider(numItems, fetchDelay);
+            //// create the demo items provider according to specified parameters
+            //int numItems = 10000;// int.Parse(tbNumItems.Text);
+            //int fetchDelay = 10;// int.Parse(tbFetchDelay.Text);
+            //CollectionProvider myProvider = new CollectionProvider(numItems, fetchDelay);
 
-            // create the collection according to specified parameters
-            int pageSize = 100;// int.Parse(tbPageSize.Text);
-            int pageTimeout = 5;// int.Parse(tbPageTimeout.Text);
+            //// create the collection according to specified parameters
+            //int pageSize = 100;// int.Parse(tbPageSize.Text);
+            //int pageTimeout = 5;// int.Parse(tbPageTimeout.Text);
 
-            if (false)
-            {
-                //DataContext = new List<Customer>(customerProvider.FetchRange(0, customerProvider.FetchCount()));
-            }
-            else if (false)
-            {
-                //DataContext = new VirtualizingCollection<Customer>(customerProvider, pageSize);
-            }
-            else if (true)
-            {
-                DataContext = new AsyncVirtualizingCollection<ParamCanal>( myProvider, pageSize, pageTimeout * 100);
+            //if (false)
+            //{
+            //    //DataContext = new List<Customer>(customerProvider.FetchRange(0, customerProvider.FetchCount()));
+            //}
+            //else if (false)
+            //{
+            //    //DataContext = new VirtualizingCollection<Customer>(customerProvider, pageSize);
+            //}
+            //else if (true)
+            //{
+            //    DataContext =  new AsyncVirtualizingCollection<ParamCanal>( myProvider, pageSize, pageTimeout * 100);
                
-            }
+            //}
 
         }
 

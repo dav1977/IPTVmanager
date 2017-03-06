@@ -81,7 +81,8 @@ namespace IPTVman.ViewModel
         {
             get
             {
-                return "Всего каналов: "+ "2342";
+                if (myLISTbase == null) return "Всего каналов: 0";
+                return "Всего каналов: "+ myLISTbase.Count.ToString();
             }
             //set
             //{
@@ -93,6 +94,76 @@ namespace IPTVman.ViewModel
             //    }
             //}
         }
+
+
+        public CollectionProvider myProvider;
+        public AsyncVirtualizingCollection<ParamCanal> ACOLL;
+
+
+        private void Create_Virtual_Collection()
+            {
+
+            // create the demo items provider according to specified parameters
+            int numItems=11000;
+          //  if (myLISTbase!=null) numItems = myLISTbase.Count;// int.Parse(tbNumItems.Text);
+
+
+            int fetchDelay = 1;// int.Parse(tbFetchDelay.Text);
+            myProvider = new CollectionProvider(numItems, fetchDelay);
+
+            // create the collection according to specified parameters
+            int pageSize = 10;// int.Parse(tbPageSize.Text);
+            int pageTimeout = 5;// int.Parse(tbPageTimeout.Text);
+
+
+            myLISTbase = new List<ParamCanal>();
+
+            ACOLL = new AsyncVirtualizingCollection<ParamCanal>(myProvider, pageSize, pageTimeout * 100);
+
+
+        }
+
+
+        public object mycol 
+        {
+            get
+            {
+                 //if (!one_open) return null;
+
+ 
+
+
+               // myLISTbase = new List<ParamCanal>();
+
+
+                if (false)
+                {
+                    //DataContext = new List<Customer>(customerProvider.FetchRange(0, customerProvider.FetchCount()));
+                }
+                else if (false)
+                {
+                    //DataContext = new VirtualizingCollection<Customer>(customerProvider, pageSize);
+                }
+                else if (true)
+                {
+                   // Create_Virtual_Collection();
+                   
+                    return ACOLL;
+
+                }
+            }
+            //set
+            //{
+            //    if (_numberCANALS != value)
+            //    {
+            //        _numberCANALS = value;
+            //        RaisePropertyChanged("numberCANALS");
+
+            //    }
+            //}
+        }
+
+
 
 
         public object memory
@@ -182,6 +253,7 @@ namespace IPTVman.ViewModel
             key_SORTCommand = new RelayCommand(key_SORT);
             key_ADDCommand = new RelayCommand(key_ADD);
             key_OPENCommand = new RelayCommand(key_OPEN);
+         
             key_SAVECommand = new RelayCommand(key_SAVE);
             key_delCommand = new RelayCommand(key_del);
 
@@ -195,9 +267,15 @@ namespace IPTVman.ViewModel
         //******************************* ADD **************
         void key_ADD(object parameter)
         {
+            CollectionisCreate();
             if (parameter == null) return;
-            Canal.Add(new ParamCanal { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
+            myLISTbase.Add(new ParamCanal { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             RaisePropertyChanged("numberCANALS");
+            RaisePropertyChanged("memory");
+            RaisePropertyChanged("mycol");
+            RaisePropertyChanged("mycol");
+            RaisePropertyChanged("mycol");
+
         }
 
 
@@ -221,15 +299,137 @@ namespace IPTVman.ViewModel
 
 
 
-       
 
 
 
-        void key_OPEN(object parameter)
+
+        bool one_open=false;
+
+        void CollectionisCreate()
+        {
+            if (!one_open) { Create_Virtual_Collection(); one_open = true; }
+
+        }
+
+
+            void key_OPEN(object parameter)
         {
             string line=null, http0=null;
             uint ct = 0;
-       
+
+            CollectionisCreate();
+
+
+
+
+            //OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            //if (openFileDialog.ShowDialog() == true)
+            //{
+            //    Regex regex1 = new Regex("#EXTINF");
+            //    Regex regex2 = new Regex("#EXTM3U");
+            //    Match match;
+            //    bool badtitle = false;
+
+            //    Regex regex3 = new Regex("ExtFilter=");
+            //    Regex regex4 = new Regex("group-title=");
+            //    string[] words1 = { "", "" };
+            //    string[] words = { "", "" };
+            //    string str_ex="";
+            //    string str_gr = "";
+
+            //    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+            //    {
+            //        string header = sr.ReadLine();
+            //        match = regex2.Match(header);
+            //        if (!match.Success) badtitle = true;
+
+            //        text_title = header;
+
+            //        while (!sr.EndOfStream /* && ct<400*/)
+            //        {
+            //            while (true)
+            //            {
+            //                if (!badtitle)  line = sr.ReadLine();  else badtitle = false;
+            //                if (sr.EndOfStream) break;
+
+            //                if (line == null) continue;
+
+            //                match = regex1.Match(line);
+            //                if (match.Success) break;
+
+            //                //while (match.Success)
+            //                //{
+            //                //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
+            //                //    // ссылаемся на найденное значение через свойство Groups класса Match
+            //                //    //Console.WriteLine(match.Groups[1].Value);
+            //                //    y = true; break;
+            //                //    // Переходим к следующему совпадению
+            //                //    //match = match.NextMatch();
+            //                //}
+
+
+
+            //                //}
+
+            //            }
+            //            str_gr = "";
+            //            str_ex = "";
+
+            //            match = regex3.Match(line);
+            //            if (match.Success)
+            //            {
+            //                words1 = line.Split(new char[] { '"' });
+            //                str_ex = words1[1];
+
+            //            }
+
+            //            match = regex4.Match(line);
+            //            if (match.Success)
+            //            {
+            //                words1 = line.Split(new char[] { '"' });
+            //                if (str_ex != "")
+            //                {
+            //                    if (words1.Length > 3) str_gr = words1[3];
+            //                    else if (words1.Length > 2) str_gr = words1[2];
+            //                }
+            //                else str_gr = words1[1];
+            //            }
+
+            //            if (line != null) words = line.Split(new char[] { ',' });
+
+
+            //            bool y = false;
+            //            while (1 == 1)
+            //            {
+            //                // Read the stream to a string, and write the string to the console.
+            //                http0 = sr.ReadLine();
+            //               // if (sr.EndOfStream) break;
+
+            //                if (http0 == null) continue;
+            //                foreach (var c in http0)
+            //                {
+            //                    if (char.IsPunctuation(c)) { y = true; break; }
+            //                   // else if (IsLatin(c)) { y = true; break; }
+            //                }
+            //                if (y) break;
+            //            }
+
+
+
+
+
+
+
+            //            ct++;
+            //            // Canal.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
+            //          if (myLISTbase!=null)  myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
+
+
+
+
+
+
 
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -245,7 +445,7 @@ namespace IPTVman.ViewModel
                 Regex regex4 = new Regex("group-title=");
                 string[] words1 = { "", "" };
                 string[] words = { "", "" };
-                string str_ex="";
+                string str_ex = "";
                 string str_gr = "";
 
                 using (StreamReader sr = new StreamReader(openFileDialog.FileName))
@@ -254,13 +454,13 @@ namespace IPTVman.ViewModel
                     match = regex2.Match(header);
                     if (!match.Success) badtitle = true;
 
-                    text_title = header;
+                    string text_title = header;
 
                     while (!sr.EndOfStream /* && ct<400*/)
                     {
                         while (true)
                         {
-                            if (!badtitle)  line = sr.ReadLine();  else badtitle = false;
+                            if (!badtitle) line = sr.ReadLine(); else badtitle = false;
                             if (sr.EndOfStream) break;
 
                             if (line == null) continue;
@@ -281,7 +481,7 @@ namespace IPTVman.ViewModel
 
 
                             //}
-                           
+
                         }
                         str_gr = "";
                         str_ex = "";
@@ -291,7 +491,7 @@ namespace IPTVman.ViewModel
                         {
                             words1 = line.Split(new char[] { '"' });
                             str_ex = words1[1];
-                           
+
                         }
 
                         match = regex4.Match(line);
@@ -314,33 +514,31 @@ namespace IPTVman.ViewModel
                         {
                             // Read the stream to a string, and write the string to the console.
                             http0 = sr.ReadLine();
-                           // if (sr.EndOfStream) break;
+                            // if (sr.EndOfStream) break;
 
                             if (http0 == null) continue;
                             foreach (var c in http0)
                             {
                                 if (char.IsPunctuation(c)) { y = true; break; }
-                               // else if (IsLatin(c)) { y = true; break; }
+                                // else if (IsLatin(c)) { y = true; break; }
                             }
                             if (y) break;
                         }
 
-
-
-                     
-
-
-
                         ct++;
-                        Canal.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
+                        ViewModelMain.myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
 
 
-                        
+
+
                     }
-                }// string name = File.ReadAllText(openFileDialog.FileName);
+
+
+    }// string name = File.ReadAllText(openFileDialog.FileName);
 
             }
             RaisePropertyChanged("numberCANALS");
+            RaisePropertyChanged("mycol");
         }
 
        
