@@ -18,7 +18,7 @@
             <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
             <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
             <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True"/>
-            <Setter Property="ListView.ItemsSource" Value="{Binding mycol}"/>
+            <Setter Property="ListView.ItemsSource" Value="{Binding mycol, UpdateSourceTrigger=PropertyChanged }"/>
             <Setter Property="ListView.View">
                 <Setter.Value>
                     <GridView>
@@ -100,7 +100,7 @@
                 </Grid.RowDefinitions>
 
 
-                <ListView Margin="26,0,25,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="2" Width="Auto" Height="Auto" Grid.ColumnSpan="2"/>
+                <ListView x:Name="MYLIST" Margin="26,0,25,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="2" Width="Auto" Height="Auto" Grid.ColumnSpan="2" SelectionChanged="ListView_SelectionChanged_2"/>
 
                 <!--   <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                 -->

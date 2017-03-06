@@ -35,8 +35,8 @@ namespace IPTVman.ViewModel
         private void timer_Tick(object sender, EventArgs e)
         {
             // tbMemory.Text = "Memory Usage: "+string.Format("{0:0.00} MB", GC.GetTotalMemory(true) / 1024.0 / 1024.0);
-            
-
+            MYLIST.Items.Refresh();
+            MYLIST.c
         }
 
 
@@ -107,6 +107,11 @@ namespace IPTVman.ViewModel
         }
 
         private void ListView_SelectionChanged_1(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ListView_SelectionChanged_2(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
 
         }

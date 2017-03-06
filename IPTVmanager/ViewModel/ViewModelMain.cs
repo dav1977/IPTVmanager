@@ -273,8 +273,7 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("numberCANALS");
             RaisePropertyChanged("memory");
             RaisePropertyChanged("mycol");
-            RaisePropertyChanged("mycol");
-            RaisePropertyChanged("mycol");
+     
 
         }
 
