@@ -106,7 +106,7 @@
                 -->
 
                 <!-- </ScrollViewer>-->
-                <TextBox x:Name="tb1" Text="новый канал" Margin="250,0,0,-212" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22"/>
+                <TextBox x:Name="tb1" Text="новый канал" Margin="461,0,0,-51" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22" Grid.ColumnSpan="2"/>
                 <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-16,-47,0,0" TextChanged="tb1_TextChanged" Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
 
             </Grid>

@@ -17,7 +17,7 @@ namespace IPTVman.ViewModel
     //{
     //    public MyCollection(object d)
     //    {
-            
+
     //    }
     //    public void Sort(Comparison<T> comparison)
     //    {
@@ -31,17 +31,23 @@ namespace IPTVman.ViewModel
     //    }
     //}
 
+    //пользовательский делегат
+    delegate void MyDel(int size);
 
-
-    class ViewModelMain : ViewModelBase
+    partial class ViewModelMain : ViewModelBase
     {
-        public ObservableCollection<ParamCanal> Canal { get; set; }
+        public static event MyDel Event_UpdateLIST;
+
+        //public ObservableCollection<ParamCanal> Canal { get; set; }
         //  public MyCollection<ParamCanal> CanalOUT { get; set; }
-        public static List<ParamCanal> myLIST;
 
-        public static List<ParamCanal> myLISTbase;
+        public static List<ParamCanal> myLIST;//ВРЕМЕННАЯ ДЛЯ ВЫВОДА НА ЭКРАН
 
-        public static  bool load_ok =false;
+        public static List<ParamCanal> myLISTbase;//ПОСЛЕ ФИЛЬТРА
+
+        public static List<ParamCanal> myLISTfull;//ДО ФИЛЬТРА
+
+
         /// <summary>
         /// SelectedItem is an object instead of a ParamCanal, only because we are allowing "CanUserAddRows=true" 
         /// NewItemPlaceHolder represents a new row, and this is not the same as ParamCanal class
@@ -58,186 +64,46 @@ namespace IPTVman.ViewModel
         ///   at System.Windows.Data.BindingExpression.ConvertBackHelper(IValueConverter converter, Object value, Type sourceType, Object parameter, CultureInfo culture)'
         /// </summary>
 
-        object _SelectedParamCanal;
-        public object SelectedParamCanal
-        {
-            get
-            {
-                return _SelectedParamCanal;
-            }
-            set
-            {
-                if (_SelectedParamCanal != value)
-                {
-                    _SelectedParamCanal = value;
-                    
-                    RaisePropertyChanged("SelectedParamCanal");
-           
-                }
-            }
-        }
-
-        public object numberCANALS
-        {
-            get
-            {
-                if (myLISTbase == null) return "Всего каналов: 0";
-                return "Всего каналов: "+ myLISTbase.Count.ToString();
-            }
-            //set
-            //{
-            //    if (_numberCANALS != value)
-            //    {
-            //        _numberCANALS = value;
-            //        RaisePropertyChanged("numberCANALS");
-
-            //    }
-            //}
-        }
-
-
+       
         public CollectionProvider myProvider;
         public AsyncVirtualizingCollection<ParamCanal> ACOLL;
 
 
         private void Create_Virtual_Collection()
             {
-
-            // create the demo items provider according to specified parameters
-            int numItems=11000;
-          //  if (myLISTbase!=null) numItems = myLISTbase.Count;// int.Parse(tbNumItems.Text);
-
-
-            int fetchDelay = 1;// int.Parse(tbFetchDelay.Text);
+            int numItems=100000;
+            int fetchDelay = 1;// 
             myProvider = new CollectionProvider(numItems, fetchDelay);
 
-            // create the collection according to specified parameters
-            int pageSize = 10;// int.Parse(tbPageSize.Text);
-            int pageTimeout = 5;// int.Parse(tbPageTimeout.Text);
-
-
             myLISTbase = new List<ParamCanal>();
+            myLISTfull = new List<ParamCanal>();
 
-            ACOLL = new AsyncVirtualizingCollection<ParamCanal>(myProvider, pageSize, pageTimeout * 100);
-
+            // create the collection according to specified parameters
+            int pageSize = 100;// размер страницы
+            int pageTimeout = 1000;//мс ВРЕМЯ ЖИЗНИ ВРЕМЕННОЙ СТРАНИЦЫ после неиспользования
+            ACOLL = new AsyncVirtualizingCollection<ParamCanal>(myProvider, pageSize, pageTimeout);
 
         }
 
 
-        public object mycol 
+        bool one_open = false;
+
+        void CollectionisCreate()
         {
-            get
-            {
-                 //if (!one_open) return null;
+            
+            if (!one_open) { Create_Virtual_Collection(); one_open = true; }
 
- 
-
-
-               // myLISTbase = new List<ParamCanal>();
-
-
-                if (false)
-                {
-                    //DataContext = new List<Customer>(customerProvider.FetchRange(0, customerProvider.FetchCount()));
-                }
-                else if (false)
-                {
-                    //DataContext = new VirtualizingCollection<Customer>(customerProvider, pageSize);
-                }
-                else if (true)
-                {
-                   // Create_Virtual_Collection();
-                   
-                    return ACOLL;
-
-                }
-            }
-            //set
-            //{
-            //    if (_numberCANALS != value)
-            //    {
-            //        _numberCANALS = value;
-            //        RaisePropertyChanged("numberCANALS");
-
-            //    }
-            //}
         }
 
-
-
-
-        public object memory
-        {
-            get
-            {
-                return "Memory Usage: " + string.Format("{0:0.00} MB", GC.GetTotalMemory(true) / 1024.0 / 1024.0);
-            }
-            //set
-            //{
-            //    if (_numberCANALS != value)
-            //    {
-            //        _numberCANALS = value;
-            //        RaisePropertyChanged("numberCANALS");
-
-            //    }
-            //}
-        }
-
-        string _TextProperty1;
-        public string TextProperty1
-        {
-            get
-            {
-                return _TextProperty1;
-            }
-            set
-            {
-                if (_TextProperty1 != value)
-                {
-                    _TextProperty1 = value;
-                    RaisePropertyChanged("TextProperty1");
-                }
-            }
-        }
-
-
-        string _text_title;
-        public string text_title
-        {
-            get
-            {
-                return _text_title;
-            }
-            set
-            {
-                if (_text_title != value)
-                {
-                    _text_title = value;
-                    RaisePropertyChanged("text_title");
-                }
-            }
-        }
-
-
-
-        public RelayCommand key_SORTCommand { get; set; }
-        public RelayCommand key_ADDCommand { get; set; }
-        public RelayCommand key_OPENCommand { get; set; }
-        public RelayCommand key_SAVECommand { get; set; }
-        public RelayCommand key_delCommand { get; set; }
-
-        /// <summary>
-        /// *************************** MAIN *********************************
-        /// </summary>
         public ViewModelMain()
         {
-            Canal = new ObservableCollection<ParamCanal>
-            {
-                //new ParamCanal { Title="Tom1", ExtFilter="Jones", group_title=80 },
-                //new ParamCanal { Title="Dick", ExtFilter="Tracey", group_title=40 },
-                //new ParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
-                //new ParamCanal { Title="param4", ExtFilter="Lastp4", group_title=99 },
-            };
+            //Canal = new ObservableCollection<ParamCanal>
+            //{
+            //    //new ParamCanal { Title="Tom1", ExtFilter="Jones", group_title=80 },
+            //    //new ParamCanal { Title="Dick", ExtFilter="Tracey", group_title=40 },
+            //    //new ParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
+            //    //new ParamCanal { Title="param4", ExtFilter="Lastp4", group_title=99 },
+            //};
             
             //ParamCanal p = new ParamCanal { Title = "wirte1", ExtFilter = "Jones", group_title = 80 };
             //Canal.Add(p);
@@ -248,346 +114,13 @@ namespace IPTVman.ViewModel
 
 
 
-            TextProperty1 = "новое значение";
-
-            key_SORTCommand = new RelayCommand(key_SORT);
-            key_ADDCommand = new RelayCommand(key_ADD);
-            key_OPENCommand = new RelayCommand(key_OPEN);
-         
-            key_SAVECommand = new RelayCommand(key_SAVE);
-            key_delCommand = new RelayCommand(key_del);
-
-
+            newChannel = "новое значение";
+            ini_command();
             CreateTimer1(500);
         }
 
 
 
 
-        //******************************* ADD **************
-        void key_ADD(object parameter)
-        {
-            CollectionisCreate();
-            if (parameter == null) return;
-            myLISTbase.Add(new ParamCanal { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
-            RaisePropertyChanged("numberCANALS");
-            RaisePropertyChanged("memory");
-            RaisePropertyChanged("mycol");
-     
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-        void key_del(object parameter)
-        {
-            if (parameter == null) return;
- 
-            Canal.Remove(new ParamCanal { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
-            RaisePropertyChanged("numberCANALS");
-        }
-
-
-
-
-
-
-
-
-        bool one_open=false;
-
-        void CollectionisCreate()
-        {
-            if (!one_open) { Create_Virtual_Collection(); one_open = true; }
-
-        }
-
-
-            void key_OPEN(object parameter)
-        {
-            string line=null, http0=null;
-            uint ct = 0;
-
-            CollectionisCreate();
-
-
-
-
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            //if (openFileDialog.ShowDialog() == true)
-            //{
-            //    Regex regex1 = new Regex("#EXTINF");
-            //    Regex regex2 = new Regex("#EXTM3U");
-            //    Match match;
-            //    bool badtitle = false;
-
-            //    Regex regex3 = new Regex("ExtFilter=");
-            //    Regex regex4 = new Regex("group-title=");
-            //    string[] words1 = { "", "" };
-            //    string[] words = { "", "" };
-            //    string str_ex="";
-            //    string str_gr = "";
-
-            //    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
-            //    {
-            //        string header = sr.ReadLine();
-            //        match = regex2.Match(header);
-            //        if (!match.Success) badtitle = true;
-
-            //        text_title = header;
-
-            //        while (!sr.EndOfStream /* && ct<400*/)
-            //        {
-            //            while (true)
-            //            {
-            //                if (!badtitle)  line = sr.ReadLine();  else badtitle = false;
-            //                if (sr.EndOfStream) break;
-
-            //                if (line == null) continue;
-
-            //                match = regex1.Match(line);
-            //                if (match.Success) break;
-
-            //                //while (match.Success)
-            //                //{
-            //                //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
-            //                //    // ссылаемся на найденное значение через свойство Groups класса Match
-            //                //    //Console.WriteLine(match.Groups[1].Value);
-            //                //    y = true; break;
-            //                //    // Переходим к следующему совпадению
-            //                //    //match = match.NextMatch();
-            //                //}
-
-
-
-            //                //}
-
-            //            }
-            //            str_gr = "";
-            //            str_ex = "";
-
-            //            match = regex3.Match(line);
-            //            if (match.Success)
-            //            {
-            //                words1 = line.Split(new char[] { '"' });
-            //                str_ex = words1[1];
-
-            //            }
-
-            //            match = regex4.Match(line);
-            //            if (match.Success)
-            //            {
-            //                words1 = line.Split(new char[] { '"' });
-            //                if (str_ex != "")
-            //                {
-            //                    if (words1.Length > 3) str_gr = words1[3];
-            //                    else if (words1.Length > 2) str_gr = words1[2];
-            //                }
-            //                else str_gr = words1[1];
-            //            }
-
-            //            if (line != null) words = line.Split(new char[] { ',' });
-
-
-            //            bool y = false;
-            //            while (1 == 1)
-            //            {
-            //                // Read the stream to a string, and write the string to the console.
-            //                http0 = sr.ReadLine();
-            //               // if (sr.EndOfStream) break;
-
-            //                if (http0 == null) continue;
-            //                foreach (var c in http0)
-            //                {
-            //                    if (char.IsPunctuation(c)) { y = true; break; }
-            //                   // else if (IsLatin(c)) { y = true; break; }
-            //                }
-            //                if (y) break;
-            //            }
-
-
-
-
-
-
-
-            //            ct++;
-            //            // Canal.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
-            //          if (myLISTbase!=null)  myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
-
-
-
-
-
-
-
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Regex regex1 = new Regex("#EXTINF");
-                Regex regex2 = new Regex("#EXTM3U");
-                Match match;
-                bool badtitle = false;
-
-                Regex regex3 = new Regex("ExtFilter=");
-                Regex regex4 = new Regex("group-title=");
-                string[] words1 = { "", "" };
-                string[] words = { "", "" };
-                string str_ex = "";
-                string str_gr = "";
-
-                using (StreamReader sr = new StreamReader(openFileDialog.FileName))
-                {
-                    string header = sr.ReadLine();
-                    match = regex2.Match(header);
-                    if (!match.Success) badtitle = true;
-
-                    string text_title = header;
-
-                    while (!sr.EndOfStream /* && ct<400*/)
-                    {
-                        while (true)
-                        {
-                            if (!badtitle) line = sr.ReadLine(); else badtitle = false;
-                            if (sr.EndOfStream) break;
-
-                            if (line == null) continue;
-
-                            match = regex1.Match(line);
-                            if (match.Success) break;
-
-                            //while (match.Success)
-                            //{
-                            //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
-                            //    // ссылаемся на найденное значение через свойство Groups класса Match
-                            //    //Console.WriteLine(match.Groups[1].Value);
-                            //    y = true; break;
-                            //    // Переходим к следующему совпадению
-                            //    //match = match.NextMatch();
-                            //}
-
-
-
-                            //}
-
-                        }
-                        str_gr = "";
-                        str_ex = "";
-
-                        match = regex3.Match(line);
-                        if (match.Success)
-                        {
-                            words1 = line.Split(new char[] { '"' });
-                            str_ex = words1[1];
-
-                        }
-
-                        match = regex4.Match(line);
-                        if (match.Success)
-                        {
-                            words1 = line.Split(new char[] { '"' });
-                            if (str_ex != "")
-                            {
-                                if (words1.Length > 3) str_gr = words1[3];
-                                else if (words1.Length > 2) str_gr = words1[2];
-                            }
-                            else str_gr = words1[1];
-                        }
-
-                        if (line != null) words = line.Split(new char[] { ',' });
-
-
-                        bool y = false;
-                        while (1 == 1)
-                        {
-                            // Read the stream to a string, and write the string to the console.
-                            http0 = sr.ReadLine();
-                            // if (sr.EndOfStream) break;
-
-                            if (http0 == null) continue;
-                            foreach (var c in http0)
-                            {
-                                if (char.IsPunctuation(c)) { y = true; break; }
-                                // else if (IsLatin(c)) { y = true; break; }
-                            }
-                            if (y) break;
-                        }
-
-                        ct++;
-                        ViewModelMain.myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
-
-
-
-
-                    }
-
-
-    }// string name = File.ReadAllText(openFileDialog.FileName);
-
-            }
-            RaisePropertyChanged("numberCANALS");
-            RaisePropertyChanged("mycol");
-        }
-
-       
-
-        void key_SORT(object parameter)
-        {
-            // ascending
-            //collection = new ObservableCollection<int>(collection.OrderBy(a => a));
-
-            //// descending
-            //collection = new ObservableCollection<int>(collection.OrderByDescending(a => a));
-
-
-
-            //  ObservableCollection<string> _animals = new ObservableCollection<string>()
-            //{ "Cat", "Dog", "Bear", "Lion", "Mouse",
-            //"Horse", "Rat", "Elephant", "Kangaroo", "Lizard",
-            //"Snake", "Frog", "Fish", "Butterfly", "Human",
-            //"Cow", "Bumble Bee"};
-
-            //_animals = new ObservableCollection<string>(_animals.OrderBy(i => i));
-
-            Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.name));
-
-        }
-
-
-
-
-
-        void key_SAVE(object parameter)
-        {
-           
-            SaveFileDialog openFileDialog = new SaveFileDialog();
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                using (StreamWriter sr = new StreamWriter(openFileDialog.FileName))
-                {
-                    foreach (var e in Canal)
-                    {
-                        sr.Write(e.ExtFilter+'\n'+e.http + '\n');
-                       
-                    }
-                }// string name = File.ReadAllText(openFileDialog.FileName);
-
-            }
-        }
-
-
-
-    }
-}
+    }//class
+}//namespace

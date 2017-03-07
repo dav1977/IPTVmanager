@@ -17,7 +17,7 @@ namespace IPTVman.ViewModel
             if (Timer1 == null)
             {
                 Timer1 = new System.Timers.Timer();
-                //Timer1.AutoReset = false; // Чтобы операции удаления не перекрывались
+                //Timer1.AutoReset = false; //
                 Timer1.Interval = ms;
                 Timer1.Elapsed += Timer1Tick;
                 Timer1.Enabled = true;
@@ -29,8 +29,7 @@ namespace IPTVman.ViewModel
         {
             if (PropertyChanged != null)
             {
-                //PropertyChanged(this, new PropertyChangedEventArgs("numberCANALS"));
-                PropertyChanged(this, new PropertyChangedEventArgs("memory"));
+                RaisePropertyChanged("memory");
 
             }
         }

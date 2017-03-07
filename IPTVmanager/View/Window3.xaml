@@ -21,7 +21,7 @@
                         		<DataGrid ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                             	<ComboBox ItemsSource="{Binding Canal}" SelectedItem="{Binding SelectedParamCanal}" DisplayMemberPath="Title" Margin="5,0,0,5" VerticalAlignment="Top"/>
                         	</StackPanel>
-                            <TextBox x:Name="tb1" Text="{Binding TextProperty1, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                            <TextBox x:Name="tb1" Text="{Binding newChannel, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
                             <TextBlock FontWeight="Bold" TextWrapping="Wrap" Margin="5" Text="The TextBox says '"><Run Text="{Binding TextProperty1}"/><Run Text="', but it should be showing the time"/></TextBlock>
                         </StackPanel>
                     </ScrollViewer>

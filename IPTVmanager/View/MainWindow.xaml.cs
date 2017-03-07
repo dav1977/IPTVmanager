@@ -10,11 +10,18 @@ using System.Collections.Generic;
 
 namespace IPTVman.ViewModel
 {
+
+    
+    
+
+
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+
+            ViewModelMain.Event_UpdateLIST += new MyDel(updateLIST);
 
 
             // use a timer to periodically update the memory usage
@@ -32,11 +39,17 @@ namespace IPTVman.ViewModel
         }
 
 
+        void updateLIST(int size)
+        {
+
+            MYLIST.Items.Refresh();
+        }
+
         private void timer_Tick(object sender, EventArgs e)
         {
             // tbMemory.Text = "Memory Usage: "+string.Format("{0:0.00} MB", GC.GetTotalMemory(true) / 1024.0 / 1024.0);
-            MYLIST.Items.Refresh();
-            MYLIST.c
+           
+            
         }
 
 

@@ -51,141 +51,12 @@ namespace IPTVman.ViewModel
         /// <returns></returns>
         public int FetchCount()
         {
-            Trace.WriteLine("FetchCount");
-            Thread.Sleep(_fetchDelay);
-            return _count;
+            //Trace.WriteLine("FetchCount");
+            //Thread.Sleep(_fetchDelay);
+            //return _count;
+            return ViewModelMain.myLISTbase.Count;
+
         }
-
-
-
-
-        //void open()
-        //{
-            //ViewModelMain.myLISTbase = new List<ParamCanal>();
-
-            //string line = "  ", http0 = "      ";
-            //uint ct = 0;
-
-            //ViewModelMain.myLISTbase = new List<ParamCanal>();
-
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            //if (openFileDialog.ShowDialog() == true)
-            //{
-            //    Regex regex1 = new Regex("#EXTINF");
-            //    Regex regex2 = new Regex("#EXTM3U");
-            //    Match match;
-            //    bool badtitle = false;
-
-            //    Regex regex3 = new Regex("ExtFilter=");
-            //    Regex regex4 = new Regex("group-title=");
-            //    string[] words1 = { "", "" };
-            //    string[] words = { "", "" };
-            //    string str_ex = "";
-            //    string str_gr = "";
-
-            //    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
-            //    {
-            //        string header = sr.ReadLine();
-            //        match = regex2.Match(header);
-            //        if (!match.Success) badtitle = true;
-
-            //        string text_title = header;
-
-            //        while (!sr.EndOfStream /* && ct<400*/)
-            //        {
-            //            while (true)
-            //            {
-            //                if (!badtitle) line = sr.ReadLine(); else badtitle = false;
-            //                if (sr.EndOfStream) break;
-
-            //                if (line == null) continue;
-
-            //                match = regex1.Match(line);
-            //                if (match.Success) break;
-
-            //                //while (match.Success)
-            //                //{
-            //                //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
-            //                //    // ссылаемся на найденное значение через свойство Groups класса Match
-            //                //    //Console.WriteLine(match.Groups[1].Value);
-            //                //    y = true; break;
-            //                //    // Переходим к следующему совпадению
-            //                //    //match = match.NextMatch();
-            //                //}
-
-
-
-            //                //}
-
-            //            }
-            //            str_gr = "";
-            //            str_ex = "";
-
-            //            match = regex3.Match(line);
-            //            if (match.Success)
-            //            {
-            //                words1 = line.Split(new char[] { '"' });
-            //                str_ex = words1[1];
-
-            //            }
-
-            //            match = regex4.Match(line);
-            //            if (match.Success)
-            //            {
-            //                words1 = line.Split(new char[] { '"' });
-            //                if (str_ex != "")
-            //                {
-            //                    if (words1.Length > 3) str_gr = words1[3];
-            //                    else if (words1.Length > 2) str_gr = words1[2];
-            //                }
-            //                else str_gr = words1[1];
-            //            }
-
-            //            if (line != null) words = line.Split(new char[] { ',' });
-
-
-            //            bool y = false;
-            //            while (1 == 1)
-            //            {
-            //                // Read the stream to a string, and write the string to the console.
-            //                http0 = sr.ReadLine();
-            //                // if (sr.EndOfStream) break;
-
-            //                if (http0 == null) continue;
-            //                foreach (var c in http0)
-            //                {
-            //                    if (char.IsPunctuation(c)) { y = true; break; }
-            //                    // else if (IsLatin(c)) { y = true; break; }
-            //                }
-            //                if (y) break;
-            //            }
-
-
-
-
-
-
-
-            //            ct++;
-            //            ViewModelMain.myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
-
-
-
-            //        }
-            //    }// string name = File.ReadAllText(openFileDialog.FileName);
-
-            //}
-
-
-      //  }
-
-
-
-
-
-
-
 
 
         /// <summary>
@@ -198,72 +69,40 @@ namespace IPTVman.ViewModel
         {
 
             //if (!ViewModelMain.load_ok) { open(); ViewModelMain.load_ok = true; }
-           
 
+            string d1="", d2="";
 
-            // Trace.WriteLine("FetchRange: " + startIndex + "," + count);
+            Trace.WriteLine("СОЗДАНИЕ ДИАПАЗОНА СТРАНИЦЫ: " + startIndex + "," + count);
             // Thread.Sleep(_fetchDelay);
-
-
-
 
             //создание страницы временной!!!
             ViewModelMain.myLIST = new List<ParamCanal>();
 
-            
+            ParamCanal customer = new ParamCanal
+            { name = "one", http = " xfd" };
+            ViewModelMain.myLIST.Add(customer);
+
 
             for (int i = startIndex; i < startIndex + count; i++)
             {
                 if (i >= ViewModelMain.myLISTbase.Count) break;
 
-                bool err = false;
-                string d = "not"; string d2 = "not";
-                try
-                {
-                    d = ViewModelMain.myLISTbase[i].name;
+                d1 = ViewModelMain.myLISTbase[i].name;
                     d2 = ViewModelMain.myLISTbase[i].http;
+        
+                 customer = new ParamCanal
+                { name = d1, http=d2 };
 
-                }
-                catch { err = true; }
-
-                if (err) break;
-                ParamCanal customer = new ParamCanal
-                //{ name = "100 " + (100 - i).ToString(), ExtFilter = "n " + i.ToString() };
-                { name = d, http=d2 };
 
                 try
                 {
                     ViewModelMain.myLIST.Add(customer);
                 }
                 catch { }
-
-              
             }
-           
-
-
-            //if (!ViewModelMain.load_ok) open();
-            //foreach (var c in ViewModelMain.myLISTbase)
-            //{
-
-            //    ViewModelMain.myLIST.Add(new ParamCanal { name = "100", ExtFilter = "n " } );
-
-            //}
-
-
-
-
-            //RaisePropertyChanged("numberCANALS");
-
-
-
+          
             return ViewModelMain.myLIST;
-
-
-
-
         }
-
     }
 
 
@@ -384,11 +223,12 @@ namespace IPTVman.ViewModel
         {
             get
             {
-                if (_count == -1)
-                {
-                    LoadCount();
-                }
-                return _count;
+                //if (_count == -1)
+                // {
+                //     LoadCount();
+                //}
+                //return _count;a
+                return ViewModelMain.myLISTbase.Count;//размер
             }
             protected set
             {
@@ -407,8 +247,9 @@ namespace IPTVman.ViewModel
         /// <value></value>
         public T this[int index]
         {
-            get
+            get 
             {
+               
                 // determine which page and offset within page
                 int pageIndex = index / PageSize;
                 int pageOffset = index % PageSize;
@@ -418,35 +259,48 @@ namespace IPTVman.ViewModel
 
                 // if accessing upper 50% then request next page
                 if (pageOffset > PageSize / 2 && pageIndex < Count / PageSize)
-                    RequestPage(pageIndex + 1);
+                { RequestPage(pageIndex + 1); Trace.WriteLine("RequestPag+1"); }
 
                 // if accessing lower 50% then request prev page
                 if (pageOffset < PageSize / 2 && pageIndex > 0)
-                    RequestPage(pageIndex - 1);
+                { RequestPage(pageIndex - 1); Trace.WriteLine("RequestPag-1"); }
 
                 // remove stale pages
                 CleanUpPages();
 
-                // defensive check in case of async load
+                //defensive check in case of async load
                 if (_pages[pageIndex] == null)
-                    return default(T);
+                { Trace.WriteLine("=== ret default"); return default(T); }
 
 
+                //Trace.WriteLine( "ALLPAGES=" + _pages.Count);
+                // Trace.WriteLine("main " +" index=" + pageIndex + " pageOffset =" + pageOffset +"  cou="+ Count );
 
+        
                 /////fix crash
-                T retPAGE = default(T);
+               T retPAGE = default(T);
 
                 
+
+
                 bool ok = false;
+
+
+
                 try
                 {
                     retPAGE = _pages[pageIndex][pageOffset];
+
                 }
-                catch { }
+                catch
+                {
+                }
                 finally { ok = true; }
 
+
                 if (ok) return retPAGE;
-                else return default(T);
+                else return  //_pages[pageIndex][0];
+                default(T);
 
                 // return requested item
 
@@ -751,7 +605,7 @@ namespace IPTVman.ViewModel
         /// <param name="page">The page.</param>
         protected virtual void PopulatePage(int pageIndex, IList<T> page)
         {
-            Trace.WriteLine("Page populated: " + pageIndex);
+            Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ " + pageIndex);
             if (_pages.ContainsKey(pageIndex))
                 _pages[pageIndex] = page;
         }
@@ -763,17 +617,24 @@ namespace IPTVman.ViewModel
         /// <param name="pageIndex">Index of the page.</param>
         protected virtual void RequestPage(int pageIndex)
         {
-            if (!_pages.ContainsKey(pageIndex))
-            {
-                _pages.Add(pageIndex, null);
+          
+                if (!_pages.ContainsKey(pageIndex))
+                {
+                    _pages.Add(pageIndex, null);
+                    
+
                 _pageTouchTimes.Add(pageIndex, DateTime.Now);
-                Trace.WriteLine("Added page: " + pageIndex);
-                LoadPage(pageIndex);
-            }
-            else
-            {
-                _pageTouchTimes[pageIndex] = DateTime.Now;
-            }
+
+                 Trace.WriteLine("Added page: " + pageIndex + "  pages count="+ _pages.Count);
+
+
+                    LoadPage(pageIndex);
+                }
+                else
+                {
+                    _pageTouchTimes[pageIndex] = DateTime.Now;
+                }
+        
         }
 
         #endregion
@@ -794,6 +655,8 @@ namespace IPTVman.ViewModel
         /// <param name="pageIndex">Index of the page.</param>
         protected virtual void LoadPage(int pageIndex)
         {
+
+            Trace.WriteLine("LoadPage:  pageIndex=" + pageIndex );
             PopulatePage(pageIndex, FetchPage(pageIndex));
         }
 
@@ -808,6 +671,7 @@ namespace IPTVman.ViewModel
         /// <returns></returns>
         protected IList<T> FetchPage(int pageIndex)
         {
+            Trace.WriteLine("ВОЗВРАТ СТРАНИЦЫ:  pageIndex=" + pageIndex);
             return ItemsProvider.FetchRange(pageIndex * PageSize, PageSize);
         }
 
@@ -1011,6 +875,7 @@ namespace IPTVman.ViewModel
         /// <param name="index">The index.</param>
         protected override void LoadPage(int index)
         {
+           
             IsLoading = true;
             ThreadPool.QueueUserWorkItem(LoadPageWork, index);
         }
@@ -1021,6 +886,7 @@ namespace IPTVman.ViewModel
         /// <param name="args">Index of the page to load.</param>
         private void LoadPageWork(object args)
         {
+           
             int pageIndex = (int)args;
             IList<T> page = FetchPage(pageIndex);
             SynchronizationContext.Send(LoadPageCompleted, new object[] { pageIndex, page });
