@@ -25,6 +25,7 @@ namespace IPTVman.ViewModel
                 // else if (true)
                 // {
                 //  RaisePropertyChanged("mycol");
+                if (ACOLL!=null) ACOLL.UPDATE();
                 if (Event_UpdateLIST != null) Event_UpdateLIST(myLISTbase.Count);
                 return ACOLL;
             }

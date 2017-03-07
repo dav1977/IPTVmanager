@@ -46,7 +46,9 @@ namespace IPTVman.ViewModel
             
             RaisePropertyChanged("numberCANALS");
 
-           // if (Event_UpdateLIST != null) Event_UpdateLIST(myLISTbase.Count);
+
+      
+            // if (Event_UpdateLIST != null) Event_UpdateLIST(myLISTbase.Count);
             RaisePropertyChanged("mycol");
             
 

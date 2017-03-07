@@ -78,9 +78,10 @@ namespace IPTVman.ViewModel
             //создание страницы временной!!!
             ViewModelMain.myLIST = new List<ParamCanal>();
 
-            ParamCanal customer = new ParamCanal
-            { name = "one", http = " xfd" };
-            ViewModelMain.myLIST.Add(customer);
+            ParamCanal customer = null;
+            //ParamCanal customer = new ParamCanal
+            //{ name = "one", http = " xfd" };
+            //ViewModelMain.myLIST.Add(customer);
 
 
             for (int i = startIndex; i < startIndex + count; i++)
@@ -254,6 +255,8 @@ namespace IPTVman.ViewModel
                 int pageIndex = index / PageSize;
                 int pageOffset = index % PageSize;
 
+
+                Trace.WriteLine("запрс2");
                 // request primary page
                 RequestPage(pageIndex);
 
@@ -605,9 +608,8 @@ namespace IPTVman.ViewModel
         /// <param name="page">The page.</param>
         protected virtual void PopulatePage(int pageIndex, IList<T> page)
         {
-            Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ " + pageIndex);
-            if (_pages.ContainsKey(pageIndex))
-                _pages[pageIndex] = page;
+            
+            if (_pages.ContainsKey(pageIndex)) _pages[pageIndex] = page;
         }
 
         /// <summary>
@@ -632,7 +634,8 @@ namespace IPTVman.ViewModel
                 }
                 else
                 {
-                    _pageTouchTimes[pageIndex] = DateTime.Now;
+                
+                _pageTouchTimes[pageIndex] = DateTime.Now;
                 }
         
         }
@@ -655,7 +658,7 @@ namespace IPTVman.ViewModel
         /// <param name="pageIndex">Index of the page.</param>
         protected virtual void LoadPage(int pageIndex)
         {
-
+            Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ [2] " + pageIndex);
             Trace.WriteLine("LoadPage:  pageIndex=" + pageIndex );
             PopulatePage(pageIndex, FetchPage(pageIndex));
         }
@@ -696,6 +699,12 @@ namespace IPTVman.ViewModel
     /// <typeparam name="T">The type of items in the collection</typeparam>
     public class AsyncVirtualizingCollection<T> : VirtualizingCollection<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {
+
+        public void UPDATE()
+        {
+
+            LoadPage(0);
+        }
         #region Constructors
 
         /// <summary>
@@ -888,6 +897,7 @@ namespace IPTVman.ViewModel
         {
            
             int pageIndex = (int)args;
+            Trace.WriteLine("ЗАПРОС ");
             IList<T> page = FetchPage(pageIndex);
             SynchronizationContext.Send(LoadPageCompleted, new object[] { pageIndex, page });
         }
@@ -901,6 +911,7 @@ namespace IPTVman.ViewModel
             int pageIndex = (int)((object[])args)[0];
             IList<T> page = (IList<T>)((object[])args)[1];
 
+            Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ [1] " + pageIndex);
             PopulatePage(pageIndex, page);
             IsLoading = false;
             FireCollectionReset();
