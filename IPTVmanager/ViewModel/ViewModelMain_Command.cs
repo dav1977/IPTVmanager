@@ -23,7 +23,7 @@ namespace IPTVman.ViewModel
         public RelayCommand key_SAVECommand { get; set; }
         public RelayCommand key_delCommand { get; set; }
 
-
+        public RelayCommand key_FILTERCommand { get; set; }
 
         void ini_command()
         {
@@ -32,6 +32,7 @@ namespace IPTVman.ViewModel
             key_OPENCommand = new RelayCommand(key_OPEN);
             key_SAVECommand = new RelayCommand(key_SAVE);
             key_delCommand = new RelayCommand(key_del);
+            key_FILTERCommand = new RelayCommand(key_FILTER);
 
         }
 
@@ -41,10 +42,10 @@ namespace IPTVman.ViewModel
         {
             CollectionisCreate();
             if (parameter == null) return;
-            myLISTbase.Add(new ParamCanal
+            myLISTfull.Add(new ParamCanal
             { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             
-            RaisePropertyChanged("numberCANALS");
+          
 
 
       
@@ -109,7 +110,13 @@ namespace IPTVman.ViewModel
             }
         }
 
-
+        void key_FILTER(object parameter)
+        {
+            filter = parameter.ToString();
+            UPDATE_FILTER();
+            RaisePropertyChanged("mycol");
+           
+        }
 
 
         void key_OPEN(object parameter)
@@ -326,7 +333,7 @@ namespace IPTVman.ViewModel
                         }
 
                         ct++;
-                        ViewModelMain.myLISTbase.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
+                        ViewModelMain.myLISTfull.Add(new ParamCanal { name = words[1], ExtFilter = str_ex, http = http0, group_title = str_gr });
 
 
 
@@ -337,8 +344,9 @@ namespace IPTVman.ViewModel
                 }// string name = File.ReadAllText(openFileDialog.FileName);
 
             }
-            RaisePropertyChanged("numberCANALS");
+            
             RaisePropertyChanged("mycol");///updte LIST!!
+            RaisePropertyChanged("numberCANALS");
         }
 
 

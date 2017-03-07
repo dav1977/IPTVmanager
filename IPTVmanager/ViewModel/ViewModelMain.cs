@@ -10,6 +10,7 @@ using System.Windows;
 using Microsoft.Win32;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
@@ -48,6 +49,7 @@ namespace IPTVman.ViewModel
         public static List<ParamCanal> myLISTfull;//ДО ФИЛЬТРА
 
 
+        public static ParamCanal list;
         /// <summary>
         /// SelectedItem is an object instead of a ParamCanal, only because we are allowing "CanUserAddRows=true" 
         /// NewItemPlaceHolder represents a new row, and this is not the same as ParamCanal class
@@ -75,7 +77,7 @@ namespace IPTVman.ViewModel
             int fetchDelay = 1;// 
             myProvider = new CollectionProvider(numItems, fetchDelay);
 
-            myLISTbase = new List<ParamCanal>();
+            myLISTbase = new List<ParamCanal>();//после фильтра
             myLISTfull = new List<ParamCanal>();
 
             // create the collection according to specified parameters
@@ -119,6 +121,27 @@ namespace IPTVman.ViewModel
             CreateTimer1(500);
         }
 
+
+        public void UPDATE_FILTER()
+        {
+
+            if (myLISTfull != null && myLISTbase != null)
+            {
+                myLISTbase.Clear();
+                foreach (var c in myLISTfull)
+                {
+                   // Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
+                    if (c.name == ViewModelMain._filter)
+                    {
+                        list = c;
+                        myLISTbase.Add(list);
+                    }
+
+
+                }
+            }
+
+        }
 
 
 

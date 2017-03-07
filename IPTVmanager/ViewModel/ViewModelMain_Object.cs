@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
@@ -25,8 +26,13 @@ namespace IPTVman.ViewModel
                 // else if (true)
                 // {
                 //  RaisePropertyChanged("mycol");
+                
+                UPDATE_FILTER();
                 if (ACOLL!=null) ACOLL.UPDATE();
+                
+               
                 if (Event_UpdateLIST != null) Event_UpdateLIST(myLISTbase.Count);
+                RaisePropertyChanged("numberCANALS");
                 return ACOLL;
             }
         }
@@ -56,7 +62,7 @@ namespace IPTVman.ViewModel
             get
             {
                 if (myLISTbase == null) return "Всего каналов: 0";
-                return "Всего каналов: " + myLISTbase.Count.ToString();
+                return "Всего каналов: " + myLISTfull.Count.ToString() +"   Отфильтрованных="+myLISTbase.Count.ToString();
             }
        
         }
@@ -108,7 +114,23 @@ namespace IPTVman.ViewModel
             }
         }
 
-
+ 
+        static string _filter="";
+        public string filter
+        {
+            get
+            {
+                return _filter;
+            }
+            set
+            {
+                if (_filter != value)
+                {
+                    _filter = value; 
+                    //RaisePropertyChanged("filter");
+                }
+            }
+        }
 
     }//class
 
