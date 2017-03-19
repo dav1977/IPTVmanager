@@ -131,11 +131,11 @@ namespace IPTVman.ViewModel
                 foreach (var c in myLISTfull)
                 {
                    // Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
-                    if (c.name == ViewModelMain._filter)
-                    {
+                   // if (c.name == ViewModelMain._filter)
+                   // {
                         list = c;
                         myLISTbase.Add(list);
-                    }
+                   // }
 
 
                 }

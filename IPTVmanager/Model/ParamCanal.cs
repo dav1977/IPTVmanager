@@ -107,8 +107,23 @@ namespace IPTVman.Model
             }
         }
 
-      
-       
+        //string _logo;
+        //public string logo
+        //{
+        //    get
+        //    {
+        //        return _logo;
+        //    }
+        //    set
+        //    {
+        //        if (_logo != value)
+        //        {
+        //            _logo = value;
+        //            RaisePropertyChanged("logo");
+        //        }
+        //    }
+        //}
+
         void RaisePropertyChanged(string prop)
         {
             if (PropertyChanged != null)
