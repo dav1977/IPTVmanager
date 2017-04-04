@@ -121,8 +121,8 @@ namespace IPTVman.ViewModel
 
         void key_OPEN(object parameter)
         {
-            string line = null, http0 = null;
-            uint ct = 0;
+            string line = null;
+      
 
             CollectionisCreate();
 
@@ -135,7 +135,7 @@ namespace IPTVman.ViewModel
                             Regex regex1 = new Regex("#EXTINF");
                             Regex regex2 = new Regex("#EXTM3U");
                             Match match = null;
-                            bool badtitle = false;
+                      
 
 
 
@@ -166,7 +166,7 @@ namespace IPTVman.ViewModel
                                         //{
                                         //    // Пользователь отменил действие.
                                         //}
-                                        badtitle = true;
+                                     
                                         MessageBox.Show("Ошибка файла", "заголовок с ошибкой",
                                         MessageBoxButton.OK, MessageBoxImage.Error);
                                     }
@@ -185,20 +185,20 @@ namespace IPTVman.ViewModel
 
                                 if (!match.Success)
                                 {
-                                    badtitle = true;
+                                    
                                     MessageBox.Show("заголовок с ошибкой", "Ошибка файла",
                                     MessageBoxButton.OK, MessageBoxImage.Error);
                                     return;
                                 }
                                 //------------------------------------------------------------
                                 text_title = header;
-                                string str_ex = "";
-                                string str_gr = "";
+
+                                string str_ex = "", str_name = "", str_http = "", str_gt= "", str_logo="", str_tvg="";
 
                                 bool yes = false;
-                                byte ct00 = 0;
+              
 
-                                while (!sr.EndOfStream && ct00 < 100)
+                                while (!sr.EndOfStream)
                                 {
 
 
@@ -207,8 +207,7 @@ namespace IPTVman.ViewModel
                                         line = sr.ReadLine();
                                     }
                                     catch { }
-
-                                    ct00++;
+                        
                                     if (line == null || line == "") continue;
 
 
@@ -237,101 +236,132 @@ namespace IPTVman.ViewModel
                                     if (yes)
                                     {
 
-                                        Regex regex3 = new Regex("ExtFilter=");
+                                        Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
                                         Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
-                                        Regex regex5 = new Regex("tvg-logo=", RegexOptions.IgnoreCase);
+                                        Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
+                                        Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
 
 
-                                        str_gr = "vv";
-                                        str_ex = "vv";
 
 
-                                        //string[] split = line.Split(new Char[] { ' ', ',', '.', ':', '"' });
-                                        string[] split = line.Split(new Char[] { ' ' });
+                            //string[] split = line.Split(new Char[] { ' ', ',', '.', ':', '"' });
+                            string[] split = line.Split(new Char[] { '"' });
 
 
-                            if (split.Length > 3)
+                            str_ex = ""; str_name= ""; str_http = ""; str_gt = ""; str_logo="";
+
+
+                     
+                            int i=0;
+                            for(i=0; i < split.Length;  i++ )
                             {
-                                str_ex = split[2];
-                                str_gr = split[3];
+                                string s = split[i];
+                                //------------- разбор строки EXINF
+                                if (str_ex == "!") str_ex = s;
+                                if (str_gt == "!") str_gt = s;
+                                if (str_logo == "!") str_logo = s;
+                                if (str_tvg == "!") str_tvg = s;
 
-                                foreach (string s in split)
+
+                                if (i>=split.Length-1) { str_name = s;   }
+                               
+
+                                match = regex3.Match(s);
+                                if (match.Success)
                                 {
+                                    str_ex="!";
+                                }
 
-                                    match = regex4.Match(s);
-                                    if (match.Success)
-                                    {
+                                match = regex4.Match(s);
+                                if (match.Success)
+                                {
+                                    str_gt = "!";
+                                }
 
+                                match = regex5.Match(s);
+                                if (match.Success)
+                                {
+                                    str_logo = "!";
+                                }
 
-
-                                        int f = s.LastIndexOf("lter=");
-                                        if (f != -1)
-                                        {
-                                            // обрезаем сначала до последних двух символов
-                                            // string ss = s.Substring(0, f);
-
-                                            //charsToTrim = { '*', ' ', '\'' };
-                                            str_ex = s;
-                                        }
-
-                                    }
-
-
-
-                                }//foreach
-
-                            }
+                                match = regex6.Match(s);
+                                if (match.Success)
+                                {
+                                    str_tvg = "!";
+                                }
+                            }//foreach
 
 
 
+                            //========= http =============
+                            str_http = sr.ReadLine();
+                            //Regex regex100 = new Regex("://");
 
-                                        //match = regex4.Match(line);
-                                        //if (match.Success)
-                                        //{
-                                        //    words1 = line.Split(new char[] { '"' });
-                                        //    if (str_ex != "")
-                                        //    {
-                                        //        if (words1.Length > 3) str_gr = words1[3];
-                                        //        else if (words1.Length > 2) str_gr = words1[2];
-                                        //    }
-                                        //    else str_gr = words1[1];
-                                        //}
-
-                                        //if (line != null) words = line.Split(new char[] { ',' });
+                            //match = regex100.Match(str_http);
+                            //if (!match.Success)
+                            //{
+                            //    str_http = "error "+ str_http;
+                            //}
 
 
-                                        //bool y = false;
-                                        //while (1 == 1)
-                                        //{
-                                        //    // Read the stream to a string, and write the string to the console.
-                                        //    http0 = sr.ReadLine();
-                                        //    // if (sr.EndOfStream) break;
+                            //match = regex4.Match(line);
+                            //if (match.Success)
+                            //{
+                            //    words1 = line.Split(new char[] { '"' });
+                            //    if (str_ex != "")
+                            //    {
+                            //        if (words1.Length > 3) str_gr = words1[3];
+                            //        else if (words1.Length > 2) str_gr = words1[2];
+                            //    }
+                            //    else str_gr = words1[1];
+                            //}
 
-                                        //    if (http0 == null) continue;
-                                        //    foreach (var c in http0)
-                                        //    {
-                                        //        if (char.IsPunctuation(c)) { y = true; break; }
-                                        //        // else if (IsLatin(c)) { y = true; break; }
-                                        //    }
-                                        //    if (y) break;
-                                        //}
+                            //if (line != null) words = line.Split(new char[] { ',' });
 
 
-                                    }
+                            //bool y = false;
+                            //while (1 == 1)
+                            //{
+                            //    // Read the stream to a string, and write the string to the console.
+                            //    http0 = sr.ReadLine();
+                            //    // if (sr.EndOfStream) break;
 
-                                    ViewModelMain.myLISTfull.Add(new ParamCanal { name = str_ex, ExtFilter = "f", http = "vcnbn", group_title ="hsfdgfh" });
+                            //    if (http0 == null) continue;
+                            //    foreach (var c in http0)
+                            //    {
+                            //        if (char.IsPunctuation(c)) { y = true; break; }
+                            //        // else if (IsLatin(c)) { y = true; break; }
+                            //    }
+                            //    if (y) break;
+                            //}
+
+
+                        }
+
+
+                        string newname = "";
+                                    if (str_name!="") newname=str_name.Remove(0, 1);
+
+
+                        ViewModelMain.myLISTfull.Add(new ParamCanal
+                        {
+                            name = newname,
+                            ExtFilter=str_ex,
+                            http=str_http,
+                            group_title=str_gt,
+                            logo =str_logo
+                            
+                        });
+
+                    }///чтение фала
 
 
 
-                                }///чтение фала
 
 
 
 
-
-
-
-                            }// string name = File.ReadAllText(openFileDialog.FileName);
+                }// string name = File.ReadAllText(openFileDialog.FileName);
 
                         }
 

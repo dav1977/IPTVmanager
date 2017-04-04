@@ -67,7 +67,7 @@ namespace IPTVman.ViewModel
         /// <returns></returns>
         public IList<ParamCanal> FetchRange(int startIndex, int count)
         {
-            string d1="", d2="";
+          
 
             Trace.WriteLine("СОЗДАНИЕ ДИАПАЗОНА СТРАНИЦЫ: " + startIndex + "," + count);
             // Thread.Sleep(_fetchDelay);
@@ -82,11 +82,15 @@ namespace IPTVman.ViewModel
             {
                 if (i >= ViewModelMain.myLISTbase.Count) break;
 
-                d1 = ViewModelMain.myLISTbase[i].name;
-                    d2 = ViewModelMain.myLISTbase[i].http;
-        
-                 customer = new ParamCanal
-                { name = d1, http=d2 };
+    
+                customer = new ParamCanal
+                {
+                    name = ViewModelMain.myLISTbase[i].name,
+                    ExtFilter = ViewModelMain.myLISTbase[i].ExtFilter,
+                    group_title = ViewModelMain.myLISTbase[i].group_title,
+                    http = ViewModelMain.myLISTbase[i].http,
+                    logo = ViewModelMain.myLISTbase[i].logo
+                };
 
 
                 try

@@ -89,6 +89,23 @@ namespace IPTVman.Model
         }
 
 
+        string _tvg;
+        public string tvg
+        {
+            get
+            {
+                return _tvg;
+            }
+            set
+            {
+                if (_tvg != value)
+                {
+                    _tvg = value;
+                    RaisePropertyChanged("tvg");
+                }
+            }
+        }
+
 
         string _http;
         public string http
@@ -107,22 +124,24 @@ namespace IPTVman.Model
             }
         }
 
-        //string _logo;
-        //public string logo
-        //{
-        //    get
-        //    {
-        //        return _logo;
-        //    }
-        //    set
-        //    {
-        //        if (_logo != value)
-        //        {
-        //            _logo = value;
-        //            RaisePropertyChanged("logo");
-        //        }
-        //    }
-        //}
+
+
+        string _logo;
+        public string logo
+        {
+            get
+            {
+                return _logo;
+            }
+            set
+            {
+                if (_logo != value)
+                {
+                    _logo = value;
+                    RaisePropertyChanged("logo");
+                }
+            }
+        }
 
         void RaisePropertyChanged(string prop)
         {

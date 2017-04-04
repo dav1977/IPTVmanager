@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using IPTVman.Helpers;
 using IPTVman.Model;
-using IPTVman.View;
 
 namespace IPTVman.ViewModel
 {
@@ -53,10 +52,10 @@ namespace IPTVman.ViewModel
         }
 
         void NextExample(object parameter)
-        {
-            var win = new Window2();
-            win.Show();
-            CloseWindow();
+        {//
+           // var win = new Window2();
+           // win.Show();
+            //CloseWindow();
         }
     }
 }
