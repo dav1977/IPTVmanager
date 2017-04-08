@@ -67,19 +67,19 @@ namespace IPTVman.Model
         }
 
 
-        string _tvg;
-        public string tvg
+        string _tvg_name;
+        public string tvg_name
         {
             get
             {
-                return _tvg;
+                return _tvg_name;
             }
             set
             {
-                if (_tvg != value)
+                if (_tvg_name != value)
                 {
-                    _tvg = value;
-                    RaisePropertyChanged("tvg");
+                    _tvg_name = value;
+                    RaisePropertyChanged("tvg_name");
                 }
             }
         }

@@ -181,7 +181,7 @@ namespace IPTVman.ViewModel
 
             data.d4 = p.http;
             data.d5 = p.logo;
-
+            data.d6 = p.tvg_name;
 
             data.delete = true;
         }

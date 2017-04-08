@@ -89,7 +89,8 @@ namespace IPTVman.ViewModel
                     ExtFilter = ViewModelMain.myLISTbase[i].ExtFilter,
                     group_title = ViewModelMain.myLISTbase[i].group_title,
                     http = ViewModelMain.myLISTbase[i].http,
-                    logo = ViewModelMain.myLISTbase[i].logo
+                    logo = ViewModelMain.myLISTbase[i].logo,
+                    tvg_name = ViewModelMain.myLISTbase[i].tvg_name,
                 };
 
 

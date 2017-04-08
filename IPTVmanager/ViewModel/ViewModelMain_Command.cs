@@ -66,7 +66,7 @@ namespace IPTVman.ViewModel
             if (parameter == null) return;
 
             myLISTfull.Add(new ParamCanal
-            { name = data.d1, ExtFilter = data.best1, group_title = data.best2, http = data.d4, logo= data.d5 });
+            { name = data.d1, ExtFilter = data.best1, group_title = data.best2, http = data.d4, logo= data.d5, tvg_name= data.d6 });
 
 
             RaisePropertyChanged("mycol");
@@ -163,13 +163,15 @@ namespace IPTVman.ViewModel
                     foreach (var obj in myLISTfull)
                     {
                         n = "";
-                        n += "#EXTINF:-1 ";
+                       if (text_title == @"#EXTM3U $BorpasFileFormat="+'"'+'1'+'"') n += "#EXTINF:-1";
+                       else n += "#EXTINF:0";
 
-                        if (obj.ExtFilter != "") n += "$ExtFilter=" + '"' + obj.ExtFilter + '"';
+                        if (obj.ExtFilter != "") n += " $ExtFilter=" + '"' + obj.ExtFilter + '"';
                         if (obj.group_title != "") n += " group-title=" + '"' + obj.group_title + '"';
-                        if (obj.logo != "") n+= "tvg-logo=" + '"' + obj.logo + '"';
+                        if (obj.logo != "") n+= " tvg-logo=" + '"' + obj.logo + '"';
+                        if (obj.tvg_name != "") n += " tvg-name=" + '"' + obj.tvg_name + '"';
 
-                        n+= "," +obj.name + '\n';
+                        n += "," +obj.name + '\n';
                         sr.Write(n+ obj.http + '\n');
                     } 
                 }
@@ -189,7 +191,7 @@ namespace IPTVman.ViewModel
         void key_OPEN(object parameter)
         {
             string line = null;
-
+            string newname = "";
 
             CollectionisCreate();
 
@@ -256,6 +258,7 @@ namespace IPTVman.ViewModel
                             MessageBox.Show("заголовок с ошибкой", "Ошибка файла",
                             MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
+                           
                         }
                         //------------------------------------------------------------
                         text_title = header;
@@ -264,6 +267,7 @@ namespace IPTVman.ViewModel
 
                         bool yes = false;
 
+                       
 
                         while (!sr.EndOfStream)
                         {
@@ -315,50 +319,64 @@ namespace IPTVman.ViewModel
                                 string[] split = line.Split(new Char[] { '"' });
 
 
-                                str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = "";
+                                str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
 
-
-
-                                int i = 0;
-                                for (i = 0; i < split.Length; i++)
+                                if (split.Length <= 1)
                                 {
-                                    string s = split[i];
-                                    //------------- разбор строки EXINF
-                                    if (str_ex == "!") str_ex = s;
-                                    if (str_gt == "!") str_gt = s;
-                                    if (str_logo == "!") str_logo = s;
-                                    if (str_tvg == "!") str_tvg = s;
+                                    split = line.Split(new Char[] { ',' });
+                                    str_name = split[split.Length - 1];
+                                    newname = str_name;
+                                }
+                                else
+                                {
 
 
-                                    if (i >= split.Length - 1) { str_name = s; }
-
-
-                                    match = regex3.Match(s);
-                                    if (match.Success)
+                                    int i = 0;
+                                    for (i = 0; i < split.Length; i++)
                                     {
-                                        str_ex = "!";
-                                    }
-
-                                    match = regex4.Match(s);
-                                    if (match.Success)
-                                    {
-                                        str_gt = "!";
-                                    }
-
-                                    match = regex5.Match(s);
-                                    if (match.Success)
-                                    {
-                                        str_logo = "!";
-                                    }
-
-                                    match = regex6.Match(s);
-                                    if (match.Success)
-                                    {
-                                        str_tvg = "!";
-                                    }
-                                }//foreach
+                                        string s = split[i];
+                                        //------------- разбор строки EXINF
+                                        if (str_ex == "!") str_ex = s;
+                                        if (str_gt == "!") str_gt = s;
+                                        if (str_logo == "!") str_logo = s;
+                                        if (str_tvg == "!") str_tvg = s;
 
 
+                                        if (i >= split.Length - 1) { str_name = s; }
+
+
+
+
+
+                                        match = regex3.Match(s);
+                                        if (match.Success)
+                                        {
+                                            str_ex = "!";
+                                        }
+
+                                        match = regex4.Match(s);
+                                        if (match.Success)
+                                        {
+                                            str_gt = "!";
+                                        }
+
+                                        match = regex5.Match(s);
+                                        if (match.Success)
+                                        {
+                                            str_logo = "!";
+                                        }
+
+                                        match = regex6.Match(s);
+                                        if (match.Success)
+                                        {
+                                            str_tvg = "!";
+                                        }
+                                    }//foreach
+
+                                    newname = "";
+                                    if (str_name != "") newname = str_name.Remove(0, 1);
+
+                                }
 
                                 //========= http =============
                                 str_http = sr.ReadLine();
@@ -406,8 +424,7 @@ namespace IPTVman.ViewModel
                             }
 
 
-                            string newname = "";
-                            if (str_name != "") newname = str_name.Remove(0, 1);
+                          
 
 
                             ViewModelMain.myLISTfull.Add(new ParamCanal
@@ -416,7 +433,8 @@ namespace IPTVman.ViewModel
                                 ExtFilter = str_ex,
                                 http = str_http,
                                 group_title = str_gt,
-                                logo = str_logo
+                                logo = str_logo,
+                                tvg_name = str_tvg
 
                             });
 
