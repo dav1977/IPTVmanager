@@ -65,7 +65,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        
+
                     </GridView>
                 </Setter.Value>
             </Setter>
@@ -108,7 +108,7 @@
                 </Grid.RowDefinitions>
 
 
-                <ListView x:Name="MYLIST" Margin="26,0,25,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="2" Width="Auto" Height="Auto" Grid.ColumnSpan="2" SelectionChanged="ListView_SelectionChanged_2"/>
+                <ListView x:Name="MYLIST" Margin="26,0,25,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="2" Width="Auto" Height="Auto" Grid.ColumnSpan="2" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_1"/>
 
                 <!--   <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                 -->
@@ -117,6 +117,9 @@
                 <TextBox x:Name="tb1" Text="новый канал" Margin="461,0,0,-51" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22" Grid.ColumnSpan="2"/>
                 <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-16,-47,0,0"  Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
                 <TextBox x:Name="filter" Text="{Binding filter}" Margin="-16,-82,0,0"  Width="659" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="select1" Text="{Binding select1}" Margin="-16,-126,0,0"  Width="281" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"/>
+                <TextBox x:Name="select2" Text="{Binding select2}" Margin="296,-126,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" RenderTransformOrigin="1.965,0.5"/>
+                <TextBox x:Name="select3" Text="{Binding select3}" Margin="23,-126,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Grid.Column="1"/>
 
             </Grid>
         </GroupBox>
@@ -172,7 +175,12 @@
 
         <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="41,0,0,8" VerticalAlignment="Bottom" FontSize="16" Foreground="#FF0EE840" Width="531" Height="32" Grid.ColumnSpan="2" Grid.Row="1"/>
         <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Margin="403,0,149,0" Foreground="#FF41E466" Width="200" Height="40" Grid.Row="1" FontSize="14" />
-        <Button Content="ПРИМЕНИТЬ" Command="{Binding key_FILTERCommand}" CommandParameter="{Binding Text, ElementName=filter}" Margin="503,120,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
-
+        <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}" CommandParameter="{Binding Text, ElementName=filter}" Margin="503,120,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
+        <Button Content="Изменить" Command="{Binding key_EDITCommand}"        Margin="503,75,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" RenderTransformOrigin="0.165,-1.22" Click="Button_Click_3">
+                <Button.CommandParameter>
+                <Binding Path="" ElementName="select1"/>
+     
+            </Button.CommandParameter>
+        </Button>
     </Grid>
 </Window>

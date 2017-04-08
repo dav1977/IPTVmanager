@@ -36,8 +36,65 @@ namespace IPTVman.ViewModel
                 return ACOLL;
             }
         }
-   
-   
+
+
+        object _select1;
+        public object select1
+        {
+            get
+            {
+                return _select1;
+            }
+            set
+            {
+                if (_select1 != value)
+                {
+                    _select1 = value;
+
+                    RaisePropertyChanged("select1");
+
+                }
+            }
+        }
+
+        object _select2;
+        public object select2
+        {
+            get
+            {
+                return _select2;
+            }
+            set
+            {
+                if (_select2 != value)
+                {
+                    _select2 = value;
+
+                    RaisePropertyChanged("select2");
+
+                }
+            }
+        }
+        object _select3;
+        public object select3
+        {
+            get
+            {
+                return _select3;
+            }
+            set
+            {
+                if (_select3 != value)
+                {
+                    _select3 = value;
+
+                    RaisePropertyChanged("select3");
+
+                }
+            }
+        }
+
+
         object _SelectedParamCanal;
         public object SelectedParamCanal
         {

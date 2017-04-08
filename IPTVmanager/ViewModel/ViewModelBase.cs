@@ -23,6 +23,9 @@ namespace IPTVman.ViewModel
                 Timer1.Enabled = true;
                 Timer1.Start();
             }
+
+            
+
         }
 
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)

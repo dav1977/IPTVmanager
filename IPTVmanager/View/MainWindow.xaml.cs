@@ -21,7 +21,7 @@ namespace IPTVman.ViewModel
         {
             InitializeComponent();
 
-            ViewModelMain.Event_UpdateLIST += new MyDel(updateLIST);
+            ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
 
 
             // use a timer to periodically update the memory usage
@@ -47,9 +47,11 @@ namespace IPTVman.ViewModel
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            // tbMemory.Text = "Memory Usage: "+string.Format("{0:0.00} MB", GC.GetTotalMemory(true) / 1024.0 / 1024.0);
-           
-            
+   
+
+
+            ////delete
+            //ContactsListView.DeleteItem(ContactsListView.SelectedIndex);
         }
 
 
@@ -126,7 +128,37 @@ namespace IPTVman.ViewModel
 
         private void ListView_SelectionChanged_2(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+     
+        }
 
+        private void MYLIST_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+ 
+        }
+
+        private void MYLIST_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            data.d1 = select1.Text;
+            data.d2 = select2.Text;
+            data.d3 = select3.Text;
+        }
+
+        private void MYLIST_MouseDoubleClick_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            int si = MYLIST.SelectedIndex;
+            if (si < 0) { select1.Text = ""; return; }
+            var p = MYLIST.SelectedItem as ParamCanal;
+            if (p == null) return;
+
+            data.edit_index = si;
+            select1.Text = p.name;
+            select2.Text = p.ExtFilter;
+            select3.Text = p.group_title;
         }
     }
 }

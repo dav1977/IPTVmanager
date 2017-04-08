@@ -33,11 +33,11 @@ namespace IPTVman.ViewModel
     //}
 
     //пользовательский делегат
-    delegate void MyDel(int size);
+    delegate void Delegate_UpdateALL(int size);
 
     partial class ViewModelMain : ViewModelBase
     {
-        public static event MyDel Event_UpdateLIST;
+        public static event Delegate_UpdateALL Event_UpdateLIST;
 
         //public ObservableCollection<ParamCanal> Canal { get; set; }
         //  public MyCollection<ParamCanal> CanalOUT { get; set; }
@@ -113,7 +113,7 @@ namespace IPTVman.ViewModel
             //p = new ParamCanal { Title = "wirte2", param3 = "iik", group_title = 99 };
             //Canal.Add(p);
 
-
+           
 
 
             newChannel = "новое значение";
@@ -130,12 +130,11 @@ namespace IPTVman.ViewModel
                 myLISTbase.Clear();
                 foreach (var c in myLISTfull)
                 {
-                   // Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
-                   // if (c.name == ViewModelMain._filter)
-                   // {
-                        list = c;
-                        myLISTbase.Add(list);
-                   // }
+                    // Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
+
+                    if (c.name == ViewModelMain._filter || ViewModelMain._filter=="")
+                        myLISTbase.Add(c);
+             
 
 
                 }

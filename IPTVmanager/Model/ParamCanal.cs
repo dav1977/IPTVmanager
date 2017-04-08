@@ -4,29 +4,14 @@ using System.ComponentModel;
 namespace IPTVman.Model
 {
 
+    public static class data
+    {
+        public static int edit_index;
+        public static string d1,d2,d3;
 
-    //public class Customer
-    //{
-    //    /// <summary>
-    //    /// Gets or sets the id.
-    //    /// </summary>
-    //    /// <value>The id.</value>
-    //    public string Title { get; set; }
+    }
 
-    //    /// <summary>
-    //    /// Gets or sets the name.
-    //    /// </summary>
-    //    /// <value>The name.</value>
-    //    public string ExtFilter { get; set; }
-
-    //    /// <summary>
-    //    /// Some dummy data to give the instance a bigger memory footprint.
-    //    /// </summary>
-    //    //private byte[] data = new byte[100];
-    //}
-
-
-    public class ParamCanal : INotifyPropertyChanged//, IComparable<ParamCanal>
+        public class ParamCanal : INotifyPropertyChanged//, IComparable<ParamCanal>
     {
 
         /// <summary>

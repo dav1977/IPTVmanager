@@ -269,7 +269,8 @@ namespace IPTVman.ViewModel
 
                 //defensive check in case of async load
                 if (_pages[pageIndex] == null)
-                { Trace.WriteLine("=== ret default"); return default(T); }
+                {   Trace.WriteLine("=== ret default");
+                    return default(T); }
 
 
                 //Trace.WriteLine( "ALLPAGES=" + _pages.Count);

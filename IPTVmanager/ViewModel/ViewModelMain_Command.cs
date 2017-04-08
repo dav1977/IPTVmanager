@@ -17,6 +17,7 @@ namespace IPTVman.ViewModel
     partial class ViewModelMain : ViewModelBase
     {
 
+        public RelayCommand key_EDITCommand { get; set; }
         public RelayCommand key_SORTCommand { get; set; }
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand key_OPENCommand { get; set; }
@@ -27,6 +28,7 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
+            key_EDITCommand = new RelayCommand(key_EDIT);
             key_SORTCommand = new RelayCommand(key_SORT);
             key_ADDCommand = new RelayCommand(key_ADD);
             key_OPENCommand = new RelayCommand(key_OPEN);
@@ -63,6 +65,20 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("numberCANALS");
         }
 
+        void key_EDIT(object parameter)
+        {
+            if (parameter == null) return;
+            ParamCanal p;
+            p = new ParamCanal { };
+            myLISTfull.IndexOf(p, data.edit_index);
+
+            myLISTfull[data.edit_index].name = data.d1;
+            myLISTfull[data.edit_index].ExtFilter = data.d2;
+            myLISTfull[data.edit_index].group_title = data.d3;
+
+
+            RaisePropertyChanged("mycol");
+        }
 
 
         void key_SORT(object parameter)
