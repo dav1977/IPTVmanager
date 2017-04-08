@@ -27,7 +27,7 @@ namespace IPTVman.ViewModel
                 // {
                 //  RaisePropertyChanged("mycol");
                 
-                UPDATE_FILTER();
+                UPDATE_FILTER("");
                 if (ACOLL!=null) ACOLL.UPDATE();
                 
                
@@ -37,6 +37,43 @@ namespace IPTVman.ViewModel
             }
         }
 
+
+        object _best1;
+        public object best1
+        {
+            get
+            {
+                return _best1;
+            }
+            set
+            {
+                if (_best1 != value)
+                {
+                    _best1 = value;
+
+                    RaisePropertyChanged("best1");
+
+                }
+            }
+        }
+        object _best2;
+        public object best2
+        {
+            get
+            {
+                return _best2;
+            }
+            set
+            {
+                if (_best2 != value)
+                {
+                    _best2 = value;
+
+                    RaisePropertyChanged("best2");
+
+                }
+            }
+        }
 
         object _select1;
         public object select1

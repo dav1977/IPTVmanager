@@ -16,7 +16,9 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-
+ 
+       
+        public RelayCommand key_addBestCommand { get; set; }
         public RelayCommand key_EDITCommand { get; set; }
         public RelayCommand key_SORTCommand { get; set; }
         public RelayCommand key_ADDCommand { get; set; }
@@ -28,6 +30,7 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
+            key_addBestCommand = new RelayCommand(key_addBest);
             key_EDITCommand = new RelayCommand(key_EDIT);
             key_SORTCommand = new RelayCommand(key_SORT);
             key_ADDCommand = new RelayCommand(key_ADD);
@@ -56,18 +59,53 @@ namespace IPTVman.ViewModel
             
 
         }
+        
+
+          void key_addBest(object parameter)
+        {
+            if (parameter == null) return;
+
+            myLISTfull.Add(new ParamCanal
+            { name = data.d1, ExtFilter = data.best1, group_title = data.best2, http = data.d4, logo= data.d5 });
+
+
+            RaisePropertyChanged("mycol");
+        }
 
 
         void key_del(object parameter)
         {
-            if (parameter == null) return;
+            if (parameter == null || !data.delete) return;
 
-            RaisePropertyChanged("numberCANALS");
+            bool rez = false;
+            int index = 0;
+            foreach (var obj in myLISTfull)
+            {
+                if (obj.http == data.d4) { myLISTfull.RemoveAt(index); rez = true;  break; }
+                index++;
+
+            }
+            if (!rez) return;
+            
+
+            data.delete = false;
+            RaisePropertyChanged("mycol");
         }
 
         void key_EDIT(object parameter)
         {
             if (parameter == null) return;
+            bool rez = false;
+
+            int index = 0;
+            foreach (var obj in myLISTfull)
+            {
+                if (obj.http == data.d4) { rez = true; data.edit_index = index;  break; }
+                index++;
+
+            }
+            if (!rez) return;
+
             ParamCanal p;
             p = new ParamCanal { };
             myLISTfull.IndexOf(p, data.edit_index);
@@ -75,6 +113,9 @@ namespace IPTVman.ViewModel
             myLISTfull[data.edit_index].name = data.d1;
             myLISTfull[data.edit_index].ExtFilter = data.d2;
             myLISTfull[data.edit_index].group_title = data.d3;
+            //myLISTfull[data.edit_index].name = select1.ToString();
+            //myLISTfull[data.edit_index].ExtFilter = select2.ToString();
+            //myLISTfull[data.edit_index].group_title = select3.ToString();
 
 
             RaisePropertyChanged("mycol");
@@ -129,7 +170,7 @@ namespace IPTVman.ViewModel
         void key_FILTER(object parameter)
         {
             filter = parameter.ToString();
-            UPDATE_FILTER();
+            UPDATE_FILTER(parameter.ToString());
             RaisePropertyChanged("mycol");
            
         }
@@ -138,256 +179,257 @@ namespace IPTVman.ViewModel
         void key_OPEN(object parameter)
         {
             string line = null;
-      
+
 
             CollectionisCreate();
 
 
+            try {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
 
-                        OpenFileDialog openFileDialog = new OpenFileDialog();
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    Regex regex1 = new Regex("#EXTINF");
+                    Regex regex2 = new Regex("#EXTM3U");
+                    Match match = null;
 
-                        if (openFileDialog.ShowDialog() == true)
+
+
+
+                    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+                    {
+
+
+                        string header = "";
+
+
+
+                        while (true)
                         {
-                            Regex regex1 = new Regex("#EXTINF");
-                            Regex regex2 = new Regex("#EXTM3U");
-                            Match match = null;
-                      
+                            try
+                            {
+                                header = sr.ReadLine();
+                            }
 
-
-
-                            using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+                            catch
                             {
 
+                                //DialogWindow dialog = new DialogWindow();
+                                //if (dialog.ShowDialog() == true)
+                                //{
+                                //    // Пользователь разрешил действие. Продолжить1
+                                //}
+                                //else
+                                //{
+                                //    // Пользователь отменил действие.
+                                //}
 
-                                string header = "";
-
-
-
-                                while (true)
-                                {
-                                    try
-                                    {
-                                        header = sr.ReadLine();
-                                    }
-
-                                    catch
-                                    {
-
-                                        //DialogWindow dialog = new DialogWindow();
-                                        //if (dialog.ShowDialog() == true)
-                                        //{
-                                        //    // Пользователь разрешил действие. Продолжить1
-                                        //}
-                                        //else
-                                        //{
-                                        //    // Пользователь отменил действие.
-                                        //}
-                                     
-                                        MessageBox.Show("Ошибка файла", "заголовок с ошибкой",
-                                        MessageBoxButton.OK, MessageBoxImage.Error);
-                                    }
+                                MessageBox.Show("Ошибка файла", "заголовок с ошибкой",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
 
 
 
-                                    if (header == null || sr.EndOfStream) break;
+                            if (header == null || sr.EndOfStream) break;
 
-                                    match = regex2.Match(header);
-                                    if (match.Success) break;
-
-
-                                }
-
-
-
-                                if (!match.Success)
-                                {
-                                    
-                                    MessageBox.Show("заголовок с ошибкой", "Ошибка файла",
-                                    MessageBoxButton.OK, MessageBoxImage.Error);
-                                    return;
-                                }
-                                //------------------------------------------------------------
-                                text_title = header;
-
-                                string str_ex = "", str_name = "", str_http = "", str_gt= "", str_logo="", str_tvg="";
-
-                                bool yes = false;
-              
-
-                                while (!sr.EndOfStream)
-                                {
-
-
-                                    try
-                                    {
-                                        line = sr.ReadLine();
-                                    }
-                                    catch { }
-                        
-                                    if (line == null || line == "") continue;
-
-
-                                    match = regex1.Match(line);
-                                    if (match.Success) yes = true; else yes = false;
-
-
-
-                                    //while (match.Success)
-                                    //{
-                                    //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
-                                    //    // ссылаемся на найденное значение через свойство Groups класса Match
-                                    //    //Console.WriteLine(match.Groups[1].Value);
-                                    //    y = true; break;
-                                    //    // Переходим к следующему совпадению
-                                    //    //match = match.NextMatch();
-                                    //}
-
-
-
-                                    //}
-
-
-
-                                    ///========== разбор EXINF
-                                    if (yes)
-                                    {
-
-                                        Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
-                                        Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
-                                        Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
-                                        Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
-
-
-
-
-                            //string[] split = line.Split(new Char[] { ' ', ',', '.', ':', '"' });
-                            string[] split = line.Split(new Char[] { '"' });
-
-
-                            str_ex = ""; str_name= ""; str_http = ""; str_gt = ""; str_logo="";
-
-
-                     
-                            int i=0;
-                            for(i=0; i < split.Length;  i++ )
-                            {
-                                string s = split[i];
-                                //------------- разбор строки EXINF
-                                if (str_ex == "!") str_ex = s;
-                                if (str_gt == "!") str_gt = s;
-                                if (str_logo == "!") str_logo = s;
-                                if (str_tvg == "!") str_tvg = s;
-
-
-                                if (i>=split.Length-1) { str_name = s;   }
-                               
-
-                                match = regex3.Match(s);
-                                if (match.Success)
-                                {
-                                    str_ex="!";
-                                }
-
-                                match = regex4.Match(s);
-                                if (match.Success)
-                                {
-                                    str_gt = "!";
-                                }
-
-                                match = regex5.Match(s);
-                                if (match.Success)
-                                {
-                                    str_logo = "!";
-                                }
-
-                                match = regex6.Match(s);
-                                if (match.Success)
-                                {
-                                    str_tvg = "!";
-                                }
-                            }//foreach
-
-
-
-                            //========= http =============
-                            str_http = sr.ReadLine();
-                            //Regex regex100 = new Regex("://");
-
-                            //match = regex100.Match(str_http);
-                            //if (!match.Success)
-                            //{
-                            //    str_http = "error "+ str_http;
-                            //}
-
-
-                            //match = regex4.Match(line);
-                            //if (match.Success)
-                            //{
-                            //    words1 = line.Split(new char[] { '"' });
-                            //    if (str_ex != "")
-                            //    {
-                            //        if (words1.Length > 3) str_gr = words1[3];
-                            //        else if (words1.Length > 2) str_gr = words1[2];
-                            //    }
-                            //    else str_gr = words1[1];
-                            //}
-
-                            //if (line != null) words = line.Split(new char[] { ',' });
-
-
-                            //bool y = false;
-                            //while (1 == 1)
-                            //{
-                            //    // Read the stream to a string, and write the string to the console.
-                            //    http0 = sr.ReadLine();
-                            //    // if (sr.EndOfStream) break;
-
-                            //    if (http0 == null) continue;
-                            //    foreach (var c in http0)
-                            //    {
-                            //        if (char.IsPunctuation(c)) { y = true; break; }
-                            //        // else if (IsLatin(c)) { y = true; break; }
-                            //    }
-                            //    if (y) break;
-                            //}
+                            match = regex2.Match(header);
+                            if (match.Success) break;
 
 
                         }
 
 
-                        string newname = "";
-                                    if (str_name!="") newname=str_name.Remove(0, 1);
 
-
-                        ViewModelMain.myLISTfull.Add(new ParamCanal
+                        if (!match.Success)
                         {
-                            name = newname,
-                            ExtFilter=str_ex,
-                            http=str_http,
-                            group_title=str_gt,
-                            logo =str_logo
-                            
-                        });
 
-                    }///чтение фала
-
-
-
-
-
-
-
-                }// string name = File.ReadAllText(openFileDialog.FileName);
-
+                            MessageBox.Show("заголовок с ошибкой", "Ошибка файла",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
                         }
+                        //------------------------------------------------------------
+                        text_title = header;
 
-                        RaisePropertyChanged("mycol");///updte LIST!!
-                        RaisePropertyChanged("numberCANALS");
-                    }
+                        string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
+
+                        bool yes = false;
+
+
+                        while (!sr.EndOfStream)
+                        {
+
+
+                            try
+                            {
+                                line = sr.ReadLine();
+                            }
+                            catch { }
+
+                            if (line == null || line == "") continue;
+
+
+                            match = regex1.Match(line);
+                            if (match.Success) yes = true; else yes = false;
+
+
+
+                            //while (match.Success)
+                            //{
+                            //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
+                            //    // ссылаемся на найденное значение через свойство Groups класса Match
+                            //    //Console.WriteLine(match.Groups[1].Value);
+                            //    y = true; break;
+                            //    // Переходим к следующему совпадению
+                            //    //match = match.NextMatch();
+                            //}
+
+
+
+                            //}
+
+
+
+                            ///========== разбор EXINF
+                            if (yes)
+                            {
+
+                                Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
+                                Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
+                                Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
+                                Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
 
 
 
 
+                                //string[] split = line.Split(new Char[] { ' ', ',', '.', ':', '"' });
+                                string[] split = line.Split(new Char[] { '"' });
+
+
+                                str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = "";
+
+
+
+                                int i = 0;
+                                for (i = 0; i < split.Length; i++)
+                                {
+                                    string s = split[i];
+                                    //------------- разбор строки EXINF
+                                    if (str_ex == "!") str_ex = s;
+                                    if (str_gt == "!") str_gt = s;
+                                    if (str_logo == "!") str_logo = s;
+                                    if (str_tvg == "!") str_tvg = s;
+
+
+                                    if (i >= split.Length - 1) { str_name = s; }
+
+
+                                    match = regex3.Match(s);
+                                    if (match.Success)
+                                    {
+                                        str_ex = "!";
+                                    }
+
+                                    match = regex4.Match(s);
+                                    if (match.Success)
+                                    {
+                                        str_gt = "!";
+                                    }
+
+                                    match = regex5.Match(s);
+                                    if (match.Success)
+                                    {
+                                        str_logo = "!";
+                                    }
+
+                                    match = regex6.Match(s);
+                                    if (match.Success)
+                                    {
+                                        str_tvg = "!";
+                                    }
+                                }//foreach
+
+
+
+                                //========= http =============
+                                str_http = sr.ReadLine();
+                                //Regex regex100 = new Regex("://");
+
+                                //match = regex100.Match(str_http);
+                                //if (!match.Success)
+                                //{
+                                //    str_http = "error "+ str_http;
+                                //}
+
+
+                                //match = regex4.Match(line);
+                                //if (match.Success)
+                                //{
+                                //    words1 = line.Split(new char[] { '"' });
+                                //    if (str_ex != "")
+                                //    {
+                                //        if (words1.Length > 3) str_gr = words1[3];
+                                //        else if (words1.Length > 2) str_gr = words1[2];
+                                //    }
+                                //    else str_gr = words1[1];
+                                //}
+
+                                //if (line != null) words = line.Split(new char[] { ',' });
+
+
+                                //bool y = false;
+                                //while (1 == 1)
+                                //{
+                                //    // Read the stream to a string, and write the string to the console.
+                                //    http0 = sr.ReadLine();
+                                //    // if (sr.EndOfStream) break;
+
+                                //    if (http0 == null) continue;
+                                //    foreach (var c in http0)
+                                //    {
+                                //        if (char.IsPunctuation(c)) { y = true; break; }
+                                //        // else if (IsLatin(c)) { y = true; break; }
+                                //    }
+                                //    if (y) break;
+                                //}
+
+
+                            }
+
+
+                            string newname = "";
+                            if (str_name != "") newname = str_name.Remove(0, 1);
+
+
+                            ViewModelMain.myLISTfull.Add(new ParamCanal
+                            {
+                                name = newname,
+                                ExtFilter = str_ex,
+                                http = str_http,
+                                group_title = str_gt,
+                                logo = str_logo
+
+                            });
+
+                        }///чтение фала
+
+
+
+
+
+
+
+                    }// string name = File.ReadAllText(openFileDialog.FileName);
+
+                }
+
+                RaisePropertyChanged("mycol");///updte LIST!!
+                RaisePropertyChanged("numberCANALS");
+            }
+
+
+            catch { }
+        }
+    
 
 
 

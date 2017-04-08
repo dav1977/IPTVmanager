@@ -4,13 +4,6 @@ using System.ComponentModel;
 namespace IPTVman.Model
 {
 
-    public static class data
-    {
-        public static int edit_index;
-        public static string d1,d2,d3;
-
-    }
-
         public class ParamCanal : INotifyPropertyChanged//, IComparable<ParamCanal>
     {
 

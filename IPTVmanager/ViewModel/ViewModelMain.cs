@@ -49,7 +49,7 @@ namespace IPTVman.ViewModel
         public static List<ParamCanal> myLISTfull;//ДО ФИЛЬТРА
 
 
-        public static ParamCanal list;
+       // public static ParamCanal list;
         /// <summary>
         /// SelectedItem is an object instead of a ParamCanal, only because we are allowing "CanUserAddRows=true" 
         /// NewItemPlaceHolder represents a new row, and this is not the same as ParamCanal class
@@ -122,20 +122,21 @@ namespace IPTVman.ViewModel
         }
 
 
-        public void UPDATE_FILTER()
+        public void UPDATE_FILTER(string f)
         {
 
             if (myLISTfull != null && myLISTbase != null)
             {
+
+
+                Match match;
+                Regex regex1 = new Regex(ViewModelMain._filter, RegexOptions.IgnoreCase|RegexOptions.IgnorePatternWhitespace);
                 myLISTbase.Clear();
                 foreach (var c in myLISTfull)
                 {
                     // Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
-
-                    if (c.name == ViewModelMain._filter || ViewModelMain._filter=="")
-                        myLISTbase.Add(c);
-             
-
+                   match = regex1.Match(c.name);
+                   if (match.Success || ViewModelMain._filter == "") myLISTbase.Add(c);  
 
                 }
             }

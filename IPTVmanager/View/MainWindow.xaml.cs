@@ -17,6 +17,8 @@ namespace IPTVman.ViewModel
 
     public partial class MainWindow : Window
     {
+   
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,6 +32,8 @@ namespace IPTVman.ViewModel
             timer.Tick += timer_Tick;
             timer.Start();
 
+            best1.Text = "best";
+            best2.Text = "best";
 
             //Binding bind = new Binding();
             //bind.Source = grid1;
@@ -141,11 +145,26 @@ namespace IPTVman.ViewModel
 
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+
+        
+        private void Button_Click_EDIT(object sender, RoutedEventArgs e)
         {
             data.d1 = select1.Text;
             data.d2 = select2.Text;
             data.d3 = select3.Text;
+ 
+
+        }
+
+        private void Button_Click_BEST(object sender, RoutedEventArgs e)
+        {
+
+            data.d1 = select1.Text;
+            data.d2 = select2.Text;
+            data.d3 = select3.Text;
+      
+            data.best1 = best1.Text;
+            data.best2 = best2.Text;
         }
 
         private void MYLIST_MouseDoubleClick_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -159,6 +178,12 @@ namespace IPTVman.ViewModel
             select1.Text = p.name;
             select2.Text = p.ExtFilter;
             select3.Text = p.group_title;
+
+            data.d4 = p.http;
+            data.d5 = p.logo;
+
+
+            data.delete = true;
         }
     }
 }
