@@ -157,12 +157,22 @@ namespace IPTVman.ViewModel
             {
                 using (StreamWriter sr = new StreamWriter(openFileDialog.FileName))
                 {
-                    //foreach (var e in Canal)
-                    //{
-                    //    sr.Write(e.ExtFilter + '\n' + e.http + '\n');
+                    sr.Write(text_title +'\n');
 
-                    //}
-                }// string name = File.ReadAllText(openFileDialog.FileName);
+                    string n = "";
+                    foreach (var obj in myLISTfull)
+                    {
+                        n = "";
+                        n += "#EXTINF:-1 ";
+
+                        if (obj.ExtFilter != "") n += "$ExtFilter=" + '"' + obj.ExtFilter + '"';
+                        if (obj.group_title != "") n += " group-title=" + '"' + obj.group_title + '"';
+                        if (obj.logo != "") n+= "tvg-logo=" + '"' + obj.logo + '"';
+
+                        n+= "," +obj.name + '\n';
+                        sr.Write(n+ obj.http + '\n');
+                    } 
+                }
 
             }
         }
