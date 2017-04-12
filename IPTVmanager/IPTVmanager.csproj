@@ -66,10 +66,11 @@
     <Compile Include="Model\ParamCanal.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
+    <Compile Include="ViewModel\ViewModelWindow1_Object.cs" />
     <Compile Include="ViewModel\Virtulization.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
-    <Compile Include="ViewModel\ViewModelWindow1.cs" />
+    <Compile Include="ViewModel\ViewModelWindow1_Command.cs" />
     <Compile Include="View\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>

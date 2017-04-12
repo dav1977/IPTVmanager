@@ -6,6 +6,7 @@ namespace IPTVman.ViewModel
     {
         public Window1()
         {
+           
             InitializeComponent();
         }
     }

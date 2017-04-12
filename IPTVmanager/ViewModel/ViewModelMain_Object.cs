@@ -75,61 +75,6 @@ namespace IPTVman.ViewModel
             }
         }
 
-        object _select1;
-        public object select1
-        {
-            get
-            {
-                return _select1;
-            }
-            set
-            {
-                if (_select1 != value)
-                {
-                    _select1 = value;
-
-                    RaisePropertyChanged("select1");
-
-                }
-            }
-        }
-
-        object _select2;
-        public object select2
-        {
-            get
-            {
-                return _select2;
-            }
-            set
-            {
-                if (_select2 != value)
-                {
-                    _select2 = value;
-
-                    RaisePropertyChanged("select2");
-
-                }
-            }
-        }
-        object _select3;
-        public object select3
-        {
-            get
-            {
-                return _select3;
-            }
-            set
-            {
-                if (_select3 != value)
-                {
-                    _select3 = value;
-
-                    RaisePropertyChanged("select3");
-
-                }
-            }
-        }
 
 
         object _SelectedParamCanal;
@@ -222,6 +167,39 @@ namespace IPTVman.ViewModel
                 {
                     _filter = value; 
                     //RaisePropertyChanged("filter");
+                }
+            }
+        }
+
+        static string _filter2 = "";
+        public string filter2
+        {
+            get
+            {
+                return _filter2;
+            }
+            set
+            {
+                if (_filter2 != value)
+                {
+                    _filter2 = value;
+                    //RaisePropertyChanged("filter2");
+                }
+            }
+        }
+        static string _filter3 = "";
+        public string filter3
+        {
+            get
+            {
+                return _filter3;
+            }
+            set
+            {
+                if (_filter3 != value)
+                {
+                    _filter3 = value;
+                    //RaisePropertyChanged("filter3");
                 }
             }
         }

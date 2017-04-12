@@ -1,6 +1,6 @@
 ﻿<Window
    
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:IPTVman.Helpers"
         xmlns:vm="clr-namespace:IPTVman.ViewModel" 
@@ -65,7 +65,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        
+
                         <GridViewColumn Header="tvg" Width="50">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -73,7 +73,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        
+
                     </GridView>
                 </Setter.Value>
             </Setter>
@@ -94,6 +94,14 @@
 
     </Window.Resources>
     <Grid Margin="0,0,12,0">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0.597"/>
+                <GradientStop Color="#FF361876" Offset="1"/>
+                <GradientStop Color="#FF32166E" Offset="0.962"/>
+                <GradientStop Color="#FF32166E" Offset="0.102"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="29*"/>
             <ColumnDefinition Width="187*"/>
@@ -124,12 +132,12 @@
                 <!-- </ScrollViewer>-->
                 <TextBox x:Name="tb1" Text="новый канал" Margin="461,0,0,-51" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22" Grid.ColumnSpan="2"/>
                 <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-16,-47,0,0"  Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
-                <TextBox x:Name="filter" Text="{Binding filter}" Margin="-16,-82,0,0"  Width="635" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="select1" Text="{Binding select1}" Margin="-16,-126,0,0"  Width="281" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"/>
-                <TextBox x:Name="select2" Text="{Binding select2}" Margin="296,-126,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" RenderTransformOrigin="1.965,0.5"/>
                 <TextBox x:Name="best1" Text="{Binding best2}" Margin="300,-83,-14,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Grid.Column="1"/>
                 <TextBox x:Name="best2" Text="{Binding best1}" Margin="300,-110,-14,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Grid.Column="1"/>
-                <TextBox x:Name="select3" Text="{Binding select3}" Margin="461,-126,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" RenderTransformOrigin="1.965,0.5" Grid.ColumnSpan="2"/>
+                
+                <TextBox x:Name="filter" Text="{Binding filter}" Margin="-16,-82,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
+                <TextBox x:Name="filter2" Text="{Binding filter2}" Margin="202,-83,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
+                <TextBox x:Name="filter3" Text="{Binding filter3}" Margin="410,-83,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Grid.ColumnSpan="2"/>
 
             </Grid>
         </GroupBox>
@@ -185,12 +193,6 @@
         <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="41,0,0,8" VerticalAlignment="Bottom" FontSize="16" Foreground="#FF0EE840" Width="531" Height="32" Grid.ColumnSpan="2" Grid.Row="1"/>
         <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Margin="403,0,149,0" Foreground="#FF41E466" Width="200" Height="40" Grid.Row="1" FontSize="14" />
         <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}" CommandParameter="{Binding Text, ElementName=filter}" Margin="477,125,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
-        <Button Content="Изменить" Command="{Binding key_EDITCommand}"        Margin="477,79,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" RenderTransformOrigin="0.165,-1.22" Click="Button_Click_EDIT">
-            <Button.CommandParameter>
-                <Binding Path="" ElementName="select1"/>
-
-            </Button.CommandParameter>
-        </Button>
         <Button Content="Добавить в Лучшее" Command="{Binding key_addBestCommand}"        Margin="626,62,0,0" Focusable="False" Grid.Column="2" Width="145" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" RenderTransformOrigin="0.165,-1.22" Click="Button_Click_BEST" CommandParameter="not"/>
     </Grid>
 </Window>

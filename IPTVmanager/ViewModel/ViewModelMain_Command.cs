@@ -66,7 +66,7 @@ namespace IPTVman.ViewModel
             if (parameter == null) return;
 
             myLISTfull.Add(new ParamCanal
-            { name = data.d1, ExtFilter = data.best1, group_title = data.best2, http = data.d4, logo= data.d5, tvg_name= data.d6 });
+            { name = data.name, ExtFilter = data.best1, group_title = data.best2, http = data.http, logo= data.logo, tvg_name= data.tvg });
 
 
             RaisePropertyChanged("mycol");
@@ -81,7 +81,7 @@ namespace IPTVman.ViewModel
             int index = 0;
             foreach (var obj in myLISTfull)
             {
-                if (obj.http == data.d4) { myLISTfull.RemoveAt(index); rez = true;  break; }
+                if (obj.http == data.http) { myLISTfull.RemoveAt(index); rez = true;  break; }
                 index++;
 
             }
@@ -100,7 +100,7 @@ namespace IPTVman.ViewModel
             int index = 0;
             foreach (var obj in myLISTfull)
             {
-                if (obj.http == data.d4) { rez = true; data.edit_index = index;  break; }
+                if (obj.http == data.http) { rez = true; data.edit_index = index;  break; }
                 index++;
 
             }
@@ -110,9 +110,9 @@ namespace IPTVman.ViewModel
             p = new ParamCanal { };
             myLISTfull.IndexOf(p, data.edit_index);
 
-            myLISTfull[data.edit_index].name = data.d1;
-            myLISTfull[data.edit_index].ExtFilter = data.d2;
-            myLISTfull[data.edit_index].group_title = data.d3;
+            myLISTfull[data.edit_index].name = data.name;
+            myLISTfull[data.edit_index].ExtFilter = data.extfilter;
+            myLISTfull[data.edit_index].group_title = data.grouptitle;
             //myLISTfull[data.edit_index].name = select1.ToString();
             //myLISTfull[data.edit_index].ExtFilter = select2.ToString();
             //myLISTfull[data.edit_index].group_title = select3.ToString();

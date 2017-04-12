@@ -149,9 +149,7 @@ namespace IPTVman.ViewModel
         
         private void Button_Click_EDIT(object sender, RoutedEventArgs e)
         {
-            data.d1 = select1.Text;
-            data.d2 = select2.Text;
-            data.d3 = select3.Text;
+      
  
 
         }
@@ -159,9 +157,6 @@ namespace IPTVman.ViewModel
         private void Button_Click_BEST(object sender, RoutedEventArgs e)
         {
 
-            data.d1 = select1.Text;
-            data.d2 = select2.Text;
-            data.d3 = select3.Text;
       
             data.best1 = best1.Text;
             data.best2 = best2.Text;
@@ -170,20 +165,27 @@ namespace IPTVman.ViewModel
         private void MYLIST_MouseDoubleClick_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             int si = MYLIST.SelectedIndex;
-            if (si < 0) { select1.Text = ""; return; }
+            if (si < 0) {  return; }
             var p = MYLIST.SelectedItem as ParamCanal;
             if (p == null) return;
 
             data.edit_index = si;
-            select1.Text = p.name;
-            select2.Text = p.ExtFilter;
-            select3.Text = p.group_title;
+ 
 
-            data.d4 = p.http;
-            data.d5 = p.logo;
-            data.d6 = p.tvg_name;
+            data.name = p.name;
+            data.extfilter = p.ExtFilter;
+            data.grouptitle = p.group_title;
+            data.http = p.http;
+            data.logo = p.logo;
+            data.tvg = p.tvg_name;
 
             data.delete = true;
+
+            var win = new Window1 { DataContext = new ViewModelWindow1(tb1.Text) };
+             win.Show();
+           
+
+
         }
     }
 }
