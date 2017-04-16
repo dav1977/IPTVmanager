@@ -91,6 +91,7 @@ namespace IPTVman.ViewModel
                     http = ViewModelMain.myLISTbase[i].http,
                     logo = ViewModelMain.myLISTbase[i].logo,
                     tvg_name = ViewModelMain.myLISTbase[i].tvg_name,
+                    ping = ViewModelMain.myLISTbase[i].ping,
                 };
 
 

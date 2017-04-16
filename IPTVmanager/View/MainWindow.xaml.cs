@@ -11,19 +11,21 @@ using System.Collections.Generic;
 namespace IPTVman.ViewModel
 {
 
-    
-    
-
+    public delegate void Delegate_UpdateALL(int size);
+    public delegate void Delegate_UpdateEDIT(int size);
+    public delegate void Delegate_Window1();
+    public delegate void Delegate_ADDBEST();
 
     public partial class MainWindow : Window
     {
-   
+       
 
         public MainWindow()
         {
             InitializeComponent();
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
+      
 
 
             // use a timer to periodically update the memory usage
@@ -34,6 +36,10 @@ namespace IPTVman.ViewModel
 
             best1.Text = "best";
             best2.Text = "best";
+            data.best1 = best1.Text;
+            data.best2 = best2.Text;
+
+
 
             //Binding bind = new Binding();
             //bind.Source = grid1;
@@ -45,9 +51,15 @@ namespace IPTVman.ViewModel
 
         void updateLIST(int size)
         {
-
+            bDELETE.Content = "";
             MYLIST.Items.Refresh();
+            bDELETE.Content = "";
+            data.edit_index = -1;
+
         }
+
+
+      
 
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -137,7 +149,7 @@ namespace IPTVman.ViewModel
 
         private void MYLIST_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
- 
+       
         }
 
         private void MYLIST_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -178,14 +190,74 @@ namespace IPTVman.ViewModel
             data.http = p.http;
             data.logo = p.logo;
             data.tvg = p.tvg_name;
+            data.ping = p.ping;
 
-            data.delete = true;
+  
 
             var win = new Window1 { DataContext = new ViewModelWindow1(tb1.Text) };
              win.Show();
+
            
 
+        }
 
+        private void MYLIST_ContextMenuOpening(object sender, System.Windows.Controls.ContextMenuEventArgs e)
+        {
+            //правая кнопка мыши
+        }
+
+        private void MYLIST_MouseEnter_1(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            //наведение на поле
+        }
+
+        private void MYLIST_TouchEnter(object sender, System.Windows.Input.TouchEventArgs e)
+        {
+            
+        }
+
+        private void MYLIST_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+ 
+            
+
+
+        }
+
+        private void MYLIST_LostTouchCapture(object sender, System.Windows.Input.TouchEventArgs e)
+        {
+
+            
+           
+
+        }
+
+        private void MYLIST_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+
+            int si = MYLIST.SelectedIndex;
+            if (si < 0) { return; }
+            var p = MYLIST.SelectedItem as ParamCanal;
+            if (p == null) return;
+            data.edit_index = si;
+            data.name = p.name;
+            data.extfilter = p.ExtFilter;
+            data.grouptitle = p.group_title;
+            data.http = p.http;
+            data.logo = p.logo;
+            data.tvg = p.tvg_name;
+            data.ping = p.ping;
+            bDELETE.Content = "УДАЛИТЬ " + data.name;
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            data.f1 = Ffilter.Text;
+            data.f2 = Ffilter2.Text;
+            data.f3 = Ffilter3.Text;
         }
     }
 }

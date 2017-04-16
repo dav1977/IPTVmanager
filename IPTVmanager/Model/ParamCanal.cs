@@ -121,6 +121,25 @@ namespace IPTVman.Model
             }
         }
 
+
+        string _ping;
+        public string ping
+        {
+            get
+            {
+                return _ping;
+            }
+            set
+            {
+                if (_ping != value)
+                {
+                    _ping = value;
+                    RaisePropertyChanged("ping");
+                }
+            }
+        }
+
+
         void RaisePropertyChanged(string prop)
         {
             if (PropertyChanged != null)

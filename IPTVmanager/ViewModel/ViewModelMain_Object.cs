@@ -38,6 +38,10 @@ namespace IPTVman.ViewModel
         }
 
 
+
+     
+
+
         object _best1;
         public object best1
         {
@@ -50,7 +54,7 @@ namespace IPTVman.ViewModel
                 if (_best1 != value)
                 {
                     _best1 = value;
-
+                    UPDATE_BEST(_best1.ToString(), null);
                     RaisePropertyChanged("best1");
 
                 }
@@ -68,7 +72,7 @@ namespace IPTVman.ViewModel
                 if (_best2 != value)
                 {
                     _best2 = value;
-
+                    UPDATE_BEST(null, _best2.ToString());
                     RaisePropertyChanged("best2");
 
                 }
@@ -111,7 +115,7 @@ namespace IPTVman.ViewModel
         {
             get
             {
-                return "Memory Usage: " + string.Format("{0:0.00} MB", GC.GetTotalMemory(true) / 1024.0 / 1024.0);
+                return "(C) 2017 Memory Usage: " + string.Format("{0:0.00} MB", GC.GetTotalMemory(true) / 1024.0 / 1024.0);
             }
          
         }
@@ -153,8 +157,8 @@ namespace IPTVman.ViewModel
             }
         }
 
- 
-        static string _filter="";
+
+        static string _filter = "";
         public string filter
         {
             get
@@ -165,8 +169,8 @@ namespace IPTVman.ViewModel
             {
                 if (_filter != value)
                 {
-                    _filter = value; 
-                    //RaisePropertyChanged("filter");
+                    _filter = value;
+               
                 }
             }
         }
@@ -183,7 +187,7 @@ namespace IPTVman.ViewModel
                 if (_filter2 != value)
                 {
                     _filter2 = value;
-                    //RaisePropertyChanged("filter2");
+             
                 }
             }
         }
@@ -199,7 +203,7 @@ namespace IPTVman.ViewModel
                 if (_filter3 != value)
                 {
                     _filter3 = value;
-                    //RaisePropertyChanged("filter3");
+           
                 }
             }
         }

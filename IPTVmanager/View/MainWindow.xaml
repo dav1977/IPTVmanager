@@ -5,14 +5,19 @@
         xmlns:helpers="clr-namespace:IPTVman.Helpers"
         xmlns:vm="clr-namespace:IPTVman.ViewModel" 
         x:Class="IPTVman.ViewModel.MainWindow" WindowStartupLocation="CenterScreen"
-        Title="IPTV manager v1.0" Height="639.341" Width="1040.602" Background="#FF282076" 
+        Title="IPTV manager v1.0" Height="637.341" Width="1040.102" Background="#FF282076" 
+    
+    
     
         DataContext="{DynamicResource ViewModelMain}" Foreground="#FF20D10F">
 
 
-
     <Window.Resources>
         <vm:ViewModelMain x:Key="ViewModelMain"/>
+
+
+
+
 
         <Style x:Key="MYStyle" TargetType="{x:Type ListView}">
             <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
@@ -23,7 +28,7 @@
                 <Setter.Value>
                     <GridView>
 
-                        <GridViewColumn Header="Name" Width="300">
+                        <GridViewColumn Header="Name" Width="200">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding name}"/>
@@ -31,8 +36,15 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
+                        <GridViewColumn Header="Ping" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ping}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                        <GridViewColumn Header="ExtFilter" Width="150">
+                        <GridViewColumn Header="ExtFilter" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ExtFilter}"/>
@@ -42,7 +54,7 @@
 
 
 
-                        <GridViewColumn Header="group_title" Width="150">
+                        <GridViewColumn Header="group_title" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding group_title}"/>
@@ -93,7 +105,12 @@
 
 
     </Window.Resources>
-    <Grid Margin="0,0,12,0">
+
+
+
+
+
+    <Grid Margin="0,0,-3,-3">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="Black" Offset="0.597"/>
@@ -108,43 +125,46 @@
             <ColumnDefinition Width="752*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.939*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto" MinHeight="44"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Classic INotifyPropertyChanged Example" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Grid.ColumnSpan="2" Grid.Column="1" RenderTransformOrigin="0.5,0.5" Margin="15,180,10,33">
+        <GroupBox Header="Classic INotifyPropertyChanged Example" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" Grid.ColumnSpan="3" RenderTransformOrigin="0.5,0.5" Margin="10,136,10,33">
             <Grid Margin="0,0,0,8">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="463*"/>
-                    <ColumnDefinition Width="420*"/>
+                    <ColumnDefinition Width="497*"/>
+                    <ColumnDefinition Width="133*"/>
+                    <ColumnDefinition Width="122*"/>
+                    <ColumnDefinition Width="196*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="139*" />
-                    <RowDefinition Height="85*"/>
+                    <RowDefinition Height="30*" />
+                    <RowDefinition Height="158*"/>
+                    <RowDefinition Height="115*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
 
-                <ListView x:Name="MYLIST" Margin="26,0,25,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="2" Width="Auto" Height="Auto" Grid.ColumnSpan="2" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_1"/>
+                <ListView x:Name="MYLIST" Margin="10,0,0,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="3" Width="Auto" Height="Auto" Grid.ColumnSpan="4" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_1" LostTouchCapture="MYLIST_LostTouchCapture" SelectionChanged="MYLIST_SelectionChanged"/>
 
                 <!--   <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                 -->
 
                 <!-- </ScrollViewer>-->
-                <TextBox x:Name="tb1" Text="новый канал" Margin="461,0,0,-51" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Height="22" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-16,-47,0,0"  Width="310" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
-                <TextBox x:Name="best1" Text="{Binding best2}" Margin="300,-83,-14,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Grid.Column="1"/>
-                <TextBox x:Name="best2" Text="{Binding best1}" Margin="300,-110,-14,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Grid.Column="1"/>
-                
-                <TextBox x:Name="filter" Text="{Binding filter}" Margin="-16,-82,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
-                <TextBox x:Name="filter2" Text="{Binding filter2}" Margin="202,-83,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21"/>
-                <TextBox x:Name="filter3" Text="{Binding filter3}" Margin="410,-83,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,91.5,-52" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="22" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-2,-116,0,0"  Width="701" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3"/>
+                <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-145,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3"/>
+                <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-118,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3"/>
+
+                <TextBox x:Name="Ffilter" Text="{Binding filter}" Margin="-2,-63,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29"/>
+                <TextBox x:Name="Ffilter2" Text="{Binding filter2}" Margin="189,-63,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
+                <TextBox x:Name="Ffilter3" Text="{Binding filter3}" Margin="393,-64,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Grid.ColumnSpan="2"/>
 
             </Grid>
         </GroupBox>
 
 
         <!-- <КВАДРАТ>-->
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2">
             <Rectangle x:Name="rectangle" Width="20" Height="20" Fill="#FF8BF709" Margin="5,10" VerticalAlignment="Center">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="0" CenterX="10" CenterY="10"/>
@@ -183,16 +203,34 @@
         </StackPanel>
 
         <!-- <КНОПКИ>-->
-        <Button Content="Add"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="20,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
-        <Button Content="SORT name" Command="{Binding key_SORTCommand}" CommandParameter="" Margin="561,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Add"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="26,9,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" Grid.ColumnSpan="2"/>
         <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
-        <Button Content="Next example" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Red" Click="Button_Click" Margin="0,0,10,4" Grid.Column="2" Height="22" Width="84"/>
-        <Button Content="УДАЛИТЬ канал" Command="{Binding key_delCommand}" CommandParameter="" Margin="582,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-        <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="477,0,0,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Button Name="bDELETE" Content="" Command="{Binding key_delCommand}" CommandParameter="" Margin="62,0,0,8" Focusable="False" Grid.Column="1" Width="454" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="2" BorderBrush="#FFECECEC" Background="Black" Foreground="#FFF1410D"/>
+        <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,201,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
-        <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="41,0,0,8" VerticalAlignment="Bottom" FontSize="16" Foreground="#FF0EE840" Width="531" Height="32" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Margin="403,0,149,0" Foreground="#FF41E466" Width="200" Height="40" Grid.Row="1" FontSize="14" />
-        <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}" CommandParameter="{Binding Text, ElementName=filter}" Margin="477,125,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
-        <Button Content="Добавить в Лучшее" Command="{Binding key_addBestCommand}"        Margin="626,62,0,0" Focusable="False" Grid.Column="2" Width="145" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" RenderTransformOrigin="0.165,-1.22" Click="Button_Click_BEST" CommandParameter="not"/>
+        <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="48,0,0,8" VerticalAlignment="Bottom" FontSize="16" Foreground="#FF0EE840" Width="531" Height="32" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Margin="0,0,15,8" Foreground="#FF41E466" Grid.Row="1" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="23" Width="162" />
+
+
+        <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}"  
+                Margin="401,106,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25"
+                HorizontalAlignment="Left" VerticalAlignment="Top" 
+                Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
+            BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
+                
+                CommandParameter=""
+                
+                
+                
+                Click="Button_Click_3"/>
+
+
+
+
+
+        <Label x:Name="label" Content="BEST" Grid.Column="2" HorizontalAlignment="Right" Margin="0,16,181,0" Width="34" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="25"/>
+        <Label x:Name="label_Copy1" Content="exfilter" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25" Height="25" Grid.Column="2"/>
+        <Label x:Name="label_Copy" Content="name" HorizontalAlignment="Left" Margin="20,70,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25" Height="25" Grid.Column="1"/>
+        <Label x:Name="label_Copy2" Content="grouptitle" HorizontalAlignment="Left" Margin="214,70,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25" Height="33" Grid.Column="2"/>
     </Grid>
 </Window>

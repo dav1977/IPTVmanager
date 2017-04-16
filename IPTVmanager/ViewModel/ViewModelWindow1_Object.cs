@@ -12,7 +12,24 @@ namespace IPTVman.ViewModel
         public static ParamCanal p { get; set; }
 
 
-        
+        object _strPING;
+        public object strPING
+        {
+            get
+            {
+                return _strPING;
+            }
+            set
+            {
+                if (_strPING != value)
+                {
+                    _strPING = value;
+
+                    RaisePropertyChanged("strPING");
+
+                }
+            }
+        }
 
 
     }

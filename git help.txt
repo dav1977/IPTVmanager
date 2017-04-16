@@ -1,0 +1,104 @@
+git config --list
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+git help config
+git config --local core.editor "notepad.exe -multiInst -nosession -notabbar -noPlugin"	
+git clone git@github.com:devlabuser/sharp.git ./
+“./” означает, что создать репозиторий нужно в текущей директории.
+
+
+
+0 git init - создание скрытой папки .git
+1 git clone https://github.com/dav1977/RemoteAMP
+2 перейти в каталог с программой
+русские файлы 
+git config --local core.quotepath false
+ls --show-control-chars
+git config --local core.pager "iconv.exe -f cp1251 -t utf-8 | less"
+git config --local i18n.commitEncoding utf8
+git config --local i18n.logoutputencoding cp1251
+
+3 git status ничего
+4 edit файлов
+5 git add .
+6 git status -s изменения ЗЕЛЕНЫМ!!!
+7 git commit -m"comment1"  (выход из редактора WQ)
+8 git remote add origin https://github.com/dav1977/IPTVmanager
+  git remote add my https://github.com/dav1977/IPTVmanager
+9 git push my master
+
+
+
+ВЕТКИ
+git checkout ветка 
+git checkout -b ветка 
+$ git checkout --track origin/production
+Если команда не сработала, нужно попробовать выполнить обновление:
+$ git remote update
+
+Создаем новую ветку в локальном репозитории:
+$ git checkout -b dev
+Switched to a new branch 'dev'	
+$ git checkout -b dev
+Switched to a new branch 'dev'
+Публикуем ее на github:
+$ git push origin dev
+
+
+
+
+СЛИЯНИЕ 
+git merge новая_ветка    (слияние коммитов(ПОСЛЕДОВАТЕЛЬНО) -> конфликты)
+git rebase новая_ветка   (добавление после текущих, коммитов из новой ветки)
+
+
+
+
+
+Как сделать откат
+
+    git log – просмотр логов, показывает дельту (разницу/diff), привнесенную каждым коммитом.
+    commit 9a452d9cdbdb57e7e4f2b09f8ce2f776cd56657a
+    Author: devlabuser <user@mail.ru>
+    Date:   Wed Jul 31 18:35:47 2013 +0400
+
+        first commit
+
+    commit d528335724dfc15461996ed9d44d74f23ce6a075
+    Author: devlabuser <user@mail.ru>
+    Date:   Wed Jul 31 06:24:57 2013 -0700
+
+        Initial commit
+
+    	
+    commit 9a452d9cdbdb57e7e4f2b09f8ce2f776cd56657a
+    Author: devlabuser <user@mail.ru>
+    Date:   Wed Jul 31 18:35:47 2013 +0400
+     
+        first commit
+     
+    commit d528335724dfc15461996ed9d44d74f23ce6a075
+    Author: devlabuser <user@mail.ru>
+    Date:   Wed Jul 31 06:24:57 2013 -0700
+     
+        Initial commit
+    Копируем идентификатор коммита, до которого происходит откат.
+    Откатываемся до последнего успешного коммита (указываем последний коммит):
+    $ git reset --hard 9a452d955bdb57e7e4f2b09f8ce2fbb6cd56377a
+    HEAD is now at 9a45779 first commit
+
+    	
+    $ git reset --hard 9a452d955bdb57e7e4f2b09f8ce2fbb6cd56377a
+    HEAD is now at 9a45779 first commit
+    Можно откатить до последней версии ветки:
+    $ git reset --hard origin/dev
+    HEAD is now at 9a45779 first commit
+    $ git reset --hard origin/dev
+    HEAD is now at 9a45779 first commit
+
+После того, как откат сделан, и выполнен очередной локальный коммит,
+ при попытке сделать push в удаленный репозиторий, git может начать ругаться, 
+ что версия вашей ветки младше чем на github и вам надо сделать pull. 
+ Это лечится принудительным коммитом:
+git push -f origin master
+1

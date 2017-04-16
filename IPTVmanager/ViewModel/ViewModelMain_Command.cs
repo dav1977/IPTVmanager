@@ -16,11 +16,9 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
- 
-       
-        public RelayCommand key_addBestCommand { get; set; }
-        public RelayCommand key_EDITCommand { get; set; }
-        public RelayCommand key_SORTCommand { get; set; }
+
+        //public RelayCommand key_EDITCommand { get; set; }
+     //   public RelayCommand key_SORTCommand { get; set; }
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand key_OPENCommand { get; set; }
         public RelayCommand key_SAVECommand { get; set; }
@@ -30,9 +28,9 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
-            key_addBestCommand = new RelayCommand(key_addBest);
-            key_EDITCommand = new RelayCommand(key_EDIT);
-            key_SORTCommand = new RelayCommand(key_SORT);
+ 
+           // key_EDITCommand = new RelayCommand(key_EDIT);
+         //   key_SORTCommand = new RelayCommand(key_SORT);
             key_ADDCommand = new RelayCommand(key_ADD);
             key_OPENCommand = new RelayCommand(key_OPEN);
             key_SAVECommand = new RelayCommand(key_SAVE);
@@ -50,99 +48,91 @@ namespace IPTVman.ViewModel
             myLISTfull.Add(new ParamCanal
             { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             
-          
-
-
-      
             // if (Event_UpdateLIST != null) Event_UpdateLIST(myLISTbase.Count);
             RaisePropertyChanged("mycol");
             
-
         }
         
 
-          void key_addBest(object parameter)
-        {
-            if (parameter == null) return;
-
-            myLISTfull.Add(new ParamCanal
-            { name = data.name, ExtFilter = data.best1, group_title = data.best2, http = data.http, logo= data.logo, tvg_name= data.tvg });
-
-
-            RaisePropertyChanged("mycol");
-        }
+      
 
 
         void key_del(object parameter)
         {
-            if (parameter == null || !data.delete) return;
+            //if (parameter == null || !data.delete) return;
+            if (myLISTfull == null) return;
+            if (data.edit_index<0) return;
 
+            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ " + data.name + "\n" + data.http, "  УДАЛЕНИЕ",
+                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes) return;
+                 
             bool rez = false;
             int index = 0;
             foreach (var obj in myLISTfull)
             {
-                if (obj.http == data.http) { myLISTfull.RemoveAt(index); rez = true;  break; }
+                if (data.edit_index==index) { myLISTfull.RemoveAt(index); rez = true;  break; }
                 index++;
-
+               
             }
             if (!rez) return;
             
 
-            data.delete = false;
+    
             RaisePropertyChanged("mycol");
         }
 
-        void key_EDIT(object parameter)
-        {
-            if (parameter == null) return;
-            bool rez = false;
+        //void key_EDIT(object parameter)
+        //{
+        //    if (parameter == null) return;
+        //    bool rez = false;
 
-            int index = 0;
-            foreach (var obj in myLISTfull)
-            {
-                if (obj.http == data.http) { rez = true; data.edit_index = index;  break; }
-                index++;
+        //    int index = 0;
+        //    foreach (var obj in myLISTfull)
+        //    {
+        //        if (obj.http == data.http) { rez = true; data.edit_index = index;  break; }
+        //        index++;
 
-            }
-            if (!rez) return;
+        //    }
+        //    if (!rez) return;
 
-            ParamCanal p;
-            p = new ParamCanal { };
-            myLISTfull.IndexOf(p, data.edit_index);
+        //    ParamCanal p;
+        //    p = new ParamCanal { };
+        //    myLISTfull.IndexOf(p, data.edit_index);
 
-            myLISTfull[data.edit_index].name = data.name;
-            myLISTfull[data.edit_index].ExtFilter = data.extfilter;
-            myLISTfull[data.edit_index].group_title = data.grouptitle;
-            //myLISTfull[data.edit_index].name = select1.ToString();
-            //myLISTfull[data.edit_index].ExtFilter = select2.ToString();
-            //myLISTfull[data.edit_index].group_title = select3.ToString();
-
-
-            RaisePropertyChanged("mycol");
-        }
+        //    myLISTfull[data.edit_index].name = data.name;
+        //    myLISTfull[data.edit_index].ExtFilter = data.extfilter;
+        //    myLISTfull[data.edit_index].group_title = data.grouptitle;
+        //    //myLISTfull[data.edit_index].name = select1.ToString();
+        //    //myLISTfull[data.edit_index].ExtFilter = select2.ToString();
+        //    //myLISTfull[data.edit_index].group_title = select3.ToString();
 
 
-        void key_SORT(object parameter)
-        {
-            // ascending
-            //collection = new ObservableCollection<int>(collection.OrderBy(a => a));
-
-            //// descending
-            //collection = new ObservableCollection<int>(collection.OrderByDescending(a => a));
+        //    RaisePropertyChanged("mycol");
+        //}
 
 
+        //void key_SORT(object parameter)
+        //{
+        //    // ascending
+        //    //collection = new ObservableCollection<int>(collection.OrderBy(a => a));
 
-            //  ObservableCollection<string> _animals = new ObservableCollection<string>()
-            //{ "Cat", "Dog", "Bear", "Lion", "Mouse",
-            //"Horse", "Rat", "Elephant", "Kangaroo", "Lizard",
-            //"Snake", "Frog", "Fish", "Butterfly", "Human",
-            //"Cow", "Bumble Bee"};
+        //    //// descending
+        //    //collection = new ObservableCollection<int>(collection.OrderByDescending(a => a));
 
-            //_animals = new ObservableCollection<string>(_animals.OrderBy(i => i));
 
-            //Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.name));
 
-        }
+        //    //  ObservableCollection<string> _animals = new ObservableCollection<string>()
+        //    //{ "Cat", "Dog", "Bear", "Lion", "Mouse",
+        //    //"Horse", "Rat", "Elephant", "Kangaroo", "Lizard",
+        //    //"Snake", "Frog", "Fish", "Butterfly", "Human",
+        //    //"Cow", "Bumble Bee"};
+
+        //    //_animals = new ObservableCollection<string>(_animals.OrderBy(i => i));
+
+        //    //Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.name));
+
+        //}
 
 
 
@@ -181,8 +171,11 @@ namespace IPTVman.ViewModel
 
         void key_FILTER(object parameter)
         {
-            filter = parameter.ToString();
-            UPDATE_FILTER(parameter.ToString());
+            filter = data.f1;
+            filter2 = data.f2;
+            filter3 = data.f3;
+            
+            UPDATE_FILTER("");
             RaisePropertyChanged("mycol");
            
         }
@@ -429,12 +422,12 @@ namespace IPTVman.ViewModel
 
                             ViewModelMain.myLISTfull.Add(new ParamCanal
                             {
-                                name = newname,
-                                ExtFilter = str_ex,
-                                http = str_http,
-                                group_title = str_gt,
-                                logo = str_logo,
-                                tvg_name = str_tvg
+                                name = newname.Trim(),
+                                ExtFilter = str_ex.Trim(),
+                                http = str_http.Trim(),
+                                group_title = str_gt.Trim(),
+                                logo = str_logo.Trim(),
+                                tvg_name = str_tvg.Trim()
 
                             });
 

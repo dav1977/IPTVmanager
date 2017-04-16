@@ -5,6 +5,8 @@ using System.Text;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
+using System.Windows.Data;
+
 
 namespace IPTVman.ViewModel
 {
@@ -38,6 +40,11 @@ namespace IPTVman.ViewModel
         }
 
 
+
+
+
+
+
         //basic ViewModelBase
         internal void RaisePropertyChanged(string prop)
         {
@@ -52,6 +59,9 @@ namespace IPTVman.ViewModel
        public  event PropertyChangedEventHandler PropertyChanged; //событие выбора канала
 
 
+
+
+       
 
 
 
