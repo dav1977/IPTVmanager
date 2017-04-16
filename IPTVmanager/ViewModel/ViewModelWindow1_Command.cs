@@ -28,11 +28,52 @@ namespace IPTVman.ViewModel
         public RelayCommand key_ADDBEST { get; set; }
 
 
+        System.Timers.Timer Timer2;
+
+        public void CreateTimer2(int ms)
+        {
+            if (Timer2 == null)
+            {
+                Timer2 = new System.Timers.Timer();
+                //Timer1.AutoReset = false; //
+                Timer2.Interval = ms;
+                Timer2.Elapsed += Timer2Tick;
+                Timer2.Enabled = true;
+                Timer2.Start();
+            }
+
+
+
+        }
+
+        static bool newPING = false;
+        private void Timer2Tick(object sender, EventArgs e)
+        {
+
+            if (ViewModelBase.result77 != "")
+            {
+                if (!newPING)
+                {
+                    analizPING(ViewModelBase.result77);
+                    newPING = true;
+                }
+            }
+            else newPING = false;
+
+            //if (task_ping != null)
+            //{
+            //    if (task_ping.Status != System.Threading.Tasks.TaskStatus.Running)
+            //    {
+            //        if (newPING == true) ViewModelBase.result77 = "task  stopped";
+            //    }
+
+            //}
+        }
 
         //============================== INIT ==================================
         public ViewModelWindow1(string lastText)
         {
-
+            CreateTimer2(500);
             data.one_add = false;
 
             p = new ParamCanal
@@ -92,46 +133,19 @@ namespace IPTVman.ViewModel
 
 
 
-        public string GET()
-        {
-            String url = p.http.Trim();
-       
-            try
-            {
-                WebClient client = new WebClient();
-
-              // MessageBox.Show("IP="+ ">>" + result.ToString() + "<<", "non",
-              //   MessageBoxButton.OK);
-
-                string rez="";
-                Stream stream = client.OpenRead(url);
-                StreamReader sr = new StreamReader(stream);
-                string newLine;
-                while ((newLine = sr.ReadLine()) != null)
-                {
-                    string[] words;
-                    words = newLine.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
-
-                    foreach (var s in words)
-                    rez += s.ToString() + '\n';
-
-                }
-                stream.Close();
-                return rez;
-            }
-            catch (Exception ex) {
-                //MessageBox.Show("НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString(), "",    
-                //                    MessageBoxButton.OK);
-                return ("НЕ СУЩЕСТВУЕТ "+ex.Message);
-            }
-        }
 
 
         void PING(object selectedItem)
         {
+     
             if (p.http == null) return;
-            strPING = GET();
+            p.ping = "";
+            strPING = GET(p.http);
+        }
 
+
+        void analizPING(string strPING)
+        { 
             string n0 = strPING.ToString();
             string n1 = n0.Replace("#EXTM3U", "");
             string n2 = n1.Replace("#EXT-X-VERSION:3", "");

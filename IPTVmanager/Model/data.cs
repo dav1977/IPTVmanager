@@ -15,6 +15,10 @@ namespace IPTVman.Model
         public static string f1,f2,f3;
 
         public static bool one_add = false;//дребезг кнопки
+
+        public static bool start_ping = false;
+
+        
     }
 
     
