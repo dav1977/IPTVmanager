@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Threading.Tasks;
 
+
 namespace IPTVman.ViewModel
 {
     class ViewModelBase : INotifyPropertyChanged
@@ -45,7 +46,56 @@ namespace IPTVman.ViewModel
             }
         }
 
-         public Task<string> AsyncTaskGet(string url)
+
+
+
+
+        string UDPtest(string url)
+        {
+            //udp://@233.7.70.79:5000&tvssrc=N
+            Query.Query sQuery = new Query.Query("233.7.70.79", 5000);
+
+            sQuery.Send('i');
+
+            int count = sQuery.Receive();
+
+            string[] info = sQuery.Store(count);
+
+            string rez = "";
+
+            foreach (var s in info)
+            {
+
+                rez += s.ToString();
+            }
+
+            result77 = rez;
+            /* 
+             * Variable 'info' might now contain:   
+             *   Password   Players     Max. players    Hostname                Gamemode    Language
+             * { "0",       "12",       "500",          "Query test server",    "LVDM",     "English" }
+             */
+
+            //-------------------------
+
+            //Query.RCONQuery sQuery = new Query.RCONQuery("127.0.0.1", 7777, "changeme");
+
+            //sQuery.Send("echo Hello from C#");
+
+            //int count = sQuery.Receive();
+
+            //string[] info = sQuery.Store(count);
+
+            /* 
+             * Variable 'info' might now contain:
+             * { "Hello from C#" }
+             */
+            return "";
+
+        }
+
+
+        public Task<string> AsyncTaskGet(string url)
         {
          
             return Task.Run(() =>
@@ -53,7 +103,7 @@ namespace IPTVman.ViewModel
                 //----------------
 
                 return GETnoas(url);
-
+                
                 //----------------
             });
         }
@@ -76,9 +126,13 @@ namespace IPTVman.ViewModel
             if (task_ping.Status == TaskStatus.Running) return "task is running";
             // GETasyn(u);//асинхр
 
-            test(u);
+   //         test(u);
+
+            string ss= UDPtest("");
+
+            if (result77 == "") result77 = "НЕТУ UDP";
             //result77=GETnoas(u);//синхр
-             
+
             return result77;
         }
 

@@ -68,6 +68,7 @@
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
+    <Compile Include="ViewModel\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
     <Compile Include="ViewModel\ViewModelWindow1_Object.cs" />
