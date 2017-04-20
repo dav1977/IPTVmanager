@@ -18,7 +18,7 @@ namespace IPTVman.ViewModel
 
     public partial class MainWindow : Window
     {
-       
+        public static Vlc.DotNet.Player player = null;
 
         public MainWindow()
         {

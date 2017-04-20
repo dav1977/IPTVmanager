@@ -56,7 +56,7 @@ namespace IPTVman.ViewModel
            
         }
 
-        public Vlc.DotNet.Player pl = null;
+       
 
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
@@ -64,10 +64,10 @@ namespace IPTVman.ViewModel
             IPTVman.Model.data.URLPLAY = urlTEXT.Text;
             IPTVman.Model.data.playerUPDATE = true;
 
-            if (pl == null)
+            if (MainWindow.player == null)
             {
-                pl = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
-                pl.Show();
+                MainWindow.player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
+                MainWindow.player.Show();
             }
         }
     }

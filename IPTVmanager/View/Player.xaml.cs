@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using System.Threading;
 //using Vlc.DotNet.Wpf;
 //using Vlc.DotNet.Forms;
 //using Vlc.DotNet.Core;
@@ -38,19 +39,23 @@ namespace Vlc.DotNet
 
             //use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 900);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += timer_Tick;
             timer.Start();
         }
 
-
+        bool lok=false;
         private void timer_Tick(object sender, EventArgs e)
         {
-
+            if (lok) return;
+            lok = true;
             if (IPTVman.Model.data.playerUPDATE)
             {
+                key1.Content = "not playing";
                 IPTVman.Model.data.playerUPDATE = false;
                 if (myControl.MediaPlayer.IsPlaying) myControl.MediaPlayer.Stop();
+
+                Thread.Sleep(500);
                 string url = IPTVman.Model.data.URLPLAY;
                 try
                 {
@@ -64,7 +69,8 @@ namespace Vlc.DotNet
                 }
             }
 
-
+            key1.Content = "STOP";
+            lok = false;
         }
 
         private void OnVlcControlNeedsLibDirectory(object sender, Forms.VlcLibDirectoryNeededEventArgs e)
