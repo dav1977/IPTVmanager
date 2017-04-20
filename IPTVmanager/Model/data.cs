@@ -4,9 +4,16 @@ using System.ComponentModel;
 namespace IPTVman.Model
 {
 
+    
+
 
     public static class data
     {
+
+
+       
+
+
         public static int edit_index;
         public static string name,extfilter,grouptitle,tvg,http,logo, ping;
 
@@ -18,7 +25,8 @@ namespace IPTVman.Model
 
         public static bool start_ping = false;
 
-        
+        public static bool playerUPDATE = false;
+        public static string URLPLAY = "";
     }
 
     

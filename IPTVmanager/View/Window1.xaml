@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:IPTVman.Helpers" x:Class="IPTVman.ViewModel.Window1" WindowStartupLocation="CenterScreen"
-        DataContext="{DynamicResource ViewModelMain}" Height="413.5" Width="758" Closing="Window_Closing">
+    
+        DataContext="{DynamicResource ViewModelWindow1}" Height="413.5" Width="758" Closing="Window_Closing">
 
 
 
@@ -24,7 +25,7 @@
         <TextBox x:Name="textBox_Copy" Text="{Binding p.group_title}" HorizontalAlignment="Left" Height="23" Margin="56,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="609" Grid.ColumnSpan="2"/>
         <TextBox x:Name="textBoxPING2" Text="{Binding p.ping}" HorizontalAlignment="Left" Height="66" Margin="56,123,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="609" Grid.ColumnSpan="2"/>
         <TextBox x:Name="textBoxPING" Text="{Binding strPING, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="103" Margin="140,194,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="525" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="textBox_Copy1" Text="{Binding p.http}" HorizontalAlignment="Left" Height="23" Margin="56,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="609" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="urlTEXT" Text="{Binding p.http}" HorizontalAlignment="Left" Height="23" Margin="56,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="609" Grid.ColumnSpan="2"/>
         <Button x:Name="exit_Copy" Content="СОХРАНИТЬ" Command="{Binding key_SAVE}" HorizontalAlignment="Right" Margin="0,312,21,0" VerticalAlignment="Top" Width="138" Height="48" Grid.Column="1" RenderTransformOrigin="-0.028,1.5"/>
         <Label x:Name="label" Content="http" HorizontalAlignment="Left" Margin="2,10,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
         <Label x:Name="label_Copy" Content="name" HorizontalAlignment="Left" Margin="0,38,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
@@ -33,6 +34,7 @@
         <Label x:Name="label_Copy3" Content="ping" HorizontalAlignment="Left" Margin="0,123,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
         <Button x:Name="ButtonBEST" Content="Добавить в BEST" Command="{Binding key_ADDBEST}" HorizontalAlignment="Left" Margin="10,325,0,0" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.509,3.614"/>
         <ProgressBar Name="ProgressBar1" HorizontalAlignment="Left" Height="58" Margin="140,302,0,0" VerticalAlignment="Top" Width="345" Foreground="#FF60D301" Background="#FF290D5B"/>
+        <Button x:Name="Button_Copy" Content="PLAY" Command="{Binding key_PING}" HorizontalAlignment="Left" Margin="10,213,0,0" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.626,-2.026" Click="Button_Copy_Click"/>
     </Grid>
 
 </Window>

@@ -53,7 +53,22 @@ namespace IPTVman.ViewModel
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
+           
+        }
+
+        public Vlc.DotNet.Player pl = null;
+
+        private void Button_Copy_Click(object sender, RoutedEventArgs e)
+        {
+
+            IPTVman.Model.data.URLPLAY = urlTEXT.Text;
+            IPTVman.Model.data.playerUPDATE = true;
+
+            if (pl == null)
+            {
+                pl = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
+                pl.Show();
+            }
         }
     }
 }
