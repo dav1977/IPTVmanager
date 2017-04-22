@@ -18,6 +18,7 @@ namespace Vlc.DotNet
         public bool enable = false;
         public Player()
         {
+            tick = 0; i = 0;
             InitializeComponent();
             enable = true;
             try {
@@ -53,9 +54,27 @@ namespace Vlc.DotNet
             timer.Start();
         }
 
+        uint tick = 0;
+        static byte i = 0;
         bool lok=false;
         private void timer_Tick(object sender, EventArgs e)
         {
+
+
+            if (myControl.MediaPlayer.IsPlaying) { this.Title = "VLC Player";  tick = 0; i = 0; }
+            else
+            {
+                if (i == 0)
+                    this.Title = "Opening ... ";
+                if (i < 5) this.Title = "Opening .   " + tick.ToString();
+                if (i > 5 && i < 10) this.Title = "Opening . .   " + tick.ToString();
+                if (i > 10 && i < 15) this.Title = "Opening . . .   " + tick.ToString();
+                if (i > 15 && i < 20) this.Title = "Opening . . . . . . .   " + tick.ToString();
+                i++;
+                if (i > 20) i = 1;
+                tick++;
+            }
+
             if (lok) return;
             lok = true;
             if (IPTVman.Model.data.playerUPDATE)
