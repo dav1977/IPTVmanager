@@ -18,11 +18,19 @@ namespace Vlc.DotNet
         public Player()
         {
             InitializeComponent();
-       
-            myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
-            myControl.MediaPlayer.EndInit();
-            
-           
+
+            try {
+                myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
+                myControl.MediaPlayer.EndInit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("НЕТ библиотеки VLC", "error");
+                this.Close();
+
+            }
+
+
 
             string url = IPTVman.Model.data.URLPLAY;
             try
@@ -82,9 +90,9 @@ namespace Vlc.DotNet
 
 
             if (AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture == ProcessorArchitecture.X86)
-                e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/"));
+                e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x86/"));
             else
-                e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/"));
+                e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x64/"));
         }
 
         private void OnPlayButtonClick(object sender, RoutedEventArgs e)

@@ -135,10 +135,10 @@ namespace IPTVman.ViewModel
 
 
                 // Создаем UdpClient
-                UdpClient udpClient;//= new UdpClient();
+                UdpClient udpClient=new UdpClient();
 
                 // Соединяемся с удаленным хостом
-                /// udpClient.Connect(ipAddr, 5000);
+                 udpClient.Connect(ipAddr, 5000);
 
 
 
@@ -160,19 +160,19 @@ namespace IPTVman.ViewModel
 
                 IPEndPoint RemoteIpEndPoint = null;
 
-                //while (true)
-                //{
+                while (true)
+                {
 
 
 
-                //    // Ожидание дейтаграммы
-                //    byte[] receiveBytes = udpClient.Receive( ref RemoteIpEndPoint);
+                    // Ожидание дейтаграммы
+                    byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
 
-                //    // Преобразуем и отображаем данные
-                //    string returnData = Encoding.UTF8.GetString(receiveBytes);
-                //    results = returnData;
-                //    if (results != "") break;
-                //}
+                    // Преобразуем и отображаем данные
+                    string returnData = Encoding.UTF8.GetString(receiveBytes);
+                    results = returnData;
+                    if (results != "") break;
+                }
 
 
 
@@ -199,8 +199,8 @@ namespace IPTVman.ViewModel
                 ///////////-------------------
                 IPEndPoint remoteIPEndPoint = new IPEndPoint(multicastIP, 5000);
 
-                //  udpClient.Client.Bind(remoteIPEndPoint);
-
+                 udpClient.Client.Bind(remoteIPEndPoint);
+                
                 //udpClient.Connect(ipAddr, 5000);
 
                 //// Отправка простого сообщения
@@ -223,64 +223,219 @@ namespace IPTVman.ViewModel
                 //}
 
 
+                //----------------------------------------------------------------------------------
 
+                //                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,
+                //               ProtocolType.Udp);
 
-                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,
-               ProtocolType.Udp);
+                //                IPAddress broadcast = IPAddress.Parse("233.7.70.39");
 
-                IPAddress broadcast = IPAddress.Parse("233.7.70.39");
+                //                byte[] sendbuf = Encoding.ASCII.GetBytes("test");
+                //                IPEndPoint ep = new IPEndPoint(broadcast, 5000);
 
-                byte[] sendbuf = Encoding.ASCII.GetBytes("test");
-                IPEndPoint ep = new IPEndPoint(broadcast, 5000);
+                //                s.SendTo(sendbuf, ep);
 
-                s.SendTo(sendbuf, ep);
+                //                bool done = false;
 
-                bool done = false;
-
-                UdpClient listener = new UdpClient(5001);
-                IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, 5001);
-
-
-
-              var  ping = new Socket(AddressFamily.InterNetwork,
-                                SocketType.Dgram, ProtocolType.Udp);
-
-
- ping.SetSocketOption(SocketOptionLevel.Udp,
-SocketOptionName.SendTimeout, 2000);
-
-                byte[] msg = new byte[1] { 1 };
-                EndPoint PingEndPoint = (EndPoint)remoteIPEndPoint;
-                ping.SendTo(msg, PingEndPoint);
-
-
-                
-
-                try
-                {
-                    while (!done)
-                    {
-                        //Console.WriteLine("Waiting for broadcast");
-                        byte[] bytes = listener.Receive(ref groupEP);
-
-                        //  Console.WriteLine("Received broadcast from {0} :\n {1}\n",
-                        //     groupEP.ToString(),
-                        //     Encoding.ASCII.GetString(bytes, 0, bytes.Length));
-
-                        string rez = groupEP.ToString();
-                        rez = ping.Available.ToString();
-
-                        if (rez != "") { result77 = rez; done = true; }
-                    }
-
-                }
-                catch (Exception e)
-                {
-                  //  Console.WriteLine(e.ToString());
-                }
+                //                UdpClient listener = new UdpClient(5001);
+                //                IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, 5001);
 
 
 
+                //              var  ping = new Socket(AddressFamily.InterNetwork,
+                //                                SocketType.Dgram, ProtocolType.Udp);
+
+
+                // ping.SetSocketOption(SocketOptionLevel.Udp,
+                //SocketOptionName.SendTimeout, 2000);
+
+                //                byte[] msg = new byte[1] { 1 };
+                //                EndPoint PingEndPoint = (EndPoint)remoteIPEndPoint;
+                //                ping.SendTo(msg, PingEndPoint);
+
+
+
+
+                //                try
+                //                {
+                //                    while (!done)
+                //                    {
+                //                        //Console.WriteLine("Waiting for broadcast");
+                //                        byte[] bytes = listener.Receive(ref groupEP);
+
+                //                        //  Console.WriteLine("Received broadcast from {0} :\n {1}\n",
+                //                        //     groupEP.ToString(),
+                //                        //     Encoding.ASCII.GetString(bytes, 0, bytes.Length));
+
+                //                        string rez = groupEP.ToString();
+                //                        rez = ping.Available.ToString();
+
+                //                        if (rez != "") { result77 = rez; done = true; }
+                //                    }
+
+                //                }
+                //                catch (Exception e)
+                //                {
+                //                  //  Console.WriteLine(e.ToString());
+                //                }
+
+
+                //----------------------------------------------------------------------------------
+
+
+
+                //try
+                //{
+
+                //    IPEndPoint Address = new IPEndPoint(IPAddress.Parse("233.7.70.39"), (int)5000);
+                //    var socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram, ProtocolType.Udp);
+                //    socket.Connect(Address);
+                //    //Send
+                //    byte[] recvData = new byte[1];
+                //    socket.Send(receiveBytes);
+
+
+                //    int recv = socket.Receive(recvData);
+
+                //}
+                //catch {
+
+                //    MessageBox.Show("НЕТ udp", "error");
+                //}
+
+
+
+
+
+                //MessageBox.Show(" OK ", "error");
+
+
+
+
+
+
+
+
+                //----------------------------------------------------------------------------------
+
+
+
+        //        Start building the headers
+        //        Console.WriteLine("Building the packet header...");
+        //        int messageSize = 64;
+        //        byte[] builtPacket, payLoad = new byte[messageSize];
+        //        var UdpHeader udpPacket = new UdpHeader();
+        //        var ArrayList headerList = new ArrayList();
+        //        Socket rawSocket = null;
+        //        SocketOptionLevel socketLevel;
+
+        //        Initialize the payload
+        //        Console.WriteLine("Initialize the payload...");
+        //        for (int i = 0; i < payLoad.Length; i++)
+        //            payLoad[i] = (byte)'0';
+
+        //        Fill out the UDP header first
+        //        Console.WriteLine("Filling out the UDP header...");
+        //        udpPacket.SourcePort = 33434;
+        //        udpPacket.DestinationPort = 33434;
+        //        udpPacket.Length = (ushort)(UdpHeader.UdpHeaderLength + messageSize);
+        //        udpPacket.Checksum = 0;
+
+        //        Ipv4Header ipv4Packet = new Ipv4Header();
+
+        //        Build the IPv4 header
+        //        Console.WriteLine("Building the IPv4 header...");
+        //        ipv4Packet.Version = 4;
+        //        ipv4Packet.Protocol = (byte)ProtocolType.Udp;
+        //        ipv4Packet.Ttl = 30;
+        //        ipv4Packet.Offset = 0;
+        //        ipv4Packet.Length = (byte)Ipv4Header.Ipv4HeaderLength;
+        //        ipv4Packet.TotalLength = (ushort)Convert.ToUInt16(Ipv4Header.Ipv4HeaderLength + UdpHeader.UdpHeaderLength + messageSize);
+        //        ipv4Packet.SourceAddress = sourceAddress;
+        //        ipv4Packet.DestinationAddress = destAddress;
+
+        //        Set the IPv4 header in the UDP header since it is required to calculate the
+        //           pseudo header checksum
+        //        Console.WriteLine("Setting the IPv4 header for pseudo header checksum...");
+        //        udpPacket.ipv4PacketHeader = ipv4Packet;
+
+        //        Add IPv4 header to list of headers-- headers should be added in th order
+        //            they appear in the packet (i.e.IP first then UDP)
+        //        Console.WriteLine("Adding the IPv4 header to the list of header, encapsulating packet...");
+        //        headerList.Add(ipv4Packet);
+        //        socketLevel = SocketOptionLevel.IP;
+
+        //        Add the UDP header to list of headers after the IP header has been added
+        //        Console.WriteLine("Adding the UDP header to the list of header, after IP header...");
+        //        headerList.Add(udpPacket);
+
+        //        Convert the header classes into the binary on-the - wire representation
+        //        Console.WriteLine("Converting the header classes into the binary...");
+        //        builtPacket = udpPacket.BuildPacket(headerList, payLoad);
+
+        //        Create the raw socket for this packet
+        //        Console.WriteLine("Creating the raw socket using Socket()...");
+        //       rawSocket = new Socket(sourceAddress.AddressFamily, SocketType.Raw, ProtocolType.Udp);
+
+        //        Bind the socket to the interface specified
+        //        Console.WriteLine("Binding the socket to the specified interface using Bind()...");
+        //        IPAddress bindAddress = IPAddress.Any;
+        //rawSocket.Bind(new IPEndPoint(bindAddress, 0));
+
+        //         Set the HeaderIncluded option since we include the IP header
+        //        Console.WriteLine("Setting the HeaderIncluded option for IP header...");
+        //        rawSocket.SetSocketOption(socketLevel, SocketOptionName.HeaderIncluded, 1);
+        //        rawSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+
+        //        Stopwatch timer = new Stopwatch();
+
+        //        try
+        //        {
+        //            for (int i = 0; i< 5; i++)
+        //            {
+        //                timer.Reset();
+
+        //                timer.Start();
+
+        //                int rc = rawSocket.SendTo(builtPacket, new IPEndPoint(destAddress, 0));
+        //Console.WriteLine("Sent {0} bytes to {1}", rc, destAddress);
+
+        //                Socket icmpListener = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.Icmp);
+        //icmpListener.Bind(new IPEndPoint(sourceAddress, 0));
+        //                icmpListener.IOControl(IOControlCode.ReceiveAll, new byte[] { 1, 0, 0, 0 }, new byte[] { 1, 0, 0, 0 });
+        //                icmpListener.Shutdown(SocketShutdown.Send);
+
+        //                byte[] buffer = new byte[4096];
+        //EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+        //                try
+        //                {
+        //                    int bytesRead = icmpListener.ReceiveFrom(buffer, ref remoteEndPoint);
+        //timer.Stop();
+        //                    Console.WriteLine("Recieved " + bytesRead + " bytes from " + destAddress + " in " + timer.ElapsedMilliseconds + "ms\n");
+        //                }
+        //                catch
+        //                {
+        //                     Console.WriteLine("Server is not responding!");
+        //                }
+        //                finally
+        //                {
+        //                    icmpListener.Close();
+        //                }
+        //            }
+
+        //        }
+        //        catch (SocketException err)
+        //        {
+        //            Console.WriteLine("Socket error occurred: {0}", err.Message);
+        //        }
+        //        finally
+        //        {
+        //            rawSocket.Close();
+        //        }
+
+
+                //------------------------------------------------------------------------------------------------------
 
 
                 // Закрываем соединение
@@ -308,7 +463,7 @@ SocketOptionName.SendTimeout, 2000);
             {
                 //----------------
 
-                return GETnoas(url);
+                return  GETnoas(url);
                 
                 //----------------
             });
@@ -326,22 +481,37 @@ SocketOptionName.SendTimeout, 2000);
 
         public string GET(string u)
         {
+            string ip= "";
             result77 = "";
+            Regex regex1 = new Regex("http:");
+            Regex regex2 = new Regex("https:");
 
-            if (task_ping !=null)
-            if (task_ping.Status == TaskStatus.Running) return "task is running";
-           GETasyn(u);//асинхр
+            var match1 = regex1.Match(u);
+            var match2 = regex2.Match(u);
 
-   //         test(u);
+            if (match1.Success || match2.Success)
+            {
+                if (task_ping != null)
+                    if (task_ping.Status == TaskStatus.Running) return "task is running";
+                GETasyn(u);//асинхр
+                           //         test(u);
+               
 
-            //string ss= UDPtest("");
-           // result77 = NEW_UDP();
+            }
+            else
+            {
+               
+
+             
+
+                //string ss= UDPtest("");
+                result77 = NEW_UDP();
 
 
-            //if (result77 == "") result77 = "НЕТУ UDP";
-            //result77=GETnoas(u);//синхр
-
-            return result77;
+                //if (result77 == "") result77 = "НЕТУ UDP";
+                //result77=GETnoas(u);//синхр
+            }
+            return ip+ result77;
         }
 
 
@@ -385,21 +555,80 @@ SocketOptionName.SendTimeout, 2000);
         }
 
 
-        public static string GetIPAddress(string serverName)
+        public static string GetIPlocalAddress(string serverName)
         {
+            string ip0="";
+            try
+            {
+               // IPHostEntry hostname = Dns.GetHostByName(serverName);
+                IPAddress[] IPs = Dns.GetHostAddresses(Dns.GetHostName());
+                foreach (IPAddress addr in IPs)
+                {
+                    if (addr.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        ip0 += addr.ToString();
+                    }
 
+                   
+                }
+                  //  ip0 = IPs[0].ToString();
+            }
+            catch (Exception ex)
+            {
+                ip0 = "error";// Console.WriteLine(ex.ToString());
+            }
 
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(serverName);
-            IPAddress ipAddress = ipHostInfo.AddressList
-                .FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork);
-
-            return ipAddress.ToString();
+            return ip0;
         }
+
+
+        public static string GetIPAddress(string url)
+        {
+            string[] split= {"","" };
+            string ip0 = "";
+            try
+            {
+
+                string hostname = "";
+                // hostname = "cdn-01.bonus-tv.ru";
+                split = url.Split(new Char[] { '/', ':' });
+                hostname = split[3];
+               
+                IPHostEntry entry = Dns.GetHostEntry(hostname);
+
+                foreach (IPAddress a in entry.AddressList)
+                    ip0 += a.ToString() + ";" ;
+
+                if (entry.Aliases.Length != 0)
+                {
+                    foreach (string aliasName in entry.Aliases)
+                        ip0 += aliasName + "\n";
+                }
+                else ip0 += "alias not ";
+              
+
+
+            }
+            catch (Exception ex)
+            {
+                ip0 = "error "+ex.Message.ToString();// Console.WriteLine(ex.ToString());
+            }
+
+            return split[3]+ip0;
+        }
+
 
         public string GETnoas(string url)
         {
             url = url.Trim();
             string ip_url = "";
+
+            string ip = "ip=" + GetIPAddress(url) + "; ";
+            result77 = ip;
+
+          string [] split = url.Split(new Char[] { '.' });
+
+            if (split.Length < 2) return "НЕТ IP " + ip;
 
             try
             {
@@ -411,17 +640,6 @@ SocketOptionName.SendTimeout, 2000);
                 //    ip_url = replay.Address.ToString();
                 //}
                 //ip_url = GetIPAddress(url);
-
-
-
-
-
-
-
-
-
-
-
 
 
                         WebClient client = new WebClient();
@@ -449,9 +667,12 @@ SocketOptionName.SendTimeout, 2000);
                 if (stream!=null) stream.Close();
 
                 if (stream == null) { result77 = "НЕ СУЩЕСТВУЕТ."; }
-                result77 = rez;
+
+
+               
+                result77 = ip+rez;
                 data.start_ping = false;
-                return rez;
+                return result77;
             }
             catch (Exception ex)
             {
