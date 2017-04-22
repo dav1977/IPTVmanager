@@ -674,6 +674,25 @@ namespace IPTVman.ViewModel
                 data.start_ping = false;
                 return result77;
             }
+            catch (WebException ex)
+            {
+                //ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
+                string rez = "WebException Параметры не выдал  ";// +ex.Message.ToString()+" ";
+
+                // using (var str = ex.Response.GetResponseStream())
+                //using (var read = new StreamReader(str))
+                //{
+                //    rez += read.ToString() + '\n';
+                //}
+
+               // WebClient client = new WebClient();
+               // Stream stream = client.;
+
+                result77 = ip + rez;
+                data.start_ping = false;
+                return result77;
+            }
+
             catch (Exception ex)
             {
                 //MessageBox.Show("НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString(), "",    

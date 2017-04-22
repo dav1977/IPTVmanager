@@ -31,7 +31,7 @@ namespace IPTVman.ViewModel
                 if (ACOLL!=null) ACOLL.UPDATE();
                 
                
-                if (Event_UpdateLIST != null) Event_UpdateLIST(myLISTbase.Count);
+                if (Event_UpdateLIST != null && myLISTbase!=null) Event_UpdateLIST(myLISTbase.Count);
                 RaisePropertyChanged("numberCANALS");
                 return ACOLL;
             }
