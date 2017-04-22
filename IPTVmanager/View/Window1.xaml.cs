@@ -64,12 +64,24 @@ namespace IPTVman.ViewModel
             IPTVman.Model.data.URLPLAY = urlTEXT.Text;
             IPTVman.Model.data.playerUPDATE = true;
 
+
+
             try
             {
                 if (MainWindow.player == null)
                 {
                     MainWindow.player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
                     MainWindow.player.Show();
+                }
+                else
+                {
+                    if (!MainWindow.player.enable)
+                    {
+                        MainWindow.player.enable = true;
+                        MainWindow.player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
+                        MainWindow.player.Show();
+                    }
+
                 }
             }
             catch { }

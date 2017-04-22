@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:Vlc.DotNet"
         xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
         mc:Ignorable="d"
-        Title="VLC PLAYER" Height="350" Width="525" Closing="Window_Closing_1" Closed="Window_Closed">
+        Title="VLC PLAYER" Height="400.917" Width="522" Closing="Window_Closing_1" Closed="Window_Closed">
 
-    <Grid>
+    <Grid Margin="0,0,-4,-4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="149*"/>
+            <ColumnDefinition Width="368*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -18,12 +22,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <wpf:VlcControl Grid.Row="0" x:Name="myControl" Margin="42,22,35,22"/>
-
-        <Button Grid.Row="1" Name="key1" Content="STOP" Click="OnPlayButtonClick" Margin="42,0,54,0"></Button>
-        <Button Grid.Row="2" Click="OnForwardButtonClick" x:Name="Forward">Forward</Button>
-        <Button Grid.Row="3" Click="GetLength_Click" x:Name="GetLength">Get Length</Button>
-        <Button Grid.Row="4" Click="GetCurrentTime_Click" x:Name="GetCurrentTime">Get Current Time</Button>
-        <Button Grid.Row="5" Click="SetCurrentTime_Click" x:Name="SetCurrentTime">Set Current Time to 5s</Button>
+        <wpf:VlcControl Grid.Row="0" x:Name="myControl" Grid.ColumnSpan="2" Margin="-88,-35,0,0"/>
     </Grid>
 </Window>

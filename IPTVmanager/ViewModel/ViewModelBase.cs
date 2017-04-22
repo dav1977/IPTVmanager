@@ -676,8 +676,19 @@ namespace IPTVman.ViewModel
             }
             catch (WebException ex)
             {
-                //ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
-                string rez = "WebException Параметры не выдал  ";// +ex.Message.ToString()+" ";
+                string rez = "";
+                string error = ex.Message.ToString();
+                Regex regex1 = new Regex("(500)");//ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
+
+                var r = regex1.Match(error);
+
+                if (r.Success)
+                {
+                    rez = "WebException(500) НЕТ ДАННЫХ  " + " ";
+                }
+                else
+                    rez = "НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString() + " ";
+              
 
                 // using (var str = ex.Response.GetResponseStream())
                 //using (var read = new StreamReader(str))

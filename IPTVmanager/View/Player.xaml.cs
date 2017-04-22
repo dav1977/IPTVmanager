@@ -15,10 +15,11 @@ namespace Vlc.DotNet
     /// </summary>
     public partial class Player : Window
     {
+        public bool enable = false;
         public Player()
         {
             InitializeComponent();
-
+            enable = true;
             try {
                 myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
                 myControl.MediaPlayer.EndInit();
@@ -59,7 +60,7 @@ namespace Vlc.DotNet
             lok = true;
             if (IPTVman.Model.data.playerUPDATE)
             {
-                key1.Content = "not playing";
+               // key1.Content = "not playing";
                 IPTVman.Model.data.playerUPDATE = false;
                 if (myControl.MediaPlayer.IsPlaying) myControl.MediaPlayer.Stop();
 
@@ -77,7 +78,7 @@ namespace Vlc.DotNet
                 }
             }
 
-            key1.Content = "STOP";
+           // key1.Content = "STOP";
             lok = false;
         }
 
@@ -112,18 +113,18 @@ namespace Vlc.DotNet
 
         private void GetLength_Click(object sender, RoutedEventArgs e)
         {
-            GetLength.Content = myControl.MediaPlayer.Length + " ms";
+           // GetLength.Content = myControl.MediaPlayer.Length + " ms";
         }
 
         private void GetCurrentTime_Click(object sender, RoutedEventArgs e)
         {
-            GetCurrentTime.Content = myControl.MediaPlayer.Time + " ms";
+           // GetCurrentTime.Content = myControl.MediaPlayer.Time + " ms";
         }
 
         private void SetCurrentTime_Click(object sender, RoutedEventArgs e)
         {
-            myControl.MediaPlayer.Time = 5000;
-            SetCurrentTime.Content = myControl.MediaPlayer.Time + " ms";
+           // myControl.MediaPlayer.Time = 5000;
+           // SetCurrentTime.Content = myControl.MediaPlayer.Time + " ms";
         }
 
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
@@ -132,7 +133,10 @@ namespace Vlc.DotNet
             {
                 myControl.MediaPlayer.Stop();
                 myControl.MediaPlayer.Dispose();
+               
             }
+            enable = false;
+
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -142,6 +146,7 @@ namespace Vlc.DotNet
                 myControl.MediaPlayer.Stop();
                 myControl.MediaPlayer.Dispose();
             }
+            enable = false;
         }
     }
 }
