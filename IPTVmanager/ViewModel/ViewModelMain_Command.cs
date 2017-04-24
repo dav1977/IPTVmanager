@@ -26,6 +26,9 @@ namespace IPTVman.ViewModel
         public RelayCommand key_SAVECommand { get; set; }
         public RelayCommand key_delCommand { get; set; }
 
+        public RelayCommand key_DelFILTER { get; set; }
+        
+
         public RelayCommand key_FILTERCommand { get; set; }
 
         public RelayCommand key_FilterOnlyBESTCommand { get; set; }
@@ -39,6 +42,7 @@ namespace IPTVman.ViewModel
             key_OPENCommand = new RelayCommand(key_OPEN);
             key_SAVECommand = new RelayCommand(key_SAVE);
             key_delCommand = new RelayCommand(key_del);
+            key_DelFILTER = new RelayCommand(key_delFILTER);
             key_FILTERCommand = new RelayCommand(key_FILTER);
             key_FilterOnlyBESTCommand = new RelayCommand(key_FILTERbest);
         }
@@ -70,20 +74,43 @@ namespace IPTVman.ViewModel
             MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ " + data.name + "\n" + data.http, "  УДАЛЕНИЕ",
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result != MessageBoxResult.Yes) return;
-                 
-            bool rez = false;
-            int index = 0;
-            foreach (var obj in myLISTfull)
-            {
-                if (data.edit_index==index) { myLISTfull.RemoveAt(index); rez = true;  break; }
-                index++;
-               
-            }
-            if (!rez) return;
-            
 
-    
+
+            var item = ViewModelMain.myLISTfull.Find(x =>
+                  (x.http == data.http && x.ExtFilter == data.extfilter && x.group_title == data.grouptitle));
+
+            myLISTfull.Remove(item);
+
             RaisePropertyChanged("mycol");
+        }
+
+
+        void key_delFILTER(object parameter)
+        {
+
+            if (myLISTfull == null) return;
+            if (data.edit_index < 0) return;
+
+            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!", "  УДАЛЕНИЕ",
+                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes) return;
+
+            uint ct = 0;
+
+            foreach (var obj in myLISTbase)
+            {
+                var item = ViewModelMain.myLISTfull.Find(x =>
+                 (x.http == obj.http && x.ExtFilter == obj.ExtFilter && x.group_title == obj.group_title));
+
+                if (item != null) { myLISTfull.Remove(item);  ct++; }
+
+            }
+         
+
+            RaisePropertyChanged("mycol");
+            MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
+                               MessageBoxButton.OK, MessageBoxImage.Information);
+
         }
 
         //void key_EDIT(object parameter)

@@ -255,12 +255,17 @@ namespace IPTVman.ViewModel
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            data.f1 = Ffilter.Text;
+            data.f1 = Ffilter1.Text;
             data.f2 = Ffilter2.Text;
             data.f3 = Ffilter3.Text;
             data.f4 = Ffilter4.Text;
             data.best1 = best1.Text;
             data.best2 = best2.Text;
+        }
+
+        private void Ffilter4_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
         }
     }
 }
