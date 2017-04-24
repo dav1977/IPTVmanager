@@ -27,8 +27,9 @@ namespace IPTVman.ViewModel
         public RelayCommand key_delCommand { get; set; }
 
         public RelayCommand key_DelFILTER { get; set; }
-        
 
+        
+        public RelayCommand key_DelALLkromeBEST { get; set; }
         public RelayCommand key_FILTERCommand { get; set; }
 
         public RelayCommand key_FilterOnlyBESTCommand { get; set; }
@@ -45,6 +46,7 @@ namespace IPTVman.ViewModel
             key_DelFILTER = new RelayCommand(key_delFILTER);
             key_FILTERCommand = new RelayCommand(key_FILTER);
             key_FilterOnlyBESTCommand = new RelayCommand(key_FILTERbest);
+            key_DelALLkromeBEST = new RelayCommand(key_delALLkromeBEST);
         }
 
 
@@ -112,6 +114,41 @@ namespace IPTVman.ViewModel
                                MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
+
+        void key_delALLkromeBEST(object parameter)
+        {
+            if (myLISTfull == null) return;
+
+            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ КРОМЕ BEST(ExtFilter)!!!", "  УДАЛЕНИЕ",
+                                MessageBoxButton.YesNo, MessageBoxImage.Asterisk);
+            if (result != MessageBoxResult.Yes) return;
+
+            uint ct = 0;
+
+
+            try
+            {
+                int i;
+                for (i = 0; i < myLISTfull.Count; i++)
+                {
+                    if (myLISTfull[i].ExtFilter != data.best1 /*|| myLISTfull[i].group_title != data.best2*/)
+                    {  myLISTfull.RemoveAt(i); ct++; i--; }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Ошибка удаления = "+ex.Message.ToString(),"",
+                               MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            RaisePropertyChanged("mycol");
+            MessageBox.Show("  УДАЛЕНО " + ct.ToString() + " Каналов", " ",
+                               MessageBoxButton.OK, MessageBoxImage.Information);
+
+        }
+
 
         //void key_EDIT(object parameter)
         //{

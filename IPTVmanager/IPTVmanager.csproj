@@ -90,7 +90,9 @@
     <Compile Include="ViewModel\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
+    <Compile Include="ViewModel\ViewModelWindow2_Object.cs" />
     <Compile Include="ViewModel\ViewModelWindow1_Object.cs" />
+    <Compile Include="ViewModel\ViewModelWindow2_Command.cs" />
     <Compile Include="ViewModel\Virtulization.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
@@ -100,6 +102,9 @@
     </Compile>
     <Compile Include="View\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window2_Move.xaml.cs">
+      <DependentUpon>Window2_Move.xaml</DependentUpon>
     </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +123,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window2_Move.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

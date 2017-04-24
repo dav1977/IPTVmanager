@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace IPTVman.ViewModel
 {
-
+   
     public delegate void Delegate_UpdateALL(int size);
     public delegate void Delegate_UpdateEDIT(int size);
     public delegate void Delegate_Window1();
@@ -25,8 +25,8 @@ namespace IPTVman.ViewModel
             InitializeComponent();
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
-      
 
+           
 
             // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
@@ -176,6 +176,17 @@ namespace IPTVman.ViewModel
 
         private void MYLIST_MouseDoubleClick_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+
+            foreach (Window win in Application.Current.Windows)
+            {
+                if ((win.IsLoaded == true) && (win.Name == "win1iptvMANAGER"))
+                {
+                    return;
+                }
+            }
+
+
+
             int si = MYLIST.SelectedIndex;
             if (si < 0) {  return; }
             var p = MYLIST.SelectedItem as ParamCanal;
@@ -192,10 +203,20 @@ namespace IPTVman.ViewModel
             data.tvg = p.tvg_name;
             data.ping = p.ping;
 
-  
 
-            var win = new Window1 { DataContext = new ViewModelWindow1(tb1.Text) };
-             win.Show();
+           
+
+            new Window1
+            {
+                DataContext = new ViewModelWindow1(tb1.Text),
+                Topmost = true,
+                //WindowStyle = WindowStyle.ToolWindow,
+                Name = "win1iptvMANAGER"
+            }.Show(); ;
+
+
+           // var win = new Window1 { DataContext = new ViewModelWindow1(tb1.Text) };
+           //  win.Show();
 
            
 
@@ -263,9 +284,40 @@ namespace IPTVman.ViewModel
             data.best2 = best2.Text;
         }
 
+
+        private void Button_ClickMOVE(object sender, RoutedEventArgs e)
+        {
+
+            foreach (Window win in Application.Current.Windows)
+            {
+                if ((win.IsLoaded == true) && (win.Name == "win2iptvMANAGER"))
+                {
+                    return;
+                }
+            }
+           
+
+            new Window2
+            {
+                DataContext = new ViewModelWindow2(tb1.Text),
+                Topmost = true,
+                WindowStyle = WindowStyle.ToolWindow,
+                Name ="win2iptvMANAGER"
+            }.Show(); ;
+           
+         
+          
+
+        }
         private void Ffilter4_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
 
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            data.best1 = best1.Text;
+            data.best2 = best2.Text;
         }
     }
 }

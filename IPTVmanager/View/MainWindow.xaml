@@ -149,8 +149,8 @@
                 -->
 
                 <!-- </ScrollViewer>-->
-                <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,106,-52" TextChanged="tb1_TextChanged" Width="140" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="22" Grid.Column="2" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-2,-116,0,0"  Width="701" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3"/>
+                <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,106,-52" TextChanged="tb1_TextChanged" Width="83" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="22" Grid.Column="3"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-2,-116,0,0"  Width="635" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="2"/>
                 <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-145,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3"/>
                 <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-118,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3"/>
 
@@ -241,7 +241,7 @@
         <GroupBox Header="ФИЛЬТР названия" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="9,79,0,0" Grid.ColumnSpan="2" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200">
             <TextBox x:Name="Ffilter1" Text="{Binding filter1}" Margin="0,-10,0,-8"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
-        <GroupBox Header="ФИЛЬТР exfilter" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="187,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Width="200">
+        <GroupBox Header="ФИЛЬТР exfilter" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="181,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Width="200">
             <TextBox x:Name="Ffilter2" Text="{Binding filter2}" Margin="0,-10,0,-8"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
         <GroupBox Header="ФИЛЬТР grouptitle" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="186,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Width="200">
@@ -250,6 +250,18 @@
         <GroupBox Header="ФИЛЬТР url ping" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="390,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Width="200">
             <TextBox x:Name="Ffilter4" Text="{Binding filter4}" Margin="0,-10,0,-8"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
-        <Button  Content="Удалить по Фильтру" Command="{Binding key_DelFILTER}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,304,3" Focusable="False" Grid.Column="2" Width="145" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Button  Content="Удалить по Фильтру" Command="{Binding key_DelFILTER}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,352,3" Focusable="False" Grid.Column="2" Width="118" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Button Content="ДВИГАТЬ" Command="{Binding key_FILTERmove}"  
+            Margin="0,36,243,0" Focusable="False" Grid.Column="2" Width="98" Height="38"
+            HorizontalAlignment="Right" VerticalAlignment="Top" 
+            Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
+            BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
+                
+            CommandParameter=""
+                
+                
+                
+            Click="Button_ClickMOVE"/>
+        <Button  Content="ВСЁ кроме BEST" Command="{Binding key_DelALLkromeBEST}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,226,3" Focusable="False" Grid.Column="2" Width="118" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click_4"/>
     </Grid>
 </Window>

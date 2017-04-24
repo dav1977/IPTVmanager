@@ -35,6 +35,9 @@ namespace IPTVman.ViewModel
     //    }
     //}
 
+
+    public delegate void Delegate_Update2();
+
     public class MultiValueConverter : IMultiValueConverter     //  http://www.codearsenal.net/2013/12/wpf-multibinding-example.html
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -103,6 +106,8 @@ namespace IPTVman.ViewModel
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
 
+            ViewModelWindow2.Event_Update2 += new Delegate_Update2(extern_update);
+
             //Canal = new ObservableCollection<ParamCanal>
             //{
             //    //new ParamCanal { Title="Tom1", ExtFilter="Jones", group_title=80 },
@@ -117,7 +122,7 @@ namespace IPTVman.ViewModel
             //p = new ParamCanal { Title = "wirte2", param3 = "iik", group_title = 99 };
             //Canal.Add(p);
 
-      
+
 
 
             newChannel = "новое значение";
@@ -126,8 +131,12 @@ namespace IPTVman.ViewModel
         }
 
 
-      
 
+        void extern_update()
+        {
+            UPDATE_FILTER("");
+            RaisePropertyChanged("mycol");///updte LIST!!
+        }
 
 
         private void Create_Virtual_Collection()

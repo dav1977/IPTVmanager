@@ -579,7 +579,7 @@ namespace IPTVman.ViewModel
                     foreach (string aliasName in entry.Aliases)
                         ip0 += aliasName + "\n";
                 }
-                else ip0 += "alias not ";
+                else ip0 += " alias not ";
               
 
 
@@ -589,7 +589,7 @@ namespace IPTVman.ViewModel
                 ip0 = "error "+ex.Message.ToString();// Console.WriteLine(ex.ToString());
             }
 
-            return split[3]+ip0;
+            return ip0;
         }
 
 
@@ -690,6 +690,7 @@ namespace IPTVman.ViewModel
         }
 
 
+      
 
         //basic ViewModelBase
         internal void RaisePropertyChanged(string prop)

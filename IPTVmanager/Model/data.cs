@@ -9,10 +9,9 @@ namespace IPTVman.Model
 
     public static class data
     {
+        
 
-
-       
-
+        public static ParamCanal temp;
 
         public static int edit_index;
         public static string name,extfilter,grouptitle,tvg,http,logo, ping;

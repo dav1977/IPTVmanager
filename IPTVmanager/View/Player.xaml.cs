@@ -15,12 +15,12 @@ namespace Vlc.DotNet
     /// </summary>
     public partial class Player : Window
     {
-        public bool enable = false;
+        public bool window_enable = false;
         public Player()
         {
             tick = 0; i = 0;
             InitializeComponent();
-            enable = true;
+            window_enable = true;
             try
             {
                 myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
@@ -162,7 +162,7 @@ namespace Vlc.DotNet
                 myControl.MediaPlayer.Dispose();
                
             }
-            enable = false;
+            window_enable = false;
 
         }
 
@@ -173,7 +173,7 @@ namespace Vlc.DotNet
                 myControl.MediaPlayer.Stop();
                 myControl.MediaPlayer.Dispose();
             }
-            enable = false;
+            window_enable = false;
         }
     }
 }

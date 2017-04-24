@@ -99,10 +99,6 @@ namespace IPTVman.ViewModel
 
 
 
-
-
-
-
         void BEST(object selectedItem)
         {
             
@@ -113,10 +109,6 @@ namespace IPTVman.ViewModel
             //MessageBox.Show("УСПЕШНО ДОБАВЛЕНО В ГРУППУ BEST",""
             //  MessageBoxButton.OK);
         }
-
-
-
-
 
 
 

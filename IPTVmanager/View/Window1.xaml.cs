@@ -75,9 +75,9 @@ namespace IPTVman.ViewModel
                 }
                 else
                 {
-                    if (!MainWindow.player.enable)
+                    if (!MainWindow.player.window_enable)
                     {
-                        MainWindow.player.enable = true;
+                        MainWindow.player.window_enable = true;
                         MainWindow.player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
                         MainWindow.player.Show();
                     }
