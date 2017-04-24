@@ -104,35 +104,56 @@ namespace IPTVman.ViewModel
                 }
             }
 
+        
+
+            if (indexpred>=index) MessageBox.Show("error индексов   текущий=" + index.ToString() + "  предыд=" + indexpred.ToString() +
+
+               "    " + myLISTfull[index].name + "  pred=" + myLISTfull[indexpred].name
+               , " ",
+                          MessageBoxButton.OK, MessageBoxImage.Information);
+
            
 
-    
-            MessageBox.Show("full=" + index.ToString() + "  pred=" + indexpred.ToString() +
-                
-                "    "+myLISTfull[index].name+"  pred="+myLISTfull[indexpred].name 
-                , " ",
 
-               
-                           MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // myLISTfull.RemoveAt(index);
-
-            data.temp.name += "NEW!!";
+            data.temp.name += "+"+indexpred.ToString();
             myLISTfull.Insert(indexpred, data.temp);
 
+            //ParamCanal a = new ParamCanal()
+            //    ;
+            //a.ExtFilter = "";
+            //a.group_title="";
+            //a.http = "";
+            //a.tvg_name = "";
+
+            //a.name="insert delete";
+            //myLISTfull.Insert(index, a);
+            // myLISTfull.RemoveAt(index);
+
+            //находим свинутый вниз после добавления
+            for (int i=index; i<myLISTfull.Count; i++)
+            {
+                if (myLISTfull[i].name == data.temp.name && myLISTfull[i].http == data.temp.http)
+                {
+
+                   myLISTfull.RemoveAt(i); break;
+                }
+
+            }
 
 
-             if (Event_Update2 != null) Event_Update2();
 
-            Thread.Sleep(500);
+
+            if (Event_Update2 != null) Event_Update2();
+
+         
             lokUP = false;
         }
 
         void dn(object selectedItem)
         {
-
-
-
+          
+   
         }
     }
 }

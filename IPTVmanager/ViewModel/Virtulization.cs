@@ -271,7 +271,7 @@ namespace IPTVman.ViewModel
 
                 //defensive check in case of async load
                 if (_pages[pageIndex] == null)
-                {   Trace.WriteLine("=== ret default");
+                {   Trace.WriteLine(" return default");
                     return default(T); }
 
 
@@ -289,7 +289,7 @@ namespace IPTVman.ViewModel
                 }
                 catch
                 {
-                    Trace.WriteLine("crash");
+                    Trace.WriteLine("my crash");
                     LoadPage(pageIndex);
                 }
                 finally { ok = true; }

@@ -270,6 +270,8 @@ namespace IPTVman.ViewModel
             data.logo = p.logo;
             data.tvg = p.tvg_name;
             data.ping = p.ping;
+            data.best1 = best1.Text;
+            data.best2 = best2.Text;
             bDELETE.Content = "УДАЛИТЬ " + data.name;
 
         }

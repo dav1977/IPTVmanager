@@ -135,7 +135,11 @@ namespace IPTVman.ViewModel
         void extern_update()
         {
             UPDATE_FILTER("");
+
             RaisePropertyChanged("mycol");///updte LIST!!
+            RaisePropertyChanged("numberCANALS");
+
+           
         }
 
 
