@@ -21,14 +21,16 @@ namespace Vlc.DotNet
             tick = 0; i = 0;
             InitializeComponent();
             enable = true;
-            try {
+            try
+            {
                 myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
                 myControl.MediaPlayer.EndInit();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("НЕТ библиотеки VLC", "error");
+                MessageBox.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
                 this.Close();
+                return;
 
             }
 
@@ -105,14 +107,20 @@ namespace Vlc.DotNet
         {
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-            if (currentDirectory == null)
-                return;
+            if (currentDirectory == null) return;
+
+            string dir = Directory.GetCurrentDirectory();
+            
+
+            e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName  (dir.Replace(@"\", @"/")  + "/lib/") );
 
 
-            if (AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture == ProcessorArchitecture.X86)
-                e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x86/"));
-            else
-                e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x64/"));
+          
+
+            //if (AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture == ProcessorArchitecture.X86)
+            //    e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x86/"));
+            //else
+            //    e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x64/"));
         }
 
         private void OnPlayButtonClick(object sender, RoutedEventArgs e)

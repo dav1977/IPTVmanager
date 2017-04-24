@@ -19,7 +19,7 @@ namespace IPTVman.Model
 
         public static string best1,best2;
   
-        public static string f1,f2,f3;
+        public static string f1,f2,f3,f4;
 
         public static bool one_add = false;//дребезг кнопки
 

@@ -23,6 +23,7 @@ namespace IPTVman.ViewModel
         public static event Delegate_ADDBEST Event_ADDBEST;
 
 
+        public RelayCommand key_PLAY { get; set; }
         public RelayCommand key_PING { get; set; }
         public RelayCommand key_SAVE { get; set; }
         public RelayCommand key_ADDBEST { get; set; }
@@ -87,6 +88,7 @@ namespace IPTVman.ViewModel
                 ping = data.ping
             };
 
+            key_PLAY = new RelayCommand(PLAY);
             key_PING = new RelayCommand(PING);
             key_SAVE = new RelayCommand(SAVE);
             key_ADDBEST = new RelayCommand(BEST);
@@ -134,6 +136,23 @@ namespace IPTVman.ViewModel
 
 
 
+        void PLAY(object selectedItem)
+        {
+
+            if (p.http == null) return;
+
+            Regex regex1 = new Regex("http:");
+            Regex regex2 = new Regex("https:");
+
+            var match1 = regex1.Match(p.http);
+            var match2 = regex2.Match(p.http);
+
+            if (match1.Success || match2.Success)
+            {
+                p.ping = "";
+                strPING = GET(p.http);
+            }
+        }
 
         void PING(object selectedItem)
         {

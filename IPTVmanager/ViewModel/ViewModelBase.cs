@@ -54,76 +54,51 @@ namespace IPTVman.ViewModel
         string UDPtest(string url)
         {
             //udp://@233.7.70.79:5000&tvssrc=N
-            Query.Query sQuery = new Query.Query("233.7.70.50", 5000);
+            //Query.Query sQuery = new Query.Query("233.7.70.50", 5000);
 
-            sQuery.Send('K');
-
-            int count = sQuery.Receive();
-
-            string[] info = sQuery.Store(count);
-
-            string rez = "";
-
-            foreach (var s in info)
-            {
-
-                rez += s.ToString();
-            }
-
-            result77 = rez + count.ToString();
-            /* 
-             * Variable 'info' might now contain:   
-             *   Password   Players     Max. players    Hostname                Gamemode    Language
-             * { "0",       "12",       "500",          "Query test server",    "LVDM",     "English" }
-             */
-
-            //-------------------------
-
-            //Query.RCONQuery sQuery = new Query.RCONQuery("127.0.0.1", 7777, "changeme");
-
-            //sQuery.Send("echo Hello from C#");
+            //sQuery.Send('K');
 
             //int count = sQuery.Receive();
 
             //string[] info = sQuery.Store(count);
 
-            /* 
-             * Variable 'info' might now contain:
-             * { "Hello from C#" }
-             */
+            //string rez = "";
+
+            //foreach (var s in info)
+            //{
+
+            //    rez += s.ToString();
+            //}
+
+            //result77 = rez + count.ToString();
+            ///* 
+            // * Variable 'info' might now contain:   
+            // *   Password   Players     Max. players    Hostname                Gamemode    Language
+            // * { "0",       "12",       "500",          "Query test server",    "LVDM",     "English" }
+            // */
+
+            ////-------------------------
+
+            ////Query.RCONQuery sQuery = new Query.RCONQuery("127.0.0.1", 7777, "changeme");
+
+            ////sQuery.Send("echo Hello from C#");
+
+            ////int count = sQuery.Receive();
+
+            ////string[] info = sQuery.Store(count);
+
+            ///* 
+            // * Variable 'info' might now contain:
+            // * { "Hello from C#" }
+            // */
             return "";
 
         }
 
-        /// <summary>
-        /// ///////////////////////////////// NEWUDP
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-
-
-
-
-        // Детали файла
-        [Serializable]
-        public class FileDetails
-        {
-            public string FILETYPE = "";
-            public long FILESIZE = 0;
-        }
-
-        private static FileDetails fileDet;
-        // Поля, связанные с UdpClient
-        private static int localPort = 5000;
-        private static UdpClient receivingUdpClient = new UdpClient(localPort);
-        private static IPEndPoint RemoteIpEndPoint = null;
-
-        private static FileStream fs;
-        private static Byte[] receiveBytes = new Byte[0];
-
 
         string NEW_UDP()
         {
+            
             try
             {        ///udp://@233.7.70.39:5000&tvssrc=K
                 IPAddress ipAddr = IPAddress.Parse("233.7.70.39");
@@ -157,6 +132,8 @@ namespace IPTVman.ViewModel
 
                 // Присоединяемся к группе
                 //udpClient.JoinMulticastGroup(multicastIP);
+               
+
 
                 IPEndPoint RemoteIpEndPoint = null;
 
@@ -450,8 +427,6 @@ namespace IPTVman.ViewModel
             }
 
 
-            return "--";
-
         }
 
 
@@ -573,7 +548,7 @@ namespace IPTVman.ViewModel
                 }
                   //  ip0 = IPs[0].ToString();
             }
-            catch (Exception ex)
+            catch
             {
                 ip0 = "error";// Console.WriteLine(ex.ToString());
             }

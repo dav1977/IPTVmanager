@@ -258,6 +258,9 @@ namespace IPTVman.ViewModel
             data.f1 = Ffilter.Text;
             data.f2 = Ffilter2.Text;
             data.f3 = Ffilter3.Text;
+            data.f4 = Ffilter4.Text;
+            data.best1 = best1.Text;
+            data.best2 = best2.Text;
         }
     }
 }

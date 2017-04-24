@@ -13,10 +13,9 @@
 
 
     <Window.Resources>
+
+        <!-- <vm:ViewModelMain x:Key="ViewModelMain"/> -->
         <vm:ViewModelMain x:Key="ViewModelMain"/>
-
-
-
 
 
         <Style x:Key="MYStyle" TargetType="{x:Type ListView}">
@@ -62,7 +61,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="http" Width="150">
+                        <GridViewColumn Header="url" Width="350">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding http}"/>
@@ -70,7 +69,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="logo" Width="150">
+                        <GridViewColumn Header="logo" Width="50">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding logo}"/>
@@ -158,6 +157,7 @@
                 <TextBox x:Name="Ffilter" Text="{Binding filter}" Margin="-2,-63,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29"/>
                 <TextBox x:Name="Ffilter2" Text="{Binding filter2}" Margin="189,-63,0,0"  Width="158" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
                 <TextBox x:Name="Ffilter3" Text="{Binding filter3}" Margin="393,-64,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="Ffilter4" Text="{Binding filter4}" Margin="73,-63,0,0"  Width="159" HorizontalAlignment="Left" VerticalAlignment="Top" Height="29" Grid.ColumnSpan="2" Grid.Column="1"/>
 
             </Grid>
         </GroupBox>
@@ -203,8 +203,8 @@
         </StackPanel>
 
         <!-- <КНОПКИ>-->
-        <Button Content="Add"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="26,9,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" Grid.ColumnSpan="2"/>
-        <Button Content="SAVE" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
+        <Button Content="ДОБАВИТЬ"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="26,9,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" Grid.ColumnSpan="2"/>
+        <Button Content="СОХРАНИТЬ" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
         <Button Name="bDELETE" Content="" Command="{Binding key_delCommand}" CommandParameter="" Margin="62,0,0,8" Focusable="False" Grid.Column="1" Width="454" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="2" BorderBrush="#FFECECEC" Background="Black" Foreground="#FFF1410D"/>
         <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,201,3" Focusable="False" Grid.Column="2" Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
@@ -213,7 +213,7 @@
 
 
         <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}"  
-                Margin="401,106,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25"
+                Margin="564,98,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25"
                 HorizontalAlignment="Left" VerticalAlignment="Top" 
                 Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
             BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
@@ -228,9 +228,21 @@
 
 
 
-        <Label x:Name="label" Content="BEST" Grid.Column="2" HorizontalAlignment="Right" Margin="0,16,181,0" Width="34" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="25"/>
+        <Label x:Name="label" Content="BEST" Grid.Column="2" HorizontalAlignment="Right" Margin="0,29,182,0" Width="36" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="25"/>
         <Label x:Name="label_Copy1" Content="exfilter" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25" Height="25" Grid.Column="2"/>
         <Label x:Name="label_Copy" Content="name" HorizontalAlignment="Left" Margin="20,70,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25" Height="25" Grid.Column="1"/>
         <Label x:Name="label_Copy2" Content="grouptitle" HorizontalAlignment="Left" Margin="214,70,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25" Height="33" Grid.Column="2"/>
+
+        <Button Content="Фильтр BEST" Command="{Binding key_FilterOnlyBESTCommand}"  
+            Margin="689,98,0,0" Focusable="False" Grid.Column="2" Width="100" Height="25"
+            HorizontalAlignment="Left" VerticalAlignment="Top" 
+            Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
+            BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
+                
+            CommandParameter=""
+                
+                
+                
+            Click="Button_Click_3"/>
     </Grid>
 </Window>

@@ -202,35 +202,48 @@ namespace IPTVman.ViewModel
 
 
 
+       
+
+        bool best_filter_enable = false;
+
         public void UPDATE_FILTER(string f)
         {
-
+            
             if (myLISTfull != null && myLISTbase != null)
             {
                 if (data.f1 == null) data.f1 = "";
                 if (data.f2 == null) data.f2 = "";
                 if (data.f3 == null) data.f3 = "";
+                if (data.f4 == null) data.f4 = "";
 
-                Match m1,m2,m3;
+               if (best_filter_enable) { data.f1 = ""; data.f4 = ""; data.f2 = data.best1; data.f3 = data.best2; }
+
+                Match m1,m2,m3,m4;
                 Regex regex1 = new Regex(data.f1, RegexOptions.IgnoreCase);
                 Regex regex2 = new Regex(data.f2, RegexOptions.IgnoreCase );
                 Regex regex3 = new Regex(data.f3, RegexOptions.IgnoreCase );
+                Regex regex4 = new Regex(data.f4);
 
+                
                 myLISTbase.Clear();
                 foreach (var c in myLISTfull)
                 {
-                    // Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
+                    //Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
+
+
+                    bool not_filter = false;
+                    if (data.f1 == "" && data.f2 == "" && data.f3 == "" && data.f4 == "") not_filter = true;
+
+                    if (not_filter) {  myLISTbase.Add(c); continue; }
+
 
                     m1 = regex1.Match(c.name);
-                    if ( (m1.Success && data.f2=="" && data.f3 =="") ||
-                          (data.f1 == "" && data.f2 == "" && data.f3 == "")
-
-                       ) myLISTbase.Add(c);
+                    if ( (m1.Success && data.f2=="" && data.f3 =="" && data.f4 == "")  ) myLISTbase.Add(c);
 
                     else
                     {
                         m2 = regex2.Match(c.ExtFilter);
-                        if (m1.Success && data.f1!="" && m2.Success && data.f2 != "" && data.f3 == "") myLISTbase.Add(c);
+                        if ( m2.Success && data.f2 != ""  ) myLISTbase.Add(c);
 
                         else
                         {
@@ -240,6 +253,36 @@ namespace IPTVman.ViewModel
                         }
 
                     }
+
+
+
+
+
+                    if (data.f4 != "" && (m1.Success || data.f1==""))
+                    {
+
+                        //all
+                        if (c.http != null)
+                        {
+                            m4 = regex4.Match(c.http);
+                            if ((m4.Success)) myLISTbase.Add(c);
+                        }
+                        if (c.ping != null)
+                        {
+                            m4 = regex4.Match(c.ping);
+                            if ((m4.Success)) myLISTbase.Add(c);
+                        }
+                        if (c.tvg_name != null)
+                        {
+                            m4 = regex4.Match(c.tvg_name);
+                            if ((m4.Success)) myLISTbase.Add(c);
+                        }
+
+
+                    }
+
+
+
 
                 }
             }

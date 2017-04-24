@@ -208,6 +208,22 @@ namespace IPTVman.ViewModel
             }
         }
 
+        static string _filter4 = "";
+        public string filter4
+        {
+            get
+            {
+                return _filter4;
+            }
+            set
+            {
+                if (_filter4 != value)
+                {
+                    _filter4 = value;
+
+                }
+            }
+        }
     }//class
 
 }//namespace

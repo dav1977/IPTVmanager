@@ -16,15 +16,19 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-
+        
         //public RelayCommand key_EDITCommand { get; set; }
-     //   public RelayCommand key_SORTCommand { get; set; }
+        //   public RelayCommand key_SORTCommand { get; set; }
+
+
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand key_OPENCommand { get; set; }
         public RelayCommand key_SAVECommand { get; set; }
         public RelayCommand key_delCommand { get; set; }
 
         public RelayCommand key_FILTERCommand { get; set; }
+
+        public RelayCommand key_FilterOnlyBESTCommand { get; set; }
 
         void ini_command()
         {
@@ -36,7 +40,7 @@ namespace IPTVman.ViewModel
             key_SAVECommand = new RelayCommand(key_SAVE);
             key_delCommand = new RelayCommand(key_del);
             key_FILTERCommand = new RelayCommand(key_FILTER);
-
+            key_FilterOnlyBESTCommand = new RelayCommand(key_FILTERbest);
         }
 
 
@@ -171,18 +175,24 @@ namespace IPTVman.ViewModel
 
         void key_FILTER(object parameter)
         {
-            filter = data.f1;
-            filter2 = data.f2;
-            filter3 = data.f3;
-            
+            best_filter_enable = false;
             UPDATE_FILTER("");
             RaisePropertyChanged("mycol");
            
         }
 
+        void key_FILTERbest(object parameter)
+        {
+            best_filter_enable = true;
+            UPDATE_FILTER("");
+            RaisePropertyChanged("mycol");
+        }
+
+
 
         void key_OPEN(object parameter)
         {
+            uint ct_dublicat  = 0;
             string line = null;
             string newname = "";
 
@@ -198,17 +208,9 @@ namespace IPTVman.ViewModel
                     Regex regex2 = new Regex("#EXTM3U");
                     Match match = null;
 
-
-
-
                     using (StreamReader sr = new StreamReader(openFileDialog.FileName))
                     {
-
-
                         string header = "";
-
-
-
                         while (true)
                         {
                             try
@@ -219,53 +221,33 @@ namespace IPTVman.ViewModel
                             catch
                             {
 
-                                //DialogWindow dialog = new DialogWindow();
-                                //if (dialog.ShowDialog() == true)
-                                //{
-                                //    // Пользователь разрешил действие. Продолжить1
-                                //}
-                                //else
-                                //{
-                                //    // Пользователь отменил действие.
-                                //}
-
-                                MessageBox.Show("Ошибка файла", "заголовок с ошибкой",
+                                MessageBox.Show("Ошибка m3u", "нет заголовка",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                             }
 
 
-
-                            if (header == null || sr.EndOfStream) break;
+                            if (header == null) header = "";
+                            if (sr.EndOfStream) break;
 
                             match = regex2.Match(header);
                             if (match.Success) break;
-
-
                         }
 
+                        //if (!match.Success)
+                        //{
 
-
-                        if (!match.Success)
-                        {
-
-                            MessageBox.Show("заголовок с ошибкой", "Ошибка файла",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
+                        //    MessageBox.Show("заголовок с ошибкой", "Ошибка файла",
+                        //    MessageBoxButton.OK, MessageBoxImage.Error);
+                        //    return;
                            
-                        }
+                        //}
                         //------------------------------------------------------------
                         text_title = header;
-
                         string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
-
                         bool yes = false;
-
-                       
 
                         while (!sr.EndOfStream)
                         {
-
-
                             try
                             {
                                 line = sr.ReadLine();
@@ -416,30 +398,31 @@ namespace IPTVman.ViewModel
 
                             }
 
+    
+                            var item = ViewModelMain.myLISTfull.Find(x => 
+                            (x.http == str_http && x.ExtFilter==str_ex && x.group_title == str_gt) );
 
-                          
+                       
+                           if (item == null)
+                           {
+                                ViewModelMain.myLISTfull.Add(new ParamCanal
+                                {
+                                    name = newname.Trim(),
+                                    ExtFilter = str_ex.Trim(),
+                                    http = str_http.Trim(),
+                                    group_title = str_gt.Trim(),
+                                    logo = str_logo.Trim(),
+                                    tvg_name = str_tvg.Trim()
 
-
-                            ViewModelMain.myLISTfull.Add(new ParamCanal
-                            {
-                                name = newname.Trim(),
-                                ExtFilter = str_ex.Trim(),
-                                http = str_http.Trim(),
-                                group_title = str_gt.Trim(),
-                                logo = str_logo.Trim(),
-                                tvg_name = str_tvg.Trim()
-
-                            });
+                                });
+                            }
+                           else ct_dublicat++;
+                            
 
                         }///чтение фала
 
 
-
-
-
-
-
-                    }// string name = File.ReadAllText(openFileDialog.FileName);
+                    }
 
                 }
 
@@ -449,6 +432,10 @@ namespace IPTVman.ViewModel
 
 
             catch { }
+
+
+            if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
+                                MessageBoxButton.OK, MessageBoxImage.None);
         }
     
 
