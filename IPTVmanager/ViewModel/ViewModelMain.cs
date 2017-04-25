@@ -36,7 +36,7 @@ namespace IPTVman.ViewModel
     //}
 
 
-    public delegate void Delegate_Update2();
+    public delegate void Delegate_Update2( ParamCanal a );
 
     public class MultiValueConverter : IMultiValueConverter     //  http://www.codearsenal.net/2013/12/wpf-multibinding-example.html
     {
@@ -64,7 +64,7 @@ namespace IPTVman.ViewModel
     {
 
         public static event Delegate_UpdateALL Event_UpdateLIST;
-
+        public static event Delegate_SelectITEM Event_SelectITEM;
 
         //public ObservableCollection<ParamCanal> Canal { get; set; }
         //  public MyCollection<ParamCanal> CanalOUT { get; set; }
@@ -132,14 +132,14 @@ namespace IPTVman.ViewModel
 
 
 
-        void extern_update()
+        void extern_update(ParamCanal a)
         {
             UPDATE_FILTER("");
 
             RaisePropertyChanged("mycol");///updte LIST!!
             RaisePropertyChanged("numberCANALS");
 
-           
+            if (Event_SelectITEM != null) Event_SelectITEM( a);
         }
 
 

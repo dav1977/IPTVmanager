@@ -144,7 +144,7 @@ namespace IPTVman.ViewModel
 
 
 
-            if (Event_Update2 != null) Event_Update2();
+            if (Event_Update2 != null) Event_Update2(data.temp);
 
          
             lokUP = false;

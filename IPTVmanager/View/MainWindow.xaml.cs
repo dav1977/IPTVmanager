@@ -15,6 +15,7 @@ namespace IPTVman.ViewModel
     public delegate void Delegate_UpdateEDIT(int size);
     public delegate void Delegate_Window1();
     public delegate void Delegate_ADDBEST();
+    public delegate void Delegate_SelectITEM(ParamCanal a);
 
     public partial class MainWindow : Window
     {
@@ -26,7 +27,7 @@ namespace IPTVman.ViewModel
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
 
-           
+            ViewModelMain.Event_SelectITEM += new Delegate_SelectITEM(select);
 
             // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
@@ -58,7 +59,11 @@ namespace IPTVman.ViewModel
 
         }
 
-
+        void select (ParamCanal a)
+        {
+          
+            MYLIST.ScrollIntoView(a);
+        }
       
 
         private void timer_Tick(object sender, EventArgs e)
