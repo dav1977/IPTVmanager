@@ -113,7 +113,7 @@ namespace IPTVman.ViewModel
         {
             if (myLISTfull == null) return;
 
-            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ КРОМЕ BEST(ExtFilter)!!!", "  УДАЛЕНИЕ",
+            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ КРОМЕ ИЗБРАННЫХ(ExtFilter)!!!", "  УДАЛЕНИЕ",
                                 MessageBoxButton.YesNo, MessageBoxImage.Asterisk);
             if (result != MessageBoxResult.Yes) return;
 
@@ -124,7 +124,10 @@ namespace IPTVman.ViewModel
                 int i;
                 for (i = 0; i < myLISTfull.Count; i++)
                 {
-                    if (myLISTfull[i].ExtFilter != data.best1 /*|| myLISTfull[i].group_title != data.best2*/)
+                    if (myLISTfull[i].ExtFilter != data.favorite1_1 &&
+                        myLISTfull[i].ExtFilter != data.favorite2_1 &&
+                        myLISTfull[i].ExtFilter != data.favorite3_1
+                        /*|| myLISTfull[i].group_title != data.best2*/)
                     {  myLISTfull.RemoveAt(i); ct++; i--; }
 
                 }
@@ -176,7 +179,7 @@ namespace IPTVman.ViewModel
 
         void key_FILTER(object parameter)
         {
-            best_filter_enable = false;
+   
             UPDATE_FILTER("");
             RaisePropertyChanged("mycol");
            
@@ -184,8 +187,8 @@ namespace IPTVman.ViewModel
 
         void key_FILTERbest(object parameter)
         {
-            best_filter_enable = true;
-            UPDATE_FILTER("");
+
+            UPDATE_FILTER("best");
             RaisePropertyChanged("mycol");
         }
 

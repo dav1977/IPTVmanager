@@ -80,10 +80,13 @@ namespace IPTVman.ViewModel
 
             for (int i = startIndex; i < startIndex + count; i++)
             {
-                if (i >= ViewModelMain.myLISTbase.Count) break;
+                
 
-    
-                customer = new ParamCanal
+                    if (i >= ViewModelMain.myLISTbase.Count) break;
+
+                try
+                {
+                    customer = new ParamCanal
                 {
                     name = ViewModelMain.myLISTbase[i].name,
                     ExtFilter = ViewModelMain.myLISTbase[i].ExtFilter,
@@ -95,8 +98,7 @@ namespace IPTVman.ViewModel
                 };
 
 
-                try
-                {
+                
                     ViewModelMain.myLIST.Add(customer);
                 }
                 catch { }

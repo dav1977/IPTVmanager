@@ -336,5 +336,56 @@ namespace IPTVman.ViewModel
             data.best1 = best1.Text;
             data.best2 = best2.Text;
         }
+
+        private void button_Click_5(object sender, RoutedEventArgs e)
+        {
+            best1.Text = data.favorite1_1;
+            best2.Text = data.favorite1_2;
+            data.current_favorites = 1;
+    }
+
+        private void button_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            best1.Text = data.favorite2_1;
+            best2.Text = data.favorite2_2;
+            data.current_favorites = 2;
+        }
+
+        private void button_Copy1_Click(object sender, RoutedEventArgs e)
+        {
+            best1.Text = data.favorite3_1;
+            best2.Text = data.favorite3_2;
+            data.current_favorites = 3;
+        }
+
+        void update_favorites(string s1, string s2)
+        {
+
+            if (data.current_favorites == 1)
+            {
+                data.favorite1_1 = s1;
+                data.favorite1_1 = s2;
+            }
+            if (data.current_favorites == 2)
+            {
+                data.favorite2_1 = s1;
+                data.favorite2_1 = s2;
+            }
+            if (data.current_favorites == 3)
+            {
+                data.favorite3_1 = s1;
+                data.favorite3_1 = s2;
+            }
+        }
+
+        private void best2_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            update_favorites(best1.Text, best2.Text);
+        }
+
+        private void best1_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            update_favorites(best1.Text, best2.Text);
+        }
     }
 }

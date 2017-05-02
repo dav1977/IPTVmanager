@@ -86,5 +86,10 @@ namespace IPTVman.ViewModel
             }
             catch { }
         }
+
+        private void ButtonBEST_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

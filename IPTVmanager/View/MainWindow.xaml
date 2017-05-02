@@ -152,8 +152,8 @@
                 <!-- </ScrollViewer>-->
                 <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,106,-52" TextChanged="tb1_TextChanged" Width="83" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="22" Grid.Column="3"/>
                 <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-2,-116,0,0"  Width="635" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-145,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3"/>
-                <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-118,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3"/>
+                <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-131,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best1_TextChanged"/>
+                <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-104,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best2_TextChanged"/>
 
             </Grid>
         </GroupBox>
@@ -225,9 +225,9 @@
 
 
 
-        <Label x:Name="label" Content="BEST" Grid.Column="3" HorizontalAlignment="Right" Margin="0,29,182,0" Width="36" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="25"/>
+        <Label x:Name="label" Content="Избранное" Grid.Column="3" HorizontalAlignment="Right" Margin="0,6,121,0" Width="56" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="22" FontSize="9"/>
 
-        <Button Content="Фильтр BEST" Command="{Binding key_FilterOnlyBESTCommand}"  
+        <Button Content="Фильтр Избр" Command="{Binding key_FilterOnlyBESTCommand}"  
             Margin="0,90,15,0" Focusable="False" Grid.Column="3" Width="78" Height="38"
             HorizontalAlignment="Right" VerticalAlignment="Top" 
             Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
@@ -253,7 +253,7 @@
         </GroupBox>
         <Button  Content="Удалить по Фильтру" Command="{Binding key_DelFILTER}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,352,3" Focusable="False" Grid.Column="3" Width="118" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
         <Button Content="ДВИГАТЬ" Command="{Binding key_FILTERmove}"  
-            Margin="0,36,243,0" Focusable="False" Grid.Column="3" Width="98" Height="38"
+            Margin="0,36,246,0" Focusable="False" Grid.Column="3" Width="98" Height="38"
             HorizontalAlignment="Right" VerticalAlignment="Top" 
             Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
             BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
@@ -263,6 +263,9 @@
                 
                 
             Click="Button_ClickMOVE"/>
-        <Button  Content="ВСЁ кроме BEST" Command="{Binding key_DelALLkromeBEST}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,226,3" Focusable="False" Grid.Column="3" Width="118" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click_4"/>
+        <Button  Content="ВСЁ кроме ИЗБР" Command="{Binding key_DelALLkromeBEST}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,226,3" Focusable="False" Grid.Column="3" Width="118" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click_4"/>
+        <Button x:Name="button" Content="B" Grid.Column="3" HorizontalAlignment="Left" Margin="689,5,0,0" VerticalAlignment="Top" Width="24" Click="button_Click_5"/>
+        <Button x:Name="button_Copy" Content="M" Grid.Column="3" HorizontalAlignment="Left" Margin="724,5,0,0" VerticalAlignment="Top" Width="24" Click="button_Copy_Click"/>
+        <Button x:Name="button_Copy1" Content="K" Grid.Column="3" HorizontalAlignment="Left" Margin="759,5,0,0" VerticalAlignment="Top" Width="24" Click="button_Copy1_Click"/>
     </Grid>
 </Window>

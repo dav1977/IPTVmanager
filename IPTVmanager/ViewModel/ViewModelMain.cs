@@ -147,6 +147,8 @@ namespace IPTVman.ViewModel
         {
             if (data.one_add) return;
             data.one_add = true;
+            data.edit.ExtFilter = data.best1;
+            data.edit.group_title = data.best2;
             myLISTfull.Add(data.edit);
             RaisePropertyChanged("mycol");
         }
@@ -180,9 +182,9 @@ namespace IPTVman.ViewModel
 
        
 
-        bool best_filter_enable = false;
+        
 
-        public void UPDATE_FILTER(string f)
+        public void UPDATE_FILTER(string par)
         {
             
             if (myLISTfull != null && myLISTbase != null)
@@ -192,7 +194,7 @@ namespace IPTVman.ViewModel
                 if (data.f3 == null) data.f3 = "";
                 if (data.f4 == null) data.f4 = "";
 
-               if (best_filter_enable) { data.f1 = ""; data.f4 = ""; data.f2 = data.best1; data.f3 = data.best2; }
+               if (par=="best") { data.f1 = ""; data.f4 = ""; data.f2 = data.best1; data.f3 = data.best2; }
 
                 Match m1,m2,m3,m4;
                 Regex regex1 = new Regex(data.f1, RegexOptions.IgnoreCase);
@@ -218,23 +220,30 @@ namespace IPTVman.ViewModel
 
                     else
                     {
+                        //----------------------------------
                         m2 = regex2.Match(c.ExtFilter);
-                        if ( m2.Success && data.f2 != ""  ) myLISTbase.Add(c);
-
+                        if (par != "best")
+                        {
+                            if (m2.Success && data.f2 != "") myLISTbase.Add(c);
+                            else
+                            {
+                                m3 = regex3.Match(c.group_title);
+                                if (m1.Success && data.f1 != "" && m2.Success && data.f2 != "" &&
+                                    m3.Success && data.f3 != "") myLISTbase.Add(c);
+                            }
+                        }
                         else
                         {
-                            m3 = regex3.Match(c.group_title);
-                            if (m1.Success && data.f1 != "" && m2.Success && data.f2 != "" && 
-                                m3.Success && data.f3 != "") myLISTbase.Add(c);
+                            if (data.f2==c.ExtFilter && data.f2 != "") myLISTbase.Add(c);
                         }
-
+                        //----------------------------------
                     }
 
 
 
 
 
-                    if (data.f4 != "" && (m1.Success || data.f1==""))
+                    if (data.f4 != "" && (m1.Success || data.f1 == "") && par != "best")
                     {
 
                         //all
