@@ -12,13 +12,8 @@ namespace IPTVman.Model
 
         public static bool lokUP,lokDN = false;
 
-        public static ParamCanal edit;
-
-        public static ParamCanal temp;
-
-        public static int edit_index;
-        public static string name,extfilter,grouptitle,tvg,http,logo, ping;
-
+        public static ParamCanal edit = new ParamCanal();
+   
         public static string best1,best2;
   
         public static string f1,f2,f3,f4;

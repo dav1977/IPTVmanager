@@ -106,6 +106,9 @@
     <Compile Include="View\Window2_Move.xaml.cs">
       <DependentUpon>Window2_Move.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WindowLOADING.xaml.cs">
+      <DependentUpon>WindowLOADING.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Window2_Move.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WindowLOADING.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,10 +12,11 @@ namespace IPTVman.ViewModel
 {
    
     public delegate void Delegate_UpdateALL(int size);
-    public delegate void Delegate_UpdateEDIT(int size);
+    public delegate void Delegate_UpdateEDIT();
     public delegate void Delegate_Window1();
     public delegate void Delegate_ADDBEST();
     public delegate void Delegate_SelectITEM(int a, ParamCanal b);
+    public delegate void Delegate_WIN_WAIT(byte n);
 
     public partial class MainWindow : Window
     {
@@ -24,17 +25,22 @@ namespace IPTVman.ViewModel
         public MainWindow()
         {
             InitializeComponent();
+            this.Title = "IPTV manager v1.0";
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
 
             ViewModelMain.Event_SelectITEM += new Delegate_SelectITEM(select);
 
+            ViewModelMain.Event_WIN_WAIT += new Delegate_WIN_WAIT(WIN_WAIT);
             // use a timer to periodically update the memory usage
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 1);
-            timer.Tick += timer_Tick;
-            timer.Start();
+            //DispatcherTimer timer = new DispatcherTimer();
+            //timer.Interval = new TimeSpan(0, 0,0,0 ,50);
+            //timer.Tick += timer_Tick;
+            //timer.Start();
 
+            
+
+            data.edit.name = "";
             best1.Text = "best";
             best2.Text = "best";
             data.best1 = best1.Text;
@@ -49,6 +55,36 @@ namespace IPTVman.ViewModel
             //label_kanals.SetBinding(label_kanals.Content, bind);
         }
 
+        void WIN_WAIT(byte num)
+        {
+           //if (num == 1) OPEN_WIN_LOADING();
+           // if (num == 2) CLOSE_WIN_LOADING();
+        }
+        void OPEN_WIN_LOADING()
+        {      
+             new WindowLOADING
+            {
+                //DataContext = new V(tb1.Text),
+                //Topmost = true,
+                //WindowStyle = WindowStyle.ToolWindow,
+                //Name = "winLOADINGiptv"
+            }.Show(); ;
+
+        }
+
+        void CLOSE_WIN_LOADING()
+        {
+            foreach (Window win in Application.Current.Windows)
+            {
+                if  (win.Name == "winLOADINGiptv")
+                {
+                    win.Close();
+                }
+            }
+
+        }
+
+
         int sel = 0;
        
         void updateLIST(int size)
@@ -56,7 +92,6 @@ namespace IPTVman.ViewModel
             bDELETE.Content = "";
             //MYLIST.Items.Refresh();
             bDELETE.Content = "";
-            data.edit_index = -1;
 
             MYLIST.Items.Refresh();
 
@@ -88,22 +123,35 @@ namespace IPTVman.ViewModel
 
         }
 
-
+        //static uint i=0;
+        //bool last = false;
         private void timer_Tick(object sender, EventArgs e)
         {
-   
+            //if (last == ViewModelMain.loading_file && !last) return;
+            //last = ViewModelMain.loading_file;
+            //if (ViewModelMain.loading_file)
+            //{
+            //    {
+ 
+            //        if (i == 0) this.Title = "Opening ... ";
+            //        if (i < 5) this.Title = "Opening .   ";
+            //        if (i > 5 && i < 10) this.Title = "Opening . .   ";
+            //        if (i > 10 && i < 15) this.Title = "Opening . . .   ";
+            //        if (i > 15 && i < 20) this.Title = "Opening . . . . . . .   ";
+            //        i++;
+            //        if (i > 20) i = 1;
+                    
+            //    }
+            //}
+            //else this.Title= "IPTV manager v1.0";
 
-
-            ////delete
-            //ContactsListView.DeleteItem(ContactsListView.SelectedIndex);
+          
         }
 
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            //var win = new Window1 { DataContext = new ViewModelWindow1(tb1.Text) };
-           // win.Show();
-            //this.Close();
+
         }
 
         private void tb1_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -123,8 +171,7 @@ namespace IPTVman.ViewModel
 
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            //label_kanals.Content = "none";
-          
+  
 
         }
 
@@ -135,28 +182,7 @@ namespace IPTVman.ViewModel
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //// create the demo items provider according to specified parameters
-            //int numItems = 10000;// int.Parse(tbNumItems.Text);
-            //int fetchDelay = 10;// int.Parse(tbFetchDelay.Text);
-            //CollectionProvider myProvider = new CollectionProvider(numItems, fetchDelay);
-
-            //// create the collection according to specified parameters
-            //int pageSize = 100;// int.Parse(tbPageSize.Text);
-            //int pageTimeout = 5;// int.Parse(tbPageTimeout.Text);
-
-            //if (false)
-            //{
-            //    //DataContext = new List<Customer>(customerProvider.FetchRange(0, customerProvider.FetchCount()));
-            //}
-            //else if (false)
-            //{
-            //    //DataContext = new VirtualizingCollection<Customer>(customerProvider, pageSize);
-            //}
-            //else if (true)
-            //{
-            //    DataContext =  new AsyncVirtualizingCollection<ParamCanal>( myProvider, pageSize, pageTimeout * 100);
-               
-            //}
+            
 
         }
 
@@ -186,18 +212,14 @@ namespace IPTVman.ViewModel
         }
 
 
-        
         private void Button_Click_EDIT(object sender, RoutedEventArgs e)
         {
       
- 
-
         }
 
         private void Button_Click_BEST(object sender, RoutedEventArgs e)
         {
 
-      
             data.best1 = best1.Text;
             data.best2 = best2.Text;
         }
@@ -213,27 +235,12 @@ namespace IPTVman.ViewModel
                 }
             }
 
-
-
             int si = MYLIST.SelectedIndex;
             if (si < 0) {  return; }
             var p = MYLIST.SelectedItem as ParamCanal;
             if (p == null) return;
 
-            data.edit_index = si;
- 
-
-            data.name = p.name;
-            data.extfilter = p.ExtFilter;
-            data.grouptitle = p.group_title;
-            data.http = p.http;
-            data.logo = p.logo;
-            data.tvg = p.tvg_name;
-            data.ping = p.ping;
-
-
             data.edit = p;
-           
 
             new Window1
             {
@@ -243,11 +250,6 @@ namespace IPTVman.ViewModel
                 Name = "win1iptvMANAGER"
             }.Show(); ;
 
-
-           // var win = new Window1 { DataContext = new ViewModelWindow1(tb1.Text) };
-           //  win.Show();
-
-           
 
         }
 
@@ -269,41 +271,26 @@ namespace IPTVman.ViewModel
         private void MYLIST_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
         {
 
- 
-            
-
-
         }
 
         private void MYLIST_LostTouchCapture(object sender, System.Windows.Input.TouchEventArgs e)
         {
 
-            
-           
 
         }
 
         private void MYLIST_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-
-
             int si = MYLIST.SelectedIndex;
             if (si < 0) { return; }
             var p = MYLIST.SelectedItem as ParamCanal;
             if (p == null) return;
 
             data.edit = p;
-            data.edit_index = si;
-            data.name = p.name;
-            data.extfilter = p.ExtFilter;
-            data.grouptitle = p.group_title;
-            data.http = p.http;
-            data.logo = p.logo;
-            data.tvg = p.tvg_name;
-            data.ping = p.ping;
             data.best1 = best1.Text;
             data.best2 = best2.Text;
-            bDELETE.Content = "УДАЛИТЬ " + data.name;
+            if (data.edit.name == "") bDELETE.Content = "не выбрано"; else 
+            bDELETE.Content = "УДАЛИТЬ " + data.edit.name;
 
         }
 
@@ -328,7 +315,6 @@ namespace IPTVman.ViewModel
                     return;
                 }
             }
-           
 
             new Window2
             {
@@ -339,8 +325,6 @@ namespace IPTVman.ViewModel
             }.Show(); ;
            
          
-          
-
         }
         private void Ffilter4_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {

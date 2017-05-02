@@ -77,16 +77,17 @@ namespace IPTVman.ViewModel
             CreateTimer2(500);
             data.one_add = false;
 
-            p = new ParamCanal
-            {
-                name = data.name,
-                ExtFilter =data.extfilter,
-                group_title =data.grouptitle,
-                http =data.http,
-                logo =data.logo,
-                tvg_name = data.tvg,
-                ping = data.ping
-            };
+            //p = new ParamCanal
+            //{
+            //    name = data.name,
+            //    ExtFilter =data.extfilter,
+            //    group_title =data.grouptitle,
+            //    http =data.http,
+            //    logo =data.logo,
+            //    tvg_name = data.tvg,
+            //    ping = data.ping
+            //};
+            p = data.edit;
 
             key_PLAY = new RelayCommand(PLAY);
             key_PING = new RelayCommand(PING);
@@ -115,13 +116,14 @@ namespace IPTVman.ViewModel
 
         void SAVE(object selectedItem)
         {
-            data.name = p.name;
-            data.extfilter = p.ExtFilter;
-            data.grouptitle = p.group_title;
-            data.http = p.http;
-            data.ping = p.ping;
+            //data.name = p.name;
+            //data.extfilter = p.ExtFilter;
+            //data.grouptitle = p.group_title;
+            //data.http = p.http;
+            //data.ping = p.ping;
+            data.edit = p;
 
-            if (Event_UpdateEDIT != null) Event_UpdateEDIT(data.edit_index);
+            if (Event_UpdateEDIT != null) Event_UpdateEDIT();
             if (Event_CloseWin1 != null) Event_CloseWin1();
         }
 

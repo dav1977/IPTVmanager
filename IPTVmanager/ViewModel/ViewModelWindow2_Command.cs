@@ -26,24 +26,20 @@ namespace IPTVman.ViewModel
         {
 
             key_UPCommand = new RelayCommand(up);
-
             key_DNCommand = new RelayCommand(dn);
 
+            //p = new ParamCanal
+            //{
+            //    name = data.edit.name,
+            //    ExtFilter = data.edit.ExtFilter,
+            //    group_title = data.edit.group_title,
+            //    http = data.edit.http,
+            //    logo = data.edit.logo,
+            //    tvg_name = data.edit.tvg_name,
+            //    ping = data.edit.ping
+            //};
+            p = data.edit;
 
-            //data.one_add = false;
-
-            p = new ParamCanal
-            {
-                name = data.name,
-                ExtFilter = data.extfilter,
-                group_title = data.grouptitle,
-                http = data.http,
-                logo = data.logo,
-                tvg_name = data.tvg,
-                ping = data.ping
-            };
-
-            data.temp = p; 
         }
         //=============================================================================
 
@@ -57,8 +53,6 @@ namespace IPTVman.ViewModel
         {
             if (data.lokUP || data.edit.name=="") return;
            
-           
-          
             int j = 0;
             ParamCanal pred = new ParamCanal();
             ParamCanal curr = new ParamCanal();
@@ -68,7 +62,8 @@ namespace IPTVman.ViewModel
             foreach (var obj in myLISTbase)
             {
 
-                if (obj.name == data.name && obj.http == data.http)
+                if (obj.name == data.edit.name && obj.http == data.edit.http
+                    && obj.ExtFilter == data.edit.ExtFilter && obj.group_title==data.edit.group_title)
                 {
                     curr = obj;   j--; break;
                 }
@@ -107,9 +102,6 @@ namespace IPTVman.ViewModel
         {
             if (data.lokDN || data.edit.name == "") return;
 
-
-
-            int j = 0;
             ParamCanal nxt = new ParamCanal();
             ParamCanal curr = new ParamCanal();
 
@@ -124,7 +116,9 @@ namespace IPTVman.ViewModel
                     nxt = obj; break;
                 }
 
-                if (obj.name == data.name && obj.http == data.http)
+
+                if (obj.name == data.edit.name && obj.http == data.edit.http
+                    && obj.ExtFilter == data.edit.ExtFilter && obj.group_title == data.edit.group_title)
                 {
                     curr = obj; find_ok = true;
                 }

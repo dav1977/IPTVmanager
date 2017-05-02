@@ -21,8 +21,10 @@ namespace IPTVman.ViewModel
 {
     class ViewModelBase : INotifyPropertyChanged
     {
-        System.Timers.Timer Timer1;
+        public static event Delegate_WIN_WAIT Event_WIN_WAIT;
 
+        System.Timers.Timer Timer1;
+        public bool win_loading = false;
         public void CreateTimer1(int ms)
         {
             if (Timer1 == null)
@@ -39,6 +41,7 @@ namespace IPTVman.ViewModel
 
         }
 
+        static bool last_win=false;
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
         {
             if (PropertyChanged != null)
@@ -46,6 +49,14 @@ namespace IPTVman.ViewModel
                 RaisePropertyChanged("memory");
 
             }
+
+            
+            //if (win_loading && !last_win)
+            //{
+            //    last_win = true;
+            //    if (Event_WIN_WAIT != null) Event_WIN_WAIT(1);
+            //}
+
         }
 
 

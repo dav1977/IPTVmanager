@@ -17,25 +17,7 @@ using System.Threading.Tasks;
 
 namespace IPTVman.ViewModel
 {
-    //class MyCollection<T> : ObservableCollection<T>
-    //{
-    //    public MyCollection(object d)
-    //    {
-
-    //    }
-    //    public void Sort(Comparison<T> comparison)
-    //    {
-    //        // Не лучший вариант, т.к. код зависит от детали реализации свойства Items.
-    //        // Вместо приведения типов лучше реализовать свой любимый алгоритм сортировки для IList<T>.
-    //        var items = this.Items as List<T>;
-
-    //        items.Sort(comparison);
-
-    //        //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-    //    }
-    //}
-
-
+   
     public delegate void Delegate_Update2( ParamCanal a );
 
     public class MultiValueConverter : IMultiValueConverter     //  http://www.codearsenal.net/2013/12/wpf-multibinding-example.html
@@ -58,13 +40,14 @@ namespace IPTVman.ViewModel
         }
     }
 
-
+  
 
     partial class ViewModelMain : ViewModelBase
     {
-
+  
         public static event Delegate_UpdateALL Event_UpdateLIST;
         public static event Delegate_SelectITEM Event_SelectITEM;
+    
 
         //public ObservableCollection<ParamCanal> Canal { get; set; }
         //  public MyCollection<ParamCanal> CanalOUT { get; set; }
@@ -105,7 +88,6 @@ namespace IPTVman.ViewModel
         {
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
-
             ViewModelWindow2.Event_Update2 += new Delegate_Update2(extern_update);
 
             //Canal = new ObservableCollection<ParamCanal>
@@ -115,15 +97,6 @@ namespace IPTVman.ViewModel
             //    //new ParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
             //    //new ParamCanal { Title="param4", ExtFilter="Lastp4", group_title=99 },
             //};
-
-            //ParamCanal p = new ParamCanal { Title = "wirte1", ExtFilter = "Jones", group_title = 80 };
-            //Canal.Add(p);
-
-            //p = new ParamCanal { Title = "wirte2", param3 = "iik", group_title = 99 };
-            //Canal.Add(p);
-
-
-
 
             newChannel = "новое значение";
             ini_command();
@@ -162,8 +135,6 @@ namespace IPTVman.ViewModel
         }
 
 
-        bool one_open = false;
-
         void CollectionisCreate()
         {
             
@@ -171,32 +142,18 @@ namespace IPTVman.ViewModel
 
         }
 
-
-
-       
-
+        bool one_open = false;
         void BEST_ADD()
         {
             if (data.one_add) return;
             data.one_add = true;
-            myLISTfull.Add(new ParamCanal
-            {
-                name = data.name,
-                ExtFilter = data.best1,
-                group_title = data.best2,
-                http = data.http,
-                logo = data.logo,
-                tvg_name = data.tvg,
-                ping = data.ping
-            });
-
-   
+            myLISTfull.Add(data.edit);
             RaisePropertyChanged("mycol");
         }
 
 
 
-        void updateEDIT(int index)
+        void updateEDIT()
         {
             int i = 0;
             foreach (var obj in myLISTfull)
@@ -204,14 +161,12 @@ namespace IPTVman.ViewModel
                
                 if (obj.name == data.edit.name && obj.http == data.edit.http && obj.ExtFilter == data.edit.ExtFilter)
                 {
-
-                    //MessageBox.Show(" sdfsf");
-                   myLISTfull[i].name = data.name;
-                   myLISTfull[i].ExtFilter = data.extfilter;
-                    myLISTfull[i].group_title = data.grouptitle;
-                    myLISTfull[i].http = data.http;
-                    myLISTfull[i].ping = data.ping;
-                    break;
+                   myLISTfull[i].name = data.edit.name;
+                   myLISTfull[i].ExtFilter = data.edit.ExtFilter;
+                   myLISTfull[i].group_title = data.edit.group_title;
+                   myLISTfull[i].http = data.edit.http;
+                   myLISTfull[i].ping = data.edit.ping;
+                   break;
                 }
                 i++;
             }
@@ -316,11 +271,6 @@ namespace IPTVman.ViewModel
             if (b2!=null)data.best2 = b2;
          
         }
-
-
-
-    
-
 
 
     }//class

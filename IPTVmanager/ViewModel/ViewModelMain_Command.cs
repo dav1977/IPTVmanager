@@ -11,15 +11,15 @@ using Microsoft.Win32;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Net;
+using System.Threading.Tasks;
+using System.Net.Sockets;
+
 
 namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-       
-        //public RelayCommand key_EDITCommand { get; set; }
-        //   public RelayCommand key_SORTCommand { get; set; }
-
 
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand key_OPENCommand { get; set; }
@@ -28,7 +28,6 @@ namespace IPTVman.ViewModel
 
         public RelayCommand key_DelFILTER { get; set; }
 
-        
         public RelayCommand key_DelALLkromeBEST { get; set; }
         public RelayCommand key_FILTERCommand { get; set; }
 
@@ -36,9 +35,7 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
- 
-           // key_EDITCommand = new RelayCommand(key_EDIT);
-         //   key_SORTCommand = new RelayCommand(key_SORT);
+
             key_ADDCommand = new RelayCommand(key_ADD);
             key_OPENCommand = new RelayCommand(key_OPEN);
             key_SAVECommand = new RelayCommand(key_SAVE);
@@ -58,28 +55,25 @@ namespace IPTVman.ViewModel
             myLISTfull.Add(new ParamCanal
             { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             
-            // if (Event_UpdateLIST != null) Event_UpdateLIST(myLISTbase.Count);
             RaisePropertyChanged("mycol");
             
         }
         
 
-      
-
-
         void key_del(object parameter)
         {
             //if (parameter == null || !data.delete) return;
             if (myLISTfull == null) return;
-            if (data.edit_index<0) return;
+            if (data.edit.name=="") return;
 
-            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ " + data.name + "\n" + data.http, "  УДАЛЕНИЕ",
+            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ " + data.edit.name + "\n" + data.edit.http, "  УДАЛЕНИЕ",
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result != MessageBoxResult.Yes) return;
 
 
             var item = ViewModelMain.myLISTfull.Find(x =>
-                  (x.http == data.http && x.ExtFilter == data.extfilter && x.group_title == data.grouptitle));
+                  (x.http == data.edit.http && x.ExtFilter == data.edit.ExtFilter 
+                      && x.group_title == data.edit.group_title));
 
             myLISTfull.Remove(item);
 
@@ -91,7 +85,7 @@ namespace IPTVman.ViewModel
         {
 
             if (myLISTfull == null) return;
-            if (data.edit_index < 0) return;
+            if (data.edit.name=="") return;
 
             MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!", "  УДАЛЕНИЕ",
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -125,7 +119,6 @@ namespace IPTVman.ViewModel
 
             uint ct = 0;
 
-
             try
             {
                 int i;
@@ -149,63 +142,7 @@ namespace IPTVman.ViewModel
 
         }
 
-
-        //void key_EDIT(object parameter)
-        //{
-        //    if (parameter == null) return;
-        //    bool rez = false;
-
-        //    int index = 0;
-        //    foreach (var obj in myLISTfull)
-        //    {
-        //        if (obj.http == data.http) { rez = true; data.edit_index = index;  break; }
-        //        index++;
-
-        //    }
-        //    if (!rez) return;
-
-        //    ParamCanal p;
-        //    p = new ParamCanal { };
-        //    myLISTfull.IndexOf(p, data.edit_index);
-
-        //    myLISTfull[data.edit_index].name = data.name;
-        //    myLISTfull[data.edit_index].ExtFilter = data.extfilter;
-        //    myLISTfull[data.edit_index].group_title = data.grouptitle;
-        //    //myLISTfull[data.edit_index].name = select1.ToString();
-        //    //myLISTfull[data.edit_index].ExtFilter = select2.ToString();
-        //    //myLISTfull[data.edit_index].group_title = select3.ToString();
-
-
-        //    RaisePropertyChanged("mycol");
-        //}
-
-
-        //void key_SORT(object parameter)
-        //{
-        //    // ascending
-        //    //collection = new ObservableCollection<int>(collection.OrderBy(a => a));
-
-        //    //// descending
-        //    //collection = new ObservableCollection<int>(collection.OrderByDescending(a => a));
-
-
-
-        //    //  ObservableCollection<string> _animals = new ObservableCollection<string>()
-        //    //{ "Cat", "Dog", "Bear", "Lion", "Mouse",
-        //    //"Horse", "Rat", "Elephant", "Kangaroo", "Lizard",
-        //    //"Snake", "Frog", "Fish", "Butterfly", "Human",
-        //    //"Cow", "Bumble Bee"};
-
-        //    //_animals = new ObservableCollection<string>(_animals.OrderBy(i => i));
-
-        //    //Canal = new ObservableCollection<ParamCanal>(Canal.OrderBy(a => a.name));
-
-        //}
-
-
-
-
-
+        
         void key_SAVE(object parameter)
         {
 
@@ -252,18 +189,43 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("mycol");
         }
 
-
+      
 
         void key_OPEN(object parameter)
         {
-            uint ct_dublicat  = 0;
+            CollectionisCreate();
+            Open();
+        }
+
+        public Task<string> AsyncTaskGet()
+        {
+
+            return Task.Run(() =>
+            {
+                //----------------
+
+                PARSING_FILE();
+                return "";
+
+                //----------------
+            });
+        }
+
+
+        async void Open()
+        {
+            string rez = await AsyncTaskGet();
+        }
+
+        void PARSING_FILE()
+        {
+
+            uint ct_dublicat = 0;
             string line = null;
             string newname = "";
 
-            CollectionisCreate();
-
-
-            try {
+            try
+            {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
 
                 if (openFileDialog.ShowDialog() == true)
@@ -272,6 +234,9 @@ namespace IPTVman.ViewModel
                     Regex regex2 = new Regex("#EXTM3U");
                     Match match = null;
 
+
+                    win_loading = true;
+                    //ПОИСК заголовка
                     using (StreamReader sr = new StreamReader(openFileDialog.FileName))
                     {
                         string header = "";
@@ -290,23 +255,23 @@ namespace IPTVman.ViewModel
                             }
 
 
+
+
                             if (header == null) header = "";
                             if (sr.EndOfStream) break;
 
                             match = regex2.Match(header);
                             if (match.Success) break;
                         }
-
-                        //if (!match.Success)
-                        //{
-
-                        //    MessageBox.Show("заголовок с ошибкой", "Ошибка файла",
-                        //    MessageBoxButton.OK, MessageBoxImage.Error);
-                        //    return;
-                           
-                        //}
-                        //------------------------------------------------------------
                         text_title = header;
+                    }
+
+
+
+                    //ПОИСК каналов
+                    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+                    {
+
                         string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
                         bool yes = false;
 
@@ -325,23 +290,6 @@ namespace IPTVman.ViewModel
                             if (match.Success) yes = true; else yes = false;
 
 
-
-                            //while (match.Success)
-                            //{
-                            //    // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
-                            //    // ссылаемся на найденное значение через свойство Groups класса Match
-                            //    //Console.WriteLine(match.Groups[1].Value);
-                            //    y = true; break;
-                            //    // Переходим к следующему совпадению
-                            //    //match = match.NextMatch();
-                            //}
-
-
-
-                            //}
-
-
-
                             ///========== разбор EXINF
                             if (yes)
                             {
@@ -351,10 +299,6 @@ namespace IPTVman.ViewModel
                                 Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
                                 Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
 
-
-
-
-                                //string[] split = line.Split(new Char[] { ' ', ',', '.', ':', '"' });
                                 string[] split = line.Split(new Char[] { '"' });
 
 
@@ -382,10 +326,6 @@ namespace IPTVman.ViewModel
 
 
                                         if (i >= split.Length - 1) { str_name = s; }
-
-
-
-
 
                                         match = regex3.Match(s);
                                         if (match.Success)
@@ -416,77 +356,32 @@ namespace IPTVman.ViewModel
                                     if (str_name != "") newname = str_name.Remove(0, 1);
 
                                 }
-
-                                //========= http =============
                                 str_http = sr.ReadLine();
-                                //Regex regex100 = new Regex("://");
-
-                                //match = regex100.Match(str_http);
-                                //if (!match.Success)
-                                //{
-                                //    str_http = "error "+ str_http;
-                                //}
-
-
-                                //match = regex4.Match(line);
-                                //if (match.Success)
-                                //{
-                                //    words1 = line.Split(new char[] { '"' });
-                                //    if (str_ex != "")
-                                //    {
-                                //        if (words1.Length > 3) str_gr = words1[3];
-                                //        else if (words1.Length > 2) str_gr = words1[2];
-                                //    }
-                                //    else str_gr = words1[1];
-                                //}
-
-                                //if (line != null) words = line.Split(new char[] { ',' });
-
-
-                                //bool y = false;
-                                //while (1 == 1)
-                                //{
-                                //    // Read the stream to a string, and write the string to the console.
-                                //    http0 = sr.ReadLine();
-                                //    // if (sr.EndOfStream) break;
-
-                                //    if (http0 == null) continue;
-                                //    foreach (var c in http0)
-                                //    {
-                                //        if (char.IsPunctuation(c)) { y = true; break; }
-                                //        // else if (IsLatin(c)) { y = true; break; }
-                                //    }
-                                //    if (y) break;
-                                //}
-
 
                             }
 
-    
-                            var item = ViewModelMain.myLISTfull.Find(x => 
-                            (x.http == str_http && x.ExtFilter==str_ex && x.group_title == str_gt) );
 
-                       
-                           if (item == null)
-                           {
-                                ViewModelMain.myLISTfull.Add(new ParamCanal
+                            var item = ViewModelMain.myLISTfull.Find(x =>
+                            (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
+
+
+                            if (newname.Trim() != "" && str_http.Trim() != "")
+                            {
+                                if (item == null)
                                 {
-                                    name = newname.Trim(),
-                                    ExtFilter = str_ex.Trim(),
-                                    http = str_http.Trim(),
-                                    group_title = str_gt.Trim(),
-                                    logo = str_logo.Trim(),
-                                    tvg_name = str_tvg.Trim()
-                                    
+                                    ViewModelMain.myLISTfull.Add(new ParamCanal
+                                    {
+                                        name = newname.Trim(),
+                                        ExtFilter = str_ex.Trim(),
+                                        http = str_http.Trim(),
+                                        group_title = str_gt.Trim(),
+                                        logo = str_logo.Trim(),
+                                        tvg_name = str_tvg.Trim()
 
-                                });
-
-
-                                
-
+                                    });
+                                }
+                                else ct_dublicat++;
                             }
-                           else ct_dublicat++;
-                            
 
                         }///чтение фала
 
@@ -505,11 +400,10 @@ namespace IPTVman.ViewModel
 
             if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
                                 MessageBoxButton.OK, MessageBoxImage.None);
+           // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
         }
-    
 
 
-
-                }//class
+    }//class
 
 }//namespace
