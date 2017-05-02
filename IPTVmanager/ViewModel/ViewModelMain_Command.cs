@@ -16,7 +16,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-        
+       
         //public RelayCommand key_EDITCommand { get; set; }
         //   public RelayCommand key_SORTCommand { get; set; }
 
@@ -477,8 +477,13 @@ namespace IPTVman.ViewModel
                                     group_title = str_gt.Trim(),
                                     logo = str_logo.Trim(),
                                     tvg_name = str_tvg.Trim()
+                                    
 
                                 });
+
+
+                                
+
                             }
                            else ct_dublicat++;
                             

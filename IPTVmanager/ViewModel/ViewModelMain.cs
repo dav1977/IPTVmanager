@@ -139,7 +139,9 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("mycol");///updte LIST!!
             RaisePropertyChanged("numberCANALS");
 
-            if (Event_SelectITEM != null) Event_SelectITEM( a);
+            int index = myLISTbase.IndexOf(a);
+
+            if (Event_SelectITEM != null) Event_SelectITEM( index, a );
         }
 
 
@@ -199,16 +201,22 @@ namespace IPTVman.ViewModel
             int i = 0;
             foreach (var obj in myLISTfull)
             {
-                if (i == index)
+               
+                if (obj.name == data.edit.name && obj.http == data.edit.http && obj.ExtFilter == data.edit.ExtFilter)
                 {
+
+                    //MessageBox.Show(" sdfsf");
                    myLISTfull[i].name = data.name;
                    myLISTfull[i].ExtFilter = data.extfilter;
                     myLISTfull[i].group_title = data.grouptitle;
                     myLISTfull[i].http = data.http;
                     myLISTfull[i].ping = data.ping;
+                    break;
                 }
                 i++;
             }
+
+            UPDATE_FILTER("");
             RaisePropertyChanged("mycol");///updte LIST!!
         }
 

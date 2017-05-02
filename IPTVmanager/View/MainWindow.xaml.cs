@@ -15,7 +15,7 @@ namespace IPTVman.ViewModel
     public delegate void Delegate_UpdateEDIT(int size);
     public delegate void Delegate_Window1();
     public delegate void Delegate_ADDBEST();
-    public delegate void Delegate_SelectITEM(ParamCanal a);
+    public delegate void Delegate_SelectITEM(int a, ParamCanal b);
 
     public partial class MainWindow : Window
     {
@@ -49,22 +49,45 @@ namespace IPTVman.ViewModel
             //label_kanals.SetBinding(label_kanals.Content, bind);
         }
 
-
+        int sel = 0;
+       
         void updateLIST(int size)
         {
             bDELETE.Content = "";
-            MYLIST.Items.Refresh();
+            //MYLIST.Items.Refresh();
             bDELETE.Content = "";
             data.edit_index = -1;
 
+            MYLIST.Items.Refresh();
+
+            MYLIST.SelectedIndex = sel;
+           
+            MYLIST.Focus();
         }
 
-        void select (ParamCanal a)
+        void select (int a, ParamCanal b)
         {
-          
-            MYLIST.ScrollIntoView(a);
+
+            MYLIST.ScrollIntoView(b);
+
+            sel = a;
+
+          MYLIST.SelectedIndex = a;
+
+
+           
+            MYLIST.Focusable = true;
+            //MYLIST.SelectedItem =b ;
+
+
+
+            //  MessageBox.Show(MYLIST.SelectedItem.ToString());
+         //MessageBox.Show(a.ToString());
+
+            MYLIST.Focus();
+
         }
-      
+
 
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -209,6 +232,7 @@ namespace IPTVman.ViewModel
             data.ping = p.ping;
 
 
+            data.edit = p;
            
 
             new Window1
@@ -267,6 +291,8 @@ namespace IPTVman.ViewModel
             if (si < 0) { return; }
             var p = MYLIST.SelectedItem as ParamCanal;
             if (p == null) return;
+
+            data.edit = p;
             data.edit_index = si;
             data.name = p.name;
             data.extfilter = p.ExtFilter;

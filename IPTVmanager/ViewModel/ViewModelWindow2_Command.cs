@@ -47,30 +47,22 @@ namespace IPTVman.ViewModel
         }
         //=============================================================================
 
-        bool lokUP = false;
+
+
+        /// <summary>
+        /// UP
+        /// </summary>
+        
         void up(object selectedItem)
         {
-            if (lokUP) return;
-            int index = 0;
+            if (data.lokUP || data.edit.name=="") return;
            
-            //находим выделенный в полном списке
-            foreach (var obj in myLISTfull)
-            {
-                //var item = ViewModelMain.myLISTfull.Find(x =>
-                // (x.http == obj.http && x.ExtFilter == obj.ExtFilter && x.group_title == obj.group_title));
-
-                //if (item != null) { myLISTfull.Remove(item); }
-
-                if (obj.name == data.name && obj.http == data.http)
-                {
-                    break;
-                }
-                index++;
-
-            }
-
+           
+          
             int j = 0;
             ParamCanal pred = new ParamCanal();
+            ParamCanal curr = new ParamCanal();
+
             pred.name = "";
             //находим предыдущий в фильтрованном списке 
             foreach (var obj in myLISTbase)
@@ -78,82 +70,83 @@ namespace IPTVman.ViewModel
 
                 if (obj.name == data.name && obj.http == data.http)
                 {
-                    j--; break;
+                    curr = obj;   j--; break;
                 }
                 else
                 {
+                    pred = obj;
+
                     pred.name = obj.name; pred.http = obj.http;
                     j++;
                 }
             }
 
-            if (pred.name == "") return;
 
-            int indexpred = 0;
-            //находим предыдущий в полном списке
-            foreach (var obj in myLISTfull)
+            if (pred.name != "")
             {
+                int i1 = myLISTfull.IndexOf(pred);
+                int i2 = myLISTfull.IndexOf(curr);
 
-                if (obj.name == pred.name &&  obj.http == pred.http)
-                {
-                    break;
-                }
-                else
-                {
-                    indexpred++;
-                }
-            }
-
-        
-
-            if (indexpred>=index) MessageBox.Show("error индексов   текущий=" + index.ToString() + "  предыд=" + indexpred.ToString() +
-
-               "    " + myLISTfull[index].name + "  pred=" + myLISTfull[indexpred].name
-               , " ",
-                          MessageBoxButton.OK, MessageBoxImage.Information);
-
-           
-
-
-
-            data.temp.name += "+"+indexpred.ToString();
-            myLISTfull.Insert(indexpred, data.temp);
-
-            //ParamCanal a = new ParamCanal()
-            //    ;
-            //a.ExtFilter = "";
-            //a.group_title="";
-            //a.http = "";
-            //a.tvg_name = "";
-
-            //a.name="insert delete";
-            //myLISTfull.Insert(index, a);
-            // myLISTfull.RemoveAt(index);
-
-            //находим свинутый вниз после добавления
-            for (int i=index; i<myLISTfull.Count; i++)
-            {
-                if (myLISTfull[i].name == data.temp.name && myLISTfull[i].http == data.temp.http)
-                {
-
-                   myLISTfull.RemoveAt(i); break;
-                }
-
+                 myLISTfull[i1] = curr;
+                 myLISTfull[i2] = pred;
             }
 
 
+            data.edit.name = "";
+            if (Event_Update2 != null) Event_Update2(curr);
 
+            data.lokUP = false;
+            data.lokDN = false;
 
-            if (Event_Update2 != null) Event_Update2(data.temp);
-
-         
-            lokUP = false;
         }
 
+        /// <summary>
+        /// DN
+        /// </summary>
         void dn(object selectedItem)
         {
+            if (data.lokDN || data.edit.name == "") return;
+
+
+
+            int j = 0;
+            ParamCanal nxt = new ParamCanal();
+            ParamCanal curr = new ParamCanal();
+
+            nxt.name = "";
+            bool find_ok = false;
+            //находим следующий в фильтрованном списке 
+            foreach (var obj in myLISTbase)
+            {
+                if (find_ok)
+                {
+
+                    nxt = obj; break;
+                }
+
+                if (obj.name == data.name && obj.http == data.http)
+                {
+                    curr = obj; find_ok = true;
+                }
+               
+            }
+
+
+            if (nxt.name != "")
+            {
+                int i1 = myLISTfull.IndexOf(nxt);
+                int i2 = myLISTfull.IndexOf(curr);
+
+                myLISTfull[i1] = curr;
+                myLISTfull[i2] = nxt;
+            }
+
+
+            data.edit.name = "";
+            if (Event_Update2 != null) Event_Update2(curr);
+
+
           
-   
         }
     }
 }

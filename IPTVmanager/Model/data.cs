@@ -9,7 +9,10 @@ namespace IPTVman.Model
 
     public static class data
     {
-        
+
+        public static bool lokUP,lokDN = false;
+
+        public static ParamCanal edit;
 
         public static ParamCanal temp;
 
