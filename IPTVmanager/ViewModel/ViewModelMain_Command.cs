@@ -182,20 +182,27 @@ namespace IPTVman.ViewModel
    
             UPDATE_FILTER("");
             RaisePropertyChanged("mycol");
+
+
            
         }
 
+
+        bool filtr_best = false;
         void key_FILTERbest(object parameter)
         {
-
+            filtr_best = true;
             UPDATE_FILTER("best");
             RaisePropertyChanged("mycol");
+            filtr_best = false;
         }
 
-      
 
+        bool open = false;
         void key_OPEN(object parameter)
         {
+            if (open) return;
+            open = true;
             CollectionisCreate();
             Open();
         }
@@ -403,7 +410,8 @@ namespace IPTVman.ViewModel
 
             if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
                                 MessageBoxButton.OK, MessageBoxImage.None);
-           // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
+            // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
+            open = false;
         }
 
 

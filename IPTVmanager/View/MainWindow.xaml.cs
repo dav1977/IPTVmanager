@@ -38,14 +38,14 @@ namespace IPTVman.ViewModel
             //timer.Tick += timer_Tick;
             //timer.Start();
 
-            
-
+            changefav = true;
             data.edit.name = "";
-            best1.Text = "best";
-            best2.Text = "best";
+            best1.Text = data.favorite1_1;
+            best2.Text = data.favorite1_2;
+            data.current_favorites = 1;
             data.best1 = best1.Text;
             data.best2 = best2.Text;
-
+            changefav = false;
 
 
             //Binding bind = new Binding();
@@ -337,44 +337,51 @@ namespace IPTVman.ViewModel
             data.best2 = best2.Text;
         }
 
+        bool changefav = false;
         private void button_Click_5(object sender, RoutedEventArgs e)
         {
+            changefav = true;
             best1.Text = data.favorite1_1;
             best2.Text = data.favorite1_2;
             data.current_favorites = 1;
-    }
+            changefav = false;
+        }
 
         private void button_Copy_Click(object sender, RoutedEventArgs e)
         {
+            changefav = true;
             best1.Text = data.favorite2_1;
             best2.Text = data.favorite2_2;
             data.current_favorites = 2;
+            changefav = false;
         }
 
         private void button_Copy1_Click(object sender, RoutedEventArgs e)
         {
+            changefav = true;
             best1.Text = data.favorite3_1;
             best2.Text = data.favorite3_2;
             data.current_favorites = 3;
+            changefav = false;
         }
 
         void update_favorites(string s1, string s2)
         {
-
+            if (changefav) return;
             if (data.current_favorites == 1)
             {
                 data.favorite1_1 = s1;
-                data.favorite1_1 = s2;
+                data.favorite1_2 = s2;
             }
             if (data.current_favorites == 2)
             {
                 data.favorite2_1 = s1;
-                data.favorite2_1 = s2;
+                data.favorite2_2 = s2;
             }
             if (data.current_favorites == 3)
             {
                 data.favorite3_1 = s1;
-                data.favorite3_1 = s2;
+                data.favorite3_2 = s2;
             }
         }
 

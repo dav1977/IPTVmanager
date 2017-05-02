@@ -228,7 +228,7 @@
         <Label x:Name="label" Content="Избранное" Grid.Column="3" HorizontalAlignment="Right" Margin="0,6,121,0" Width="56" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="22" FontSize="9"/>
 
         <Button Content="Фильтр Избр" Command="{Binding key_FilterOnlyBESTCommand}"  
-            Margin="0,90,15,0" Focusable="False" Grid.Column="3" Width="78" Height="38"
+            Margin="0,90,15,0" Focusable="False" Grid.Column="3" Width="81" Height="38"
             HorizontalAlignment="Right" VerticalAlignment="Top" 
             Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
             BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
@@ -264,8 +264,8 @@
                 
             Click="Button_ClickMOVE"/>
         <Button  Content="ВСЁ кроме ИЗБР" Command="{Binding key_DelALLkromeBEST}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,226,3" Focusable="False" Grid.Column="3" Width="118" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click_4"/>
-        <Button x:Name="button" Content="B" Grid.Column="3" HorizontalAlignment="Left" Margin="689,5,0,0" VerticalAlignment="Top" Width="24" Click="button_Click_5"/>
-        <Button x:Name="button_Copy" Content="M" Grid.Column="3" HorizontalAlignment="Left" Margin="724,5,0,0" VerticalAlignment="Top" Width="24" Click="button_Copy_Click"/>
-        <Button x:Name="button_Copy1" Content="K" Grid.Column="3" HorizontalAlignment="Left" Margin="759,5,0,0" VerticalAlignment="Top" Width="24" Click="button_Copy1_Click"/>
+        <Button x:Name="buttonfav1" Content="B" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,85,0" VerticalAlignment="Top" Width="24" Click="button_Click_5"/>
+        <Button x:Name="buttonfav2" Content="M" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,52,0" VerticalAlignment="Top" Width="24" Click="button_Copy_Click"/>
+        <Button x:Name="buttonfav3" Content="K" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,19,0" VerticalAlignment="Top" Width="24" Click="button_Copy1_Click"/>
     </Grid>
 </Window>
