@@ -12,6 +12,12 @@ namespace IPTVman.Model
         /// </summary>
         //private byte[] data = new byte[100];
 
+        public ParamCanal()
+        {
+        
+                
+        }
+
         string _name;
         public string name
         {

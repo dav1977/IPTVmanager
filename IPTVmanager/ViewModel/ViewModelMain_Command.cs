@@ -64,16 +64,16 @@ namespace IPTVman.ViewModel
         {
             //if (parameter == null || !data.delete) return;
             if (myLISTfull == null) return;
-            if (data.edit.name=="") return;
+            if (data.canal.name=="") return;
 
-            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ " + data.edit.name + "\n" + data.edit.http, "  УДАЛЕНИЕ",
+            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ " + data.canal.name + "\n" + data.canal.http, "  УДАЛЕНИЕ",
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result != MessageBoxResult.Yes) return;
 
 
             var item = ViewModelMain.myLISTfull.Find(x =>
-                  (x.http == data.edit.http && x.ExtFilter == data.edit.ExtFilter 
-                      && x.group_title == data.edit.group_title));
+                  (x.http == data.canal.http && x.ExtFilter == data.canal.ExtFilter 
+                      && x.group_title == data.canal.group_title));
 
             myLISTfull.Remove(item);
 
@@ -85,7 +85,7 @@ namespace IPTVman.ViewModel
         {
 
             if (myLISTfull == null) return;
-            if (data.edit.name=="") return;
+            if (data.canal.name=="") return;
 
             MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!", "  УДАЛЕНИЕ",
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning);

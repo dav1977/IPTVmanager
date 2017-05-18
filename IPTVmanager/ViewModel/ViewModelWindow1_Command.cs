@@ -78,17 +78,17 @@ namespace IPTVman.ViewModel
             CreateTimer2(500);
             data.one_add = false;
 
-            //p = new ParamCanal
-            //{
-            //    name = data.name,
-            //    ExtFilter =data.extfilter,
-            //    group_title =data.grouptitle,
-            //    http =data.http,
-            //    logo =data.logo,
-            //    tvg_name = data.tvg,
-            //    ping = data.ping
-            //};
-            p = data.edit;
+            edit = new ParamCanal()
+            {
+                name = data.canal.name,
+                ExtFilter = data.canal.ExtFilter,
+                group_title = data.canal.group_title,
+                tvg_name = data.canal.tvg_name,
+                http = data.canal.http,
+                logo = data.canal.logo
+
+            };
+
 
             key_PLAY = new RelayCommand(PLAY);
             key_PING = new RelayCommand(PING);
@@ -117,12 +117,17 @@ namespace IPTVman.ViewModel
 
         void SAVE(object selectedItem)
         {
-            //data.name = p.name;
-            //data.extfilter = p.ExtFilter;
-            //data.grouptitle = p.group_title;
-            //data.http = p.http;
-            //data.ping = p.ping;
-            data.edit = p;
+
+            data.edit = new ParamCanal()
+            {
+                name = edit.name,
+                ExtFilter = edit.ExtFilter,
+                group_title = edit.group_title,
+                tvg_name = edit.tvg_name,
+                http = edit.http,
+                logo = edit.logo
+
+            };
 
             if (Event_UpdateEDIT != null) Event_UpdateEDIT();
             if (Event_CloseWin1 != null) Event_CloseWin1();
@@ -134,9 +139,6 @@ namespace IPTVman.ViewModel
         void PLAY(object selectedItem)
         {
             if (data.URLPLAY == "") return;
-
-           
-
 
 
             //if (p.http == null) return;
@@ -233,9 +235,9 @@ namespace IPTVman.ViewModel
         void PING(object selectedItem)
         {
      
-            if (p.http == null) return;
-            p.ping = "";
-            strPING = GET(p.http);
+            if (edit.http == null) return;
+            edit.ping = "";
+            strPING = GET(edit.http);
         }
 
 
@@ -254,7 +256,7 @@ namespace IPTVman.ViewModel
 
             foreach (string s in n3)
             {
-                p.ping += s;
+                edit.ping += s;
             }
 
 

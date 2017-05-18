@@ -29,7 +29,7 @@ namespace Vlc.DotNet
             catch (Exception ex)
             {
                 IPTVman.Model.data.playerUPDATE = false;
-                MessageBox.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
+               // MessageBox.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
                 this.Close();
                 return;
 

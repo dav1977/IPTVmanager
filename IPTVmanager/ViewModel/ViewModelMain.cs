@@ -147,9 +147,9 @@ namespace IPTVman.ViewModel
         {
             if (data.one_add) return;
             data.one_add = true;
-            data.edit.ExtFilter = data.best1;
-            data.edit.group_title = data.best2;
-            myLISTfull.Add(data.edit);
+            data.canal.ExtFilter = data.best1;
+            data.canal.group_title = data.best2;
+            myLISTfull.Add(data.canal);
             RaisePropertyChanged("mycol");
         }
 
@@ -161,7 +161,7 @@ namespace IPTVman.ViewModel
             foreach (var obj in myLISTfull)
             {
                
-                if (obj.name == data.edit.name && obj.http == data.edit.http && obj.ExtFilter == data.edit.ExtFilter)
+                if (obj.name == data.canal.name && obj.http == data.canal.http && obj.ExtFilter == data.canal.ExtFilter)
                 {
                    myLISTfull[i].name = data.edit.name;
                    myLISTfull[i].ExtFilter = data.edit.ExtFilter;

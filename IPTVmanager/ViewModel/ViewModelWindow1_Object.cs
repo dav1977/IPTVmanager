@@ -9,7 +9,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelWindow1 : ViewModelMain 
     {
-        public static ParamCanal p { get; set; }
+        public static ParamCanal edit { get; set; }
 
 
         object _strPING;

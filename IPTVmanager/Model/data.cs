@@ -26,8 +26,9 @@ namespace IPTVman.Model
 
         public static bool lokUP,lokDN = false;
 
-        public static ParamCanal edit = new ParamCanal();
-   
+        public static ParamCanal canal = new ParamCanal();
+        public static ParamCanal edit;
+
         public static string best1,best2;
   
         public static string f1,f2,f3,f4;

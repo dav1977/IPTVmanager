@@ -39,7 +39,7 @@ namespace IPTVman.ViewModel
             //timer.Start();
 
             changefav = true;
-            data.edit.name = "";
+            data.canal.name = "";
             best1.Text = data.favorite1_1;
             best2.Text = data.favorite1_2;
             data.current_favorites = 1;
@@ -240,7 +240,7 @@ namespace IPTVman.ViewModel
             var p = MYLIST.SelectedItem as ParamCanal;
             if (p == null) return;
 
-            data.edit = p;
+            data.canal = p;
 
             new Window1
             {
@@ -286,11 +286,21 @@ namespace IPTVman.ViewModel
             var p = MYLIST.SelectedItem as ParamCanal;
             if (p == null) return;
 
-            data.edit = p;
+            data.canal = new ParamCanal()
+            {
+                name = p.name,
+                ExtFilter = p.ExtFilter,
+                group_title = p.group_title,
+                tvg_name = p.tvg_name,
+                http = p.http,
+                logo = p.logo
+
+            };
+
             data.best1 = best1.Text;
             data.best2 = best2.Text;
-            if (data.edit.name == "") bDELETE.Content = "не выбрано"; else 
-            bDELETE.Content = "УДАЛИТЬ " + data.edit.name;
+            if (data.canal.name == "") bDELETE.Content = "не выбрано"; else 
+            bDELETE.Content = "УДАЛИТЬ " + data.canal.name;
 
         }
 
