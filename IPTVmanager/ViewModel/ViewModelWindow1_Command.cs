@@ -85,7 +85,8 @@ namespace IPTVman.ViewModel
                 group_title = data.canal.group_title,
                 tvg_name = data.canal.tvg_name,
                 http = data.canal.http,
-                logo = data.canal.logo
+                logo = data.canal.logo,
+                ping = data.canal.ping
 
             };
 
@@ -125,7 +126,8 @@ namespace IPTVman.ViewModel
                 group_title = edit.group_title,
                 tvg_name = edit.tvg_name,
                 http = edit.http,
-                logo = edit.logo
+                logo = edit.logo,
+                ping = edit.ping
 
             };
 
@@ -174,8 +176,10 @@ namespace IPTVman.ViewModel
 
                 }
             }
-            catch { }
-
+            catch
+            {
+                IPTVman.Model.data.playerUPDATE = false;
+            }
 
             if (IPTVman.Model.data.playerUPDATE == false)
             {

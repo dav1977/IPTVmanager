@@ -293,7 +293,8 @@ namespace IPTVman.ViewModel
                 group_title = p.group_title,
                 tvg_name = p.tvg_name,
                 http = p.http,
-                logo = p.logo
+                logo = p.logo,
+                ping = p.ping
 
             };
 
