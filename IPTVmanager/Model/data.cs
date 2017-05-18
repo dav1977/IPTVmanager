@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
+using System.Diagnostics;
+
 
 namespace IPTVman.Model
 {
@@ -10,6 +13,7 @@ namespace IPTVman.Model
     public static class data
     {
 
+        public static Process playerV;
         public static byte current_favorites =1;
         public static string favorite1_1 = "best";
         public static string favorite1_2 = "best";

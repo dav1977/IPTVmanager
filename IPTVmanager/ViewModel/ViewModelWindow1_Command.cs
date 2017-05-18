@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Windows;
 using System.Threading;
-
+using System.Diagnostics;
 
 
 namespace IPTVman.ViewModel
@@ -17,6 +17,7 @@ namespace IPTVman.ViewModel
 
     partial class ViewModelWindow1 : ViewModelMain
     {
+        public static Vlc.DotNet.Player player = null;
 
         public static event Delegate_Window1 Event_CloseWin1;
         public static event Delegate_UpdateEDIT Event_UpdateEDIT;
@@ -128,24 +129,105 @@ namespace IPTVman.ViewModel
         }
 
 
-
+        string player_path = "";
 
         void PLAY(object selectedItem)
         {
+            if (data.URLPLAY == "") return;
 
-            if (p.http == null) return;
+           
 
-            Regex regex1 = new Regex("http:");
-            Regex regex2 = new Regex("https:");
 
-            var match1 = regex1.Match(p.http);
-            var match2 = regex2.Match(p.http);
 
-            if (match1.Success || match2.Success)
+            //if (p.http == null) return;
+
+            //Regex regex1 = new Regex("http:");
+            //Regex regex2 = new Regex("https:");
+
+            //var match1 = regex1.Match(p.http);
+            //var match2 = regex2.Match(p.http);
+
+            //if (match1.Success || match2.Success)
+            //{
+            //    p.ping = "";
+            //    strPING = GET(p.http);
+            //}
+
+            //сначала пробуем играть через библиотеку
+            try
             {
-                p.ping = "";
-                strPING = GET(p.http);
+                if (player == null)
+                {
+                    player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
+                    player.Show();
+                }
+                else
+                {
+                    if (!player.window_enable)
+                    {
+                        player.window_enable = true;
+                        player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
+                        player.Show();
+                    }
+
+                }
             }
+            catch { }
+
+
+            if (IPTVman.Model.data.playerUPDATE == false)
+            {
+
+                REG_FIND reg = new REG_FIND();
+                string rez = reg.FIND("ace_player.exe");
+
+
+                string[] words = rez.Split(new char[] { '"' });
+                if (words.Length < 2) rez = "";
+
+                if (rez == "")
+                {
+                    MessageBox.Show("Не найден ACE_PLAYER в реестре", "", MessageBoxButton.OK);
+                    return;
+                }
+                else
+                {
+                    player_path = words[1];
+                    player_path = player_path.Replace(@"\", @"/");
+                }
+
+
+                try
+                {
+                    if (data.playerV != null)
+                    {
+                        data.playerV.CloseMainWindow();
+                        data.playerV.Close();
+                        data.playerV.WaitForExit(10000);
+                    }
+                }
+                catch { }
+
+
+                if (File.Exists(player_path))
+                {
+                    //   Process.Start(player_path);
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.CreateNoWindow = false;
+                    startInfo.UseShellExecute = false;
+                    startInfo.FileName = player_path;
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.Arguments = data.URLPLAY;
+
+                    data.playerV = Process.Start(startInfo);
+                    // Process.Start(startInfo);
+                    if (Event_CloseWin1 != null) Event_CloseWin1();
+
+                }
+                else MessageBox.Show("Не найден файл ACE_PLAYER.exe по пути " + player_path, "", MessageBoxButton.OK);
+
+            }
+            IPTVman.Model.data.playerUPDATE = false;
         }
 
         void PING(object selectedItem)

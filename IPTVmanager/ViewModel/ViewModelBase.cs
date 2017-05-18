@@ -23,6 +23,7 @@ namespace IPTVman.ViewModel
     {
         public static event Delegate_WIN_WAIT Event_WIN_WAIT;
 
+
         System.Timers.Timer Timer1;
         public bool win_loading = false;
         public void CreateTimer1(int ms)

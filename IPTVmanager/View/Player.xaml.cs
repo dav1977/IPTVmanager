@@ -28,6 +28,7 @@ namespace Vlc.DotNet
             }
             catch (Exception ex)
             {
+                IPTVman.Model.data.playerUPDATE = false;
                 MessageBox.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
                 this.Close();
                 return;
@@ -82,7 +83,7 @@ namespace Vlc.DotNet
             if (IPTVman.Model.data.playerUPDATE)
             {
                // key1.Content = "not playing";
-                IPTVman.Model.data.playerUPDATE = false;
+                
                 if (myControl.MediaPlayer.IsPlaying) myControl.MediaPlayer.Stop();
 
                 Thread.Sleep(500);
@@ -95,7 +96,7 @@ namespace Vlc.DotNet
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message.ToString(), "error");
-
+                 
                 }
             }
 
