@@ -319,6 +319,9 @@ namespace IPTVman.ViewModel
         private void Button_ClickMOVE(object sender, RoutedEventArgs e)
         {
 
+            if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
+            if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+
             foreach (Window win in Application.Current.Windows)
             {
                 if ((win.IsLoaded == true) && (win.Name == "win2iptvMANAGER"))
@@ -337,6 +340,32 @@ namespace IPTVman.ViewModel
            
          
         }
+
+
+        private void Button_ClickMOVEDrag(object sender, RoutedEventArgs e)
+        {
+            if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
+            if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+
+            foreach (Window win in Application.Current.Windows)
+            {
+                if (win.Name == "win2iptvMANAGER3")
+                {
+                    return;
+                }
+            }
+            new ListViewDragDropManager.WindowMOVE
+            {
+                //DataContext = new ViewModelWindow2(tb1.Text),
+                Topmost = true,
+                WindowStyle = WindowStyle.ToolWindow,
+                Name = "win2iptvMANAGER3"
+            }.Show(); ;
+
+
+        }
+
+
         private void Ffilter4_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
 

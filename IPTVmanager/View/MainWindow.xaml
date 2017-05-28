@@ -201,7 +201,7 @@
 
         <!-- <КНОПКИ>-->
         <Button Content="ДОБАВИТЬ"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="26,9,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" Grid.ColumnSpan="2"/>
-        <Button Content="СОХРАНИТЬ" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="10,9,0,0" Focusable="False" Grid.Column="3" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E"/>
+        <Button Content="СОХРАНИТЬ" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="134,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" Grid.ColumnSpan="3"/>
         <Button Name="bDELETE" Content="" Command="{Binding key_delCommand}" CommandParameter="" Margin="62,0,0,8" Focusable="False" Grid.Column="1" Width="454" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="3" BorderBrush="#FFECECEC" Background="Black" Foreground="#FFF1410D"/>
         <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,15,3" Focusable="False" Grid.Column="3" Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
@@ -253,7 +253,7 @@
         </GroupBox>
         <Button  Content="Удалить по Фильтру" Command="{Binding key_DelFILTER}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,352,3" Focusable="False" Grid.Column="3" Width="118" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
         <Button Content="ДВИГАТЬ" Command="{Binding key_FILTERmove}"  
-            Margin="0,36,246,0" Focusable="False" Grid.Column="3" Width="98" Height="38"
+            Margin="0,8,407,0" Focusable="False" Grid.Column="3" Width="63" Height="26"
             HorizontalAlignment="Right" VerticalAlignment="Top" 
             Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
             BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
@@ -262,10 +262,21 @@
                 
                 
                 
-            Click="Button_ClickMOVE"/>
+            Click="Button_ClickMOVE" Grid.Row="1"/>
         <Button  Content="ВСЁ кроме ИЗБР" Command="{Binding key_DelALLkromeBEST}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,226,3" Focusable="False" Grid.Column="3" Width="118" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click_4"/>
         <Button x:Name="buttonfav1" Content="B" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,85,0" VerticalAlignment="Top" Width="24" Click="button_Click_5"/>
         <Button x:Name="buttonfav2" Content="M" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,52,0" VerticalAlignment="Top" Width="24" Click="button_Copy_Click"/>
         <Button x:Name="buttonfav3" Content="K" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,19,0" VerticalAlignment="Top" Width="24" Click="button_Copy1_Click"/>
+        <Button Content="Перемещение" Command="{Binding key_FILTERmoveDrag}"  
+        	Margin="0,8,623,0" Focusable="False" Grid.Column="3" Width="93" Height="24"
+        	HorizontalAlignment="Right" VerticalAlignment="Top" 
+        	Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
+        	BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
+                
+        	CommandParameter=""
+                
+                
+                
+        	Click="Button_ClickMOVEDrag"/>
     </Grid>
 </Window>

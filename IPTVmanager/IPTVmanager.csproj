@@ -88,6 +88,13 @@
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
     <Compile Include="Model\Registy_Find.cs" />
+    <Compile Include="ViewModel\MOVE\DragAdorner.cs" />
+    <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
+    <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />
+    <Compile Include="ViewModel\MOVE\Task.cs" />
+    <Compile Include="ViewModel\MOVE\WindowMOVE.xaml.cs">
+      <DependentUpon>WindowMOVE.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
@@ -110,6 +117,10 @@
     <Compile Include="View\WindowLOADING.xaml.cs">
       <DependentUpon>WindowLOADING.xaml</DependentUpon>
     </Compile>
+    <Page Include="ViewModel\MOVE\WindowMOVE.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
