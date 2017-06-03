@@ -20,34 +20,108 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
+        public static event Delegate_UpdateALL Refresh;
 
+        public RelayCommand key_FILTERmoveDragCommand { get; set; }
+        public RelayCommand key_FILTERmoveCommand { get; set; }
+        public RelayCommand key_AUTOPINGCommand { get; set; }
         public RelayCommand key_ADDCommand { get; set; }
         public RelayCommand key_OPENCommand { get; set; }
         public RelayCommand key_SAVECommand { get; set; }
         public RelayCommand key_delCommand { get; set; }
 
-        public RelayCommand key_DelFILTER { get; set; }
+        public RelayCommand key_DelFILTERCommand { get; set; }
 
-        public RelayCommand key_DelALLkromeBEST { get; set; }
+        public RelayCommand key_DelALLkromeBESTCommand{ get; set; }
         public RelayCommand key_FILTERCommand { get; set; }
 
         public RelayCommand key_FilterOnlyBESTCommand { get; set; }
 
         void ini_command()
         {
-
+            key_FILTERmoveDragCommand = new RelayCommand(key_dragdrop);
+            key_FILTERmoveCommand = new RelayCommand(key_move);
+            key_AUTOPINGCommand = new RelayCommand(key_AUTOPING);
             key_ADDCommand = new RelayCommand(key_ADD);
             key_OPENCommand = new RelayCommand(key_OPEN);
             key_SAVECommand = new RelayCommand(key_SAVE);
             key_delCommand = new RelayCommand(key_del);
-            key_DelFILTER = new RelayCommand(key_delFILTER);
+            key_DelFILTERCommand = new RelayCommand(key_delFILTER);
             key_FILTERCommand = new RelayCommand(key_FILTER);
             key_FilterOnlyBESTCommand = new RelayCommand(key_FILTERbest);
-            key_DelALLkromeBEST = new RelayCommand(key_delALLkromeBEST);
+            key_DelALLkromeBESTCommand = new RelayCommand(key_delALLkromeBEST);
         }
 
+        void key_dragdrop(object parameter)
+        {
 
-        //******************************* ADD **************
+
+        }
+
+        void key_move(object parameter)
+        {
+
+
+        }
+        /// <summary>
+        /// AUTO PING
+        /// </summary>
+        /// <param name="parameter"></param>
+        void key_AUTOPING(object parameter)
+        {
+           List<ParamCanal> LST= new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
+             try
+            {
+
+                foreach (var i in ViewModelMain.myLISTbase)
+                {
+                    LST.Add(i);
+                }
+
+
+
+                foreach (var i in LST)
+                {
+
+                    _ping.result77 = "";
+                    if (i.http == null || i.http == "") continue;
+
+                    _pingPREPARE.GET(i.http);
+
+                    byte ct = 0;
+                    ct = 0;
+                    while (_ping.result77 == "") { Thread.Sleep(200);  ct++; if (ct > 5) break; }
+
+                    var item = ViewModelMain.myLISTfull.Find(x => x == i);
+                    item.ping = _ping.result77;
+
+                    // item = ViewModelMain.myLISTbase.Find(x => x == i);
+                    //item.ping = _ping.result77;
+
+                    //RaisePropertyChanged("mycol");
+
+
+                   // UPDATE_FILTER("");
+                    RaisePropertyChanged("mycol");///update LIST!!
+
+                    if (Refresh != null) Refresh(1);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBoxResult result = MessageBox.Show(ex.ToString(), " ",
+                               MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+
+
+        }
+        /// <summary>
+        ///   ADD
+        /// </summary>
+        /// <param name="parameter"></param>
         void key_ADD(object parameter)
         {
             CollectionisCreate();
@@ -59,7 +133,10 @@ namespace IPTVman.ViewModel
             
         }
         
-
+        /// <summary>
+        /// DEL
+        /// </summary>
+        /// <param name="parameter"></param>
         void key_del(object parameter)
         {
             //if (parameter == null || !data.delete) return;
@@ -80,7 +157,10 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("mycol");
         }
 
-
+        /// <summary>
+        /// del filter
+        /// </summary>
+        /// <param name="parameter"></param>
         void key_delFILTER(object parameter)
         {
 
@@ -109,6 +189,10 @@ namespace IPTVman.ViewModel
 
         }
 
+        /// <summary>
+        /// del krome best
+        /// </summary>
+        /// <param name="parameter"></param>
         void key_delALLkromeBEST(object parameter)
         {
             if (myLISTfull == null) return;
@@ -146,6 +230,10 @@ namespace IPTVman.ViewModel
         }
 
         
+        /// <summary>
+        ///  save
+        /// </summary>
+        /// <param name="parameter"></param>
         void key_SAVE(object parameter)
         {
 
@@ -177,14 +265,14 @@ namespace IPTVman.ViewModel
             }
         }
 
+        /// <summary>
+        ///  filter
+        /// </summary>
+        /// <param name="parameter"></param>
         void key_FILTER(object parameter)
         {
-   
             UPDATE_FILTER("");
-            RaisePropertyChanged("mycol");
-
-
-           
+            RaisePropertyChanged("mycol"); 
         }
 
 
@@ -230,6 +318,8 @@ namespace IPTVman.ViewModel
         void PARSING_FILE()
         {
 
+         
+
             uint ct_dublicat = 0;
             string line = null;
             string newname = "";
@@ -240,6 +330,9 @@ namespace IPTVman.ViewModel
 
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    data.waiting = true;
+                
+
                     Regex regex1 = new Regex("#EXTINF");
                     Regex regex2 = new Regex("#EXTM3U");
                     Match match = null;
@@ -408,8 +501,10 @@ namespace IPTVman.ViewModel
             catch { }
 
 
+            data.waiting = false;
+
             if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
-                                MessageBoxButton.OK, MessageBoxImage.None);
+                                MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
             // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
             open = false;
         }

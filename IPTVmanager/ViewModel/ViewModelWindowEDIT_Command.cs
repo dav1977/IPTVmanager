@@ -19,7 +19,7 @@ namespace IPTVman.ViewModel
     {
         public static Vlc.DotNet.Player player = null;
 
-        public static event Delegate_Window1 Event_CloseWin1;
+  
         public static event Delegate_UpdateEDIT Event_UpdateEDIT;
         public static event Delegate_ADDBEST Event_ADDBEST;
 
@@ -52,11 +52,11 @@ namespace IPTVman.ViewModel
         private void Timer2Tick(object sender, EventArgs e)
         {
 
-            if (ViewModelBase.result77 != "")
+            if (ViewModelBase._ping.result77 != "")
             {
                 if (!newPING)
                 {
-                    analizPING(ViewModelBase.result77);
+                    analizPING(ViewModelBase._ping.result77);
                     newPING = true;
                 }
             }
@@ -77,6 +77,9 @@ namespace IPTVman.ViewModel
         {
             CreateTimer2(500);
             data.one_add = false;
+
+            ViewModelBase._ping.result77 = "";
+
 
             edit = new ParamCanal()
             {
@@ -103,11 +106,9 @@ namespace IPTVman.ViewModel
 
 
         void BEST(object selectedItem)
-        {
-            
+        {   
             if (Event_ADDBEST != null) Event_ADDBEST();
-            if (Event_CloseWin1 != null) Event_CloseWin1();
-
+        
             Thread.Sleep(300);
             //MessageBox.Show("УСПЕШНО ДОБАВЛЕНО В ГРУППУ BEST",""
             //  MessageBoxButton.OK);
@@ -132,7 +133,7 @@ namespace IPTVman.ViewModel
             };
 
             if (Event_UpdateEDIT != null) Event_UpdateEDIT();
-            if (Event_CloseWin1 != null) Event_CloseWin1();
+           
         }
 
 
@@ -227,7 +228,7 @@ namespace IPTVman.ViewModel
 
                     data.playerV = Process.Start(startInfo);
                     // Process.Start(startInfo);
-                    if (Event_CloseWin1 != null) Event_CloseWin1();
+                   
 
                 }
                 else MessageBox.Show("Не найден файл ACE_PLAYER.exe по пути " + player_path, "", MessageBoxButton.OK);
@@ -241,7 +242,7 @@ namespace IPTVman.ViewModel
      
             if (edit.http == null) return;
             edit.ping = "";
-            strPING = GET(edit.http);
+            strPING = _pingPREPARE.GET(edit.http);
         }
 
 

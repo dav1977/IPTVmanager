@@ -11,6 +11,7 @@ namespace IPTVman.ViewModel
     public partial class Window2 : Window
     {
 
+
         public static bool window_enabled = false;
 
         public Window2()
@@ -31,9 +32,6 @@ namespace IPTVman.ViewModel
 
         private void timer_Tick(object sender, EventArgs e)
         {
-
-            //this.button1.Content = "ВВЕРХ ";
-
         }
 
 

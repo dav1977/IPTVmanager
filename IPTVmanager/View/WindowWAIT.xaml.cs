@@ -15,13 +15,13 @@ using System.Windows.Shapes;
 namespace IPTVman.ViewModel
 {
     /// <summary>
-    /// Логика взаимодействия для WindowLOADING.xaml
+    /// Логика взаимодействия для WindowWAIT.xaml
     /// </summary>
-    public partial class WindowLOADING : Window
+    public partial class WindowWAIT : Window
     {
-        public WindowLOADING()
+        public WindowWAIT()
         {
-            InitializeComponent(); 
+            InitializeComponent();
         }
     }
 }

@@ -95,27 +95,29 @@
     <Compile Include="ViewModel\MOVE\WindowMOVE.xaml.cs">
       <DependentUpon>WindowMOVE.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\PING.cs" />
+    <Compile Include="ViewModel\PING_prepare.cs" />
     <Compile Include="ViewModel\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
-    <Compile Include="ViewModel\ViewModelWindow2_Object.cs" />
-    <Compile Include="ViewModel\ViewModelWindow1_Object.cs" />
-    <Compile Include="ViewModel\ViewModelWindow2_Command.cs" />
+    <Compile Include="ViewModel\ViewModelWindowMOVE_Object.cs" />
+    <Compile Include="ViewModel\ViewModelWindowEDIT_Object.cs" />
+    <Compile Include="ViewModel\ViewModelWindowMOVE_Command.cs" />
     <Compile Include="ViewModel\Virtulization.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
-    <Compile Include="ViewModel\ViewModelWindow1_Command.cs" />
+    <Compile Include="ViewModel\ViewModelWindowEDIT_Command.cs" />
     <Compile Include="View\Player.xaml.cs">
       <DependentUpon>Player.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
+    <Compile Include="View\Window1_EDIT.xaml.cs">
+      <DependentUpon>Window1_EDIT.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Window2_Move.xaml.cs">
       <DependentUpon>Window2_Move.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WindowLOADING.xaml.cs">
-      <DependentUpon>WindowLOADING.xaml</DependentUpon>
+    <Compile Include="View\WindowWAIT.xaml.cs">
+      <DependentUpon>WindowWAIT.xaml</DependentUpon>
     </Compile>
     <Page Include="ViewModel\MOVE\WindowMOVE.xaml">
       <SubType>Designer</SubType>
@@ -137,7 +139,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Window1.xaml">
+    <Page Include="View\Window1_EDIT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,7 +147,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WindowLOADING.xaml">
+    <Page Include="View\WindowWAIT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

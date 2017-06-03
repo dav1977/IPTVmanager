@@ -11,15 +11,20 @@ using System.Windows;
 using System.Threading;
 
 
+
+/// <summary>
+///   ОКНО ПЕРЕМЕЩЕНИЯ
+/// </summary>
 namespace IPTVman.ViewModel
 {
     partial class ViewModelWindow2 : ViewModelMain
-    { 
+    {
+
+       public static event Delegate_UpdateMOVE Event_UpdateAFTERmove;
+       public static event Delegate_SelectITEM Event_SELECT;
+
         public RelayCommand key_UPCommand { get; set; }
         public RelayCommand key_DNCommand { get; set; }
-
-
-        public static event Delegate_Update2 Event_Update2;
 
         //============================== INIT ==================================
         public ViewModelWindow2(string lastText)
@@ -27,23 +32,10 @@ namespace IPTVman.ViewModel
 
             key_UPCommand = new RelayCommand(up);
             key_DNCommand = new RelayCommand(dn);
-
-            //p = new ParamCanal
-            //{
-            //    name = data.canal.name,
-            //    ExtFilter = data.canal.ExtFilter,
-            //    group_title = data.canal.group_title,
-            //    http = data.canal.http,
-            //    logo = data.canal.logo,
-            //    tvg_name = data.canal.tvg_name,
-            //    ping = data.canal.ping
-            //};
             p = data.canal;
 
         }
         //=============================================================================
-
-
 
         /// <summary>
         /// UP
@@ -88,7 +80,9 @@ namespace IPTVman.ViewModel
 
 
             data.canal.name = "";
-            if (Event_Update2 != null) Event_Update2(curr);
+            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(curr);
+            Thread.Sleep(1000);
+            if (Event_SELECT != null) { Event_SELECT(1, curr);  }
 
             data.lokUP = false;
             data.lokDN = false;
@@ -137,10 +131,11 @@ namespace IPTVman.ViewModel
 
 
             data.canal.name = "";
-            if (Event_Update2 != null) Event_Update2(curr);
+            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(curr);
 
+            Thread.Sleep(1000);
+            if (Event_SELECT != null) { Event_SELECT(1, curr); }
 
-          
         }
     }
 }

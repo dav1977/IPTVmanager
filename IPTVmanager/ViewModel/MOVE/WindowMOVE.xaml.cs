@@ -23,6 +23,10 @@ namespace ListViewDragDropManager
         ListViewDragDropManager<Task> dragMgr;
         ListViewDragDropManager<Task> dragMgr2;
 
+
+        public static event IPTVman.ViewModel.Delegate_UpdateMOVE Event_UpdateAFTERmove;
+
+
         public WindowMOVE()
         {
             InitializeComponent();
@@ -158,11 +162,34 @@ namespace ListViewDragDropManager
                 IPTVman.ViewModel.ViewModelMain.myLISTbase[i].ping = s.Ping;
                 IPTVman.ViewModel.ViewModelMain.myLISTbase[i].logo = s.Logo;
                 IPTVman.ViewModel.ViewModelMain.myLISTbase[i].tvg_name = s.Tvg;
-
+               
                 i++;
             }
 
+            foreach (var s in ListViewDragDropManager.Task.list)
+            {
+                if (!s.Finished) continue;
+                
+                var item = IPTVman.ViewModel.ViewModelMain.myLISTfull.Find(x =>
+                ( x.name == s.Name && x.ExtFilter == s.ExtFilter && x.group_title == s.Group_title));
+
+                if (item!=null) IPTVman.ViewModel.ViewModelMain.myLISTfull.Remove(item);
+
+            }
+
+
+            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(new IPTVman.Model.ParamCanal());
             this.Close();
         }
+
+
+        private void button_ClickCANCEL(object sender, RoutedEventArgs e)
+        {
+
+            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(new IPTVman.Model.ParamCanal());
+            this.Close();
+
+        }
+
     }
 }

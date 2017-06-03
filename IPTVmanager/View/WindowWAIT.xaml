@@ -1,0 +1,46 @@
+﻿<Window x:Class="IPTVman.ViewModel.WindowWAIT"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IPTVman.ViewModel"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterOwner"
+    ShowInTaskbar="false"
+    Title=""
+    ResizeMode="NoResize">
+    <StackPanel x:Uid="StackPanel_1"
+                >
+        
+        <StackPanel x:Uid="StackPanel_2"
+          Orientation="Horizontal"
+          HorizontalAlignment="Center"
+          Margin="10 10 10 10">
+            <StackPanel x:Uid="StackPanel_2_1"
+          Orientation="Horizontal" Height="20" Width="116">
+                <TextBlock x:Uid="TextBlock_2_1"><Run Text="Идет выполнение..."/></TextBlock>
+                <TextBlock x:Uid="TextBlock_2_2"
+            x:Name="_pageNumberLabel"
+            Margin="3 0 3 0"
+            Text="{Binding PageNumber, ElementName=PrintProgress}"/>
+
+            </StackPanel>
+        </StackPanel>
+        <StackPanel x:Uid="StackPanel_0"
+          Margin="10 10 10 10"
+          Orientation="Horizontal">
+            <ProgressBar x:Uid="ProgressBar_1"
+          Name="_writingProgressBar"
+          IsIndeterminate="true" 
+          Width="300"
+          Minimum="0"
+          Maximum="10"
+          Value="{Binding Path=WritingProgressPercentage, UpdateSourceTrigger=Explicit, NotifyOnTargetUpdated=True}" Height="18"/>
+        </StackPanel>
+        <StackPanel x:Uid="StackPanel_3"
+          Margin="10 10 10 10"
+          HorizontalAlignment="Center" 
+          Orientation="Horizontal"/>
+    </StackPanel>
+</Window>

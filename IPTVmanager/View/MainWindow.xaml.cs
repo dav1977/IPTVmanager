@@ -20,23 +20,25 @@ namespace IPTVman.ViewModel
 
     public partial class MainWindow : Window
     {
-       
-
+  
         public MainWindow()
         {
             InitializeComponent();
             this.Title = "IPTV manager v1.0";
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
-
-            ViewModelMain.Event_SelectITEM += new Delegate_SelectITEM(select);
+            ViewModelMain.Refresh += new Delegate_UpdateALL(updateLIST);
+            // ViewModelMain.Event_SelectITEM += new Delegate_SelectITEM(select);
 
             ViewModelMain.Event_WIN_WAIT += new Delegate_WIN_WAIT(WIN_WAIT);
-            // use a timer to periodically update the memory usage
-            //DispatcherTimer timer = new DispatcherTimer();
-            //timer.Interval = new TimeSpan(0, 0,0,0 ,50);
-            //timer.Tick += timer_Tick;
-            //timer.Start();
+
+
+            ViewModelWindow2.Event_SelectITEM += new Delegate_SelectITEM(select);
+           // use a timer to periodically update the memory usage
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
+            timer.Tick += timer_Tick;
+            timer.Start();
 
             changefav = true;
             data.canal.name = "";
@@ -57,20 +59,15 @@ namespace IPTVman.ViewModel
 
         void WIN_WAIT(byte num)
         {
-           //if (num == 1) OPEN_WIN_LOADING();
-           // if (num == 2) CLOSE_WIN_LOADING();
-        }
-        void OPEN_WIN_LOADING()
-        {      
-             new WindowLOADING
+            new WindowWAIT
             {
                 //DataContext = new V(tb1.Text),
                 //Topmost = true,
                 //WindowStyle = WindowStyle.ToolWindow,
                 //Name = "winLOADINGiptv"
-            }.Show(); ;
-
+            }.Show();
         }
+     
 
         void CLOSE_WIN_LOADING()
         {
@@ -95,24 +92,26 @@ namespace IPTVman.ViewModel
 
             MYLIST.Items.Refresh();
 
-            MYLIST.SelectedIndex = sel;
+         //   MYLIST.SelectedIndex = sel;
            
-            MYLIST.Focus();
+         //   MYLIST.Focus();
         }
 
         void select (int a, ParamCanal b)
         {
 
-            MYLIST.ScrollIntoView(b);
+            
 
-            sel = a;
+        //    MYLIST.ScrollIntoView(b);
 
-          MYLIST.SelectedIndex = a;
+        //    sel = a;
+
+         MYLIST.SelectedIndex = 10;
 
 
            
             MYLIST.Focusable = true;
-            //MYLIST.SelectedItem =b ;
+           // MYLIST.SelectedItem =b ;
 
 
 
@@ -123,34 +122,40 @@ namespace IPTVman.ViewModel
 
         }
 
-        //static uint i=0;
-        //bool last = false;
+
+
+        bool win_open = false;
         private void timer_Tick(object sender, EventArgs e)
         {
-            //if (last == ViewModelMain.loading_file && !last) return;
-            //last = ViewModelMain.loading_file;
-            //if (ViewModelMain.loading_file)
-            //{
-            //    {
- 
-            //        if (i == 0) this.Title = "Opening ... ";
-            //        if (i < 5) this.Title = "Opening .   ";
-            //        if (i > 5 && i < 10) this.Title = "Opening . .   ";
-            //        if (i > 10 && i < 15) this.Title = "Opening . . .   ";
-            //        if (i > 15 && i < 20) this.Title = "Opening . . . . . . .   ";
-            //        i++;
-            //        if (i > 20) i = 1;
-                    
-            //    }
-            //}
-            //else this.Title= "IPTV manager v1.0";
 
-          
-        }
+            if (data.waiting)
+            {
+                if (win_open) return;
+                new WindowWAIT
+                {
+                    //DataContext = new V(tb1.Text),
+                    Topmost = true,
+                    //WindowStyle = WindowStyle.ToolWindow,
+                    Name = "winwait"
+                }.Show();
+                win_open = true;
 
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
+            }
+            else
+            {
+                if (!win_open) return;
+                else
+                {
+                    foreach (Window win in Application.Current.Windows)
+                    {
+                        if (win.Name == "winwait")
+                        {
+                            win.Close();
+                            win_open = false;
+                        }
+                    }
+                }
+            }
 
         }
 
@@ -158,72 +163,7 @@ namespace IPTVman.ViewModel
         {
 
         }
-
-        private void DataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-  
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            
-
-        }
-
-        private void ListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ListView_SelectionChanged_1(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ListView_SelectionChanged_2(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-     
-        }
-
-        private void MYLIST_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-       
-        }
-
-        private void MYLIST_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
-        }
-
-
-        private void Button_Click_EDIT(object sender, RoutedEventArgs e)
-        {
-      
-        }
-
-        private void Button_Click_BEST(object sender, RoutedEventArgs e)
-        {
-
-            data.best1 = best1.Text;
-            data.best2 = best2.Text;
-        }
-
+    
         private void MYLIST_MouseDoubleClick_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
 
@@ -248,28 +188,7 @@ namespace IPTVman.ViewModel
                 Topmost = true,
                 //WindowStyle = WindowStyle.ToolWindow,
                 Name = "win1iptvMANAGER"
-            }.Show(); ;
-
-
-        }
-
-        private void MYLIST_ContextMenuOpening(object sender, System.Windows.Controls.ContextMenuEventArgs e)
-        {
-            //правая кнопка мыши
-        }
-
-        private void MYLIST_MouseEnter_1(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            //наведение на поле
-        }
-
-        private void MYLIST_TouchEnter(object sender, System.Windows.Input.TouchEventArgs e)
-        {
-            
-        }
-
-        private void MYLIST_GotMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
-        {
+            }.Show();
 
         }
 
@@ -365,12 +284,6 @@ namespace IPTVman.ViewModel
 
         }
 
-
-        private void Ffilter4_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-
-        }
-
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             data.best1 = best1.Text;
@@ -433,6 +346,29 @@ namespace IPTVman.ViewModel
         private void best1_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             update_favorites(best1.Text, best2.Text);
+        }
+
+     
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //    MYLIST.ScrollIntoView(b);
+
+            //    sel = a;
+
+            //   MYLIST.SelectedIndex = 3;
+
+
+            var a = MYLIST.Items[2];
+            //MYLIST.Focusable = true;
+            MYLIST.SelectedItem = a;
+
+           MYLIST.Items.Refresh();
+
+            //  MessageBox.Show(MYLIST.SelectedItem.ToString());
+            //MessageBox.Show(a.ToString());
+
+            MYLIST.Focus();
         }
     }
 }

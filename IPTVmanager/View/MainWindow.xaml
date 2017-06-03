@@ -150,7 +150,7 @@
                 -->
 
                 <!-- </ScrollViewer>-->
-                <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,106,-52" TextChanged="tb1_TextChanged" Width="83" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="22" Grid.Column="3"/>
+                <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,97,-52" TextChanged="tb1_TextChanged" Width="83" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="22" Grid.Column="3"/>
                 <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-2,-116,0,0"  Width="635" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="2"/>
                 <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-131,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best1_TextChanged"/>
                 <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-104,-8,0"  Width="158" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best2_TextChanged"/>
@@ -200,44 +200,17 @@
         </StackPanel>
 
         <!-- <КНОПКИ>-->
-        <Button Content="ДОБАВИТЬ"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="26,9,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" Grid.ColumnSpan="2"/>
-        <Button Content="СОХРАНИТЬ" Command="{Binding key_SAVECommand}" CommandParameter="" Margin="134,9,0,0" Focusable="False" Grid.Column="1" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" Grid.ColumnSpan="3"/>
-        <Button Name="bDELETE" Content="" Command="{Binding key_delCommand}" CommandParameter="" Margin="62,0,0,8" Focusable="False" Grid.Column="1" Width="454" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="3" BorderBrush="#FFECECEC" Background="Black" Foreground="#FFF1410D"/>
+        <Button Name="bDELETE" Content="" Command="{Binding key_delCommand}" CommandParameter="" Margin="10,0,0,5" Focusable="False" Width="428" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="4" BorderBrush="#FFECECEC" Background="Black" Foreground="#FFF1410D"/>
         <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,15,3" Focusable="False" Grid.Column="3" Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
         <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="48,0,0,8" VerticalAlignment="Bottom" FontSize="16" Foreground="#FF0EE840" Width="531" Height="32" Grid.Row="1" Grid.ColumnSpan="3"/>
         <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Margin="0,0,15,8" Foreground="#FF41E466" Grid.Row="1" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="23" Width="162" />
 
 
-        <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}"  
-                Margin="0,90,107,0" Focusable="False" Grid.Column="3" Width="99" Height="38"
-                HorizontalAlignment="Right" VerticalAlignment="Top" 
-                Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
-            BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
-                
-                CommandParameter=""
-                
-                
-                
-                Click="Button_Click_3"/>
 
 
 
-
-
-        <Label x:Name="label" Content="Избранное" Grid.Column="3" HorizontalAlignment="Right" Margin="0,6,121,0" Width="56" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="22" FontSize="9"/>
-
-        <Button Content="Фильтр Избр" Command="{Binding key_FilterOnlyBESTCommand}"  
-            Margin="0,90,15,0" Focusable="False" Grid.Column="3" Width="81" Height="38"
-            HorizontalAlignment="Right" VerticalAlignment="Top" 
-            Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
-            BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
-                
-            CommandParameter=""
-                
-                
-                
-            Click="Button_Click_3"/>
+        <Label x:Name="label" Content="Избранное" Grid.Column="3" HorizontalAlignment="Right" Margin="0,2,114,0" Width="63" Background="#FFE69F38" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="25" FontSize="10"/>
 
         <GroupBox Header="ФИЛЬТР названия" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="9,79,0,0" Grid.ColumnSpan="2" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200">
             <TextBox x:Name="Ffilter1" Text="{Binding filter1}" Margin="0,-10,0,-8"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
@@ -251,32 +224,148 @@
         <GroupBox Header="ФИЛЬТР url ping" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="390,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Width="200">
             <TextBox x:Name="Ffilter4" Text="{Binding filter4}" Margin="0,-10,0,-8"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
-        <Button  Content="Удалить по Фильтру" Command="{Binding key_DelFILTER}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,352,3" Focusable="False" Grid.Column="3" Width="118" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-        <Button Content="ДВИГАТЬ" Command="{Binding key_FILTERmove}"  
-            Margin="0,8,407,0" Focusable="False" Grid.Column="3" Width="63" Height="26"
-            HorizontalAlignment="Right" VerticalAlignment="Top" 
-            Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
-            BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
-                
-            CommandParameter=""
-                
-                
-                
-            Click="Button_ClickMOVE" Grid.Row="1"/>
-        <Button  Content="ВСЁ кроме ИЗБР" Command="{Binding key_DelALLkromeBEST}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,226,3" Focusable="False" Grid.Column="3" Width="118" Height="26" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click_4"/>
         <Button x:Name="buttonfav1" Content="B" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,85,0" VerticalAlignment="Top" Width="24" Click="button_Click_5"/>
         <Button x:Name="buttonfav2" Content="M" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,52,0" VerticalAlignment="Top" Width="24" Click="button_Copy_Click"/>
         <Button x:Name="buttonfav3" Content="K" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,19,0" VerticalAlignment="Top" Width="24" Click="button_Copy1_Click"/>
-        <Button Content="Перемещение" Command="{Binding key_FILTERmoveDrag}"  
-        	Margin="0,8,623,0" Focusable="False" Grid.Column="3" Width="93" Height="24"
-        	HorizontalAlignment="Right" VerticalAlignment="Top" 
-        	Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" 
-        	BorderBrush="#FF1BAC14" Foreground="#FFE41D1D" OpacityMask="#FF990E0E" 
-                
-        	CommandParameter=""
-                
-                
-                
-        	Click="Button_ClickMOVEDrag"/>
+        <Button Content="СОХРАНИТЬ" Command="{Binding key_SAVECommand}" CommandParameter=""   Margin="127,10,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="1" Grid.ColumnSpan="3">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFE454FB" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="ДОБАВИТЬ"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="24,10,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.ColumnSpan="2">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFFBE454" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="ПЕРЕМЕСТИТЬ" Command="{Binding key_FILTERmoveDragCommand}"  CommandParameter=""  Margin="117,10,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_ClickMOVEDrag">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF72FB54" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}"   CommandParameter=""  Margin="0,96,104,0" Focusable="False" Width="95" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_3">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF54F3FB" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="Фильтр Избр" Command="{Binding key_FilterOnlyBESTCommand}"    CommandParameter=""  Margin="0,96,10,0" Focusable="False" Width="89" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_3">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF54F3FB" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="Удалить по Фильтру" Command="{Binding key_DelFILTERCommand}"   CommandParameter=""  Margin="306,0,0,3" Focusable="False" Height="25" VerticalAlignment="Bottom" BorderBrush="#FF1BAC14" OpacityMask="#FFD4CC10" Grid.Column="3" HorizontalAlignment="Left" Width="126">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFFB5454" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="ВСЁ кроме ИЗБР" Command="{Binding key_DelALLkromeBESTCommand}"   CommandParameter=""  Margin="447,0,0,3" Focusable="False" Height="25" VerticalAlignment="Bottom" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_4" HorizontalAlignment="Left" Width="111">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFFB54AF" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="ДВИГАТЬ" Command="{Binding key_FILTERmoveCommand}"   CommandParameter=""  Margin="220,0,0,3" Focusable="False" Height="25" VerticalAlignment="Bottom" BorderBrush="#FF63115B" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_ClickMOVE" HorizontalAlignment="Left" Width="66">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF6B54FB" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF8AE41D" Offset="0.096"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="focus" Command=""  CommandParameter=""  Margin="490,10,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_1" >
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF72FB54" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="АВТО ПИНГ ВСЕХ" Command="{Binding key_AUTOPINGCommand}"   CommandParameter=""  Margin="300,10,0,0" Focusable="False" Width="132" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF72FB54" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
     </Grid>
 </Window>

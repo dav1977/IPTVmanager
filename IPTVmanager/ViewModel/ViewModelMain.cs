@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace IPTVman.ViewModel
 {
    
-    public delegate void Delegate_Update2( ParamCanal a );
+    public delegate void Delegate_UpdateMOVE( ParamCanal a );
 
     public class MultiValueConverter : IMultiValueConverter     //  http://www.codearsenal.net/2013/12/wpf-multibinding-example.html
     {
@@ -44,7 +44,8 @@ namespace IPTVman.ViewModel
 
     partial class ViewModelMain : ViewModelBase
     {
-  
+        public static event Delegate_WIN_WAIT Event_WIN_WAIT;
+        public static event Delegate_UpdateMOVE Event_UpdateAFTERmove;
         public static event Delegate_UpdateALL Event_UpdateLIST;
         public static event Delegate_SelectITEM Event_SelectITEM;
     
@@ -86,35 +87,15 @@ namespace IPTVman.ViewModel
         //**********************************************************
         public ViewModelMain()
         {
+            ListViewDragDropManager.WindowMOVE.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
+            ViewModelWindow2.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
+
+
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
-            ViewModelWindow2.Event_Update2 += new Delegate_Update2(extern_update);
-
-            //Canal = new ObservableCollection<ParamCanal>
-            //{
-            //    //new ParamCanal { Title="Tom1", ExtFilter="Jones", group_title=80 },
-            //    //new ParamCanal { Title="Dick", ExtFilter="Tracey", group_title=40 },
-            //    //new ParamCanal { Title="Harry", ExtFilter="Hill", group_title=60 },
-            //    //new ParamCanal { Title="param4", ExtFilter="Lastp4", group_title=99 },
-            //};
-
             newChannel = "новое значение";
             ini_command();
             CreateTimer1(500);
-        }
-
-
-
-        void extern_update(ParamCanal a)
-        {
-            UPDATE_FILTER("");
-
-            RaisePropertyChanged("mycol");///updte LIST!!
-            RaisePropertyChanged("numberCANALS");
-
-            int index = myLISTbase.IndexOf(a);
-
-            if (Event_SelectITEM != null) Event_SelectITEM( index, a );
         }
 
 
@@ -135,6 +116,7 @@ namespace IPTVman.ViewModel
         }
 
 
+        bool one_open = false;
         void CollectionisCreate()
         {
             
@@ -142,7 +124,7 @@ namespace IPTVman.ViewModel
 
         }
 
-        bool one_open = false;
+       
         void BEST_ADD()
         {
             if (data.one_add) return;
@@ -174,10 +156,16 @@ namespace IPTVman.ViewModel
             }
 
             UPDATE_FILTER("");
-            RaisePropertyChanged("mycol");///updte LIST!!
+            RaisePropertyChanged("mycol");///update LIST!!
         }
 
 
+        void updateLIST(ParamCanal item)
+        {
+      
+            UPDATE_FILTER("");
+            RaisePropertyChanged("mycol");///update LIST!!
+        }
 
 
 
@@ -223,10 +211,6 @@ namespace IPTVman.ViewModel
                     //----------------------------------
                 }
 
-
-
-
-
                 if (data.f4 != "" && (m1.Success || data.f1 == ""))
                 {
 
@@ -249,9 +233,6 @@ namespace IPTVman.ViewModel
 
 
                 }
-
-
-
 
             }
         }
