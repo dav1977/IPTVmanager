@@ -95,8 +95,8 @@
     <Compile Include="ViewModel\MOVE\WindowMOVE.xaml.cs">
       <DependentUpon>WindowMOVE.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\PING.cs" />
-    <Compile Include="ViewModel\PING_prepare.cs" />
+    <Compile Include="Model\PING.cs" />
+    <Compile Include="Model\PING_prepare.cs" />
     <Compile Include="ViewModel\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
