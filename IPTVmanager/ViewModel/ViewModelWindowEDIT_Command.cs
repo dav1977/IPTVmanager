@@ -19,7 +19,6 @@ namespace IPTVman.ViewModel
     {
         public static Vlc.DotNet.Player player = null;
 
-  
         public static event Delegate_UpdateEDIT Event_UpdateEDIT;
         public static event Delegate_ADDBEST Event_ADDBEST;
 
@@ -43,9 +42,6 @@ namespace IPTVman.ViewModel
                 Timer2.Enabled = true;
                 Timer2.Start();
             }
-
-
-
         }
 
         static bool newPING = false;
@@ -61,38 +57,15 @@ namespace IPTVman.ViewModel
                 }
             }
             else newPING = false;
-
-            //if (task_ping != null)
-            //{
-            //    if (task_ping.Status != System.Threading.Tasks.TaskStatus.Running)
-            //    {
-            //        if (newPING == true) ViewModelBase.result77 = "task  stopped";
-            //    }
-
-            //}
         }
 
         //============================== INIT ==================================
         public ViewModelWindow1(string lastText)
         {
             CreateTimer2(500);
-            data.one_add = false;
-
+            lok.keyadd = false;
             ViewModelBase._ping.result77 = "";
-
-
-            edit = new ParamCanal()
-            {
-                name = data.canal.name,
-                ExtFilter = data.canal.ExtFilter,
-                group_title = data.canal.group_title,
-                tvg_name = data.canal.tvg_name,
-                http = data.canal.http,
-                logo = data.canal.logo,
-                ping = data.canal.ping
-
-            };
-
+            edit =(ParamCanal) data.canal.Clone();
 
             key_PLAY = new RelayCommand(PLAY);
             key_PING = new RelayCommand(PING);
@@ -102,61 +75,22 @@ namespace IPTVman.ViewModel
 
         //=============================================================================
 
-
-
-
         void BEST(object selectedItem)
         {   
             if (Event_ADDBEST != null) Event_ADDBEST();
-        
             Thread.Sleep(300);
-            //MessageBox.Show("УСПЕШНО ДОБАВЛЕНО В ГРУППУ BEST",""
-            //  MessageBoxButton.OK);
         }
-
-
 
 
         void SAVE(object selectedItem)
         {
-
-            data.edit = new ParamCanal()
-            {
-                name = edit.name,
-                ExtFilter = edit.ExtFilter,
-                group_title = edit.group_title,
-                tvg_name = edit.tvg_name,
-                http = edit.http,
-                logo = edit.logo,
-                ping = edit.ping
-
-            };
-
-            if (Event_UpdateEDIT != null) Event_UpdateEDIT();
-           
+            lok.edit = false;
+            if (Event_UpdateEDIT != null) Event_UpdateEDIT(edit); 
         }
-
-
-        string player_path = "";
 
         void PLAY(object selectedItem)
         {
-            if (data.URLPLAY == "") return;
-
-
-            //if (p.http == null) return;
-
-            //Regex regex1 = new Regex("http:");
-            //Regex regex2 = new Regex("https:");
-
-            //var match1 = regex1.Match(p.http);
-            //var match2 = regex2.Match(p.http);
-
-            //if (match1.Success || match2.Success)
-            //{
-            //    p.ping = "";
-            //    strPING = GET(p.http);
-            //}
+            if (play.URLPLAY == "") return;
 
             //сначала пробуем играть через библиотеку
             try
@@ -179,10 +113,10 @@ namespace IPTVman.ViewModel
             }
             catch
             {
-                IPTVman.Model.data.playerUPDATE = false;
+                IPTVman.Model.play.playerUPDATE = false;
             }
 
-            if (IPTVman.Model.data.playerUPDATE == false)
+            if (IPTVman.Model.play.playerUPDATE == false)
             {
 
                 REG_FIND reg = new REG_FIND();
@@ -199,42 +133,42 @@ namespace IPTVman.ViewModel
                 }
                 else
                 {
-                    player_path = words[1];
-                    player_path = player_path.Replace(@"\", @"/");
+                    play.path = words[1];
+                    play.path = play.path.Replace(@"\", @"/");
                 }
 
 
                 try
                 {
-                    if (data.playerV != null)
+                    if (play.playerV != null)
                     {
-                        data.playerV.CloseMainWindow();
-                        data.playerV.Close();
-                        data.playerV.WaitForExit(10000);
+                        play.playerV.CloseMainWindow();
+                        play.playerV.Close();
+                        play.playerV.WaitForExit(10000);
                     }
                 }
                 catch { }
 
 
-                if (File.Exists(player_path))
+                if (File.Exists(play.path))
                 {
                     //   Process.Start(player_path);
                     ProcessStartInfo startInfo = new ProcessStartInfo();
                     startInfo.CreateNoWindow = false;
                     startInfo.UseShellExecute = false;
-                    startInfo.FileName = player_path;
+                    startInfo.FileName = play.path;
                     startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.Arguments = data.URLPLAY;
+                    startInfo.Arguments = play.URLPLAY;
 
-                    data.playerV = Process.Start(startInfo);
+                    play.playerV = Process.Start(startInfo);
                     // Process.Start(startInfo);
                    
 
                 }
-                else MessageBox.Show("Не найден файл ACE_PLAYER.exe по пути " + player_path, "", MessageBoxButton.OK);
+                else MessageBox.Show("Не найден файл ACE_PLAYER.exe по пути " + play.path, "", MessageBoxButton.OK);
 
             }
-            IPTVman.Model.data.playerUPDATE = false;
+            IPTVman.Model.play.playerUPDATE = false;
         }
 
         void PING(object selectedItem)
@@ -262,15 +196,10 @@ namespace IPTVman.ViewModel
             foreach (string s in n3)
             {
                 edit.ping += s;
-            }
-
-
-           
+            } 
         }
 
 
-   
-
-
+ 
     }
 }

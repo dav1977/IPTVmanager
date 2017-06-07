@@ -12,7 +12,7 @@ namespace IPTVman.ViewModel
 {
    
     public delegate void Delegate_UpdateALL(int size);
-    public delegate void Delegate_UpdateEDIT();
+    public delegate void Delegate_UpdateEDIT( ParamCanal k);
     public delegate void Delegate_Window1();
     public delegate void Delegate_ADDBEST();
     public delegate void Delegate_SelectITEM(int a, ParamCanal b);
@@ -29,11 +29,11 @@ namespace IPTVman.ViewModel
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
             ViewModelMain.Refresh += new Delegate_UpdateALL(updateLIST);
             // ViewModelMain.Event_SelectITEM += new Delegate_SelectITEM(select);
+//
+            //ViewModelMain.Event_WIN_WAIT += new Delegate_WIN_WAIT(WIN_WAIT);
 
-            ViewModelMain.Event_WIN_WAIT += new Delegate_WIN_WAIT(WIN_WAIT);
 
-
-            ViewModelWindow2.Event_SelectITEM += new Delegate_SelectITEM(select);
+           // ViewModelWindow2.Event_SelectITEM += new Delegate_SelectITEM(select);
            // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
@@ -57,32 +57,31 @@ namespace IPTVman.ViewModel
             //label_kanals.SetBinding(label_kanals.Content, bind);
         }
 
-        void WIN_WAIT(byte num)
-        {
-            new WindowWAIT
-            {
-                //DataContext = new V(tb1.Text),
-                //Topmost = true,
-                //WindowStyle = WindowStyle.ToolWindow,
-                //Name = "winLOADINGiptv"
-            }.Show();
-        }
+        //void WIN_WAIT(byte num)
+        //{
+        //    new WindowWAIT
+        //    {
+        //        //DataContext = new V(tb1.Text),
+        //        //Topmost = true,
+        //        //WindowStyle = WindowStyle.ToolWindow,
+        //        //Name = "winLOADINGiptv"
+        //    }.Show();
+        //}
      
 
-        void CLOSE_WIN_LOADING()
-        {
-            foreach (Window win in Application.Current.Windows)
-            {
-                if  (win.Name == "winLOADINGiptv")
-                {
-                    win.Close();
-                }
-            }
+        //void CLOSE_WIN_LOADING()
+        //{
+        //    foreach (Window win in Application.Current.Windows)
+        //    {
+        //        if  (win.Name == "winLOADINGiptv")
+        //        {
+        //            win.Close();
+        //        }
+        //    }
 
-        }
+        //}
 
 
-        int sel = 0;
        
         void updateLIST(int size)
         {
@@ -128,7 +127,7 @@ namespace IPTVman.ViewModel
         private void timer_Tick(object sender, EventArgs e)
         {
 
-            if (data.waiting)
+            if (lok.open)
             {
                 if (win_open) return;
                 new WindowWAIT

@@ -26,9 +26,9 @@ namespace Vlc.DotNet
                 myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
                 myControl.MediaPlayer.EndInit();
             }
-            catch (Exception ex)
+            catch 
             {
-                IPTVman.Model.data.playerUPDATE = false;
+                IPTVman.Model.play.playerUPDATE = false;
                // MessageBox.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
                 this.Close();
                 return;
@@ -37,7 +37,7 @@ namespace Vlc.DotNet
 
 
 
-            string url = IPTVman.Model.data.URLPLAY;
+            string url = IPTVman.Model.play.URLPLAY;
             try
             {
                 myControl.MediaPlayer.Play(new Uri(url));
@@ -80,14 +80,14 @@ namespace Vlc.DotNet
 
             if (lok) return;
             lok = true;
-            if (IPTVman.Model.data.playerUPDATE)
+            if (IPTVman.Model.play.playerUPDATE)
             {
                // key1.Content = "not playing";
                 
                 if (myControl.MediaPlayer.IsPlaying) myControl.MediaPlayer.Stop();
 
                 Thread.Sleep(500);
-                string url = IPTVman.Model.data.URLPLAY;
+                string url = IPTVman.Model.play.URLPLAY;
                 try
                 {
                     myControl.MediaPlayer.Play(new Uri(url));

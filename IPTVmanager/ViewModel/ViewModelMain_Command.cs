@@ -317,9 +317,6 @@ namespace IPTVman.ViewModel
 
         void PARSING_FILE()
         {
-
-         
-
             uint ct_dublicat = 0;
             string line = null;
             string newname = "";
@@ -330,7 +327,7 @@ namespace IPTVman.ViewModel
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    data.waiting = true;
+                    lok.open = true;
                 
 
                     Regex regex1 = new Regex("#EXTINF");
@@ -501,7 +498,7 @@ namespace IPTVman.ViewModel
             catch { }
 
 
-            data.waiting = false;
+            lok.open = false;
 
             if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
                                 MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);

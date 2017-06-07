@@ -58,8 +58,8 @@ namespace IPTVman.ViewModel
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
 
-            IPTVman.Model.data.URLPLAY = urlTEXT.Text;
-            IPTVman.Model.data.playerUPDATE = true;
+            IPTVman.Model.play.URLPLAY = urlTEXT.Text;
+            IPTVman.Model.play.playerUPDATE = true;
             this.Close();
         }
 

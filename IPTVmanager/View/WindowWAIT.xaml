@@ -12,7 +12,7 @@
     ResizeMode="NoResize">
     <StackPanel x:Uid="StackPanel_1"
                 >
-        
+
         <StackPanel x:Uid="StackPanel_2"
           Orientation="Horizontal"
           HorizontalAlignment="Center"
@@ -36,7 +36,21 @@
           Width="300"
           Minimum="0"
           Maximum="10"
-          Value="{Binding Path=WritingProgressPercentage, UpdateSourceTrigger=Explicit, NotifyOnTargetUpdated=True}" Height="18"/>
+          Value="{Binding Path=WritingProgressPercentage, UpdateSourceTrigger=Explicit, NotifyOnTargetUpdated=True}" Height="18" Foreground="#FF0F19B4">
+                <ProgressBar.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FF878585" Offset="0"/>
+                        <GradientStop Color="#FFC51616" Offset="1"/>
+                    </LinearGradientBrush>
+                </ProgressBar.Background>
+                <ProgressBar.BorderBrush>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FF686868" Offset="0.204"/>
+                        <GradientStop Color="#FFBD1818" Offset="0.864"/>
+                        <GradientStop Color="#FFBD1818" Offset="0.662"/>
+                    </RadialGradientBrush>
+                </ProgressBar.BorderBrush>
+            </ProgressBar>
         </StackPanel>
         <StackPanel x:Uid="StackPanel_3"
           Margin="10 10 10 10"

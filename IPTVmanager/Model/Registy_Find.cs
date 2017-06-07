@@ -93,7 +93,7 @@ namespace IPTVman.Model
                         //РЕКУРСИЯ!!!
                         retVal = RegFind(key.OpenSubKey(subkey, RegistryKeyPermissionCheck.ReadSubTree), find);
                     }
-                    catch (Exception ex)
+                    catch 
                     {
                         // err msg, if need
                     }

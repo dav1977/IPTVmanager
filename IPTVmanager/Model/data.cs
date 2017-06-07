@@ -7,14 +7,25 @@ using System.Diagnostics;
 namespace IPTVman.Model
 {
 
-    
+    public static class lok
+    {
+        public static bool edit = false;
+        public static bool open = false;
+        public static bool lokUP, lokDN = false;
+        public static bool keyadd = false;//дребезг кнопки
+    }
 
-      
+
+    public static class play
+    {
+        public static string path = "";
+        public static Process playerV;
+        public static bool playerUPDATE = false;
+        public static string URLPLAY = "";
+    }
+
     public static class data
     {
-
-        public static bool waiting=false;
-        public static Process playerV;
         public static byte current_favorites =1;
         public static string favorite1_1 = "best";
         public static string favorite1_2 = "best";
@@ -25,21 +36,20 @@ namespace IPTVman.Model
         public static string favorite3_1 = "kino";
         public static string favorite3_2 = "kino";
 
-        public static bool lokUP,lokDN = false;
+       
 
         public static ParamCanal canal = new ParamCanal();
-        public static ParamCanal edit;
+        public static ParamCanal edit = new ParamCanal();
 
         public static string best1,best2;
   
         public static string f1,f2,f3,f4;
 
-        public static bool one_add = false;//дребезг кнопки
+       
 
         public static bool start_ping = false;
 
-        public static bool playerUPDATE = false;
-        public static string URLPLAY = "";
+        
     }
 
     

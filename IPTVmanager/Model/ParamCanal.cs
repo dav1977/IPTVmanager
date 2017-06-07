@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace IPTVman.Model
 {
 
-        public class ParamCanal : INotifyPropertyChanged//, IComparable<ParamCanal>
+        public class ParamCanal : ICloneable , INotifyPropertyChanged //, IComparable<ParamCanal>
     {
 
         /// <summary>
@@ -178,6 +178,27 @@ namespace IPTVman.Model
         }
 
         public override string ToString() { return sort; }
+
+        public object Clone()
+        {
+            return new ParamCanal
+            {
+                name = this.name,
+                ExtFilter = this.ExtFilter,
+                group_title = this.group_title,
+                logo = this.logo,
+                http = this.http,
+                tvg_name = this.tvg_name,
+                ping = this.ping,
+            };
+        }
+
+        public string Compare()
+        {
+            return this.name + this.ExtFilter + this.group_title + this.logo + this.http + this.tvg_name;
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged2 = delegate { };
 
 

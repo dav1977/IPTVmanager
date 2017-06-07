@@ -17,38 +17,35 @@ using System.Threading.Tasks;
 
 namespace IPTVman.ViewModel
 {
-   
-    public delegate void Delegate_UpdateMOVE( ParamCanal a );
 
-    public class MultiValueConverter : IMultiValueConverter     //  http://www.codearsenal.net/2013/12/wpf-multibinding-example.html
-    {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            string one = values[0] as string;
-            string two = values[1] as string;
-            string three = values[2] as string;
-            if (!string.IsNullOrEmpty(one) && !string.IsNullOrEmpty(two) && !string.IsNullOrEmpty(three))
-            {
-                return one + two + three;
-            }
-            return null;
-        }
+    public delegate void Delegate_UpdateMOVE(ParamCanal a);
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //public class MultiValueConverter : IMultiValueConverter     //  http://www.codearsenal.net/2013/12/wpf-multibinding-example.html
+    //{
+    //    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        string one = values[0] as string;
+    //        string two = values[1] as string;
+    //        string three = values[2] as string;
+    //        if (!string.IsNullOrEmpty(one) && !string.IsNullOrEmpty(two) && !string.IsNullOrEmpty(three))
+    //        {
+    //            return one + two + three;
+    //        }
+    //        return null;
+    //    }
 
-  
+    //    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
+
+
 
     partial class ViewModelMain : ViewModelBase
     {
-        public static event Delegate_WIN_WAIT Event_WIN_WAIT;
-        public static event Delegate_UpdateMOVE Event_UpdateAFTERmove;
         public static event Delegate_UpdateALL Event_UpdateLIST;
-        public static event Delegate_SelectITEM Event_SelectITEM;
-    
+
 
         //public ObservableCollection<ParamCanal> Canal { get; set; }
         //  public MyCollection<ParamCanal> CanalOUT { get; set; }
@@ -87,12 +84,12 @@ namespace IPTVman.ViewModel
         //**********************************************************
         public ViewModelMain()
         {
-            ListViewDragDropManager.WindowMOVE.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
-            ViewModelWindow2.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
-
-
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
+            ViewModelWindow2.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
+            ListViewDragDropManager.WindowMOVE.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
+
+
             newChannel = "новое значение";
             ini_command();
             CreateTimer1(500);
@@ -119,16 +116,14 @@ namespace IPTVman.ViewModel
         bool one_open = false;
         void CollectionisCreate()
         {
-            
             if (!one_open) { Create_Virtual_Collection(); one_open = true; }
-
         }
 
        
         void BEST_ADD()
         {
-            if (data.one_add) return;
-            data.one_add = true;
+            if (lok.keyadd) return;
+            lok.keyadd = true;
             data.canal.ExtFilter = data.best1;
             data.canal.group_title = data.best2;
             myLISTfull.Add(data.canal);
@@ -136,21 +131,19 @@ namespace IPTVman.ViewModel
         }
 
 
-
-        void updateEDIT()
+        void updateEDIT(ParamCanal item)
         {
             int i = 0;
+  
+            if (lok.edit) return;
+            lok.edit = true;
             foreach (var obj in myLISTfull)
             {
-               
-                if (obj.name == data.canal.name && obj.http == data.canal.http && obj.ExtFilter == data.canal.ExtFilter)
+               if (obj.Compare()==data.canal.Compare())
                 {
-                   myLISTfull[i].name = data.edit.name;
-                   myLISTfull[i].ExtFilter = data.edit.ExtFilter;
-                   myLISTfull[i].group_title = data.edit.group_title;
-                   myLISTfull[i].http = data.edit.http;
-                   myLISTfull[i].ping = data.edit.ping;
-                   break;
+                    //myLISTfull[i] = (ParamCanal)item.Clone();
+                    myLISTfull[i] = (ParamCanal)item.Clone();
+                    break;
                 }
                 i++;
             }

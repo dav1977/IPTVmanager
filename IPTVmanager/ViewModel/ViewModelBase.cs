@@ -37,12 +37,8 @@ namespace IPTVman.ViewModel
                 Timer1.Enabled = true;
                 Timer1.Start();
             }
-
-            
-
         }
 
-        static bool last_win=false;
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
         {
             if (PropertyChanged != null)
@@ -50,14 +46,6 @@ namespace IPTVman.ViewModel
                 RaisePropertyChanged("memory");
 
             }
-
-            
-            //if (win_loading && !last_win)
-            //{
-            //    last_win = true;
-            //    if (Event_WIN_WAIT != null) Event_WIN_WAIT(1);
-            //}
-
         }
 
 

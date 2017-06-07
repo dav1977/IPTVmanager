@@ -43,9 +43,8 @@ namespace IPTVman.ViewModel
         
         void up(object selectedItem)
         {
-            if (data.lokUP || data.canal.name=="") return;
+            if (lok.lokUP || data.canal.name=="") return;
            
-            int j = 0;
             ParamCanal pred = new ParamCanal();
             ParamCanal curr = new ParamCanal();
 
@@ -54,17 +53,16 @@ namespace IPTVman.ViewModel
             foreach (var obj in myLISTbase)
             {
 
-                if (obj.name == data.canal.name && obj.http == data.canal.http
-                    && obj.ExtFilter == data.canal.ExtFilter && obj.group_title==data.canal.group_title)
+                if (obj.Compare() == data.canal.Compare())
                 {
-                    curr = obj;   j--; break;
+                    curr = obj;
+                    // curr=(ParamCanal)obj.Clone(); 
+                    break;
                 }
                 else
                 {
                     pred = obj;
-
-                    pred.name = obj.name; pred.http = obj.http;
-                    j++;
+                    //pred = (ParamCanal)obj.Clone();
                 }
             }
 
@@ -74,18 +72,21 @@ namespace IPTVman.ViewModel
                 int i1 = myLISTfull.IndexOf(pred);
                 int i2 = myLISTfull.IndexOf(curr);
 
-                 myLISTfull[i1] = curr;
-                 myLISTfull[i2] = pred;
+                if (i1 >= 0 && i1 <= myLISTfull.Count())
+                    if (i2 >= 0 && i2 <= myLISTfull.Count())
+                    {
+                        myLISTfull[i1] = curr; //(ParamCanal)curr.Clone();
+                        myLISTfull[i2] = pred; //(ParamCanal)pred.Clone();
+                    }
             }
 
 
             data.canal.name = "";
             if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(curr);
-            Thread.Sleep(1000);
             if (Event_SELECT != null) { Event_SELECT(1, curr);  }
 
-            data.lokUP = false;
-            data.lokDN = false;
+            lok.lokUP = false;
+            lok.lokDN = false;
 
         }
 
@@ -94,7 +95,7 @@ namespace IPTVman.ViewModel
         /// </summary>
         void dn(object selectedItem)
         {
-            if (data.lokDN || data.canal.name == "") return;
+            if (lok.lokDN || data.canal.name == "") return;
 
             ParamCanal nxt = new ParamCanal();
             ParamCanal curr = new ParamCanal();
@@ -106,15 +107,16 @@ namespace IPTVman.ViewModel
             {
                 if (find_ok)
                 {
-
-                    nxt = obj; break;
+                    nxt = obj;
+                   // nxt = (ParamCanal)obj.Clone();
+                    break;
                 }
 
 
-                if (obj.name == data.canal.name && obj.http == data.canal.http
-                    && obj.ExtFilter == data.canal.ExtFilter && obj.group_title == data.canal.group_title)
+                if (obj.Compare()==data.canal.Compare())     
                 {
-                    curr = obj; find_ok = true;
+                   curr = obj;// (ParamCanal)obj.Clone();
+                   find_ok = true;
                 }
                
             }
@@ -125,15 +127,17 @@ namespace IPTVman.ViewModel
                 int i1 = myLISTfull.IndexOf(nxt);
                 int i2 = myLISTfull.IndexOf(curr);
 
-                myLISTfull[i1] = curr;
-                myLISTfull[i2] = nxt;
+                if (i1 >= 0 && i1 <= myLISTfull.Count())
+                    if (i2 >= 0 && i2 <= myLISTfull.Count())
+                    {
+                        myLISTfull[i1] = curr; //(ParamCanal)curr.Clone();
+                        myLISTfull[i2] = nxt; //(ParamCanal)nxt.Clone();
+                    }
             }
 
 
             data.canal.name = "";
             if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(curr);
-
-            Thread.Sleep(1000);
             if (Event_SELECT != null) { Event_SELECT(1, curr); }
 
         }

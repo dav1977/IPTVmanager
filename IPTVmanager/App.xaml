@@ -134,8 +134,8 @@
     </LinearGradientBrush>
                                         
          <LinearGradientBrush x:Key="BrushTrackProgressBar" EndPoint="0,0.5" StartPoint="1,0.5">
-        <GradientStop Color="#FFEFCF38" Offset="0"/>
-        <GradientStop Color="#FFFD9804" Offset="1"/>
+        <GradientStop Color="#FF38C5EF" Offset="0"/>
+        <GradientStop Color="#FFF77457" Offset="1"/>
     </LinearGradientBrush>
     
          <SolidColorBrush x:Key="BorderBrushToolTip" Color="#aaa" />
@@ -664,72 +664,7 @@
         </Style>
 
         <!-- CheckBox -->
-        <Style TargetType="{x:Type CheckBox}">
-            <Setter Property="Background" Value="{StaticResource ControlBackgroundNormal}" />
-            <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}" />
-            <Setter Property="Foreground" Value="{StaticResource ControlForegroundWhite}" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="Padding" Value="4,0" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusLine}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type CheckBox}">
-                        <ControlTemplate.Resources>
-                            <Storyboard x:Key="HoverOn">
-                                <ColorAnimation Storyboard.TargetProperty="(Rectangle.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="background_checkbox"
-                                            Duration="0:0:0.3" To="{StaticResource BorderBrushGradientColor1}"/>
-                                <ColorAnimation Storyboard.TargetProperty="(Rectangle.Stroke).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="background_checkbox"
-                                            Duration="0:0:0.3" To="{StaticResource BorderBrushGradientColor2}"/>
-                            </Storyboard>
-                            <Storyboard x:Key="HoverOff">
-                                <ColorAnimation Storyboard.TargetProperty="(Rectangle.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="background_checkbox"
-                                            Duration="0:0:0.3" To="{StaticResource BorderBrushSolidColor}"/>
-                                <ColorAnimation Storyboard.TargetProperty="(Rectangle.Stroke).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="background_checkbox"
-                                            Duration="0:0:0.3" To="{StaticResource BorderBrushSolidColor}"/>
-                            </Storyboard>
-                        </ControlTemplate.Resources>
-                        <BulletDecorator Background="Transparent">
-                            <BulletDecorator.Bullet>
-                                <Grid Width="16" Height="16">
-                                    <Rectangle Height="14" Width="14" x:Name="background_checkbox" Stroke="{TemplateBinding BorderBrush}"
-                                           Fill="{TemplateBinding Background}"/>
-                                    <Path x:Name="check_icon" Opacity="0" Stretch="Fill" 
-                                      Data="M102.03442,598.79645 L105.22962,597.78918 L106.95686,599.19977 C106.95686,599.19977 113.77958,590.53656 113.77958,590.53656 C113.77958,590.53656 107.40649,603.79431 107.40649,603.79431 z" 
-                                      Fill="{StaticResource ControlBackgroundOver}" Height="10" Width="11"/>
-                                    <Rectangle Height="7" Width="7" x:Name="background_null_checkbox" Fill="{StaticResource ControlBackgroundOver}" Opacity="0"/>
-                                    <Rectangle Height="12" Width="12" x:Name="background_disabled_checkbox" Fill="{StaticResource DisabledBrush}" 
-                                           Stroke="{StaticResource DisabledBorderBrush}" StrokeThickness="1" Opacity="0"/>
-                                </Grid>
-                            </BulletDecorator.Bullet>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" 
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
-                        </BulletDecorator>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="check_icon" Property="Opacity" Value="1"/>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="{x:Null}">
-                                <Setter TargetName="background_null_checkbox" Property="Opacity" Value="1"/>
-                                <Setter Property="Opacity" Value="0.9"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="background_disabled_checkbox" Property="Opacity" Value="1"/>
-                                <Setter Property="Opacity" Value="0.72"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Trigger.EnterActions>
-                                    <BeginStoryboard Storyboard="{StaticResource HoverOn}"/>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard Storyboard="{StaticResource HoverOff}"/>
-                                </Trigger.ExitActions>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+      
 
         <!-- Label -->
         <Style TargetType="{x:Type Label}">

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:IPTVman.Helpers" x:Class="IPTVman.ViewModel.Window1" WindowStartupLocation="CenterScreen"
     
-        DataContext="{DynamicResource ViewModelWindow1}" Height="413.5" Width="758" Closing="Window_Closing">
+        DataContext="{DynamicResource ViewModelWindow1}" Height="424.881" Width="750.413" Closing="Window_Closing">
 
 
 
@@ -33,7 +33,7 @@
         <Label x:Name="label_Copy2" Content="group" HorizontalAlignment="Left" Margin="0,95,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
         <Label x:Name="label_Copy3" Content="ping" HorizontalAlignment="Left" Margin="0,123,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
         <Button x:Name="ButtonBEST" Content="Добавить в ИЗБР." Command="{Binding key_ADDBEST}" HorizontalAlignment="Left" Margin="10,325,0,0" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.509,3.614" Click="ButtonBEST_Click"/>
-        <ProgressBar Name="ProgressBar1" HorizontalAlignment="Left" Height="58" Margin="140,302,0,0" VerticalAlignment="Top" Width="345" Foreground="#FF60D301" Background="#FF290D5B"/>
+        <ProgressBar Name="ProgressBar1" HorizontalAlignment="Left" Height="45" Margin="140,312,0,0" VerticalAlignment="Top" Width="345" Foreground="#FF60D301" Background="#FF290D5B"/>
         <Button x:Name="Button_PLAY" Content="PLAY" Command="{Binding key_PLAY}" HorizontalAlignment="Left" Margin="10,213,0,0" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.626,-2.026" Click="Button_Copy_Click"/>
     </Grid>
 

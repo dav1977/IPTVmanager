@@ -25,8 +25,6 @@ namespace IPTVman.ViewModel
 
         public string GET(string u)
         {
-
-            string ip = "";
             ViewModelBase._ping.result77 = "";
             Regex regex1 = new Regex("http:");
             Regex regex2 = new Regex("https:");
