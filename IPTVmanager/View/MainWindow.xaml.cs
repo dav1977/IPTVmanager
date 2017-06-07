@@ -10,7 +10,8 @@ using System.Collections.Generic;
 
 namespace IPTVman.ViewModel
 {
-   
+
+    public delegate void Delegate_UpdateFILTER();
     public delegate void Delegate_UpdateALL(int size);
     public delegate void Delegate_UpdateEDIT( ParamCanal k);
     public delegate void Delegate_Window1();
@@ -27,13 +28,8 @@ namespace IPTVman.ViewModel
             this.Title = "IPTV manager v1.0";
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
-            ViewModelMain.Refresh += new Delegate_UpdateALL(updateLIST);
-            // ViewModelMain.Event_SelectITEM += new Delegate_SelectITEM(select);
-//
-            //ViewModelMain.Event_WIN_WAIT += new Delegate_WIN_WAIT(WIN_WAIT);
+            WindowPING.Event_Refresh += new Delegate_UpdateALL(updateLIST);
 
-
-           // ViewModelWindow2.Event_SelectITEM += new Delegate_SelectITEM(select);
            // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
@@ -85,15 +81,17 @@ namespace IPTVman.ViewModel
        
         void updateLIST(int size)
         {
-            bDELETE.Content = "";
-            //MYLIST.Items.Refresh();
-            bDELETE.Content = "";
+          
 
+        MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new
+        Action(() =>
+        {
+            bDELETE.Content = "";
             MYLIST.Items.Refresh();
 
-         //   MYLIST.SelectedIndex = sel;
-           
-         //   MYLIST.Focus();
+        }));
+
+
         }
 
         void select (int a, ParamCanal b)
@@ -275,6 +273,7 @@ namespace IPTVman.ViewModel
             new ListViewDragDropManager.WindowMOVE
             {
                 //DataContext = new ViewModelWindow2(tb1.Text),
+                Title = "ПЕРЕМЕЩЕНИЕ",
                 Topmost = true,
                 WindowStyle = WindowStyle.ToolWindow,
                 Name = "win2iptvMANAGER3"

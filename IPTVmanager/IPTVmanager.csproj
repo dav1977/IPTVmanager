@@ -85,6 +85,7 @@
     <Compile Include="Helpers\DialogCloser.cs" />
     <Compile Include="Helpers\IClosableViewModel.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Model\AutoPING.cs" />
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
     <Compile Include="Model\Registy_Find.cs" />
@@ -116,6 +117,9 @@
     <Compile Include="View\Window2_Move.xaml.cs">
       <DependentUpon>Window2_Move.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WindowPING.xaml.cs">
+      <DependentUpon>WindowPING.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowWAIT.xaml.cs">
       <DependentUpon>WindowWAIT.xaml</DependentUpon>
     </Compile>
@@ -146,6 +150,10 @@
     <Page Include="View\Window2_Move.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WindowPING.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\WindowWAIT.xaml">
       <SubType>Designer</SubType>

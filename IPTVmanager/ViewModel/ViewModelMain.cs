@@ -88,7 +88,7 @@ namespace IPTVman.ViewModel
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
             ViewModelWindow2.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
-
+            WindowPING.Event_updateFILTER += new Delegate_UpdateFILTER(UPD1);
 
             newChannel = "новое значение";
             ini_command();

@@ -20,7 +20,6 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-        public static event Delegate_UpdateALL Refresh;
 
         public RelayCommand key_FILTERmoveDragCommand { get; set; }
         public RelayCommand key_FILTERmoveCommand { get; set; }
@@ -69,51 +68,67 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_AUTOPING(object parameter)
         {
-           List<ParamCanal> LST= new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
-             try
+
+            new WindowPING
             {
+                Title ="АВТО ПИНГ",
+                Topmost = true,
+                WindowStyle = WindowStyle.ToolWindow,
+                Name = "winPING"
+            }.Show(); ;
 
-                foreach (var i in ViewModelMain.myLISTbase)
-                {
-                    LST.Add(i);
-                }
-
-
-
-                foreach (var i in LST)
-                {
-
-                    _ping.result77 = "";
-                    if (i.http == null || i.http == "") continue;
-
-                    _pingPREPARE.GET(i.http);
-
-                    byte ct = 0;
-                    ct = 0;
-                    while (_ping.result77 == "") { Thread.Sleep(200);  ct++; if (ct > 5) break; }
-
-                    var item = ViewModelMain.myLISTfull.Find(x => x == i);
-                    item.ping = _ping.result77;
-
-                    // item = ViewModelMain.myLISTbase.Find(x => x == i);
-                    //item.ping = _ping.result77;
-
-                    //RaisePropertyChanged("mycol");
+          
 
 
-                   // UPDATE_FILTER("");
-                    RaisePropertyChanged("mycol");///update LIST!!
+           //List<ParamCanal> LST= new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
+           //  try
+           // {
 
-                    if (Refresh != null) Refresh(1);
-                }
+           //     foreach (var i in ViewModelMain.myLISTbase)
+           //     {
+           //         LST.Add(i);
+           //     }
 
-            }
-            catch (Exception ex)
-            {
 
-                MessageBoxResult result = MessageBox.Show(ex.ToString(), " ",
-                               MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+           //     int iu = 0;
+
+           //     foreach (var i in LST)
+           //     {
+           //         iu++;
+           //         if (iu > 7) return;
+           //         _ping.result77 = "";
+           //         if (i.http == null || i.http == "") continue;
+
+           //         _pingPREPARE.GET(i.http);
+
+           //         byte ct = 0;
+           //         ct = 0;
+           //         while (_ping.result77 == "") { Thread.Sleep(200);  ct++; if (ct > 5) break; }
+
+           //         var item = ViewModelMain.myLISTfull.Find(x => x == i);
+           //         item.ping = _ping.result77;
+
+           //        // MessageBox.Show(i.name+"\n" +_ping.result77);
+
+           //         // item = ViewModelMain.myLISTbase.Find(x => x == i);
+           //         //item.ping = _ping.result77;
+
+           //         //RaisePropertyChanged("mycol");
+
+
+           //         // UPDATE_FILTER("");
+           //         RaisePropertyChanged("mycol");///update LIST!!
+
+           //         if (Refresh != null) Refresh(1);
+           //     }
+
+           // }
+           // catch (Exception ex)
+           // {
+
+           //     MessageBoxResult result = MessageBox.Show(ex.ToString(), " ",
+           //                    MessageBoxButton.OK, MessageBoxImage.Warning);
+           // }
 
 
 
