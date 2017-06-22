@@ -20,7 +20,8 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-
+        public RelayCommand key_OPENclipboard { get; set; }
+        public RelayCommand key_SetAllBestCommand { get; set; }
         public RelayCommand key_FILTERmoveDragCommand { get; set; }
         public RelayCommand key_FILTERmoveCommand { get; set; }
         public RelayCommand key_AUTOPINGCommand { get; set; }
@@ -38,6 +39,8 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
+            key_OPENclipboard = new RelayCommand(key_OPEN_clipboard);
+            key_SetAllBestCommand = new RelayCommand(key_set_all_best);
             key_FILTERmoveDragCommand = new RelayCommand(key_dragdrop);
             key_FILTERmoveCommand = new RelayCommand(key_move);
             key_AUTOPINGCommand = new RelayCommand(key_AUTOPING);
@@ -62,6 +65,42 @@ namespace IPTVman.ViewModel
 
 
         }
+
+
+        void key_set_all_best(object parameter)
+        {
+            if (myLISTfull == null) return;
+            if (data.canal.name == "") return;
+
+            MessageBoxResult result = MessageBox.Show("  Переместить пустые группы в избранное" , " ПЕРЕМЕЩЕНИЕ",
+                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes) return;
+
+            int ct=0;
+            data.set_best();
+
+
+            foreach (var s in ViewModelMain.myLISTbase)
+            {
+
+                ct = 0;
+                foreach (var j in ViewModelMain.myLISTfull)
+                {
+
+                    if (j.Compare() == s.Compare() && s.group_title=="")
+                    {
+                        ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
+                        ViewModelMain.myLISTfull[ct].group_title = data.best2;
+                        break;
+                    }
+                    ct++;
+                }  
+               
+            }
+
+            Update_collection();
+
+        }
         /// <summary>
         /// AUTO PING
         /// </summary>
@@ -79,59 +118,6 @@ namespace IPTVman.ViewModel
 
           
 
-
-           //List<ParamCanal> LST= new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
-           //  try
-           // {
-
-           //     foreach (var i in ViewModelMain.myLISTbase)
-           //     {
-           //         LST.Add(i);
-           //     }
-
-
-           //     int iu = 0;
-
-           //     foreach (var i in LST)
-           //     {
-           //         iu++;
-           //         if (iu > 7) return;
-           //         _ping.result77 = "";
-           //         if (i.http == null || i.http == "") continue;
-
-           //         _pingPREPARE.GET(i.http);
-
-           //         byte ct = 0;
-           //         ct = 0;
-           //         while (_ping.result77 == "") { Thread.Sleep(200);  ct++; if (ct > 5) break; }
-
-           //         var item = ViewModelMain.myLISTfull.Find(x => x == i);
-           //         item.ping = _ping.result77;
-
-           //        // MessageBox.Show(i.name+"\n" +_ping.result77);
-
-           //         // item = ViewModelMain.myLISTbase.Find(x => x == i);
-           //         //item.ping = _ping.result77;
-
-           //         //RaisePropertyChanged("mycol");
-
-
-           //         // UPDATE_FILTER("");
-           //         RaisePropertyChanged("mycol");///update LIST!!
-
-           //         if (Refresh != null) Refresh(1);
-           //     }
-
-           // }
-           // catch (Exception ex)
-           // {
-
-           //     MessageBoxResult result = MessageBox.Show(ex.ToString(), " ",
-           //                    MessageBoxButton.OK, MessageBoxImage.Warning);
-           // }
-
-
-
         }
         /// <summary>
         ///   ADD
@@ -143,9 +129,9 @@ namespace IPTVman.ViewModel
             if (parameter == null) return;
             myLISTfull.Add(new ParamCanal
             { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
-            
-            RaisePropertyChanged("mycol");
-            
+
+            Update_collection();
+
         }
         
         /// <summary>
@@ -169,7 +155,7 @@ namespace IPTVman.ViewModel
 
             myLISTfull.Remove(item);
 
-            RaisePropertyChanged("mycol");
+            Update_collection();
         }
 
         /// <summary>
@@ -196,9 +182,9 @@ namespace IPTVman.ViewModel
                 if (item != null) { myLISTfull.Remove(item);  ct++; }
 
             }
-         
 
-            RaisePropertyChanged("mycol");
+
+            Update_collection();
             MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
                                MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -238,7 +224,7 @@ namespace IPTVman.ViewModel
                                MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            RaisePropertyChanged("mycol");
+            Update_collection();
             MessageBox.Show("  УДАЛЕНО " + ct.ToString() + " Каналов", " ",
                                MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -298,6 +284,16 @@ namespace IPTVman.ViewModel
             Update_collection();
         }
 
+
+        /// <summary>
+        /// open from clipboard
+        /// </summary>
+        /// <param name="parameter"></param>
+        void key_OPEN_clipboard(object parameter)
+        {
+
+
+        }
 
         bool open = false;
         void key_OPEN(object parameter)

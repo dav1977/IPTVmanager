@@ -9,7 +9,7 @@
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="false"
     Title=""
-    ResizeMode="NoResize" Height="252.386" Width="332.55">
+    ResizeMode="NoResize" Height="252.386" Width="332.55" Closing="Window_Closing">
     <StackPanel x:Uid="StackPanel_1" RenderTransformOrigin="0.508,0.567" Margin="0,0,4,4"
                 >
         <StackPanel x:Uid="StackPanel_2"

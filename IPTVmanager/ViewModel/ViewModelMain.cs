@@ -166,7 +166,7 @@ namespace IPTVman.ViewModel
         }
 
 
-        void UPD1()
+        void UPD_normal()
         {
 
             Match m1, m2, m3, m4;
@@ -235,20 +235,24 @@ namespace IPTVman.ViewModel
 
 
 
-        void UPD2best()
+        void UPD_best()
         {
-            data.f1 = ""; data.f4 = ""; data.f2 = data.best1; data.f3 = data.best2;
+            data.f1 = ""; data.f4 = "";
+
+            data.f2 = data.best1;
+            data.f3 = data.best2;
 
             Match m1;
-            Regex regex1 = new Regex(data.f1, RegexOptions.IgnoreCase);
-
-
+            Regex regex1 = new Regex(data.f2, RegexOptions.IgnoreCase);
 
             myLISTbase.Clear();
+
             foreach (var c in myLISTfull)
             {
-                m1 = regex1.Match(c.name);
-                if ((m1.Success && data.f2 == c.ExtFilter && data.f3 == c.group_title)) myLISTbase.Add(c);
+               // m1 = regex1.Match(c.name);
+                if ( //(m1.Success && data.f2 == c.ExtFilter && data.f3 == c.group_title)
+                    (data.best1== c.ExtFilter && data.best2 == c.group_title)  || (data.best1 == c.ExtFilter && data.best2=="")
+                    ) myLISTbase.Add(c);
 
 
             }
@@ -265,12 +269,7 @@ namespace IPTVman.ViewModel
 
             if (myLISTfull != null && myLISTbase != null)
             {
-                if (!data.filtr_best) {  UPD1(); }
-                else
-                {
-
-                    UPD2best();
-                }
+                if (!data.filtr_best) { UPD_normal(); } else UPD_best();
             }
 
         }

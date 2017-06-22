@@ -49,8 +49,29 @@ namespace IPTVman.Model
 
         public static bool start_ping = false;
 
-        
+
+
+        public static  void set_best()
+    {
+        if (data.current_favorites == 1)
+        {
+                best1 = favorite1_1;
+                best2 = favorite1_2;
+        }
+        if (data.current_favorites == 2)
+        {
+                best1 = favorite2_1;
+                best2 = favorite2_2;
+            }
+        if (data.current_favorites == 3)
+        {
+                best1 = favorite3_1;
+                best2 = favorite3_2;
+            }
     }
 
-    
+
+    }
+
+   
 }
