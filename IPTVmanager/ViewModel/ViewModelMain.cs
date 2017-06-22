@@ -88,7 +88,7 @@ namespace IPTVman.ViewModel
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
             ViewModelWindow2.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
-            WindowPING.Event_updateFILTER += new Delegate_UpdateFILTER(UPD1);
+            WindowPING.Event_updateFILTER += new Delegate_UpdateEDIT(updateLIST);
 
             newChannel = "новое значение";
             ini_command();
@@ -127,7 +127,7 @@ namespace IPTVman.ViewModel
             data.canal.ExtFilter = data.best1;
             data.canal.group_title = data.best2;
             myLISTfull.Add(data.canal);
-            RaisePropertyChanged("mycol");
+            Update_collection(); 
         }
 
 
@@ -141,26 +141,29 @@ namespace IPTVman.ViewModel
             {
                if (obj.Compare()==data.canal.Compare())
                 {
-                    //myLISTfull[i] = (ParamCanal)item.Clone();
                     myLISTfull[i] = (ParamCanal)item.Clone();
                     break;
                 }
                 i++;
             }
 
-            UPDATE_FILTER("");
-            RaisePropertyChanged("mycol");///update LIST!!
+            Update_collection();
         }
 
 
         void updateLIST(ParamCanal item)
         {
-      
-            UPDATE_FILTER("");
-            RaisePropertyChanged("mycol");///update LIST!!
+
+            Update_collection();
         }
 
 
+        void Update_collection()
+        {
+
+            UPDATE_FILTER();
+            RaisePropertyChanged("mycol");///update LIST!!
+        }
 
 
         void UPD1()
@@ -252,7 +255,7 @@ namespace IPTVman.ViewModel
 
         }
 
-        public void UPDATE_FILTER(string par)
+        public void UPDATE_FILTER()
         {
 
             if (data.f1 == null) data.f1 = "";
@@ -262,7 +265,7 @@ namespace IPTVman.ViewModel
 
             if (myLISTfull != null && myLISTbase != null)
             {
-                if (!filtr_best) {  UPD1(); }
+                if (!data.filtr_best) {  UPD1(); }
                 else
                 {
 

@@ -27,7 +27,7 @@ namespace IPTVman.ViewModel
                 // {
                 //  RaisePropertyChanged("mycol");
                 
-                UPDATE_FILTER("");
+                UPDATE_FILTER();
                 if (ACOLL!=null) ACOLL.UPDATE();
                 
                

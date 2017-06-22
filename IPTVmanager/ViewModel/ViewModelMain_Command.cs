@@ -286,18 +286,16 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_FILTER(object parameter)
         {
-            UPDATE_FILTER("");
-            RaisePropertyChanged("mycol"); 
+            data.filtr_best = false;
+            Update_collection();
         }
 
 
-        bool filtr_best = false;
+      
         void key_FILTERbest(object parameter)
         {
-            filtr_best = true;
-            UPDATE_FILTER("best");
-            RaisePropertyChanged("mycol");
-            filtr_best = false;
+            data.filtr_best = true;
+            Update_collection();
         }
 
 

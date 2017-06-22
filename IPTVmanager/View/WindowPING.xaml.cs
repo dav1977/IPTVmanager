@@ -24,7 +24,7 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class WindowPING : Window 
     {
-        public static event Delegate_UpdateFILTER Event_updateFILTER;
+        public static event Delegate_UpdateEDIT Event_updateFILTER;
         public static event Delegate_UpdateALL Event_Refresh;
         static AUTOPING ap;
         public WindowPING()
@@ -63,7 +63,7 @@ namespace IPTVman.ViewModel
 
             if (e == "end")
             {
-                if (Event_updateFILTER != null) Event_updateFILTER();
+                if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });
                 if (Event_Refresh != null) Event_Refresh(1);
 
             }

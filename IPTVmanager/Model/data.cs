@@ -30,11 +30,11 @@ namespace IPTVman.Model
         public static string favorite1_1 = "best";
         public static string favorite1_2 = "best";
 
-        public static string favorite2_1 = "music";
-        public static string favorite2_2 = "music";
+        public static string favorite2_1 = "Music";
+        public static string favorite2_2 = "best";
 
-        public static string favorite3_1 = "kino";
-        public static string favorite3_2 = "kino";
+        public static string favorite3_1 = "Kino";
+        public static string favorite3_2 = "best";
 
        
 
@@ -45,7 +45,7 @@ namespace IPTVman.Model
   
         public static string f1,f2,f3,f4;
 
-       
+        public static bool filtr_best = false;
 
         public static bool start_ping = false;
 
