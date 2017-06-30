@@ -107,7 +107,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_AUTOPING(object parameter)
         {
-
+            if (myLISTbase==null) return;
+            if (myLISTbase.Count == 0) return;
             new WindowPING
             {
                 Title ="АВТО ПИНГ",
@@ -237,6 +238,9 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_SAVE(object parameter)
         {
+        
+            if (myLISTfull == null) return;
+            if (myLISTfull.Count == 0) return;
 
             SaveFileDialog openFileDialog = new SaveFileDialog();
 

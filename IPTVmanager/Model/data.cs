@@ -28,13 +28,13 @@ namespace IPTVman.Model
     {
         public static byte current_favorites =1;
         public static string favorite1_1 = "best";
-        public static string favorite1_2 = "best";
+        public static string favorite1_2 = "";
 
-        public static string favorite2_1 = "Music";
-        public static string favorite2_2 = "best";
+        public static string favorite2_1 = "music";
+        public static string favorite2_2 = "";
 
-        public static string favorite3_1 = "Kino";
-        public static string favorite3_2 = "best";
+        public static string favorite3_1 = "kino";
+        public static string favorite3_2 = "";
 
        
 

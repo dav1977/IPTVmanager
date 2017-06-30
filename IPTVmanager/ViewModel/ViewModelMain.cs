@@ -251,7 +251,9 @@ namespace IPTVman.ViewModel
             {
                // m1 = regex1.Match(c.name);
                 if ( //(m1.Success && data.f2 == c.ExtFilter && data.f3 == c.group_title)
-                    (data.best1== c.ExtFilter && data.best2 == c.group_title)  || (data.best1 == c.ExtFilter && data.best2=="")
+                    (data.best1== c.ExtFilter && data.best2 == c.group_title)  ||
+                    (data.best1 == c.ExtFilter && data.best2 == "") ||
+                    (data.best1 == "" && data.best2 == c.group_title)
                     ) myLISTbase.Add(c);
 
 
