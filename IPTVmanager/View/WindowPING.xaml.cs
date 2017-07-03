@@ -29,38 +29,73 @@ namespace IPTVman.ViewModel
         static AUTOPING ap;
         bool update_ok;
 
+
+        System.Timers.Timer Timer1;
+        public bool win_loading = false;
+        public void CreateTimer1(int ms)
+        {
+            if (Timer1 == null)
+            {
+                Timer1 = new System.Timers.Timer();
+                //Timer1.AutoReset = false; //
+                Timer1.Interval = ms;
+                Timer1.Elapsed += Timer1Tick;
+                Timer1.Enabled = true;
+                Timer1.Start();
+            }
+        }
+
+        private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
+        {
+
+            if (IPTVman.Model.data.ping_waiting > 20)
+            {
+                    textct.Dispatcher.Invoke(DispatcherPriority.Background, new
+                   Action(() =>
+                   {
+                       textct.Text = String.Format("{0} из {1}   ожидание {2} ", IPTVman.Model.data.ct_ping,
+                                          IPTVman.Model.data.ping_all, IPTVman.Model.data.ping_waiting-20);
+                   }));
+
+            }
+        }
+
+
+
         public WindowPING()
         {
-  
             ap = new AUTOPING();
             AUTOPING.Event_Print += new Delegate_Print(add);
             InitializeComponent();
             button.Visibility = Visibility.Hidden;
             ap.start();
+            CreateTimer1(500);
         }
 
         int size = 0;
         void add(string s)
         {
             string e = s;
-        textBox.Dispatcher.Invoke(DispatcherPriority.Background, new
-        Action(() =>
-        {
-            size++;
-            if (size > 100) { textBox.Clear(); size = 0; }
-
-            if (s == "end")
+            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new
+            Action(() =>
             {
-                _writingProgressBar.Visibility = Visibility.Hidden;
-                s = "== АВТО ПИНГ ЗАКОНЧЕН==";
-                tb1.Text = "ВЫПОЛНЕНО";
-                button.Visibility = Visibility.Visible;
-            }
-            textBox.AppendText(s + Environment.NewLine);
-            textBox.ScrollToEnd();
+                size++;
+                if (size > 500) { textBox.Clear(); size = 0; }
+
+                textct.Text = String.Format("{0} из {1} ", IPTVman.Model.data.ct_ping, IPTVman.Model.data.ping_all);
+
+                if (s == "end")
+                {
+                    _writingProgressBar.Visibility = Visibility.Hidden;
+                    s = "== АВТО ПИНГ ЗАКОНЧЕН==";
+                    tb1.Text = "ВЫПОЛНЕНО";
+                    button.Visibility = Visibility.Visible;
+                }
+                textBox.AppendText(s + Environment.NewLine);
+                textBox.ScrollToEnd();
            
            
-        }));
+            }));
 
 
             if (e == "end")

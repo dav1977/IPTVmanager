@@ -39,17 +39,20 @@ namespace IPTVman.ViewModel
 
 
                 }
-                //  ip0 = IPs[0].ToString();
             }
             catch
             {
-                ip0 = "error";// Console.WriteLine(ex.ToString());
+                ip0 = "error ip ";// Console.WriteLine(ex.ToString());
             }
 
             return ip0;
         }
 
-
+        /// <summary>
+        /// ВОЗВРАЩАЕТ IP
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static string GetIPAddress(string url)
         {
             string[] split = { "", "" };
@@ -81,7 +84,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                ip0 = "error " + ex.Message.ToString();// Console.WriteLine(ex.ToString());
+                ip0 = "error НЕ СУЩЕСТВУЕТ.  " + ex.Message.ToString();// Console.WriteLine(ex.ToString());
             }
 
             return ip0;
@@ -99,8 +102,19 @@ namespace IPTVman.ViewModel
             string ip_url = "";
 
             string ip0 = GetIPAddress(url);
-            if (ip0=="") return (exit("нет IP   НЕ СУЩЕСТВУЕТ "));
 
+            Regex regex1 = new Regex("(udp/)");//udp не возвращает url
+
+            var r = regex1.Match(url);
+
+            if (r.Success)
+            {
+
+            }
+            else
+            {
+                if (ip0 == "") return (exit("нет IP   НЕ СУЩЕСТВУЕТ "));
+            }
             string ip = "ip=" + ip0 + "; ";
            
    
@@ -109,9 +123,7 @@ namespace IPTVman.ViewModel
            
             if (split.Length < 2) {   return(exit("нет IP  НЕ СУЩЕСТВУЕТ " + ip) ); }
 
-            String s10 = String.Join(";", split);
-
-            result = ip+ "split "+ s10;
+            result = ip;
 
             try
             {
@@ -135,7 +147,7 @@ namespace IPTVman.ViewModel
 
 
                 Stream stream = client.OpenRead(url);
-                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; return (exit("erroMNN"));  }
+                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; return (exit("errorSTREAMnull"));  }
 
                 StreamReader sr = new StreamReader(stream);
                 string newLine;
@@ -160,17 +172,25 @@ namespace IPTVman.ViewModel
             {
                 string rez = "";
                 string error = ex.Message.ToString();
-                Regex regex1 = new Regex("(500)");//ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
+                regex1 = new Regex("(500)");//ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
 
-                var r = regex1.Match(error);
+                r = regex1.Match(error);
 
                 if (r.Success)
                 {
                     rez = "WebException(500) НЕТ ДАННЫХ  " + " ";
                 }
                 else
-                    rez = "НЕ СУЩЕСТВУЕТ " + ex.Message.ToString() + " ";
+                {
+                    regex1 = new Regex("(404)");//не найден
 
+                    r = regex1.Match(url);
+
+                    if (r.Success)
+                    {
+                    }
+                     else   rez = "НЕ СУЩЕСТВУЕТ. WebException " + ex.Message.ToString() + " ";
+                }
 
                 // using (var str = ex.Response.GetResponseStream())
                 //using (var read = new StreamReader(str))
@@ -190,7 +210,7 @@ namespace IPTVman.ViewModel
                 //MessageBox.Show("НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString(), "",    
                 //                    MessageBoxButton.OK);
                
-                return (exit("НЕ СУЩЕСТВУЕТ " + ex.Message));
+                return (exit("не определено ExceptionWebClient " + ex.Message));
             }
 
 

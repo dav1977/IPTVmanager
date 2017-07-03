@@ -30,11 +30,15 @@ namespace IPTVman.ViewModel
             ViewModelBase._ping.result = "";
             Regex regex1 = new Regex("http:");
             Regex regex2 = new Regex("https:");
+            Regex regex3 = new Regex("udp:");
+            Regex regex4 = new Regex("rtmp:"); 
 
             var match1 = regex1.Match(u);
             var match2 = regex2.Match(u);
+            var match3 = regex3.Match(u);
+            var match4 = regex4.Match(u);
 
-            if (match1.Success || match2.Success)
+            if (match1.Success || match2.Success || match3.Success || match4.Success)
             {
 
                 //ViewModelBase._ping.GETnoas(u);

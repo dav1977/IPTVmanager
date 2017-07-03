@@ -50,7 +50,9 @@ namespace IPTVman.Model
 
         public static bool start_ping = false;
 
-
+        public static int ct_ping = 0;
+        public static int ping_all = 0;
+        public static int ping_waiting = 0;
 
         public static  void set_best()
     {

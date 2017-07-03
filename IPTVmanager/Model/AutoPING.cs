@@ -78,10 +78,12 @@ namespace IPTVman.ViewModel
         {
             int ct_channel = 0;
 
+            data.ping_all = myLIST.Count;
+
             foreach (var i in myLIST)
             {
                 ct_channel++;
-     
+                data.ct_ping = ct_channel;
 
                 if (i.http == null || i.http == "") continue;
                 if (Event_Print != null) Event_Print("ping "+i.name);
@@ -90,28 +92,31 @@ namespace IPTVman.ViewModel
                 string rez= _pingPREPARE.GET(i.http);
                 if (rez != "НЕ ПОДДЕРЖИВАЕТСЯ")
                 {
-                    byte ct = 0;
+                    int ct = 0;
                     ct = 0;
                     while (!_ping.done)
                     {
                         Thread.Sleep(200);
-                        ct++;
-                        if (ct > 5 * 10) { if (Event_Print != null) Event_Print("timeout " + i.name); break; }
+                        ct++; data.ping_waiting = ct;
+                        if (ct > 5 * 120) { if (Event_Print != null) Event_Print("timeout " + i.name); break; }
                     }
                 }
                 var item = ViewModelMain.myLISTfull.Find(x => x.Compare() == i.Compare());
+           
+                if (data.ping_waiting >20) if (Event_Print != null) Event_Print("        time " + String.Format("{0}", data.ping_waiting-20));
 
-
-        
+                data.ping_waiting = 0;
                 if (_ping.result.Length < 2000)
                 {
                     string tmp= _ping.result.Replace('\r', ';');
-                    tmp = tmp.Replace("#EXTM3U;", ""); 
+                    tmp = tmp.Replace("#EXTM3U;", "");
+                    tmp = tmp.Replace("#EXTM3U", "");
+
                     item.ping = tmp.Replace('\n', ';');
                     if (rez == "НЕ ПОДДЕРЖИВАЕТСЯ") { item.ping = "НЕ ПОДДЕРЖИВАЕТСЯ"; if (Event_Print != null) Event_Print("НЕ ПОДДЕРЖИВАЕТСЯ " + i.name); }
                  
                 }
-                else item.ping = "большой ответ размер байт " + _ping.result.Length.ToString();
+                else item.ping = "большой размер ответа " + _ping.result.Length.ToString();
 
 
             }

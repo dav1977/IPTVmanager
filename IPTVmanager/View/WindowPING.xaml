@@ -17,8 +17,9 @@
           HorizontalAlignment="Center"
           Margin="10 10 10 10">
             <StackPanel x:Uid="StackPanel_2_1"
-          Orientation="Horizontal" Height="20" Width="116">
-                <TextBlock x:Uid="TextBlock_2_1" FontWeight="Bold"><Run Name="tb1" Text="Идет выполнение..."/></TextBlock>
+          Orientation="Horizontal" Height="20" Width="150">
+                <TextBlock x:Uid="TextBlock_2_1" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14" VerticalAlignment="Center" Width="200" Height="20"><Run x:Name="tb1" Text="Идет выполнение..."/></TextBlock>
+
                 <TextBlock x:Uid="TextBlock_2_2"
             x:Name="_pageNumberLabel"
             Margin="3 0 3 0"
@@ -26,7 +27,10 @@
 
             </StackPanel>
         </StackPanel>
-        <Button x:Name="button" Content="ЗАКРЫТЬ" Height="22" Click="button_Click"/>
+        <TextBlock x:Uid="ct" FontWeight="Bold" Height="22" Width="282" HorizontalAlignment="Center" Margin="24,0,17,0" FontSize="16"><Run x:Name="textct" Text="..........."/></TextBlock>
+        <Button x:Name="button" Height="22" Click="button_Click">
+            ЗАВЕРШЕНО
+        </Button>
         <StackPanel x:Uid="StackPanel_0"
           Margin="10 10 10 10"
           Orientation="Horizontal">
@@ -36,7 +40,7 @@
           Width="307"
           Minimum="0"
           Maximum="10"
-          Value="{Binding WritingProgressPercentage, NotifyOnTargetUpdated=True, UpdateSourceTrigger=Explicit}" Height="33" Foreground="#FF0F19B4">
+          Value="{Binding WritingProgressPercentage, NotifyOnTargetUpdated=True, UpdateSourceTrigger=Explicit}" Height="21" Foreground="#FF0F19B4">
                 <ProgressBar.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FF878585" Offset="0"/>
