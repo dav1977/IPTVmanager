@@ -22,7 +22,7 @@ namespace IPTVman.ViewModel
 
            if (ViewModelBase._ping==null) ViewModelBase._ping = new PING();
 
-            ViewModelBase._ping.result77 = "";
+            ViewModelBase._ping.result = "";
 
             //use a timer to periodically update the memory usage
            DispatcherTimer timer = new DispatcherTimer();
@@ -35,9 +35,9 @@ namespace IPTVman.ViewModel
         private void timer_Tick(object sender, EventArgs e)
         {
 
-            if (ViewModelBase._ping.result77 != "")
+            if (ViewModelBase._ping.result != "")
             {
-                textBoxPING.Text = ViewModelBase._ping.result77;
+                textBoxPING.Text = ViewModelBase._ping.result;
 
             }
             else ProgressBar1.Value++; 

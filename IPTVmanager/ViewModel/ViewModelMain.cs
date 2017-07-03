@@ -113,17 +113,17 @@ namespace IPTVman.ViewModel
         }
 
 
-        bool one_open = false;
+       
         void CollectionisCreate()
         {
-            if (!one_open) { Create_Virtual_Collection(); one_open = true; }
+            if (myLISTfull==null) { Create_Virtual_Collection();  }
         }
 
        
         void BEST_ADD()
         {
-            if (lok.keyadd) return;
-            lok.keyadd = true;
+            if (loc.keyadd) return;
+            loc.keyadd = true;
             data.canal.ExtFilter = data.best1;
             data.canal.group_title = data.best2;
             myLISTfull.Add(data.canal);
@@ -135,8 +135,8 @@ namespace IPTVman.ViewModel
         {
             int i = 0;
   
-            if (lok.edit) return;
-            lok.edit = true;
+            if (loc.edit) return;
+            loc.edit = true;
             foreach (var obj in myLISTfull)
             {
                if (obj.Compare()==data.canal.Compare())
@@ -242,7 +242,7 @@ namespace IPTVman.ViewModel
             data.f2 = data.best1;
             data.f3 = data.best2;
 
-            Match m1;
+            //Match m1;
             Regex regex1 = new Regex(data.f2, RegexOptions.IgnoreCase);
 
             myLISTbase.Clear();

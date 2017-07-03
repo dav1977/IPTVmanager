@@ -125,7 +125,7 @@ namespace IPTVman.ViewModel
         private void timer_Tick(object sender, EventArgs e)
         {
 
-            if (lok.open)
+            if (loc.open)
             {
                 if (win_open) return;
                 new WindowWAIT
@@ -161,33 +161,7 @@ namespace IPTVman.ViewModel
 
         }
     
-        private void MYLIST_MouseDoubleClick_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
-            foreach (Window win in Application.Current.Windows)
-            {
-                if ((win.IsLoaded == true) && (win.Name == "win1iptvMANAGER"))
-                {
-                    return;
-                }
-            }
-
-            int si = MYLIST.SelectedIndex;
-            if (si < 0) {  return; }
-            var p = MYLIST.SelectedItem as ParamCanal;
-            if (p == null) return;
-
-            data.canal = p;
-
-            new Window1
-            {
-                DataContext = new ViewModelWindow1(tb1.Text),
-                Topmost = true,
-                //WindowStyle = WindowStyle.ToolWindow,
-                Name = "win1iptvMANAGER"
-            }.Show();
-
-        }
+     
 
         private void MYLIST_LostTouchCapture(object sender, System.Windows.Input.TouchEventArgs e)
         {
@@ -367,6 +341,35 @@ namespace IPTVman.ViewModel
             //MessageBox.Show(a.ToString());
 
             MYLIST.Focus();
+        }
+
+        private void MYLIST_MouseDoubleClick_EDIT(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+            foreach (Window win in Application.Current.Windows)
+            {
+                if ((win.IsLoaded == true) && (win.Name == "win1iptvMANAGER"))
+                {
+                    return;
+                }
+            }
+
+            int si = MYLIST.SelectedIndex;
+            if (si < 0) { return; }
+            var p = MYLIST.SelectedItem as ParamCanal;
+            if (p == null) return;
+
+            data.canal = p;
+
+            new Window1
+            {
+                Title = "РЕДАКТИРОВАНИЕ",
+                DataContext = new ViewModelWindow1(tb1.Text),
+                Topmost = true,
+                //WindowStyle = WindowStyle.ToolWindow,
+                Name = "win1iptvMANAGER"
+            }.Show();
+
         }
     }
 }

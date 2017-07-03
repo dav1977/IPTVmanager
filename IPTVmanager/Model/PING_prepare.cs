@@ -20,12 +20,14 @@ namespace IPTVman.ViewModel
 {
     class PING_prepare
     {
-
-
-
+        /// <summary>
+        /// ВОЗВРАЩАЕТ ОТВЕТ СЕРВЕРА ПО url
+        /// </summary>
+        /// <param name="u"></param>
+        /// <returns></returns>
         public string GET(string u)
         {
-            ViewModelBase._ping.result77 = "";
+            ViewModelBase._ping.result = "";
             Regex regex1 = new Regex("http:");
             Regex regex2 = new Regex("https:");
 
@@ -34,32 +36,27 @@ namespace IPTVman.ViewModel
 
             if (match1.Success || match2.Success)
             {
-                //if (task_ping != null)
-                //    if (task_ping.Status == TaskStatus.Running) return "task is running";
-
 
                 //ViewModelBase._ping.GETnoas(u);
-          
-
+         
                  GETasyn(u);//асинхр
                 //         test(u);
-
 
             }
             else
             {
-
                 //string ss= UDPtest("");
-                // result77 = NEW_UDP();
+                // result = NEW_UDP();
 
 
-                //if (result77 == "") result77 = "НЕТУ UDP";
-                //result77=GETnoas(u);//синхр
-
-                return "error";
+                //if (result == "") result = "НЕТУ UDP";
+                //result=GETnoas(u);//синхр
+                 
+            
+                return "НЕ ПОДДЕРЖИВАЕТСЯ";
 
             }
-            return "--";//ip + ViewModelBase._ping.result77;
+            return "--";//ip + ViewModelBase._ping.result;
         }
 
 
@@ -123,7 +120,7 @@ namespace IPTVman.ViewModel
             //    }
             //    catch (AggregateException)
             //    {
-            //        result77 = "errror";
+            //        result = "errror";
             //    }
             //}
 

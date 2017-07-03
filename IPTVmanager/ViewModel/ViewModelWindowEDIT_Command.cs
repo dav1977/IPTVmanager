@@ -48,11 +48,11 @@ namespace IPTVman.ViewModel
         private void Timer2Tick(object sender, EventArgs e)
         {
 
-            if (ViewModelBase._ping.result77 != "")
+            if (ViewModelBase._ping.result != "")
             {
                 if (!newPING)
                 {
-                    analizPING(ViewModelBase._ping.result77);
+                    analizPING(ViewModelBase._ping.result);
                     newPING = true;
                 }
             }
@@ -63,8 +63,8 @@ namespace IPTVman.ViewModel
         public ViewModelWindow1(string lastText)
         {
             CreateTimer2(500);
-            lok.keyadd = false;
-            ViewModelBase._ping.result77 = "";
+            loc.keyadd = false;
+            ViewModelBase._ping.result = "";
             edit =(ParamCanal) data.canal.Clone();
 
             key_PLAY = new RelayCommand(PLAY);
@@ -84,7 +84,7 @@ namespace IPTVman.ViewModel
 
         void SAVE(object selectedItem)
         {
-            lok.edit = false;
+            loc.edit = false;
             if (Event_UpdateEDIT != null) Event_UpdateEDIT(edit); 
         }
 

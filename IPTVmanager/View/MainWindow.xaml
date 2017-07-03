@@ -144,7 +144,7 @@
                 </Grid.RowDefinitions>
 
 
-                <ListView x:Name="MYLIST" Margin="10,0,0,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="3" Width="Auto" Height="Auto" Grid.ColumnSpan="4" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_1" LostTouchCapture="MYLIST_LostTouchCapture" SelectionChanged="MYLIST_SelectionChanged" IsManipulationEnabled="True"/>
+                <ListView x:Name="MYLIST" Margin="10,0,0,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="3" Width="Auto" Height="Auto" Grid.ColumnSpan="4" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_EDIT" LostTouchCapture="MYLIST_LostTouchCapture" SelectionChanged="MYLIST_SelectionChanged" IsManipulationEnabled="True"/>
 
                 <!--   <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                 -->
@@ -339,25 +339,11 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="focus" Command=""  CommandParameter=""  Margin="426,46,0,0" Focusable="False" Width="41" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_1" >
+        <Button Content="АВТО ПИНГ ВСЕХ" Command="{Binding key_AUTOPINGCommand}"   CommandParameter=""  Margin="264,10,0,0" Focusable="False" Width="132" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
-                    <GradientStop Color="#FF72FB54" Offset="0.749"/>
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#FF0627BB" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Foreground>
-        </Button>
-        <Button Content="АВТО ПИНГ ВСЕХ" Command="{Binding key_AUTOPINGCommand}"   CommandParameter=""  Margin="300,10,0,0" Focusable="False" Width="132" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black"/>
-                    <GradientStop Color="#FF72FB54" Offset="0.749"/>
+                    <GradientStop Color="#FFD39781" Offset="0.749"/>
                 </LinearGradientBrush>
             </Button.Background>
             <Button.Foreground>
@@ -381,11 +367,25 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="ДОБ. БО"  Command="{Binding key_OPENclipboard}" CommandParameter=""  Margin="88,10,0,0" Focusable="False" Width="71" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="1">
+        <Button Content="Доб.из Буфера"  Command="{Binding key_OPENclipboarCommand}" CommandParameter=""  Margin="88,10,0,0" Focusable="False" Width="95" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
                     <GradientStop Color="#FFFBE454" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="ЗАМЕНА" Command="{Binding key_ReplaceCommand}"   CommandParameter=""  Margin="416,10,0,0" Focusable="False" Width="77" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFD16161" Offset="0.749"/>
                 </LinearGradientBrush>
             </Button.Background>
             <Button.Foreground>

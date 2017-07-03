@@ -20,7 +20,8 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-        public RelayCommand key_OPENclipboard { get; set; }
+        public RelayCommand key_ReplaceCommand { get; set; }
+        public RelayCommand key_OPENclipboarCommand { get; set; }
         public RelayCommand key_SetAllBestCommand { get; set; }
         public RelayCommand key_FILTERmoveDragCommand { get; set; }
         public RelayCommand key_FILTERmoveCommand { get; set; }
@@ -39,7 +40,8 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
-            key_OPENclipboard = new RelayCommand(key_OPEN_clipboard);
+            key_ReplaceCommand =  new RelayCommand(key_Replace);
+            key_OPENclipboarCommand = new RelayCommand(key_OPEN_clipboard);
             key_SetAllBestCommand = new RelayCommand(key_set_all_best);
             key_FILTERmoveDragCommand = new RelayCommand(key_dragdrop);
             key_FILTERmoveCommand = new RelayCommand(key_move);
@@ -66,7 +68,28 @@ namespace IPTVman.ViewModel
 
         }
 
+        /// <summary>
+        /// replace
+        /// </summary>
+        /// <param name="parameter"></param>
+        void key_Replace(object parameter)
+        {
+            if (myLISTbase == null) return;
+            if (myLISTbase.Count == 0) return;
+            new WindowReplace
+            {
+                Title = "ЗАМЕНА",
+                Topmost = true,
+                WindowStyle = WindowStyle.ToolWindow,
+                Name = "winReplace"
+            }.Show();
 
+        }
+
+        /// <summary>
+        /// set all best
+        /// </summary>
+        /// <param name="parameter"></param>
         void key_set_all_best(object parameter)
         {
             if (myLISTfull == null) return;
@@ -115,7 +138,7 @@ namespace IPTVman.ViewModel
                 Topmost = true,
                 WindowStyle = WindowStyle.ToolWindow,
                 Name = "winPING"
-            }.Show(); ;
+            }.Show();
 
           
 
@@ -295,15 +318,164 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_OPEN_clipboard(object parameter)
         {
+            CollectionisCreate();
+            string[] str=null;
+            string get=Clipboard.GetText();
+            try
+            {
+                 str = get.Split(new Char[] { '\n' });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+
+            Regex regex1 = new Regex("#EXTINF");
+            Regex regex2 = new Regex("#EXTM3U");
+            Match match = null;
+
+            if (str == null || str.Length<2) { MessageBox.Show("Каналы не найдены"); return; }
+
+            
+            //ПОИСК заголовка
+            foreach (var s in str)
+            {       
+                 match = regex2.Match(s);
+                if (match.Success) { text_title = s; break; }
+            }
+
+            // MessageBox.Show(str.Length.ToString());
+            int ct_dublicat = 0;
+            int index = 0;
+            //ПОИСК каналов
+            foreach (var line in str)
+            {
+                index++;
+
+                string newname = "";
+                string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
+                
+                    if (line == null || line == "") continue;
+
+                    match = regex1.Match(line);
+                    ///========== разбор EXINF
+                    if (match.Success)
+                    {
+                        Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
+                        Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
+                        Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
+                        Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
+
+                        string[] split = line.Split(new Char[] { '"' });
+
+                        str_name = "";
+                        str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
+
+                        if (split.Length == 0)
+                        {
+                            newname = line;
+                        }
+                        else
+                        {
+
+                        split = line.Split(new Char[] { ',' });
+
+                        if (split.Length < 1) { MessageBox.Show("Каналы не найдены"); return; }
+
+                        if (split.Length <=2) str_name = split[split.Length - 1];
+
+                            //int i = 0;
+                            //for (i = 0; i < split.Length; i++)
+                            //{
+                            //    string s = split[i];
+                            //    //------------- разбор строки EXINF
+                            //    if (str_ex == "!") str_ex = s;
+                            //    if (str_gt == "!") str_gt = s;
+                            //    if (str_logo == "!") str_logo = s;
+                            //    if (str_tvg == "!") str_tvg = s;
 
 
+                            //    if (i >= split.Length - 1) { str_name = s; }
+
+                            //    match = regex3.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_ex = "!";
+                            //    }
+
+                            //    match = regex4.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_gt = "!";
+                            //    }
+
+                            //    match = regex5.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_logo = "!";
+                            //    }
+
+                            //    match = regex6.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_tvg = "!";
+                            //    }
+                       
+
+                            //}//for
+
+                        if (str_name != "")
+                            if (str_name.IndexOf('\r') != -1)
+                                newname = str_name.Substring(0, str_name.Length - 1);//remove перевода строки
+                            else newname = str_name;
+                    }
+                    try
+                    {
+                            str_http = str[index].Substring(0, str[index].Length - 1);//remove перевода строки
+                    }
+                    catch { }
+                       
+
+                    }
+
+                ParamCanal item=null;
+                if (newname == "") continue;
+              
+                   item = ViewModelMain.myLISTfull.Find(x =>
+                    (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
+
+              // MessageBox.Show(str_http);
+
+                if (newname.Trim() != "" && str_http.Trim() != "")
+                {
+                        if (item == null)
+                        {
+                            ViewModelMain.myLISTfull.Add(new ParamCanal
+                            {
+                                name = newname.Trim(),
+                                ExtFilter = str_ex.Trim(),
+                                http = str_http.Trim(),
+                                group_title = str_gt.Trim(),
+                                logo = str_logo.Trim(),
+                                tvg_name = str_tvg.Trim()
+
+                            });
+                        }
+                        else ct_dublicat++;
+                }
+            }
+
+            RaisePropertyChanged("mycol");///updte LIST!!
+            RaisePropertyChanged("numberCANALS");
+
+            if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
+                                MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
         }
 
-        bool open = false;
         void key_OPEN(object parameter)
         {
-            if (open) return;
-            open = true;
+            if (loc.openfile) return;
+            loc.openfile = true;
             CollectionisCreate();
             Open();
         }
@@ -340,13 +512,10 @@ namespace IPTVman.ViewModel
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    lok.open = true;
-                
-
+                    loc.open = true;
                     Regex regex1 = new Regex("#EXTINF");
                     Regex regex2 = new Regex("#EXTM3U");
                     Match match = null;
-
 
                     win_loading = true;
                     //ПОИСК заголовка
@@ -359,16 +528,11 @@ namespace IPTVman.ViewModel
                             {
                                 header = sr.ReadLine();
                             }
-
                             catch
                             {
-
                                 MessageBox.Show("Ошибка m3u", "нет заголовка",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                             }
-
-
-
 
                             if (header == null) header = "";
                             if (sr.EndOfStream) break;
@@ -473,29 +637,28 @@ namespace IPTVman.ViewModel
 
                             }
 
+                           
+                                var item = ViewModelMain.myLISTfull.Find(x =>
+                                (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
 
-                            var item = ViewModelMain.myLISTfull.Find(x =>
-                            (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
-
-
-                            if (newname.Trim() != "" && str_http.Trim() != "")
-                            {
-                                if (item == null)
+                                if (newname.Trim() != "" && str_http.Trim() != "")
                                 {
-                                    ViewModelMain.myLISTfull.Add(new ParamCanal
+                                    if (item == null)
                                     {
-                                        name = newname.Trim(),
-                                        ExtFilter = str_ex.Trim(),
-                                        http = str_http.Trim(),
-                                        group_title = str_gt.Trim(),
-                                        logo = str_logo.Trim(),
-                                        tvg_name = str_tvg.Trim()
+                                        ViewModelMain.myLISTfull.Add(new ParamCanal
+                                        {
+                                            name = newname.Trim(),
+                                            ExtFilter = str_ex.Trim(),
+                                            http = str_http.Trim(),
+                                            group_title = str_gt.Trim(),
+                                            logo = str_logo.Trim(),
+                                            tvg_name = str_tvg.Trim()
 
-                                    });
+                                        });
+                                    }
+                                    else ct_dublicat++;
                                 }
-                                else ct_dublicat++;
-                            }
-
+                            
                         }///чтение фала
 
 
@@ -506,17 +669,13 @@ namespace IPTVman.ViewModel
                 RaisePropertyChanged("mycol");///updte LIST!!
                 RaisePropertyChanged("numberCANALS");
             }
-
-
             catch { }
-
-
-            lok.open = false;
 
             if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
                                 MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
             // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
-            open = false;
+            loc.open = false;
+            loc.openfile = false;
         }
 
 

@@ -21,12 +21,10 @@ namespace IPTVman.ViewModel
     class AUTOPING: ViewModelBase 
     {
         public static event Delegate_Print Event_Print;
-        List<ParamCanal> LST;
+        List<ParamCanal> myLIST;
 
         public AUTOPING()
         {
-            
-            
         }
 
         public Task<string> AsyncTaskSTART(string url)
@@ -36,7 +34,7 @@ namespace IPTVman.ViewModel
             {
                 //----------------
 
-                return ping_all(LST);
+                return ping_all(myLIST);
 
                 //----------------
             });
@@ -52,19 +50,16 @@ namespace IPTVman.ViewModel
 
         public void start()
         {
-            LST = new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
+            myLIST = new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
             try
             {
 
                 foreach (var i in ViewModelMain.myLISTbase)
                 {
-                    LST.Add(i);
+                    myLIST.Add(i);
                 }
 
                 RUN("");
-
-
-             
 
             }
             catch (Exception ex)
@@ -78,48 +73,50 @@ namespace IPTVman.ViewModel
 
         }
 
-
-
-        string  ping_all(List<ParamCanal> LST)
+       
+        string  ping_all(List<ParamCanal> myLIST)
         {
-            int iu = 0;
+            int ct_channel = 0;
 
-            foreach (var i in LST)
+            foreach (var i in myLIST)
             {
-                iu++;
-                if (iu >= LST.Count) { if (Event_Print != null) Event_Print("end");  return ""; }
+                ct_channel++;
+     
 
-      
-
-                _ping.result77 = "";
                 if (i.http == null || i.http == "") continue;
                 if (Event_Print != null) Event_Print("ping "+i.name);
 
-                _pingPREPARE.GET(i.http);
-
-
-                byte ct = 0;
-                ct = 0;
-                while (_ping.result77 == "") { Thread.Sleep(200); ct++; if (ct > 5* 10) break; }
-
+                _ping.done = false;
+                string rez= _pingPREPARE.GET(i.http);
+                if (rez != "НЕ ПОДДЕРЖИВАЕТСЯ")
+                {
+                    byte ct = 0;
+                    ct = 0;
+                    while (!_ping.done)
+                    {
+                        Thread.Sleep(200);
+                        ct++;
+                        if (ct > 5 * 10) { if (Event_Print != null) Event_Print("timeout " + i.name); break; }
+                    }
+                }
                 var item = ViewModelMain.myLISTfull.Find(x => x.Compare() == i.Compare());
-                item.ping =  _ping.result77;
-
-                //if (Event_Print != null) Event_Print(_ping.result77);
-
-               // MessageBox.Show(i.name+"\n" +_ping.result77);
-
-                    // item = ViewModelMain.myLISTbase.Find(x => x == i);
-                    //item.ping = _ping.result77;
-
-                    //RaisePropertyChanged("mycol");
 
 
-                    // UPDATE_FILTER("");
+        
+                if (_ping.result.Length < 2000)
+                {
+                    string tmp= _ping.result.Replace('\r', ';');
+                    tmp = tmp.Replace("#EXTM3U;", ""); 
+                    item.ping = tmp.Replace('\n', ';');
+                    if (rez == "НЕ ПОДДЕРЖИВАЕТСЯ") { item.ping = "НЕ ПОДДЕРЖИВАЕТСЯ"; if (Event_Print != null) Event_Print("НЕ ПОДДЕРЖИВАЕТСЯ " + i.name); }
+                 
+                }
+                else item.ping = "большой ответ размер байт " + _ping.result.Length.ToString();
+
 
             }
 
-
+            if (Event_Print != null) Event_Print("end");
             return "";
         }
 

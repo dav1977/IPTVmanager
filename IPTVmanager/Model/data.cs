@@ -7,10 +7,11 @@ using System.Diagnostics;
 namespace IPTVman.Model
 {
 
-    public static class lok
+    public static class loc
     {
         public static bool edit = false;
         public static bool open = false;
+        public static bool openfile = false;
         public static bool lokUP, lokDN = false;
         public static bool keyadd = false;//дребезг кнопки
     }

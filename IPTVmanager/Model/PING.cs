@@ -20,8 +20,8 @@ namespace IPTVman.ViewModel
 {
     class PING
     {
-        public string result77 = "";
-
+        public string result = "";
+        public bool done = false;
 
         public static string GetIPlocalAddress(string serverName)
         {
@@ -67,6 +67,8 @@ namespace IPTVman.ViewModel
                 foreach (IPAddress a in entry.AddressList)
                     ip0 += a.ToString() + ";";
 
+                if (ip0 == "") return "";
+
                 if (entry.Aliases.Length != 0)
                 {
                     foreach (string aliasName in entry.Aliases)
@@ -85,18 +87,31 @@ namespace IPTVman.ViewModel
             return ip0;
         }
 
-
+        /// <summary>
+        ///   СИНХРОННОЕ ОЖИДАНИЕ ОТВЕТА
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public string GETnoas(string url)
         {
+            done = false;
             url = url.Trim();
             string ip_url = "";
 
-            string ip = "ip=" + GetIPAddress(url) + "; ";
-            result77 = ip;
+            string ip0 = GetIPAddress(url);
+            if (ip0=="") return (exit("нет IP   НЕ СУЩЕСТВУЕТ "));
 
+            string ip = "ip=" + ip0 + "; ";
+           
+   
             string[] split = url.Split(new Char[] { '.' });
 
-            if (split.Length < 2) return "НЕТ IP " + ip;
+           
+            if (split.Length < 2) {   return(exit("нет IP  НЕ СУЩЕСТВУЕТ " + ip) ); }
+
+            String s10 = String.Join(";", split);
+
+            result = ip+ "split "+ s10;
 
             try
             {
@@ -120,7 +135,8 @@ namespace IPTVman.ViewModel
 
 
                 Stream stream = client.OpenRead(url);
-                if (stream == null) { result77 = "НЕ СУЩЕСТВУЕТ."; data.start_ping = false; return "erroMNN"; }
+                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; return (exit("erroMNN"));  }
+
                 StreamReader sr = new StreamReader(stream);
                 string newLine;
                 while ((newLine = sr.ReadLine()) != null)
@@ -134,13 +150,11 @@ namespace IPTVman.ViewModel
                 }
                 if (stream != null) stream.Close();
 
-                if (stream == null) { result77 = "НЕ СУЩЕСТВУЕТ."; }
+                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; }
 
 
-
-                result77 = ip + rez;
-                data.start_ping = false;
-                return result77;
+         
+                return (exit(ip + rez));
             }
             catch (WebException ex)
             {
@@ -167,18 +181,25 @@ namespace IPTVman.ViewModel
                 // WebClient client = new WebClient();
                 // Stream stream = client.;
 
-                result77 = ip + rez;
-                data.start_ping = false;
-                return result77;
+            
+                return (exit(ip + rez));
             }
 
             catch (Exception ex)
             {
                 //MessageBox.Show("НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString(), "",    
                 //                    MessageBoxButton.OK);
-                result77 = "НЕ СУЩЕСТВУЕТ " + ex.Message;
+               
+                return (exit("НЕ СУЩЕСТВУЕТ " + ex.Message));
+            }
+
+
+            string  exit(string s)
+            {
+                result = s;
                 data.start_ping = false;
-                return ("НЕ СУЩЕСТВУЕТ " + ex.Message);
+                done = true;
+                return s;
             }
         }
 

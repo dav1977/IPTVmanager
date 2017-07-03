@@ -43,7 +43,7 @@ namespace IPTVman.ViewModel
         
         void up(object selectedItem)
         {
-            if (lok.lokUP || data.canal.name=="") return;
+            if (loc.lokUP || data.canal.name=="") return;
            
             ParamCanal pred = new ParamCanal();
             ParamCanal curr = new ParamCanal();
@@ -85,8 +85,8 @@ namespace IPTVman.ViewModel
             if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(curr);
             if (Event_SELECT != null) { Event_SELECT(1, curr);  }
 
-            lok.lokUP = false;
-            lok.lokDN = false;
+            loc.lokUP = false;
+            loc.lokDN = false;
 
         }
 
@@ -95,7 +95,7 @@ namespace IPTVman.ViewModel
         /// </summary>
         void dn(object selectedItem)
         {
-            if (lok.lokDN || data.canal.name == "") return;
+            if (loc.lokDN || data.canal.name == "") return;
 
             ParamCanal nxt = new ParamCanal();
             ParamCanal curr = new ParamCanal();

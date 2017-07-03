@@ -43,7 +43,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>word.ico</ApplicationIcon>
+    <ApplicationIcon>cube.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -104,6 +104,7 @@
     <Compile Include="ViewModel\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
+    <Compile Include="ViewModel\ViewModelWindowReplace_Command.cs" />
     <Compile Include="ViewModel\ViewModelWindowMOVE_Object.cs" />
     <Compile Include="ViewModel\ViewModelWindowEDIT_Object.cs" />
     <Compile Include="ViewModel\ViewModelWindowMOVE_Command.cs" />
@@ -119,6 +120,9 @@
     </Compile>
     <Compile Include="View\Window2_Move.xaml.cs">
       <DependentUpon>Window2_Move.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WindowReplace.xaml.cs">
+      <DependentUpon>WindowReplace.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WindowPING.xaml.cs">
       <DependentUpon>WindowPING.xaml</DependentUpon>
@@ -153,6 +157,10 @@
     <Page Include="View\Window2_Move.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WindowReplace.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\WindowPING.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -190,7 +198,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="word.ico" />
+    <Resource Include="cube.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

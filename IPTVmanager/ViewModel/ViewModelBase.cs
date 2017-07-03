@@ -70,7 +70,7 @@ namespace IPTVman.ViewModel
             //    rez += s.ToString();
             //}
 
-            //result77 = rez + count.ToString();
+            //result = rez + count.ToString();
             ///* 
             // * Variable 'info' might now contain:   
             // *   Password   Players     Max. players    Hostname                Gamemode    Language
@@ -247,7 +247,7 @@ namespace IPTVman.ViewModel
                 //                        string rez = groupEP.ToString();
                 //                        rez = ping.Available.ToString();
 
-                //                        if (rez != "") { result77 = rez; done = true; }
+                //                        if (rez != "") { result = rez; done = true; }
                 //                    }
 
                 //                }
