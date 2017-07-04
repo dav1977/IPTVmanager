@@ -18,37 +18,89 @@ using System.Net.NetworkInformation;
 
 namespace IPTVman.ViewModel
 {
-    class AUTOPING: ViewModelBase 
+    class AUTOPING : ViewModelBase
     {
         public static event Delegate_Print Event_Print;
         List<ParamCanal> myLIST;
 
+        public static Task task1;
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        CancellationToken cancellationToken;
+        CancellationTokenSource cts2 = new CancellationTokenSource();
+        CancellationToken cancellationToken2;
+
+        //примеры отмены задачи
+        // cancellationToken.ThrowIfCancellationRequested();
+        //throw new OperationCanceledException(cancellationToken);
+        //throw new OperationCanceledException();
+        //throw new OperationCanceledException(CancellationToken.None);
+        //throw new OperationCanceledException(new CancellationToken(true));
+        //throw new OperationCanceledException(new CancellationToken(false));
+
         public AUTOPING()
         {
+            cancellationToken = cts.Token;//для task1
+            cancellationToken2 = cts2.Token;
         }
 
-        public Task<string> AsyncTaskSTART(string url)
+        bool _iswork = false;
+        public bool iswork
         {
-
-            return Task.Run(() =>
+            get
             {
-                //----------------
-
-                return ping_all(myLIST);
-
-                //----------------
-            });
+                return _iswork;
+            }
+            set
+            {
+                _iswork = true;
+            }
         }
 
-        async void RUN(string x)
+        public void stop()
         {
-
-           // data.start_ping = true;
-            string ss = await AsyncTaskSTART(x);
-
+            _iswork = false; 
         }
 
-        public void start()
+        public async Task<string> AsyncTaskSTART(CancellationToken cancellationToken, string url)
+        {
+            string rez="";
+            _iswork = true;
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            task1 = Task.Run(() =>
+            {
+       
+                rez = ping_all(cancellationToken, myLIST);
+                return rez;
+
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+            try
+            {
+                await task1;
+                if (task1.Status == TaskStatus.Canceled) { MessageBox.Show("AUTOtask1  Cancelled befor start"); }
+
+                //MessageBox.Show("AUTOtask1  end Success");
+
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("AUTOtask1 Cancelled");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("AUTOtask1 Error: {0}", e.Message);
+
+            }
+
+
+            return rez;
+            
+        }
+
+     
+        public async void start()
         {
             myLIST = new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
             try
@@ -59,7 +111,7 @@ namespace IPTVman.ViewModel
                     myLIST.Add(i);
                 }
 
-                RUN("");
+                string ss = await AsyncTaskSTART(cancellationToken, "");
 
             }
             catch (Exception ex)
@@ -74,7 +126,7 @@ namespace IPTVman.ViewModel
         }
 
        
-        string  ping_all(List<ParamCanal> myLIST)
+        string  ping_all(CancellationToken cancellationToken, List<ParamCanal> myLIST)
         {
             int ct_channel = 0;
 
@@ -82,11 +134,14 @@ namespace IPTVman.ViewModel
 
             foreach (var i in myLIST)
             {
+                
                 ct_channel++;
                 data.ct_ping = ct_channel;
 
                 if (i.http == null || i.http == "") continue;
                 if (Event_Print != null) Event_Print("ping "+i.name);
+                if (!iswork) {  break; };
+
 
                 _ping.done = false;
                 string rez= _pingPREPARE.GET(i.http);
@@ -106,12 +161,14 @@ namespace IPTVman.ViewModel
                 if (data.ping_waiting >20) if (Event_Print != null) Event_Print("        time " + String.Format("{0}", data.ping_waiting-20));
 
                 data.ping_waiting = 0;
+                if (item == null) return "??";
                 if (_ping.result.Length < 2000)
                 {
                     string tmp= _ping.result.Replace('\r', ';');
                     tmp = tmp.Replace("#EXTM3U;", "");
                     tmp = tmp.Replace("#EXTM3U", "");
 
+                   
                     item.ping = tmp.Replace('\n', ';');
                     if (rez == "НЕ ПОДДЕРЖИВАЕТСЯ") { item.ping = "НЕ ПОДДЕРЖИВАЕТСЯ"; if (Event_Print != null) Event_Print("НЕ ПОДДЕРЖИВАЕТСЯ " + i.name); }
                  

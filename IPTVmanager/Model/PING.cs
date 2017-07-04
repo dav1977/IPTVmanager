@@ -18,10 +18,41 @@ using System.Net.NetworkInformation;
 
 namespace IPTVman.ViewModel
 {
+    public delegate void Delegate_CLOSEPING(string s);
     class PING
     {
         public string result = "";
         public bool done = false;
+
+        public PING()
+        {
+            WindowPING.Event_Close_ping += WindowPING_Event_Close_ping;
+        }
+
+
+        bool _iswork = false;
+        public bool iswork
+        {
+            get
+            {
+                return _iswork;
+            }
+            set
+            {
+                _iswork = true;
+            }
+        }
+
+        public void stop()
+        {
+            done = false;
+            _iswork = false;
+        }
+
+        private void WindowPING_Event_Close_ping(string s)
+        {
+           string nl=exit(s);
+        }
 
         public static string GetIPlocalAddress(string serverName)
         {
@@ -36,8 +67,6 @@ namespace IPTVman.ViewModel
                     {
                         ip0 += addr.ToString();
                     }
-
-
                 }
             }
             catch
@@ -79,8 +108,6 @@ namespace IPTVman.ViewModel
                 }
                 else ip0 += " alias not ";
 
-
-
             }
             catch (Exception ex)
             {
@@ -95,7 +122,7 @@ namespace IPTVman.ViewModel
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public string GETnoas(string url)
+        public string GETnoas(CancellationToken cancellationToken, string url)
         {
             done = false;
             url = url.Trim();
@@ -113,7 +140,7 @@ namespace IPTVman.ViewModel
             }
             else
             {
-                if (ip0 == "") return (exit("нет IP   НЕ СУЩЕСТВУЕТ "));
+                if (ip0 == "") {   return (exit("нет IP   НЕ СУЩЕСТВУЕТ ")); }
             }
             string ip = "ip=" + ip0 + "; ";
            
@@ -121,55 +148,46 @@ namespace IPTVman.ViewModel
             string[] split = url.Split(new Char[] { '.' });
 
            
-            if (split.Length < 2) {   return(exit("нет IP  НЕ СУЩЕСТВУЕТ " + ip) ); }
+            if (split.Length < 2) {  return (exit("нет IP  НЕ СУЩЕСТВУЕТ " + ip) ); }
 
             result = ip;
 
+            if (!iswork) {  exit("прерывание пинга "); return "прерывание пинга "; };
+
             try
             {
-                //Ping ping = new Ping();
-                //var replay = ping.Send(url);
-
-                //if (replay.Status == IPStatus.Success)
-                //{
-                //    ip_url = replay.Address.ToString();
-                //}
-                //ip_url = GetIPAddress(url);
-
-
                 WebClient client = new WebClient();
-
-                // MessageBox.Show("IP="+ ">>" + result.ToString() + "<<", "non",
-                //   MessageBoxButton.OK);
-
+ 
                 string rez = "";
                 if (ip_url != "") rez += "IP=" + ip_url + " ";
 
-
                 Stream stream = client.OpenRead(url);
-                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; return (exit("errorSTREAMnull"));  }
+                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ.";  return (exit("errorSTREAMnull"));  }
 
                 StreamReader sr = new StreamReader(stream);
                 string newLine;
                 while ((newLine = sr.ReadLine()) != null)
                 {
+                    if (!iswork) {   exit("прерывание пинга "); return "прерывание пинга "; ; };
+
                     string[] words;
                     words = newLine.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
 
                     foreach (var s in words)
+                    {
                         rez += s.ToString() + '\n';
-
+                        if (!iswork) {  exit("прерывание пинга "); return "прерывание пинга "; };
+                    }
                 }
                 if (stream != null) stream.Close();
 
                 if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; }
 
 
-         
                 return (exit(ip + rez));
             }
             catch (WebException ex)
-            {
+            {        
                 string rez = "";
                 string error = ex.Message.ToString();
                 regex1 = new Regex("(500)");//ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
@@ -209,21 +227,22 @@ namespace IPTVman.ViewModel
             {
                 //MessageBox.Show("НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString(), "",    
                 //                    MessageBoxButton.OK);
-               
+
                 return (exit("не определено ExceptionWebClient " + ex.Message));
             }
 
-
-            string  exit(string s)
-            {
-                result = s;
-                data.start_ping = false;
-                done = true;
-                return s;
-            }
+             
         }
 
+        string exit(string s)
+        {
+            result = s;
+            data.start_ping = false;
+            done = true;
+            return s;
+        }
 
+       
 
     }
 }

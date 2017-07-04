@@ -81,17 +81,21 @@ namespace IPTVman.ViewModel
        
         void updateLIST(int size)
         {
-          
+            try
+            {
+                MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new
+                Action(() =>
+                {
+                    bDELETE.Content = "";
+                    MYLIST.Items.Refresh();
 
-        MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new
-        Action(() =>
-        {
-            bDELETE.Content = "";
-            MYLIST.Items.Refresh();
+                }));
 
-        }));
+            }
+            catch
+            {
 
-
+            }
         }
 
         void select (int a, ParamCanal b)

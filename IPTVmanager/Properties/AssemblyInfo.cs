@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("IPTVmanager")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("manager m3u iptv")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("cobra")]
 [assembly: AssemblyProduct("IPTVmanager")]
@@ -53,3 +53,5 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage("ru-RU")]
+

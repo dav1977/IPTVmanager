@@ -26,6 +26,8 @@ namespace IPTVman.ViewModel
     {
         public static event Delegate_UpdateEDIT Event_updateFILTER;
         public static event Delegate_UpdateALL Event_Refresh;
+        public static event Delegate_CLOSEPING Event_Close_ping;
+
         static AUTOPING ap;
         bool update_ok;
 
@@ -109,14 +111,25 @@ namespace IPTVman.ViewModel
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            if (Event_Close_ping != null) Event_Close_ping("");
+            ViewModelBase._ping.stop();
             this.Close();
+            
         }
 
+
+
+        //close
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            ViewModelBase._ping.stop();
+            ap.stop();
+            ap = null;
             if (update_ok) return;
             if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });
             if (Event_Refresh != null) Event_Refresh(1);
+
+          
         }
     }
 }

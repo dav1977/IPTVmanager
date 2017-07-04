@@ -20,6 +20,27 @@ namespace IPTVman.ViewModel
 {
     class PING_prepare
     {
+        public static Task task1;
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        CancellationToken cancellationToken;
+        CancellationTokenSource cts2 = new CancellationTokenSource();
+        CancellationToken cancellationToken2;
+
+        //примеры отмены задачи
+        // cancellationToken.ThrowIfCancellationRequested();
+        //throw new OperationCanceledException(cancellationToken);
+        //throw new OperationCanceledException();
+        //throw new OperationCanceledException(CancellationToken.None);
+        //throw new OperationCanceledException(new CancellationToken(true));
+        //throw new OperationCanceledException(new CancellationToken(false));
+
+        public PING_prepare()
+        {
+             cancellationToken = cts.Token;//для task1
+             cancellationToken2 = cts2.Token;
+        }
+
         /// <summary>
         /// ВОЗВРАЩАЕТ ОТВЕТ СЕРВЕРА ПО url
         /// </summary>
@@ -66,69 +87,49 @@ namespace IPTVman.ViewModel
 
 
 
-        public Task<string> AsyncTaskGet(string url)
+        public async Task<string> AsyncTaskGet(CancellationToken cancellationToken, string url)
         {
+            ViewModelBase._ping.iswork = true;
+            string rez = "";
 
-            return Task.Run(() =>
-            {
-                //----------------
-
-                return ViewModelBase._ping.GETnoas(url);
-
-                //----------------
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            task1 = Task.Run(() => 
+            {  
+                rez = ViewModelBase._ping.GETnoas( cancellationToken, url);    
             });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+            try
+            {
+                await  task1;
+               // if (task1.Status == TaskStatus.Canceled) { MessageBox.Show("task1  Cancelled befor start"); }
+
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("task1 Cancelled");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("task1 Error: {0}", e.Message);
+
+            }
+
+            return rez;
         }
 
 
 
-        async void GETasyn(string url)
+         void GETasyn(string url)
         {
-
+      
             data.start_ping = true;
-            string ss = await AsyncTaskGet(url);
+            string rez =  AsyncTaskGet(cancellationToken, url).ToString();
 
         }
 
-
-
-        public Task task_ping;
-
-        async void test(string url)
-        {
-
-            task_ping = Task.Run(async delegate
-            {
-                ViewModelBase._ping.GETnoas(url);
-                await Task.Delay(TimeSpan.FromSeconds(3));
-
-            });
-
-            await Task.WhenAll(task_ping);
-
-
-            // using (var cts = new CancellationTokenSource())
-            //{
-            //    var ct = cts.Token;
-            //    var tasks =  Enumerable.Range(0, 30).Select(i => Task.Run(() => GETnoas(url), ct));
-
-            //    cts.CancelAfter(TimeSpan.FromSeconds(3));
-
-
-
-            //    try
-            //    {
-            //        //await Task.WhenAll(tasks);
-            //        await Task.WhenAll(tasks);
-
-            //        // await Task.Delay(5);
-            //    }
-            //    catch (AggregateException)
-            //    {
-            //        result = "errror";
-            //    }
-            //}
-
-        }
 
 
 

@@ -671,10 +671,10 @@ namespace IPTVman.ViewModel
             }
             catch { }
 
+            loc.open = false;
             if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
                                 MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
             // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
-            loc.open = false;
             loc.openfile = false;
         }
 

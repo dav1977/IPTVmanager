@@ -20,7 +20,7 @@ namespace IPTVman.ViewModel
             textBoxPING.Text="";
             textBoxPING2.Text = "";
 
-           if (ViewModelBase._ping==null) ViewModelBase._ping = new PING();
+         
 
             ViewModelBase._ping.result = "";
 
@@ -34,23 +34,23 @@ namespace IPTVman.ViewModel
 
         private void timer_Tick(object sender, EventArgs e)
         {
-
-            if (ViewModelBase._ping.result != "")
+            if (ViewModelBase._ping.done)
             {
                 textBoxPING.Text = ViewModelBase._ping.result;
+                ProgressBar1.Value = 0;
 
             }
-            else ProgressBar1.Value++; 
 
-           
+            if (ViewModelBase._ping.iswork) ProgressBar1.Value += 3;
+            else ProgressBar1.Value = 0;
         }
 
 
-    
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-           
+            ViewModelBase._ping.stop();
         }
 
        
@@ -70,6 +70,7 @@ namespace IPTVman.ViewModel
 
         private void exit_Copy_Click(object sender, RoutedEventArgs e)
         {
+          
             this.Close();
         }
 

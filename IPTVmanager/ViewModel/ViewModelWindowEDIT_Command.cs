@@ -14,15 +14,13 @@ using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
-
     partial class ViewModelWindow1 : ViewModelMain
     {
         public static Vlc.DotNet.Player player = null;
 
         public static event Delegate_UpdateEDIT Event_UpdateEDIT;
         public static event Delegate_ADDBEST Event_ADDBEST;
-
-
+       
         public RelayCommand key_PLAY { get; set; }
         public RelayCommand key_PING { get; set; }
         public RelayCommand key_SAVE { get; set; }
@@ -44,19 +42,17 @@ namespace IPTVman.ViewModel
             }
         }
 
-        static bool newPING = false;
+  
         private void Timer2Tick(object sender, EventArgs e)
         {
-
-            if (ViewModelBase._ping.result != "")
+            if (_ping.done)
             {
-                if (!newPING)
-                {
-                    analizPING(ViewModelBase._ping.result);
-                    newPING = true;
-                }
+                Thread.Sleep(1000);
+                convPING(ViewModelBase._ping.result);
+                _ping.done = false;
+
             }
-            else newPING = false;
+           
         }
 
         //============================== INIT ==================================
@@ -64,7 +60,7 @@ namespace IPTVman.ViewModel
         {
             CreateTimer2(500);
             loc.keyadd = false;
-            ViewModelBase._ping.result = "";
+            _ping.result = "";
             edit =(ParamCanal) data.canal.Clone();
 
             key_PLAY = new RelayCommand(PLAY);
@@ -173,15 +169,17 @@ namespace IPTVman.ViewModel
 
         void PING(object selectedItem)
         {
-     
-            if (edit.http == null) return;
             edit.ping = "";
+            if (edit.http == null) return;
             strPING = _pingPREPARE.GET(edit.http);
         }
 
 
-        void analizPING(string strPING)
-        { 
+       public  void convPING(string strPING)
+        {
+            edit.ping = "";
+            if (strPING.Length > 5000) { edit.ping = "большой размер данных "+ strPING.Length.ToString();return; }
+
             string n0 = strPING.ToString();
             string n1 = n0.Replace("#EXTM3U", "");
             string n2 = n1.Replace("#EXT-X-VERSION:3", "");
