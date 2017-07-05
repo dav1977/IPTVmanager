@@ -24,7 +24,7 @@ namespace ListViewDragDropManager
         ListViewDragDropManager<Task> dragMgr2;
 
 
-        public static event IPTVman.ViewModel.Delegate_UpdateMOVE Event_UpdateAFTERmove;
+        public static event IPTVman.ViewModel.Delegate_UpdateMOVE Event_UpdateCollection;
 
 
         public WindowMOVE()
@@ -178,7 +178,7 @@ namespace ListViewDragDropManager
             }
 
 
-            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(new IPTVman.Model.ParamCanal());
+            if (Event_UpdateCollection != null) Event_UpdateCollection(new IPTVman.Model.ParamCanal());
             this.Close();
         }
 
@@ -186,7 +186,7 @@ namespace ListViewDragDropManager
         private void button_ClickCANCEL(object sender, RoutedEventArgs e)
         {
 
-            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(new IPTVman.Model.ParamCanal());
+            if (Event_UpdateCollection != null) Event_UpdateCollection(new IPTVman.Model.ParamCanal());
             this.Close();
 
         }

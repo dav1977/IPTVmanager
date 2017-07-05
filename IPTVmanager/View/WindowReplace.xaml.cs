@@ -23,17 +23,15 @@ namespace IPTVman.ViewModel
     {
         public static event Delegate_UpdateEDIT Event_updateFILTER;
         public static event Delegate_UpdateALL Event_Refresh;
-   
 
         public WindowReplace()
         {
-            InitializeComponent(); 
-         
+            InitializeComponent();
         }
-
+       
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-           
+          
             if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });
             if (Event_Refresh != null) Event_Refresh(1);
         }
@@ -42,5 +40,7 @@ namespace IPTVman.ViewModel
         {
             this.Close();
         }
+
+      
     }
 }

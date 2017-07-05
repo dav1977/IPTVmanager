@@ -1,10 +1,21 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helpers="clr-namespace:IPTVman.Helpers" x:Class="IPTVman.ViewModel.WindowReplace" WindowStartupLocation="CenterScreen"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      
+        xmlns:helpers="clr-namespace:IPTVman.Helpers" 
+        x:Class="IPTVman.ViewModel.WindowReplace" 
+ xmlns:local="clr-namespace:IPTVman.ViewModel"
     
-        Height="276.881" Width="676.413" Closing="Window_Closing">
+        WindowStartupLocation="CenterScreen"
+        Height="224.381" Width="584.913" 
+        Closing="Window_Closing">
 
+    <Window.DataContext>
+        <!-- Declaratively create an instance of our  ИСТОЧНИК ДАННЫХ -->
+        <local:ViewModelWindowReplace />
+    </Window.DataContext>
 
 
     <Window.Background>
@@ -14,17 +25,34 @@
         </LinearGradientBrush>
     </Window.Background>
 
-    <Grid HorizontalAlignment="Left" Height="217" Margin="29,10,0,0" VerticalAlignment="Top" Width="621">
+    <Grid HorizontalAlignment="Left" Height="501" Margin="10,10,-292,-317" VerticalAlignment="Top" Width="859">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="121*"/>
+            <RowDefinition Height="46*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="496*"/>
-            <ColumnDefinition Width="191*"/>
+            <ColumnDefinition Width="675*"/>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="89*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="textBox" Text="{Binding edit.name}" HorizontalAlignment="Left" Height="23" Margin="56,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="323"/>
-        <TextBox x:Name="urlTEXT" Text="{Binding edit.http}" HorizontalAlignment="Left" Height="23" Margin="56,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="323"/>
-        <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Right" Margin="0,69,53,0" VerticalAlignment="Top" Width="138" Height="48" Grid.Column="1" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" />
-        <Label x:Name="label" Content="заменить" HorizontalAlignment="Left" Margin="2,10,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
-        <Label x:Name="label_Copy" Content="чем" HorizontalAlignment="Left" Margin="2,73,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
-        <Button x:Name="ButtonReplace" Content="ЗАМЕНИТЬ" Command="{Binding key_ReplaceSTART}" HorizontalAlignment="Left" Margin="168,159,0,0" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.626,-2.026" />
+
+
+
+        <StackPanel  HorizontalAlignment="Left" Width="454" Margin="-66,4,0,143" RenderTransformOrigin="0.402,0.244"/>
+        <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="427,14,0,0" VerticalAlignment="Top" Width="93" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" />
+        <Button x:Name="ButtonReplace_Copy1" Content="ЗАМЕНИТЬ" Command="{Binding key_ReplaceCommandSTART}" Margin="102,136,0,0" Width="106" RenderTransformOrigin="-0.038,-1.709" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <CheckBox x:Name="checkBox" IsChecked="{Binding Path=CH1,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Content="Name" HorizontalAlignment="Left" Margin="328,26,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16"/>
+        <CheckBox x:Name="checkBox_Copy" IsChecked="{Binding Path=CH2,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Content="Ping" HorizontalAlignment="Left" Margin="328,48,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16"/>
+        <CheckBox x:Name="checkBox_Copy1" IsChecked="{Binding Path=CH3,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="ExtFilter" HorizontalAlignment="Left" Margin="328,68,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16"/>
+        <CheckBox x:Name="checkBox_Copy2" IsChecked="{Binding Path=CH4,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="groupfilter" HorizontalAlignment="Left" Margin="328,90,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16"/>
+        <CheckBox x:Name="checkBox_Copy3" IsChecked="{Binding Path=CH5,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="url" HorizontalAlignment="Left" Margin="328,110,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="130" FontSize="16"/>
+        <CheckBox x:Name="checkBox_Copy4" IsChecked="{Binding Path=CH6,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="logo" HorizontalAlignment="Left" Margin="328,132,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16"/>
+        <CheckBox x:Name="checkBox_Copy5" IsChecked="{Binding Path=CH7,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="tvg" HorizontalAlignment="Left" Margin="328,152,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="130" FontSize="16"/>
+        <TextBox x:Name="textBox" Text="{Binding Selected1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
+        <TextBox x:Name="urlTEXT" Text="{Binding Selected2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
+        <Label x:Name="label" Content="Что" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="12"/>
+        <Label x:Name="label_Copy" Content="Чем" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Foreground="#FF28FF12" FontSize="12"/>
+
     </Grid>
 
 </Window>

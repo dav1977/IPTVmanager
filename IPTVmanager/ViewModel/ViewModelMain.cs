@@ -86,11 +86,12 @@ namespace IPTVman.ViewModel
         {
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
-            ViewModelWindow2.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
-            ListViewDragDropManager.WindowMOVE.Event_UpdateAFTERmove += new Delegate_UpdateMOVE(updateLIST);
+            ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateMOVE(updateLIST);
+            ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateMOVE(updateLIST);
             WindowPING.Event_updateFILTER += new Delegate_UpdateEDIT(updateLIST);
+            ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateMOVE(updateLIST);
 
-            newChannel = "новое значение";
+            //newChannel = "новое значение";
             ini_command();
             CreateTimer1(500);
         }
@@ -98,7 +99,7 @@ namespace IPTVman.ViewModel
 
         private void Create_Virtual_Collection()
             {
-            int numItems=100000;
+            int numItems=1000000;
             int fetchDelay = 1;// 
             myProvider = new CollectionProvider(numItems, fetchDelay);
 
@@ -158,7 +159,7 @@ namespace IPTVman.ViewModel
         }
 
 
-        void Update_collection()
+        public void Update_collection()
         {
 
             UPDATE_FILTER();

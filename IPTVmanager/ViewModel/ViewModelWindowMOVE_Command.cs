@@ -20,7 +20,7 @@ namespace IPTVman.ViewModel
     partial class ViewModelWindow2 : ViewModelMain
     {
 
-       public static event Delegate_UpdateMOVE Event_UpdateAFTERmove;
+       public static event Delegate_UpdateMOVE Event_UpdateCollection;
        public static event Delegate_SelectITEM Event_SELECT;
 
         public RelayCommand key_UPCommand { get; set; }
@@ -82,7 +82,7 @@ namespace IPTVman.ViewModel
 
 
             data.canal.name = "";
-            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(curr);
+            if (Event_UpdateCollection != null) Event_UpdateCollection(curr);
             if (Event_SELECT != null) { Event_SELECT(1, curr);  }
 
             loc.lokUP = false;
@@ -137,7 +137,7 @@ namespace IPTVman.ViewModel
 
 
             data.canal.name = "";
-            if (Event_UpdateAFTERmove != null) Event_UpdateAFTERmove(curr);
+            if (Event_UpdateCollection != null) Event_UpdateCollection(curr);
             if (Event_SELECT != null) { Event_SELECT(1, curr); }
 
         }

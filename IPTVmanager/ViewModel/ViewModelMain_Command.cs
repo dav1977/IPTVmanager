@@ -157,8 +157,6 @@ namespace IPTVman.ViewModel
 
             ap.Closing += Ap_Closing;
             ap.Show();
-            
- 
         }
 
         private void Ap_Closing(object sender, System.ComponentModel.CancelEventArgs e)
