@@ -21,7 +21,8 @@ namespace IPTVman.ViewModel
 
     public partial class MainWindow : Window
     {
-  
+       bool win_open = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,38 +54,12 @@ namespace IPTVman.ViewModel
             //label_kanals.SetBinding(label_kanals.Content, bind);
         }
 
-        //void WIN_WAIT(byte num)
-        //{
-        //    new WindowWAIT
-        //    {
-        //        //DataContext = new V(tb1.Text),
-        //        //Topmost = true,
-        //        //WindowStyle = WindowStyle.ToolWindow,
-        //        //Name = "winLOADINGiptv"
-        //    }.Show();
-        //}
-     
 
-        //void CLOSE_WIN_LOADING()
-        //{
-        //    foreach (Window win in Application.Current.Windows)
-        //    {
-        //        if  (win.Name == "winLOADINGiptv")
-        //        {
-        //            win.Close();
-        //        }
-        //    }
-
-        //}
-
-
-       
         void updateLIST(int size)
         {
             try
             {
-                MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new
-                Action(() =>
+                MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                 {
                     bDELETE.Content = "";
                     MYLIST.Items.Refresh();
@@ -100,32 +75,12 @@ namespace IPTVman.ViewModel
 
         void select (int a, ParamCanal b)
         {
-
-            
-
-        //    MYLIST.ScrollIntoView(b);
-
-        //    sel = a;
-
-         MYLIST.SelectedIndex = 10;
-
-
-           
+            MYLIST.SelectedIndex = 10;
             MYLIST.Focusable = true;
-           // MYLIST.SelectedItem =b ;
-
-
-
-            //  MessageBox.Show(MYLIST.SelectedItem.ToString());
-         //MessageBox.Show(a.ToString());
-
             MYLIST.Focus();
-
         }
 
 
-
-        bool win_open = false;
         private void timer_Tick(object sender, EventArgs e)
         {
 
@@ -164,8 +119,8 @@ namespace IPTVman.ViewModel
         {
 
         }
-    
-     
+
+
 
         private void MYLIST_LostTouchCapture(object sender, System.Windows.Input.TouchEventArgs e)
         {
@@ -210,31 +165,30 @@ namespace IPTVman.ViewModel
         }
 
 
+        Window win2;
         private void Button_ClickMOVE(object sender, RoutedEventArgs e)
         {
 
             if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
             if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+            if (win2 != null) return;
 
-            foreach (Window win in Application.Current.Windows)
-            {
-                if ((win.IsLoaded == true) && (win.Name == "win2iptvMANAGER"))
-                {
-                    return;
-                }
-            }
-
-            new Window2
+            win2 = new Window2
             {
                 DataContext = new ViewModelWindow2(tb1.Text),
                 Topmost = true,
                 WindowStyle = WindowStyle.ToolWindow,
-                Name ="win2iptvMANAGER"
-            }.Show(); ;
-           
-         
+                Name = "win2iptvMANAGER"
+            };
+
+            win2.Closing += Win2_Closing;
+            win2.Show();
         }
 
+        private void Win2_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            win2 = null;
+        }
 
         private void Button_ClickMOVEDrag(object sender, RoutedEventArgs e)
         {
@@ -328,52 +282,39 @@ namespace IPTVman.ViewModel
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //    MYLIST.ScrollIntoView(b);
-
-            //    sel = a;
-
-            //   MYLIST.SelectedIndex = 3;
-
-
             var a = MYLIST.Items[2];
-            //MYLIST.Focusable = true;
             MYLIST.SelectedItem = a;
-
-           MYLIST.Items.Refresh();
-
-            //  MessageBox.Show(MYLIST.SelectedItem.ToString());
-            //MessageBox.Show(a.ToString());
-
+            MYLIST.Items.Refresh();
             MYLIST.Focus();
         }
 
+
+        Window win1;
         private void MYLIST_MouseDoubleClick_EDIT(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-
-            foreach (Window win in Application.Current.Windows)
-            {
-                if ((win.IsLoaded == true) && (win.Name == "win1iptvMANAGER"))
-                {
-                    return;
-                }
-            }
-
+            if (win1 != null) return;
             int si = MYLIST.SelectedIndex;
             if (si < 0) { return; }
             var p = MYLIST.SelectedItem as ParamCanal;
             if (p == null) return;
-
             data.canal = p;
 
-            new Window1
+            win1 = new Window1
             {
                 Title = "РЕДАКТИРОВАНИЕ",
                 DataContext = new ViewModelWindow1(tb1.Text),
                 Topmost = true,
                 //WindowStyle = WindowStyle.ToolWindow,
                 Name = "win1iptvMANAGER"
-            }.Show();
+            };
 
+            win1.Closing += Win1_Closing;
+            win1.Show();
+        }
+
+        private void Win1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            win1 = null;
         }
     }
 }

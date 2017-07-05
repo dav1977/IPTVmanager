@@ -25,10 +25,8 @@ namespace IPTVman.ViewModel
 
         public static Task task1;
 
-        CancellationTokenSource cts = new CancellationTokenSource();
-        CancellationToken cancellationToken;
-        CancellationTokenSource cts2 = new CancellationTokenSource();
-        CancellationToken cancellationToken2;
+        CancellationTokenSource cts1;
+
 
         //примеры отмены задачи
         // cancellationToken.ThrowIfCancellationRequested();
@@ -40,32 +38,29 @@ namespace IPTVman.ViewModel
 
         public AUTOPING()
         {
-            cancellationToken = cts.Token;//для task1
-            cancellationToken2 = cts2.Token;
+            
         }
 
-        bool _iswork = false;
         public bool iswork
         {
             get
             {
-                return _iswork;
+                if (cts1.IsCancellationRequested) return false;
+                else return true;
             }
             set
             {
-                _iswork = true;
             }
         }
 
         public void stop()
         {
-            _iswork = false; 
+            cts1.Cancel();
         }
 
         public async Task<string> AsyncTaskSTART(CancellationToken cancellationToken, string url)
         {
             string rez="";
-            _iswork = true;
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             task1 = Task.Run(() =>
             {
@@ -111,7 +106,8 @@ namespace IPTVman.ViewModel
                     myLIST.Add(i);
                 }
 
-                string ss = await AsyncTaskSTART(cancellationToken, "");
+                cts1 = new CancellationTokenSource();
+                string ss = await AsyncTaskSTART(cts1.Token, "");
 
             }
             catch (Exception ex)
@@ -126,7 +122,7 @@ namespace IPTVman.ViewModel
         }
 
        
-        string  ping_all(CancellationToken cancellationToken, List<ParamCanal> myLIST)
+        string  ping_all(CancellationToken token, List<ParamCanal> myLIST)
         {
             int ct_channel = 0;
 
@@ -140,7 +136,7 @@ namespace IPTVman.ViewModel
 
                 if (i.http == null || i.http == "") continue;
                 if (Event_Print != null) Event_Print("ping "+i.name);
-                if (!iswork) {  break; };
+                if (token.IsCancellationRequested) {  break; };
 
 
                 _ping.done = false;

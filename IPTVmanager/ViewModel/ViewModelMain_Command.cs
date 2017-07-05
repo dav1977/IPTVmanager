@@ -68,6 +68,8 @@ namespace IPTVman.ViewModel
 
         }
 
+
+        Window winrep;
         /// <summary>
         /// replace
         /// </summary>
@@ -76,14 +78,22 @@ namespace IPTVman.ViewModel
         {
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
-            new WindowReplace
+            if (winrep != null) return;
+            winrep = new WindowReplace
             {
                 Title = "ЗАМЕНА",
                 Topmost = true,
                 WindowStyle = WindowStyle.ToolWindow,
                 Name = "winReplace"
-            }.Show();
+            };
 
+            winrep.Closing += Winrep_Closing;
+            winrep.Show();
+        }
+
+        private void Winrep_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            winrep = null;
         }
 
         /// <summary>
@@ -124,6 +134,9 @@ namespace IPTVman.ViewModel
             Update_collection();
 
         }
+
+
+        Window ap;
         /// <summary>
         /// AUTO PING
         /// </summary>
@@ -132,17 +145,27 @@ namespace IPTVman.ViewModel
         {
             if (myLISTbase==null) return;
             if (myLISTbase.Count == 0) return;
-            new WindowPING
+            if (ap!=null) return;
+
+            ap = new WindowPING
             {
-                Title ="АВТО ПИНГ",
+                Title = "АВТО ПИНГ",
                 Topmost = true,
                 WindowStyle = WindowStyle.ToolWindow,
                 Name = "winPING"
-            }.Show();
+            };
 
-          
-
+            ap.Closing += Ap_Closing;
+            ap.Show();
+            
+ 
         }
+
+        private void Ap_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ap = null;
+        }
+
         /// <summary>
         ///   ADD
         /// </summary>
@@ -209,8 +232,8 @@ namespace IPTVman.ViewModel
 
 
             Update_collection();
-            MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
-                               MessageBoxButton.OK, MessageBoxImage.Information);
+            //MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
+            //                   MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 
