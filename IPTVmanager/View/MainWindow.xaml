@@ -149,7 +149,7 @@
 
                 <!-- </ScrollViewer>-->
                 <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,111,-42" TextChanged="tb1_TextChanged" Width="102" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="21" Grid.Column="2" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="-2,-104,0,0"  Width="634" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="213,-104,0,0"  Width="494" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3"/>
                 <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-114,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best1_TextChanged"/>
                 <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-87,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best2_TextChanged"/>
 
@@ -384,6 +384,21 @@
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
                     <GradientStop Color="#FFD16161" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="20,48,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Grid.Column="1"/>
+        <Button Content="Удалить дубликаты" Command="{Binding key_DelDUBLICATCommand}"   CommandParameter=""  Margin="306,0,0,15" Focusable="False" Height="19" VerticalAlignment="Bottom" BorderBrush="#FF1BAC14" OpacityMask="#FFD4CC10" Grid.Column="3" HorizontalAlignment="Left" Width="126" Grid.Row="1">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFFB5454" Offset="0.749"/>
                 </LinearGradientBrush>
             </Button.Background>
             <Button.Foreground>

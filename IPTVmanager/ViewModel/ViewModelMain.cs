@@ -197,15 +197,18 @@ namespace IPTVman.ViewModel
                     //----------------------------------
                     m2 = regex2.Match(c.ExtFilter);
 
-                    if (m2.Success && data.f2 != "") myLISTbase.Add(c);
-                    else
-                    {
-                        m3 = regex3.Match(c.group_title);
-                        if (m1.Success && data.f1 != "" && m2.Success && data.f2 != "" &&
-                            m3.Success && data.f3 != "") myLISTbase.Add(c);
-                    }
+                    if (m2.Success && data.f2 != "" && data.f3 == "") myLISTbase.Add(c);
+                    //----------------------------------
+
 
                     //----------------------------------
+                    m3 = regex3.Match(c.group_title);
+
+                    if (m3.Success && data.f3 != "" && data.f2 == "") myLISTbase.Add(c);
+                    //----------------------------------
+
+                    if (m3.Success && data.f3 != "" && m2.Success && data.f2 != "") myLISTbase.Add(c);
+
                 }
 
                 if (data.f4 != "" && (m1.Success || data.f1 == ""))
@@ -238,24 +241,28 @@ namespace IPTVman.ViewModel
 
         void UPD_best()
         {
-            data.f1 = ""; data.f4 = "";
-
+           
             data.f2 = data.best1;
             data.f3 = data.best2;
 
-            //Match m1;
-            Regex regex1 = new Regex(data.f2, RegexOptions.IgnoreCase);
+            Match m1;
+            Regex regex1 = new Regex(data.f1, RegexOptions.IgnoreCase);
 
             myLISTbase.Clear();
 
             foreach (var c in myLISTfull)
             {
-               // m1 = regex1.Match(c.name);
-                if ( //(m1.Success && data.f2 == c.ExtFilter && data.f3 == c.group_title)
+                m1 = regex1.Match(c.name);
+
+
+                if( ( //(m1.Success && data.f2 == c.ExtFilter && data.f3 == c.group_title)
                     (data.best1== c.ExtFilter && data.best2 == c.group_title)  ||
                     (data.best1 == c.ExtFilter && data.best2 == "") ||
                     (data.best1 == "" && data.best2 == c.group_title)
-                    ) myLISTbase.Add(c);
+                    )  && (data.f1=="" || m1.Success ))
+                        myLISTbase.Add(c);
+
+
 
 
             }

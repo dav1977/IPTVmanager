@@ -20,6 +20,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
+        public RelayCommand key_DelDUBLICATCommand { get; set; }
         public RelayCommand key_ReplaceCommand { get; set; }
         public RelayCommand key_OPENclipboarCommand { get; set; }
         public RelayCommand key_SetAllBestCommand { get; set; }
@@ -40,6 +41,7 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
+            key_DelDUBLICATCommand = new RelayCommand(DelDUBLICAT);
             key_ReplaceCommand =  new RelayCommand(key_Replace);
             key_OPENclipboarCommand = new RelayCommand(key_OPEN_clipboard);
             key_SetAllBestCommand = new RelayCommand(key_set_all_best);
@@ -209,9 +211,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_delFILTER(object parameter)
         {
-
             if (myLISTfull == null) return;
-            if (data.canal.name=="") return;
 
             MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!", "  УДАЛЕНИЕ",
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -228,6 +228,69 @@ namespace IPTVman.ViewModel
 
             }
 
+
+            Update_collection();
+            //MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
+            //                   MessageBoxButton.OK, MessageBoxImage.Information);
+
+        }
+
+        void DelDUBLICAT(object parameter)
+        {
+            if (myLISTfull == null) return;
+ 
+            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ДУБЛИКАТОВ name,url,Exfilter !!!", "  УДАЛЕНИЕ",
+                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes) return;
+
+            bool first;
+            first = false;
+            bool del_ok;
+
+            uint index = 0;
+
+            while (1 == 1)
+            {
+                
+                del_ok = false;
+                first = false;
+                Update_collection();
+                foreach (var k in myLISTbase)
+                {
+                    //MessageBox.Show("СТАРТ "+k.http);
+                    first = false;
+                    foreach (var j in myLISTbase)
+                    {
+
+                        if (k.name == j.name && k.http == j.http && k.ExtFilter == j.ExtFilter)
+                        {
+                            //MessageBox.Show("нашли " + j.http+"  "+first.ToString());
+                            var item = ViewModelMain.myLISTfull.Find(x =>
+                             (x.http == k.http && x.ExtFilter == k.ExtFilter && x.name == k.name));
+
+                            if (item != null && first)
+                            {
+                                first = false;
+                                del_ok = true;
+                                result = MessageBox.Show(" Найдено дублировние\n Удалить " + item.name + "\n" + item.http +
+                                    "\n" + item.ExtFilter, "  УДАЛЕНИЕ",
+                                MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                                if (result == MessageBoxResult.Yes) myLISTfull.Remove(item);
+                                if (result == MessageBoxResult.Cancel) { Update_collection(); return; }
+                                break;
+                            }
+                            if (item != null && !first) { first = true; }//нахождение самого себя
+                        }
+
+                    }
+                    index++;
+                    if (del_ok) break;
+                   
+
+                }
+
+                if (index > myLISTbase.Count) break;
+            }
 
             Update_collection();
             //MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
@@ -339,6 +402,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_OPEN_clipboard(object parameter)
         {
+            if (chek1) { MessageBox.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ");return; }
+
             CollectionisCreate();
             string[] str=null;
             string get=Clipboard.GetText();
@@ -524,6 +589,7 @@ namespace IPTVman.ViewModel
         void PARSING_FILE()
         {
             uint ct_dublicat = 0;
+            uint ct_update = 0;
             string line = null;
             string newname = "";
 
@@ -658,12 +724,16 @@ namespace IPTVman.ViewModel
 
                             }
 
-                           
+                            
+                            if (!chek1)
+                            {
+
                                 var item = ViewModelMain.myLISTfull.Find(x =>
                                 (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
 
                                 if (newname.Trim() != "" && str_http.Trim() != "")
                                 {
+
                                     if (item == null)
                                     {
                                         ViewModelMain.myLISTfull.Add(new ParamCanal
@@ -679,7 +749,62 @@ namespace IPTVman.ViewModel
                                     }
                                     else ct_dublicat++;
                                 }
-                            
+
+                            }
+                            else//ОБНОВЛЕНИЕ
+                            {
+                                newname = newname.Trim();
+                                newname = newname.Trim();
+
+                                string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
+
+                                if (words != null)
+                                {
+                                    if (words.Length != 0)
+                                    {
+                                        if (words[0] != null && words[0] != "") newname = words[0];
+                                    }
+                                }
+
+                                newname = newname.Trim();
+                                newname = newname.Trim();
+
+                                if (newname != "")
+                                {
+
+                                    int index = 0;
+                                    bool replace_ok;
+                                    replace_ok = false;
+                                    foreach (var k in ViewModelMain.myLISTbase)
+                                    {
+                                        if (newname == k.name)
+                                        {
+  
+                                            int ind = 0;
+                                            foreach (var j in ViewModelMain.myLISTfull)
+                                            {
+
+                                                if (j.Compare() == k.Compare())
+                                                {
+                                                    ViewModelMain.myLISTfull[ind].http = str_http;
+                                                    
+                                                    ct_update++;
+                                                    replace_ok = true;
+                                                    break;
+                                                }
+                                                ind++;
+
+                                            }
+
+                                            if (replace_ok) break;
+                                        }
+                                        index++;
+
+                                    }
+                                }
+
+                            }
+
                         }///чтение фала
 
 
@@ -695,6 +820,9 @@ namespace IPTVman.ViewModel
             loc.open = false;
             if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
                                 MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
+
+            if (ct_update != 0) MessageBox.Show("ОБНОВЛЕННО " + ct_update.ToString(), " ",
+                               MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
             // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
             loc.openfile = false;
         }

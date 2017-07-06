@@ -39,7 +39,18 @@ namespace IPTVman.ViewModel
 
 
 
-     
+
+        bool chek1;
+        public bool CH1
+        {
+            get { return chek1; }
+            set
+            {
+                if (chek1) chek1 = false; else chek1 = true;
+                RaisePropertyChanged("CH1");
+            }
+        }
+
 
 
         object _best1;
