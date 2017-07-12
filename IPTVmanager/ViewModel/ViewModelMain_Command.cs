@@ -20,6 +20,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
+        public RelayCommand key_UpdateMDBCommand { get; set; }
         public RelayCommand key_DelDUBLICATCommand { get; set; }
         public RelayCommand key_ReplaceCommand { get; set; }
         public RelayCommand key_OPENclipboarCommand { get; set; }
@@ -41,6 +42,7 @@ namespace IPTVman.ViewModel
 
         void ini_command()
         {
+            key_UpdateMDBCommand = new RelayCommand(Update_MDB);
             key_DelDUBLICATCommand = new RelayCommand(DelDUBLICAT);
             key_ReplaceCommand =  new RelayCommand(key_Replace);
             key_OPENclipboarCommand = new RelayCommand(key_OPEN_clipboard);
@@ -164,6 +166,36 @@ namespace IPTVman.ViewModel
         private void Ap_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ap = null;
+        }
+
+
+
+        Window mdb;
+        /// <summary>
+        /// UPDATE MDB
+        /// </summary>
+        /// <param name="parameter"></param>
+        void Update_MDB(object parameter)
+        {
+            if (myLISTbase == null) return;
+            if (myLISTbase.Count == 0) return;
+            if (mdb != null) return;
+
+            mdb = new WindowMDB
+            {
+                Title = "Обновлние базы Access",
+                Topmost = true,
+                WindowStyle = WindowStyle.ToolWindow,
+                Name = "update_mdb"
+            };
+
+            mdb.Closing += MDB_Closing;
+            mdb.Show();
+        }
+
+        private void MDB_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            mdb = null;
         }
 
         /// <summary>

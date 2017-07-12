@@ -337,11 +337,11 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="АВТО ПИНГ ВСЕХ" Command="{Binding key_AUTOPINGCommand}"   CommandParameter=""  Margin="264,10,0,0" Focusable="False" Width="132" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
+        <Button Content="АВТО ПИНГ ВСЕХ" Command="{Binding key_AUTOPINGCommand}"   CommandParameter=""  Margin="348,10,0,0" Focusable="False" Width="115" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
-                    <GradientStop Color="#FFD39781" Offset="0.749"/>
+                    <GradientStop Color="#FFFFAFF4" Offset="0.749"/>
                 </LinearGradientBrush>
             </Button.Background>
             <Button.Foreground>
@@ -379,7 +379,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="ЗАМЕНА" Command="{Binding key_ReplaceCommand}"   CommandParameter=""  Margin="416,10,0,0" Focusable="False" Width="77" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
+        <Button Content="ЗАМЕНА" Command="{Binding key_ReplaceCommand}"   CommandParameter=""  Margin="235,10,0,0" Focusable="False" Width="77" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -405,6 +405,20 @@
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
                     <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <Button Content="UPD MDB" Command="{Binding key_UpdateMDBCommand}"   CommandParameter=""  Margin="480,10,0,0" Focusable="False" Width="63" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF2A3159" OpacityMask="#FF990E0E" Grid.Column="3" >
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFBD384A" Offset="0.227"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FFB6D1AD" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>

@@ -18,7 +18,7 @@ namespace IPTVman.ViewModel
 {
     public delegate void Delegate_Print(string s);
     /// <summary>
-    /// Логика взаимодействия для WindowWAIT.xaml
+    /// Логика взаимодействия для Window
     /// </summary>
     public partial class WindowPING : Window 
     {
