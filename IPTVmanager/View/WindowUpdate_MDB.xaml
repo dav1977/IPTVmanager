@@ -44,7 +44,7 @@
         <StackPanel  HorizontalAlignment="Left" Width="454" Margin="-66,4,0,143" RenderTransformOrigin="0.402,0.244" Grid.ColumnSpan="2"/>
         <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="412,10,0,0" VerticalAlignment="Top" Width="93" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" Grid.Column="1" />
         <Button x:Name="ButtonReplace_Copy1" Content="ВЫБРАТЬ ФАЙЛ И ОБНОВИТЬ" Command="{Binding key_UPDATECommand}" Margin="107,118,0,0" Width="242" RenderTransformOrigin="-0.038,-1.709" Height="29" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" />
-        <Label x:Name="label" Content="ОБНОВИТЬ Ссылки в базе данных SympleTV" HorizontalAlignment="Left" Margin="16,4,0,0" VerticalAlignment="Top" Foreground="#FFFF12C9" FontSize="22" Width="430" Grid.ColumnSpan="2"/>
+        <Label x:Name="label" Content="ОБНОВИТЬ Ссылки в базе данных Simple TV" HorizontalAlignment="Left" Margin="16,4,0,0" VerticalAlignment="Top" Foreground="#FFFF12C9" FontSize="22" Width="430" Grid.ColumnSpan="2"/>
         <TextBox x:Name="TEXT1" Text="{Binding Selected1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="153,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.Column="1"/>
         <TextBox x:Name="TEXT2" Text="{Binding Selected2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="249,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" Grid.Column="1"/>
         <Label x:Name="label_Copy" Content="ExtFilter в БАЗЕ" HorizontalAlignment="Left" Margin="69,40,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="11" Width="78" Grid.Column="1"/>
@@ -61,7 +61,7 @@
             <TextBox.CaretBrush>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFEFCF38" Offset="0"/>
-                    <GradientStop Color="Black" Offset="0.017"/>
+                    <GradientStop Color="#FFA43838" Offset="0.017"/>
                 </LinearGradientBrush>
             </TextBox.CaretBrush>
             <TextBox.SelectionBrush>
@@ -73,7 +73,7 @@
             <TextBox.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF180423" Offset="0.025"/>
+                    <GradientStop Color="#FF431E57" Offset="0.025"/>
                 </LinearGradientBrush>
             </TextBox.Background>
         </TextBox>
