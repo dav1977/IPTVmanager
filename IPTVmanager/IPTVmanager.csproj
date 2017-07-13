@@ -88,11 +88,11 @@
     <Compile Include="Helpers\DialogCloser.cs" />
     <Compile Include="Helpers\IClosableViewModel.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Model\AutoPING.cs" />
+    <Compile Include="UserClass\AutoPING.cs" />
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
-    <Compile Include="Model\Registy_Find.cs" />
-    <Compile Include="Model\Access.cs" />
+    <Compile Include="UserClass\Registy_Find.cs" />
+    <Compile Include="UserClass\BaseAccess.cs" />
     <Compile Include="ViewModel\MOVE\DragAdorner.cs" />
     <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
     <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />
@@ -100,20 +100,20 @@
     <Compile Include="ViewModel\MOVE\WindowMOVE.xaml.cs">
       <DependentUpon>WindowMOVE.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\PING.cs" />
-    <Compile Include="Model\PING_prepare.cs" />
+    <Compile Include="UserClass\PING.cs" />
+    <Compile Include="UserClass\PING_prepare.cs" />
     <Compile Include="ViewModel\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
-    <Compile Include="ViewModel\ViewModelWindowUPDATE_MDB_Command.cs" />
-    <Compile Include="ViewModel\ViewModelWindowReplace_Command.cs" />
-    <Compile Include="ViewModel\ViewModelWindowMOVE_Object.cs" />
-    <Compile Include="ViewModel\ViewModelWindowEDIT_Object.cs" />
-    <Compile Include="ViewModel\ViewModelWindowMOVE_Command.cs" />
-    <Compile Include="ViewModel\Virtulization.cs" />
+    <Compile Include="ViewModel\UPDATE_MDB_Command.cs" />
+    <Compile Include="ViewModel\Replace.cs" />
+    <Compile Include="ViewModel\MOVE_Object.cs" />
+    <Compile Include="ViewModel\EDIT_Object.cs" />
+    <Compile Include="ViewModel\MOVE_Command.cs" />
+    <Compile Include="UserClass\Virtulization.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
-    <Compile Include="ViewModel\ViewModelWindowEDIT_Command.cs" />
+    <Compile Include="ViewModel\EDIT_Command.cs" />
     <Compile Include="View\Player.xaml.cs">
       <DependentUpon>Player.xaml</DependentUpon>
     </Compile>

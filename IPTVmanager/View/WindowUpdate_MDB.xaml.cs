@@ -22,17 +22,44 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class WindowMDB : Window 
     {
-   
-       
         System.Timers.Timer Timer1;
         
         public WindowMDB()
         {
             InitializeComponent();
-            CreateTimer1(500);
+            CreateTimer1(5000);
+            textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            textBox.Text = "";
+            Access.Event_Print += Access_Event_Print;
         }
 
+        private void Access_Event_Print(string obj)
+        {
+            update_block(obj);
+        }
 
+        static UInt16 ct=0;
+
+        private void clear()
+        {
+            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            {
+                textBox.Text = "";
+            }));
+        }
+        private void update_block(string text)
+        {
+
+            if (text == "") clear();
+
+            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            {
+                ct++; if (ct > 500) clear();
+                textBox.Text += text;
+            }));
+
+        }
 
         public void CreateTimer1(int ms)
         {

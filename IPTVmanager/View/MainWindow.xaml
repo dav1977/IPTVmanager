@@ -149,7 +149,7 @@
 
                 <!-- </ScrollViewer>-->
                 <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,111,-42" TextChanged="tb1_TextChanged" Width="102" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="21" Grid.Column="2" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="213,-104,0,0"  Width="494" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="213,-104,0,0"  Width="519" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3"/>
                 <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-114,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best1_TextChanged"/>
                 <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-87,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best2_TextChanged"/>
 
@@ -239,7 +239,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="ДОБАВИТЬ"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="16,10,0,0" Focusable="False" Width="100" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.ColumnSpan="2">
+        <Button Content="ДОБАВИТЬ"  Command="{Binding key_OPENCommand}" CommandParameter=""  Margin="14,10,0,0" Focusable="False" Width="83" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.ColumnSpan="2">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -337,7 +337,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="АВТО ПИНГ ВСЕХ" Command="{Binding key_AUTOPINGCommand}"   CommandParameter=""  Margin="348,10,0,0" Focusable="False" Width="115" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
+        <Button Content="АВТО ПИНГ ВСЕХ" Command="{Binding key_AUTOPINGCommand}"   CommandParameter=""  Margin="324,10,0,0" Focusable="False" Width="115" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -408,7 +408,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="UPD MDB" Command="{Binding key_UpdateMDBCommand}"   CommandParameter=""  Margin="480,10,0,0" Focusable="False" Width="63" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF2A3159" OpacityMask="#FF990E0E" Grid.Column="3" >
+        <Button Content="UPD MDB" Command="{Binding key_UpdateMDBCommand}"   CommandParameter=""  Margin="455,10,0,0" Focusable="False" Width="63" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF2A3159" OpacityMask="#FF990E0E" Grid.Column="3" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
