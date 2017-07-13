@@ -102,7 +102,7 @@
     </Compile>
     <Compile Include="UserClass\PING.cs" />
     <Compile Include="UserClass\PING_prepare.cs" />
-    <Compile Include="ViewModel\UDPclient.cs" />
+    <Compile Include="UserClass\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
     <Compile Include="ViewModel\UPDATE_MDB_Command.cs" />

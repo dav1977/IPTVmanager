@@ -12,7 +12,7 @@ using System.Threading;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
-
+using System.Threading.Tasks;
 
 namespace IPTVman.ViewModel
 {
@@ -156,28 +156,62 @@ namespace IPTVman.ViewModel
         }
 
         bool find = false;
+        CancellationTokenSource cts1 = new CancellationTokenSource();
+        Task task1;
 
-        void key_replace(object selectedItem)
+        async void key_replace(object selectedItem)
         {
             find = false;
 
             if (ViewModelMain.myLISTbase == null) return;
-            if (ViewModelMain.myLISTbase.Count==0) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
 
-            foreach (var k in ViewModelMain.myLISTbase)
+            string rez = await Replace(cts1.Token);
+        }
+
+        async Task<string> Replace(CancellationToken Token)
+        {
+     
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            task1 = Task.Run(() =>
             {
-                if (chek1) { if (prov(k.name, k)) { continue; }   }
-                if (chek2) { if (prov(k.ping, k)) { continue; } }
-                if (chek3) { if (prov(k.ExtFilter, k)) { continue; } }
-                if (chek4) { if (prov(k.group_title, k)) { continue; } }
-                if (chek5) { if (prov(k.http, k)) { continue; } }
-                if (chek6) { if (prov(k.logo, k)) { continue; } }
-                if (chek7) { if (prov(k.tvg_name, k)) { continue; } }
+
+                foreach (var k in ViewModelMain.myLISTbase)
+                {
+                    if (chek1) { if (prov(k.name, k)) { continue; } }
+                    if (chek2) { if (prov(k.ping, k)) { continue; } }
+                    if (chek3) { if (prov(k.ExtFilter, k)) { continue; } }
+                    if (chek4) { if (prov(k.group_title, k)) { continue; } }
+                    if (chek5) { if (prov(k.http, k)) { continue; } }
+                    if (chek6) { if (prov(k.logo, k)) { continue; } }
+                    if (chek7) { if (prov(k.tvg_name, k)) { continue; } }
+                }
+
+                if (!find) MessageBox.Show("Не найдено '" + sel1 + "'");
+                else
+                if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
+
+                return "ok";
+
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+            try
+            {
+                await task1;
+                if (task1.Status == TaskStatus.Canceled) { MessageBox.Show("Replace Cancelled befor start"); }
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("Replace task1 Cancelled");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Replace task1 Error: {0}", e.Message);
+
             }
 
-            if (!find) MessageBox.Show("Не найдено '"+sel1+"'"); else
-            if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
-           
+            return "";
         }
 
         bool prov(string s, ParamCanal kan)

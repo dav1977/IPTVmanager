@@ -122,10 +122,15 @@ namespace IPTVman.ViewModel
 
 
 
-
+        Task task1;
         //******************* UPDATE data in table *************************
-        public void UPDATE_DATA(string filterMDB, string filterManager, string mask)
+        public async Task<string> UPDATE_DATA(CancellationToken Token, string filterMDB, string filterManager, string mask)
         {
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            task1 = Task.Run(() =>
+            {
+
+
             init_data();
             string id_best = readIDbest(filterMDB);
             //int id_bestcod = int.Parse(id_best);
@@ -133,7 +138,7 @@ namespace IPTVman.ViewModel
             if (id_best == "")
             {
                 MessageBox.Show("не найдена группа " + filterMDB + "(ExtFilter)\nв базе mdb");
-                return;
+                return "";
             }
 
             init_data();
@@ -170,6 +175,26 @@ namespace IPTVman.ViewModel
                 }
    
                 Save_to_base();
+                return "ok";
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+            try
+            {
+                await task1;
+                if (task1.Status == TaskStatus.Canceled) { MessageBox.Show(" UPDATE_DATA Cancelled befor start"); }
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show(" UPDATE_DATA task1 Cancelled");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(" UPDATE_DATA task1 Error: {0}", e.Message);
+
+            }
+
+            return "";
         }
 
         string readIDbest(string val)
