@@ -146,7 +146,7 @@ namespace IPTVman.ViewModel
             int index = 0;
             foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
             {
-                if (!find_mask(mask, row[2].ToString())) continue;
+                if (!find_mask(mask, row[2].ToString())) { index++;  continue; }
                 // получаем все ячейки строки
                 // object[] cells = row.ItemArray;
                 // MessageBox.Show((row[1].ToString() + "\n" + row[2].ToString()));
@@ -162,6 +162,7 @@ namespace IPTVman.ViewModel
                                 "Обновлено "+s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http+"\n");
                             //MessageBox.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
                             data.Tables["main"].Rows[index]["Adress"] = s.http;
+                            break;//обновляем только одну запись
                         }
                     }
                 }
@@ -211,10 +212,7 @@ namespace IPTVman.ViewModel
                 //   ret += cell.ToString();
                 //}
             }
-
-
             connector.Close();
-            //  MessageBox.Show(ret);
             return ret;
 
         }
@@ -225,7 +223,7 @@ namespace IPTVman.ViewModel
             Regex regex1;
             Match r;
            
-                regex1 = new Regex(mask);
+                regex1 = new Regex(mask, RegexOptions.IgnoreCase);
                 r = regex1.Match(url);
                 if (r.Success) return true;
        
