@@ -66,7 +66,7 @@
                     <TranslateTransform Y="0.47999998927116394" />
                 </TransformGroup>
             </RadialGradientBrush.RelativeTransform>
-            <GradientStop Color="#FFF38A0A" Offset="0.209" />
+            <GradientStop Color="#FF520B83" Offset="0.209" />
             <GradientStop Color="#0098DAFF" Offset="1" />
             <GradientStop Color="#FFDDDDDD" Offset="0" />
         </RadialGradientBrush>
@@ -677,13 +677,14 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
-        <!-- Rectangle -->
+        <!-- Rectangle 
         <Style TargetType="{x:Type Rectangle}">
             <Setter Property="Fill" Value="Black"/>
             <Setter Property="RadiusY" Value="0"/>
             <Setter Property="RadiusX" Value="0"/>
         </Style>
-
+        -->
+        
         <!-- PasswordBox -->
         <Style TargetType="{x:Type PasswordBox}" BasedOn="{x:Null}">
             <Setter Property="Background" Value="{StaticResource ControlLightBackground}" />
