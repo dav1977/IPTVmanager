@@ -46,7 +46,7 @@ namespace IPTVman.ViewModel
 
                 _bd.connect(openFileDialog.FileName);
 
-                if (!_bd.is_connect()) { MessageBox.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n"+_bd.error);  return; }
+                if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n"+_bd.error);  return; }
 
                 string rez= await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
             }

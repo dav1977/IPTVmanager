@@ -14,7 +14,8 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Net.Sockets;
-
+using Technewlogic.WpfDialogManagement;
+using Technewlogic.WpfDialogManagement.Contracts;
 
 namespace IPTVman.ViewModel
 {
@@ -83,7 +84,10 @@ namespace IPTVman.ViewModel
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
             if (winrep != null) return;
-            winrep = new WindowReplace
+
+
+
+            winrep = new WindowReplace()
             {
                 Title = "ЗАМЕНА",
                 Topmost = true,
@@ -123,12 +127,19 @@ namespace IPTVman.ViewModel
                 ct = 0;
                 foreach (var j in ViewModelMain.myLISTfull)
                 {
-
-                    if (j.Compare() == s.Compare() && s.group_title=="")
+                    if (j.Compare() == s.Compare())
                     {
-                        ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
-                        ViewModelMain.myLISTfull[ct].group_title = data.best2;
-                        break;
+                        if ( s.group_title == "")
+                        {
+                            ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
+                            ViewModelMain.myLISTfull[ct].group_title = data.best2;
+                            break;
+                        }
+                        else
+                        {
+                            ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
+                            break;
+                        }
                     }
                     ct++;
                 }  
@@ -262,7 +273,7 @@ namespace IPTVman.ViewModel
 
 
             Update_collection();
-            //MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
+            //dialog.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
             //                   MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
@@ -289,14 +300,14 @@ namespace IPTVman.ViewModel
                 Update_collection();
                 foreach (var k in myLISTbase)
                 {
-                    //MessageBox.Show("СТАРТ "+k.http);
+                    //dialog..Show("СТАРТ "+k.http);
                     first = false;
                     foreach (var j in myLISTbase)
                     {
 
                         if (k.name == j.name && k.http == j.http && k.ExtFilter == j.ExtFilter)
                         {
-                            //MessageBox.Show("нашли " + j.http+"  "+first.ToString());
+                            //dialog..Show("нашли " + j.http+"  "+first.ToString());
                             var item = ViewModelMain.myLISTfull.Find(x =>
                              (x.http == k.http && x.ExtFilter == k.ExtFilter && x.name == k.name));
 
@@ -325,7 +336,7 @@ namespace IPTVman.ViewModel
             }
 
             Update_collection();
-            //MessageBox.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
+            //dialog.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
             //                   MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
@@ -359,14 +370,11 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show("Ошибка удаления = "+ex.Message.ToString(),"",
-                               MessageBoxButton.OK, MessageBoxImage.Information);
+                dialog.Show("Ошибка удаления \n" + ex.Message.ToString());
             }
 
             Update_collection();
-            MessageBox.Show("  УДАЛЕНО " + ct.ToString() + " Каналов", " ",
-                               MessageBoxButton.OK, MessageBoxImage.Information);
+            dialog.Show("  УДАЛЕНО " + ct.ToString() + " Каналов");
 
         }
 
@@ -424,7 +432,7 @@ namespace IPTVman.ViewModel
         void key_FILTERbest(object parameter)
         {
             data.filtr_best = true;
-            Update_collection();
+            Update_collection(); 
         }
 
 
@@ -434,7 +442,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_OPEN_clipboard(object parameter)
         {
-            if (chek1) { MessageBox.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ");return; }
+            if (chek1) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ");return; }
 
             CollectionisCreate();
             string[] str=null;
@@ -445,14 +453,14 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                dialog.Show(ex.Message.ToString());
             }
 
             Regex regex1 = new Regex("#EXTINF");
             Regex regex2 = new Regex("#EXTM3U");
             Match match = null;
 
-            if (str == null || str.Length<2) { MessageBox.Show("Каналы не найдены"); return; }
+            if (str == null || str.Length<2) { dialog.Show("Каналы не найдены"); return; }
 
             
             //ПОИСК заголовка
@@ -462,7 +470,7 @@ namespace IPTVman.ViewModel
                 if (match.Success) { text_title = s; break; }
             }
 
-            // MessageBox.Show(str.Length.ToString());
+            // dialog.Show(str.Length.ToString());
             int ct_dublicat = 0;
             int index = 0;
             //ПОИСК каналов
@@ -498,7 +506,7 @@ namespace IPTVman.ViewModel
 
                         split = line.Split(new Char[] { ',' });
 
-                        if (split.Length < 1) { MessageBox.Show("Каналы не найдены"); return; }
+                        if (split.Length < 1) { dialog.Show("Каналы не найдены"); return; }
 
                         if (split.Length <=2) str_name = split[split.Length - 1];
 
@@ -562,7 +570,7 @@ namespace IPTVman.ViewModel
                    item = ViewModelMain.myLISTfull.Find(x =>
                     (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
 
-              // MessageBox.Show(str_http);
+              // dialog.Show(str_http);
 
                 if (newname.Trim() != "" && str_http.Trim() != "")
                 {
@@ -586,8 +594,7 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("mycol");///updte LIST!!
             RaisePropertyChanged("numberCANALS");
 
-            if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
-                                MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
+            if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
         }
 
         void key_OPEN(object parameter)
@@ -600,12 +607,19 @@ namespace IPTVman.ViewModel
 
         public Task<string> AsyncTaskGet()
         {
+            string name = "";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                name = openFileDialog.FileName;
+            }
 
             return Task.Run(() =>
             {
                 //----------------
 
-                PARSING_FILE();
+                PARSING_FILE(name);
                 return "";
 
                 //----------------
@@ -614,11 +628,11 @@ namespace IPTVman.ViewModel
 
 
         async void Open()
-        {
-            string rez = await AsyncTaskGet();
+        { 
+           string rez = await AsyncTaskGet();
         }
 
-        void PARSING_FILE()
+        void PARSING_FILE(string name)
         {
             uint ct_dublicat = 0;
             uint ct_update = 0;
@@ -627,10 +641,6 @@ namespace IPTVman.ViewModel
 
             try
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-
-                if (openFileDialog.ShowDialog() == true)
-                {
                     loc.open = true;
                     Regex regex1 = new Regex("#EXTINF");
                     Regex regex2 = new Regex("#EXTM3U");
@@ -638,19 +648,18 @@ namespace IPTVman.ViewModel
 
                     win_loading = true;
                     //ПОИСК заголовка
-                    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+                    using (StreamReader sr = new StreamReader(name))
                     {
                         string header = "";
                         while (true)
                         {
                             try
                             {
-                                header = sr.ReadLine();
+                               header = sr.ReadLine();
                             }
                             catch
                             {
-                                MessageBox.Show("Ошибка m3u", "нет заголовка",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
+                               dialog.Show("Ошибка m3u\nвозможно нет заголовка");
                             }
 
                             if (header == null) header = "";
@@ -665,7 +674,7 @@ namespace IPTVman.ViewModel
 
 
                     //ПОИСК каналов
-                    using (StreamReader sr = new StreamReader(openFileDialog.FileName))
+                    using (StreamReader sr = new StreamReader(name))
                     {
 
                         string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
@@ -842,20 +851,15 @@ namespace IPTVman.ViewModel
 
                     }
 
-                }
-
                 RaisePropertyChanged("mycol");///updte LIST!!
                 RaisePropertyChanged("numberCANALS");
             }
             catch { }
 
             loc.open = false;
-            if (ct_dublicat != 0) MessageBox.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString(), " ",
-                                MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
+            if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
 
-            if (ct_update != 0) MessageBox.Show("ОБНОВЛЕННО " + ct_update.ToString(), " ",
-                               MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.No, MessageBoxOptions.ServiceNotification);
-            // if (Event_WIN_WAIT != null) Event_WIN_WAIT(2);
+            if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов");
             loc.openfile = false;
         }
 

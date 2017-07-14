@@ -13,28 +13,146 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Technewlogic.WpfDialogManagement;
+using Technewlogic.WpfDialogManagement.Contracts;
 
 namespace IPTVman.ViewModel
 {
+
+    partial class ViewModelWindowReplace2 
+    {
+        private readonly IDialogManager _dialogManager;
+
+        //============================== INIT ==================================
+        public ViewModelWindowReplace2(IDialogManager dialogManager)
+        {
+            _dialogManager = dialogManager;
+            ViewModelWindowReplace.Event_Message += ViewModelWindowReplace_Event_Message;
+        }
+
+        private void ViewModelWindowReplace_Event_Message(string obj)
+        {
+            _dialogManager
+               .CreateMessageDialog("Test"+obj, "I'm a dialog", DialogMode.Ok)
+               .Show();
+        }
+
+        //================
+
+
+    }
+
+
     partial class ViewModelWindowReplace : ViewModelMain
     {
         public static event Delegate_UpdateMOVE Event_UpdateCollection;
-
+        public static event Action<string> Event_Message;
+       
         public RelayCommand key_ReplaceCommandSTART { get; set; }
 
         //============================== INIT ==================================
         public ViewModelWindowReplace()
         {
             key_ReplaceCommandSTART = new RelayCommand(key_replace);
-            //sel1 = "что";
-            //sel2 = "чем";
-    
         }
         //======================================================================
 
 
 
+        bool find = false;
+        CancellationTokenSource cts1 = new CancellationTokenSource();
+        Task task1;
 
+        async void key_replace(object selectedItem)
+        {
+            find = false;
+
+            if (ViewModelMain.myLISTbase == null) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
+
+            string rez = await Replace(cts1.Token);
+        }
+
+        async Task<string> Replace(CancellationToken Token)
+        {
+
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            task1 = Task.Run(() =>
+            {
+
+                foreach (var k in ViewModelMain.myLISTbase)
+                {
+                    if (chek1) { if (prov(k.name, k)) { continue; } }
+                    if (chek2) { if (prov(k.ping, k)) { continue; } }
+                    if (chek3) { if (prov(k.ExtFilter, k)) { continue; } }
+                    if (chek4) { if (prov(k.group_title, k)) { continue; } }
+                    if (chek5) { if (prov(k.http, k)) { continue; } }
+                    if (chek6) { if (prov(k.logo, k)) { continue; } }
+                    if (chek7) { if (prov(k.tvg_name, k)) { continue; } }
+                }
+
+                if (!find) dialog.Show("Не найдено '" + sel1 + "'");
+                else
+                if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
+
+                return "ok";
+
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+            try
+            {
+                await task1;
+                if (task1.Status == TaskStatus.Canceled) { dialog.Show("Replace Cancelled befor start"); }
+            }
+            catch (OperationCanceledException)
+            {
+                dialog.Show("Replace task1 Cancelled");
+            }
+            catch (Exception e)
+            {
+                dialog.Show($"Replace task1 Error: {e.Message}" );
+
+            }
+
+            return "";
+        }
+
+        bool prov(string s, ParamCanal kan)
+        {
+            if (s == null) return false;
+
+            Regex regex = new Regex(sel1);
+            Match match = null;
+
+            match = regex.Match(s);
+            if (match.Success)
+            {
+                set(kan);
+                return true;
+            }
+            return false;
+        }
+        void set(ParamCanal k)
+        {
+            int index = 0;
+            foreach (var j in ViewModelMain.myLISTfull)
+            {
+                if (k.Compare() == j.Compare())
+                {
+                    if (chek1) ViewModelMain.myLISTfull[index].name = ViewModelMain.myLISTfull[index].name.Replace(sel1, sel2).Trim();
+                    if (chek2 && ViewModelMain.myLISTfull[index].ping != null) ViewModelMain.myLISTfull[index].ping = ViewModelMain.myLISTfull[index].ping.Replace(sel1, sel2).Trim();
+                    if (chek3 && ViewModelMain.myLISTfull[index].ExtFilter != null) ViewModelMain.myLISTfull[index].ExtFilter = ViewModelMain.myLISTfull[index].ExtFilter.Replace(sel1, sel2).Trim();
+                    if (chek4 && ViewModelMain.myLISTfull[index].group_title != null) ViewModelMain.myLISTfull[index].group_title = ViewModelMain.myLISTfull[index].group_title.Replace(sel1, sel2).Trim();
+                    if (chek5 && ViewModelMain.myLISTfull[index].http != null) ViewModelMain.myLISTfull[index].http = ViewModelMain.myLISTfull[index].http.Replace(sel1, sel2).Trim();
+                    if (chek6 && ViewModelMain.myLISTfull[index].logo != null) ViewModelMain.myLISTfull[index].logo = ViewModelMain.myLISTfull[index].logo.Replace(sel1, sel2).Trim();
+                    if (chek7 && ViewModelMain.myLISTfull[index].tvg_name != null) ViewModelMain.myLISTfull[index].tvg_name = ViewModelMain.myLISTfull[index].tvg_name.Replace(sel1, sel2).Trim();
+                    find = true;
+                    return;
+                }
+                index++;
+            }
+        }
 
 
 
@@ -155,100 +273,7 @@ namespace IPTVman.ViewModel
             }
         }
 
-        bool find = false;
-        CancellationTokenSource cts1 = new CancellationTokenSource();
-        Task task1;
-
-        async void key_replace(object selectedItem)
-        {
-            find = false;
-
-            if (ViewModelMain.myLISTbase == null) return;
-            if (ViewModelMain.myLISTbase.Count == 0) return;
-
-            string rez = await Replace(cts1.Token);
-        }
-
-        async Task<string> Replace(CancellationToken Token)
-        {
-     
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            task1 = Task.Run(() =>
-            {
-
-                foreach (var k in ViewModelMain.myLISTbase)
-                {
-                    if (chek1) { if (prov(k.name, k)) { continue; } }
-                    if (chek2) { if (prov(k.ping, k)) { continue; } }
-                    if (chek3) { if (prov(k.ExtFilter, k)) { continue; } }
-                    if (chek4) { if (prov(k.group_title, k)) { continue; } }
-                    if (chek5) { if (prov(k.http, k)) { continue; } }
-                    if (chek6) { if (prov(k.logo, k)) { continue; } }
-                    if (chek7) { if (prov(k.tvg_name, k)) { continue; } }
-                }
-
-                if (!find) MessageBox.Show("Не найдено '" + sel1 + "'");
-                else
-                if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
-
-                return "ok";
-
-            });
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-            try
-            {
-                await task1;
-                if (task1.Status == TaskStatus.Canceled) { MessageBox.Show("Replace Cancelled befor start"); }
-            }
-            catch (OperationCanceledException)
-            {
-                MessageBox.Show("Replace task1 Cancelled");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Replace task1 Error: {0}", e.Message);
-
-            }
-
-            return "";
-        }
-
-        bool prov(string s, ParamCanal kan)
-        {
-            if (s == null) return false;
-
-            Regex regex = new Regex(sel1);
-            Match match = null;
-
-            match = regex.Match(s);
-            if (match.Success)
-            {
-                set(kan);
-                return true;
-            }
-            return false;
-        }
-        void set(ParamCanal k)
-        {
-            int index = 0;
-            foreach (var j in ViewModelMain.myLISTfull)
-            {
-                if (k.Compare() == j.Compare())
-                {
-                    if (chek1) ViewModelMain.myLISTfull[index].name = ViewModelMain.myLISTfull[index].name.Replace(sel1, sel2);
-                    if (chek2 && ViewModelMain.myLISTfull[index].ping!=null) ViewModelMain.myLISTfull[index].ping = ViewModelMain.myLISTfull[index].ping.Replace(sel1, sel2);
-                    if (chek3 && ViewModelMain.myLISTfull[index].ExtFilter != null) ViewModelMain.myLISTfull[index].ExtFilter = ViewModelMain.myLISTfull[index].ExtFilter.Replace(sel1, sel2);
-                    if (chek4 && ViewModelMain.myLISTfull[index].group_title != null)  ViewModelMain.myLISTfull[index].group_title = ViewModelMain.myLISTfull[index].group_title.Replace(sel1, sel2);
-                    if (chek5 && ViewModelMain.myLISTfull[index].http != null) ViewModelMain.myLISTfull[index].http = ViewModelMain.myLISTfull[index].http.Replace(sel1, sel2);
-                    if (chek6 && ViewModelMain.myLISTfull[index].logo != null) ViewModelMain.myLISTfull[index].logo = ViewModelMain.myLISTfull[index].logo.Replace(sel1, sel2);
-                    if (chek7 && ViewModelMain.myLISTfull[index].tvg_name != null) ViewModelMain.myLISTfull[index].tvg_name = ViewModelMain.myLISTfull[index].tvg_name.Replace(sel1, sel2);
-                    find = true;
-                    return;
-                }
-                index++;
-            }
-        }
+       
        
 
     }

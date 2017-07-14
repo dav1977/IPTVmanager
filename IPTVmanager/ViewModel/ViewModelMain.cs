@@ -46,6 +46,7 @@ namespace IPTVman.ViewModel
     {
         public static event Delegate_UpdateALL Event_UpdateLIST;
 
+     
 
         //public ObservableCollection<ParamCanal> Canal { get; set; }
         //  public MyCollection<ParamCanal> CanalOUT { get; set; }
@@ -78,7 +79,6 @@ namespace IPTVman.ViewModel
         public CollectionProvider myProvider;
         public AsyncVirtualizingCollection<ParamCanal> ACOLL;
 
-
         //**********************************************************
         // INIT
         //**********************************************************
@@ -91,10 +91,12 @@ namespace IPTVman.ViewModel
             WindowPING.Event_updateFILTER += new Delegate_UpdateEDIT(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateMOVE(updateLIST);
 
-            //newChannel = "новое значение";
             ini_command();
             CreateTimer1(500);
+
+            
         }
+
 
 
         private void Create_Virtual_Collection()

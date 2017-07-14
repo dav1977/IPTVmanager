@@ -74,18 +74,18 @@ namespace IPTVman.ViewModel
             try
             {
                 await task1;
-                if (task1.Status == TaskStatus.Canceled) { MessageBox.Show("AUTOtask1  Cancelled befor start"); }
+                if (task1.Status == TaskStatus.Canceled) { dialog.Show("AUTOtask1  Cancelled befor start"); }
 
-                //MessageBox.Show("AUTOtask1  end Success");
+                //dialog.Show("AUTOtask1  end Success");
 
             }
             catch (OperationCanceledException)
             {
-                MessageBox.Show("AUTOtask1 Cancelled");
+                dialog.Show("AUTOtask1 Cancelled");
             }
             catch (Exception e)
             {
-                MessageBox.Show("AUTOtask1 Error: {0}", e.Message);
+                dialog.Show($"AUTOtask1 Error: {e.Message}");
 
             }
 
@@ -112,9 +112,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-
-                MessageBoxResult result = MessageBox.Show(ex.ToString(), " ",
-                               MessageBoxButton.OK, MessageBoxImage.Warning);
+                dialog.Show(ex.ToString());
             }
 
 

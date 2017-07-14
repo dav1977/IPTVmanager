@@ -81,8 +81,8 @@ namespace IPTVman.ViewModel
             // Сохранить в базе данных
             sql.CommandText = "UPDATE [main] SET [Name] = ?, Adress = ?  WHERE ([Id] = ?)";
             // Имя, тип и длина параметра
-            sql.Parameters.Add("Name", OleDbType.VarWChar, 50, "Name");
-            sql.Parameters.Add("Adress", OleDbType.VarWChar, 50, "Adress");
+            sql.Parameters.Add("Name", OleDbType.VarWChar, 500, "Name");
+            sql.Parameters.Add("Adress", OleDbType.VarWChar, 500, "Adress");
 
             sql.Parameters.Add
             (
@@ -107,12 +107,11 @@ namespace IPTVman.ViewModel
             {
                 // Update возвращает количество измененных строк
                 var kol = adapter.Update(data, "main");
-                MessageBox.Show(
-                          "Обновлено " + kol.ToString() + " записей");
+                dialog.Show("Обновлено " + kol.ToString() + " записей");
             }
-            catch (Exception Ситуация)
+            catch (Exception ex)
             {
-                MessageBox.Show(Ситуация.Message, "Недоразумение");
+                dialog.Show(ex.Message.ToString());
             }
 
 
@@ -137,7 +136,7 @@ namespace IPTVman.ViewModel
 
             if (id_best == "")
             {
-                MessageBox.Show("не найдена группа " + filterMDB + "(ExtFilter)\nв базе mdb");
+                dialog.Show("не найдена группа " + filterMDB + "(ExtFilter)\nв базе mdb");
                 return "";
             }
 
@@ -154,7 +153,7 @@ namespace IPTVman.ViewModel
                 if (!find_mask(mask, row[2].ToString())) { index++;  continue; }
                 // получаем все ячейки строки
                 // object[] cells = row.ItemArray;
-                // MessageBox.Show((row[1].ToString() + "\n" + row[2].ToString()));
+                // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
                 if (row[34].ToString() == id_best)
                 {
                     //if (Event_Print != null) Event_Print("Анализ "+ row[1].ToString()+"\n");
@@ -165,7 +164,7 @@ namespace IPTVman.ViewModel
                         {
                             if (Event_Print != null) Event_Print(
                                 "Обновлено "+s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http+"\n");
-                            //MessageBox.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
+                            //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
                             data.Tables["main"].Rows[index]["Adress"] = s.http;
                             break;//обновляем только одну запись
                         }
@@ -182,15 +181,15 @@ namespace IPTVman.ViewModel
             try
             {
                 await task1;
-                if (task1.Status == TaskStatus.Canceled) { MessageBox.Show(" UPDATE_DATA Cancelled befor start"); }
+                if (task1.Status == TaskStatus.Canceled) { dialog.Show(" UPDATE_DATA Cancelled befor start"); }
             }
             catch (OperationCanceledException)
             {
-                MessageBox.Show(" UPDATE_DATA task1 Cancelled");
+                dialog.Show(" UPDATE_DATA task1 Cancelled");
             }
             catch (Exception e)
             {
-                MessageBox.Show(" UPDATE_DATA task1 Error: {0}", e.Message);
+                dialog.Show($" UPDATE_DATA task1 Error: {e.Message}");
 
             }
 
@@ -210,7 +209,7 @@ namespace IPTVman.ViewModel
             {
                 adapter.Fill(data, column);
             }
-            catch (Exception ex) { MessageBox.Show("ошибка " + ex.Message.ToString()); return ""; }
+            catch (Exception ex) { dialog.Show("ошибка " + ex.Message.ToString()); return ""; }
 
             DataTable dt = data.Tables[0];//выбираем первую таблицу
 
@@ -223,7 +222,7 @@ namespace IPTVman.ViewModel
 
             DataRow[] foundRows = data.Tables[column].Select("Name = '" + val + "'");
 
-            //if (foundRows.Length == 0) MessageBox.Show("НЕ НАЙДЕНО " + val);
+            //if (foundRows.Length == 0) dialog.Show("НЕ НАЙДЕНО " + val);
             // перебор всех строк таблицы
             foreach (DataRow row in foundRows)
             {

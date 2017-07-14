@@ -21,11 +21,14 @@ namespace IPTVman.ViewModel
 {
     class ViewModelBase : INotifyPropertyChanged
     {
+     
         public static PING _ping = new PING();
         public static PING_prepare _pingPREPARE = new PING_prepare();
 
         System.Timers.Timer Timer1;
         public bool win_loading = false;
+
+
         public void CreateTimer1(int ms)
         {
             if (Timer1 == null)
@@ -37,6 +40,8 @@ namespace IPTVman.ViewModel
                 Timer1.Enabled = true;
                 Timer1.Start();
             }
+
+           	
         }
 
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
@@ -45,10 +50,10 @@ namespace IPTVman.ViewModel
             {
                 RaisePropertyChanged("memory");
             }
+
         }
 
 
-  
         //basic ViewModelBase
         internal void RaisePropertyChanged(string prop)
         {

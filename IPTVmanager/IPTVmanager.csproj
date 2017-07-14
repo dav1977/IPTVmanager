@@ -93,6 +93,33 @@
     <Compile Include="Model\ParamCanal.cs" />
     <Compile Include="UserClass\Registy_Find.cs" />
     <Compile Include="UserClass\BaseAccess.cs" />
+    <Compile Include="ViewModel\DIALOG\Contracts\ICustomContentDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\Contracts\IDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\Contracts\IDialogConfig.cs" />
+    <Compile Include="ViewModel\DIALOG\Contracts\IDialogManager.cs" />
+    <Compile Include="ViewModel\DIALOG\Contracts\IMessageDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\Contracts\IProgressDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\Contracts\IWaitDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\CustomContentDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\DialogBase.cs" />
+    <Compile Include="ViewModel\DIALOG\DialogBaseControl.xaml.cs">
+      <DependentUpon>DialogBaseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\DIALOG\DialogCloseBehavior.cs" />
+    <Compile Include="ViewModel\DIALOG\DialogLayeringHelper.cs" />
+    <Compile Include="ViewModel\DIALOG\DialogManager.cs" />
+    <Compile Include="ViewModel\DIALOG\DialogMode.cs" />
+    <Compile Include="ViewModel\DIALOG\DialogResultState.cs" />
+    <Compile Include="ViewModel\DIALOG\IDialogHost.cs" />
+    <Compile Include="ViewModel\DIALOG\ImagingExtensions.cs" />
+    <Compile Include="ViewModel\DIALOG\MessageDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\WaitAnimation.xaml.cs">
+      <DependentUpon>WaitAnimation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\DIALOG\WaitProgressDialog.cs" />
+    <Compile Include="ViewModel\DIALOG\WaitProgressDialogControl.xaml.cs">
+      <DependentUpon>WaitProgressDialogControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MOVE\DragAdorner.cs" />
     <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
     <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />
@@ -132,9 +159,24 @@
     <Compile Include="View\WindowPING.xaml.cs">
       <DependentUpon>WindowPING.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WindowMessage.xaml.cs">
+      <DependentUpon>WindowMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowWAIT.xaml.cs">
       <DependentUpon>WindowWAIT.xaml</DependentUpon>
     </Compile>
+    <Page Include="ViewModel\DIALOG\DialogBaseControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModel\DIALOG\WaitAnimation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModel\DIALOG\WaitProgressDialogControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ViewModel\MOVE\WindowMOVE.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\WindowMessage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\WindowWAIT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -209,6 +255,7 @@
   <ItemGroup>
     <Resource Include="cube.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

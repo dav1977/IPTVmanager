@@ -15,19 +15,33 @@ using System.Windows.Shapes;
 namespace IPTVman.ViewModel
 {
     /// <summary>
-    /// Логика взаимодействия для WindowWAIT.xaml
+    //
     /// </summary>
-    public partial class WindowWAIT : Window
+    public partial class WindowMessage : Window
     {
-        public WindowWAIT()
+        public WindowMessage()
         {
             InitializeComponent();
+            label.Content = dialog.message;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void exit_Copy_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
     }
+
+    public static class dialog
+    {
+       public static string message;
+       public static bool message_open = false;
+        public static void Show(string s)
+        {
+            message = s;
+            message_open = true;
+        }
+
+    }
+    
 }

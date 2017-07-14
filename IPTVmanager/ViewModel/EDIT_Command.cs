@@ -124,7 +124,7 @@ namespace IPTVman.ViewModel
 
                 if (rez == "")
                 {
-                    MessageBox.Show("Не найден ACE_PLAYER в реестре", "", MessageBoxButton.OK);
+                    dialog.Show("Не найден ACE_PLAYER в реестре");
                     return;
                 }
                 else
@@ -161,7 +161,7 @@ namespace IPTVman.ViewModel
                    
 
                 }
-                else MessageBox.Show("Не найден файл ACE_PLAYER.exe по пути " + play.path, "", MessageBoxButton.OK);
+                else dialog.Show("Не найден файл ACE_PLAYER.exe по пути\n" + play.path);
 
             }
             IPTVman.Model.play.playerUPDATE = false;

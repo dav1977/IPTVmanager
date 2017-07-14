@@ -104,16 +104,16 @@ namespace IPTVman.ViewModel
             try
             {
                 await  task1;
-               // if (task1.Status == TaskStatus.Canceled) { MessageBox.Show("task1  Cancelled befor start"); }
+               // if (task1.Status == TaskStatus.Canceled) { dialog.Show("task1  Cancelled befor start"); }
 
             }
             catch (OperationCanceledException)
             {
-                MessageBox.Show("task1 Cancelled");
+                dialog.Show("task1 Cancelled");
             }
             catch (Exception e)
             {
-                MessageBox.Show("task1 Error: {0}", e.Message);
+                dialog.Show($"task1 Error: {e.Message}");
 
             }
 

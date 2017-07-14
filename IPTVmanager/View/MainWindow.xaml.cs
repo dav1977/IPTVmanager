@@ -18,6 +18,7 @@ namespace IPTVman.ViewModel
     public delegate void Delegate_ADDBEST();
     public delegate void Delegate_SelectITEM(int a, ParamCanal b);
     public delegate void Delegate_WIN_WAIT(byte n);
+    public delegate void Message(string mess);
 
     public partial class MainWindow : Window
     {
@@ -30,10 +31,12 @@ namespace IPTVman.ViewModel
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
             WindowPING.Event_Refresh += new Delegate_UpdateALL(updateLIST);
+          
+
 
            // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += timer_Tick;
             timer.Start();
 
@@ -53,7 +56,7 @@ namespace IPTVman.ViewModel
             //bind.Mode = BindingMode.OneWay;
             //label_kanals.SetBinding(label_kanals.Content, bind);
         }
-
+     
 
         void updateLIST(int size)
         {
@@ -81,21 +84,46 @@ namespace IPTVman.ViewModel
         }
 
 
+        Window message;
+        Window wait;
         private void timer_Tick(object sender, EventArgs e)
         {
+            if (dialog.message_open)
+            {
+                dialog.message_open = false;
+
+                if (message != null)
+                {
+                    message.Close();
+                    message = null;
+                }
+                message = new WindowMessage()
+                {
+                    Title = "Сообщение",
+                    Topmost = true,
+                    WindowStyle = WindowStyle.ToolWindow,
+                    Name = "message",
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    ResizeMode = ResizeMode.NoResize
+                   // WindowStartupLocation = WindowStartupLocation.CenterOwner
+                };
+
+                message.Closing += message_Closing;
+                message.Show();
+            }
 
             if (loc.open)
             {
                 if (win_open) return;
-                new WindowWAIT
+                wait = new WindowWAIT()
                 {
-                    //DataContext = new V(tb1.Text),
+                    Title = "",
                     Topmost = true,
                     //WindowStyle = WindowStyle.ToolWindow,
                     Name = "winwait"
-                }.Show();
+                };
+                wait.Show();
                 win_open = true;
-
             }
             else
             {
@@ -114,6 +142,11 @@ namespace IPTVman.ViewModel
             }
 
         }
+        private void message_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            message = null;
+        }
+
 
         private void tb1_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {

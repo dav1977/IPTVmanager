@@ -29,7 +29,7 @@ namespace Vlc.DotNet
             catch 
             {
                 IPTVman.Model.play.playerUPDATE = false;
-               // MessageBox.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
+               // dialog.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
                 this.Close();
                 return;
 
@@ -41,12 +41,10 @@ namespace Vlc.DotNet
             try
             {
                 myControl.MediaPlayer.Play(new Uri(url));
-            
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString(), "error");
-
             }
 
 

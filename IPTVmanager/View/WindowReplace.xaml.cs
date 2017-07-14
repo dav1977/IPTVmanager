@@ -12,7 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-
+using Technewlogic.WpfDialogManagement;
+using Technewlogic.WpfDialogManagement.Contracts;
 
 namespace IPTVman.ViewModel
 {
@@ -27,6 +28,7 @@ namespace IPTVman.ViewModel
         public WindowReplace()
         {
             InitializeComponent();
+           // DataContext = new ViewModelWindowReplace2(new DialogManager(this, Dispatcher));
         }
        
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
