@@ -19,7 +19,7 @@ using System.Net.NetworkInformation;
 namespace IPTVman.ViewModel
 {
     public delegate void Delegate_CLOSEPING(string s);
-    class PING
+    public class PING
     {
         public string result = "";
         public bool done = false;

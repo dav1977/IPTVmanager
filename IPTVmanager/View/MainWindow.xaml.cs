@@ -22,7 +22,7 @@ namespace IPTVman.ViewModel
 
     public partial class MainWindow : Window
     {
-       bool win_open = false;
+       public static bool window_wait_open = false;
 
         public MainWindow()
         {
@@ -114,7 +114,7 @@ namespace IPTVman.ViewModel
 
             if (loc.open)
             {
-                if (win_open) return;
+                if (window_wait_open) return;
                 wait = new WindowWAIT()
                 {
                     Title = "",
@@ -123,11 +123,11 @@ namespace IPTVman.ViewModel
                     Name = "winwait"
                 };
                 wait.Show();
-                win_open = true;
+                window_wait_open = true;
             }
             else
             {
-                if (!win_open) return;
+                if (!window_wait_open) return;
                 else
                 {
                     foreach (Window win in Application.Current.Windows)
@@ -135,7 +135,7 @@ namespace IPTVman.ViewModel
                         if (win.Name == "winwait")
                         {
                             win.Close();
-                            win_open = false;
+                            window_wait_open = false;
                         }
                     }
                 }

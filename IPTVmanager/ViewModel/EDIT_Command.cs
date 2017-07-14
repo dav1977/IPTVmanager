@@ -26,6 +26,8 @@ namespace IPTVman.ViewModel
         public RelayCommand key_SAVE { get; set; }
         public RelayCommand key_ADDBEST { get; set; }
 
+        public static PING _ping;
+        public static PING_prepare _pingPREPARE;
 
         System.Timers.Timer Timer2;
 
@@ -45,10 +47,12 @@ namespace IPTVman.ViewModel
   
         private void Timer2Tick(object sender, EventArgs e)
         {
+            if (_ping == null) return;
             if (_ping.done)
             {
                 Thread.Sleep(1000);
-                convPING(ViewModelBase._ping.result);
+                strPING = _ping.result;
+                convPING(_ping.result);
                 _ping.done = false;
 
             }
@@ -60,9 +64,7 @@ namespace IPTVman.ViewModel
         {
             CreateTimer2(500);
             loc.keyadd = false;
-            _ping.result = "";
             edit =(ParamCanal) data.canal.Clone();
-
             key_PLAY = new RelayCommand(PLAY);
             key_PING = new RelayCommand(PING);
             key_SAVE = new RelayCommand(SAVE);
@@ -169,6 +171,7 @@ namespace IPTVman.ViewModel
 
         void PING(object selectedItem)
         {
+            if (_pingPREPARE == null) return;
             edit.ping = "";
             if (edit.http == null) return;
             strPING = _pingPREPARE.GET(edit.http);

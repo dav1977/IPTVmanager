@@ -21,10 +21,7 @@ namespace IPTVman.ViewModel
 {
     class ViewModelBase : INotifyPropertyChanged
     {
-     
-        public static PING _ping = new PING();
-        public static PING_prepare _pingPREPARE = new PING_prepare();
-
+ 
         System.Timers.Timer Timer1;
         public bool win_loading = false;
 

@@ -7,7 +7,8 @@ namespace IPTVman.ViewModel
 {
     public partial class Window1 : Window
     {
-
+        PING _ping;
+        PING_prepare _pingPREPARE;
 
         public Window1()
         {
@@ -20,12 +21,13 @@ namespace IPTVman.ViewModel
             textBoxPING.Text="";
             textBoxPING2.Text = "";
 
-         
 
-            ViewModelBase._ping.result = "";
+            _ping = new PING();
+            _ping.result = "";
+            _pingPREPARE = new PING_prepare(_ping);
 
             //use a timer to periodically update the memory usage
-           DispatcherTimer timer = new DispatcherTimer();
+            DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += timer_Tick;
             timer.Start();
@@ -34,30 +36,33 @@ namespace IPTVman.ViewModel
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (ViewModelBase._ping.done)
+
+            if (_ping == null) return;
+
+            if (ViewModelWindow1.edit.ping!="")
             {
-                textBoxPING.Text = ViewModelBase._ping.result;
+                textBoxPING.Text = _ping.result;
                 ProgressBar1.Value = 0;
-
             }
+            else ProgressBar1.Value += 3;
+           
 
-            if (ViewModelBase._ping.iswork) ProgressBar1.Value += 3;
-            else ProgressBar1.Value = 0;
+            //УСТАНОВКА ССЫЛКИ В ПОДЧИНЕННОМ ЭКЗЕМПЛЯРЕ
+            if (ViewModelWindow1._ping == null)
+            {
+                ViewModelWindow1._ping = _ping;
+                ViewModelWindow1._pingPREPARE = _pingPREPARE;
+            }
         }
-
-
-
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ViewModelBase._ping.stop();
+            _ping.stop();
+            _ping = null;
         }
-
-       
 
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
-
             IPTVman.Model.play.URLPLAY = urlTEXT.Text;
             IPTVman.Model.play.playerUPDATE = true;
             this.Close();

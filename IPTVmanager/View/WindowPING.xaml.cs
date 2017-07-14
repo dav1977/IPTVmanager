@@ -22,6 +22,9 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class WindowPING : Window 
     {
+        static PING _ping;
+        static PING_prepare _pingPREPARE;
+
         public static event Delegate_UpdateEDIT Event_updateFILTER;
         public static event Delegate_UpdateALL Event_Refresh;
         public static event Delegate_CLOSEPING Event_Close_ping;
@@ -34,8 +37,12 @@ namespace IPTVman.ViewModel
         public WindowPING()
         {
             InitializeComponent();
+
+            _ping = new PING();
+            _pingPREPARE = new PING_prepare(_ping);
+
             button.Visibility = Visibility.Hidden;
-            ap = new AUTOPING();
+            ap = new AUTOPING(_ping, _pingPREPARE);
             AUTOPING.Event_Print += new Delegate_Print(add);
             ap.start();
             CreateTimer1(500);
@@ -109,7 +116,7 @@ namespace IPTVman.ViewModel
         private void button_Click(object sender, RoutedEventArgs e)
         {
             if (Event_Close_ping != null) Event_Close_ping("");
-            if  (ViewModelBase._ping!=null) ViewModelBase._ping.stop();
+            if  (_ping!=null) _ping.stop();
             if (this!=null) this.Close();
             
         }
@@ -126,9 +133,12 @@ namespace IPTVman.ViewModel
                 update_ok = true;
             }
 
-            if (ViewModelBase._ping != null) ViewModelBase._ping.stop();
+            if (_ping != null) _ping.stop();
             if (ap!=null) ap.stop();
             ap = null;
+            _pingPREPARE = null;
+            _ping = null;
+  
         }
     }
 }

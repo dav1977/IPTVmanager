@@ -27,6 +27,7 @@ namespace IPTVman.ViewModel
         CancellationTokenSource cts2 = new CancellationTokenSource();
         CancellationToken cancellationToken2;
 
+        PING _ping;
         //примеры отмены задачи
         // cancellationToken.ThrowIfCancellationRequested();
         //throw new OperationCanceledException(cancellationToken);
@@ -35,8 +36,9 @@ namespace IPTVman.ViewModel
         //throw new OperationCanceledException(new CancellationToken(true));
         //throw new OperationCanceledException(new CancellationToken(false));
 
-        public PING_prepare()
+        public PING_prepare(PING p)
         {
+            _ping = p;
              cancellationToken = cts.Token;//для task1
              cancellationToken2 = cts2.Token;
         }
@@ -48,7 +50,7 @@ namespace IPTVman.ViewModel
         /// <returns></returns>
         public string GET(string u)
         {
-            ViewModelBase._ping.result = "";
+            _ping.result = "";
             Regex regex1 = new Regex("http:");
             Regex regex2 = new Regex("https:");
             Regex regex3 = new Regex("udp:");
@@ -61,12 +63,7 @@ namespace IPTVman.ViewModel
 
             if (match1.Success || match2.Success || match3.Success || match4.Success)
             {
-
-                //ViewModelBase._ping.GETnoas(u);
-         
                  GETasyn(u);//асинхр
-                //         test(u);
-
             }
             else
             {
@@ -84,23 +81,17 @@ namespace IPTVman.ViewModel
             return "--";//ip + ViewModelBase._ping.result;
         }
 
-
-
-
         public async Task<string> AsyncTaskGet(CancellationToken cancellationToken, string url)
         {
-            ViewModelBase._ping.iswork = true;
+            _ping.iswork = true;
             string rez = "";
 
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             task1 = Task.Run(() => 
             {  
-                rez = ViewModelBase._ping.GETnoas( cancellationToken, url);    
+                rez = _ping.GETnoas( cancellationToken, url);    
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-
-
             try
             {
                 await  task1;
@@ -120,8 +111,6 @@ namespace IPTVman.ViewModel
             return rez;
         }
 
-
-
          void GETasyn(string url)
         {
       
@@ -129,9 +118,6 @@ namespace IPTVman.ViewModel
             string rez =  AsyncTaskGet(cancellationToken, url).ToString();
 
         }
-
-
-
 
     }
 }

@@ -20,6 +20,8 @@ namespace IPTVman.ViewModel
 {
     class AUTOPING : ViewModelBase
     {
+        PING _ping;
+        PING_prepare _pingPREPARE;
         public static event Delegate_Print Event_Print;
         List<ParamCanal> myLIST;
 
@@ -36,9 +38,10 @@ namespace IPTVman.ViewModel
         //throw new OperationCanceledException(new CancellationToken(true));
         //throw new OperationCanceledException(new CancellationToken(false));
 
-        public AUTOPING()
+        public AUTOPING(PING p, PING_prepare b)
         {
-            
+            _ping = p;
+            _pingPREPARE = b;
         }
 
         public bool iswork
