@@ -117,7 +117,7 @@ namespace IPTVman.ViewModel
         {
             if (Event_Close_ping != null) Event_Close_ping("");
             if  (_ping!=null) _ping.stop();
-            if (this!=null) this.Close();
+            this.Close();
             
         }
 
@@ -126,19 +126,20 @@ namespace IPTVman.ViewModel
         //close
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!update_ok)
-            {
-                if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });
-                if (Event_Refresh != null) Event_Refresh(1);
-                update_ok = true;
-            }
 
             if (_ping != null) _ping.stop();
             if (ap!=null) ap.stop();
             ap = null;
             _pingPREPARE = null;
             _ping = null;
-  
+
+
+            if (!update_ok)
+            {
+               // if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });
+                if (Event_Refresh != null) Event_Refresh(1);
+                update_ok = true;
+            }
         }
     }
 }
