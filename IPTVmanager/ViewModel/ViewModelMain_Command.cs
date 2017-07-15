@@ -158,6 +158,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_AUTOPING(object parameter)
         {
+            if (LongtaskCANCELING.isENABLE()) return;
             if (myLISTbase==null) return;
             if (myLISTbase.Count == 0) return;
             if (ap!=null) return;
@@ -188,6 +189,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void Update_MDB(object parameter)
         {
+            if (LongtaskCANCELING.isENABLE()) return;
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
             if (mdb != null) return;
@@ -385,7 +387,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_SAVE(object parameter)
         {
-        
+            if (LongtaskCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (myLISTfull.Count == 0) return;
 
@@ -442,6 +444,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_OPEN_clipboard(object parameter)
         {
+            if (LongtaskCANCELING.isENABLE()) return;
             if (chek1) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ");return; }
 
             CollectionisCreate();
@@ -597,12 +600,14 @@ namespace IPTVman.ViewModel
             if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
         }
 
-        void key_OPEN(object parameter)
+        async void key_OPEN(object parameter)
         {
+            if (LongtaskCANCELING.isENABLE()) return;
             if (loc.openfile) return;
             loc.openfile = true;
             CollectionisCreate();
-            Open();
+            string rez = await AsyncTaskGet();
+          
         }
 
         public Task<string> AsyncTaskGet()
@@ -615,22 +620,35 @@ namespace IPTVman.ViewModel
                 name = openFileDialog.FileName;
             }
 
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            string except = "";
             return Task.Run(() =>
             {
                 //----------------
+                try
+                {
+                   if (name!="") PARSING_FILE(name);
+                   else loc.openfile = false;
+                }
+                catch (OperationCanceledException e)
+                {
+                    except += e.Message.ToString();
+                }
+                catch (Exception e)
+                {
+                    except += e.Message.ToString();
+                }
+               
+                //dialog.Show("Статус закрытя "+ task1.Status.ToString());
+                if (except != "") dialog.Show("ОШИБКА " + except);
 
-                PARSING_FILE(name);
                 return "";
 
                 //----------------
             });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         }
 
-
-        async void Open()
-        { 
-           string rez = await AsyncTaskGet();
-        }
 
         void PARSING_FILE(string name)
         {
@@ -641,12 +659,11 @@ namespace IPTVman.ViewModel
 
             try
             {
-                    loc.open = true;
+                    LongtaskCANCELING.enable();
                     Regex regex1 = new Regex("#EXTINF");
                     Regex regex2 = new Regex("#EXTM3U");
                     Match match = null;
 
-                    win_loading = true;
                     //ПОИСК заголовка
                     using (StreamReader sr = new StreamReader(name))
                     {
@@ -851,14 +868,15 @@ namespace IPTVman.ViewModel
 
                     }
 
+                LongtaskCANCELING.stop();
+                while (Wait.WindowIsOpen()) Thread.Sleep(100);
                 RaisePropertyChanged("mycol");///updte LIST!!
                 RaisePropertyChanged("numberCANALS");
+
             }
             catch { }
 
-            loc.open = false;
             if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
-
             if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов");
             loc.openfile = false;
         }

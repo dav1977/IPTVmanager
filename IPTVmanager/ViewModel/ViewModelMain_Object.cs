@@ -169,18 +169,18 @@ namespace IPTVman.ViewModel
         }
 
 
-        static string _filter = "";
-        public string filter
+        static string _filter1 = "";
+        public string filter1
         {
             get
             {
-                return _filter;
+                return _filter1;
             }
             set
             {
-                if (_filter != value)
+                if (_filter1 != value)
                 {
-                    _filter = value;
+                    _filter1 = value;
                
                 }
             }
@@ -235,6 +235,29 @@ namespace IPTVman.ViewModel
                 }
             }
         }
+
+  
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the collection is loading.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this collection is loading; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsLoading
+        {
+            get
+            {
+                if (ACOLL == null) return false;
+                else return ACOLL.IsLoading;
+            }
+            set
+            {
+              
+            }
+        }
+
+
     }//class
 
 }//namespace

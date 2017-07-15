@@ -10,22 +10,15 @@
     ShowInTaskbar="false"
     Title=""
     ResizeMode="NoResize">
-    <StackPanel x:Uid="StackPanel_1" Background="#FF94D3C1"
-                >
+    <StackPanel x:Uid="StackPanel_1" Background="#FF8EA0BF" >
 
         <StackPanel x:Uid="StackPanel_2"
           Orientation="Horizontal"
           HorizontalAlignment="Center"
-          Margin="10 10 10 10">
-            <StackPanel x:Uid="StackPanel_2_1"
-          Orientation="Horizontal" Height="20" Width="150" HorizontalAlignment="Center">
-                <TextBlock x:Uid="TextBlock_2_1" FontSize="16" FontWeight="Bold"><Run Text="Идет выполнение..."/></TextBlock>
-                <TextBlock x:Uid="TextBlock_2_2"
-            x:Name="_pageNumberLabel"
-            Margin="3 0 3 0"
-            Text="{Binding PageNumber, ElementName=PrintProgress}"/>
+          Margin="10 10 10 10" Width="298">
 
-            </StackPanel>
+            <Label Name="label" Content="wait" Width="298" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}" Foreground="#FF463224" FontSize="16" FontWeight="Bold"/>
+            
         </StackPanel>
         <StackPanel x:Uid="StackPanel_0"
           Margin="10 10 10 10"
@@ -56,5 +49,6 @@
           Margin="10 10 10 10"
           HorizontalAlignment="Center" 
           Orientation="Horizontal"/>
+       
     </StackPanel>
 </Window>

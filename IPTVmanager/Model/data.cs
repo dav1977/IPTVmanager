@@ -10,7 +10,7 @@ namespace IPTVman.Model
     public static class loc
     {
         public static bool edit = false;
-        public static bool open = false;
+        public static string longtaskSTRING;
         public static bool openfile = false;
         public static bool lokUP, lokDN = false;
         public static bool keyadd = false;//дребезг кнопки

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-
+using System.Threading;
 
 namespace IPTVman.ViewModel
 {
@@ -45,6 +45,7 @@ namespace IPTVman.ViewModel
             ap = new AUTOPING(_ping, _pingPREPARE);
             AUTOPING.Event_Print += new Delegate_Print(add);
             ap.start();
+            
             CreateTimer1(500);
         }
 
@@ -65,16 +66,19 @@ namespace IPTVman.ViewModel
 
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
         {
-
-            if (IPTVman.Model.data.ping_waiting > 20)
+            try
             {
-                   textct.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                   {
-                       textct.Text = String.Format("{0} из {1}   ожидание {2} ", IPTVman.Model.data.ct_ping,
-                                          IPTVman.Model.data.ping_all, IPTVman.Model.data.ping_waiting-20);
-                   }));
+                if (IPTVman.Model.data.ping_waiting > 20)
+                {
+                    textct.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        textct.Text = String.Format("{0} из {1}   ожидание {2} ", IPTVman.Model.data.ct_ping,
+                                           IPTVman.Model.data.ping_all, IPTVman.Model.data.ping_waiting - 20);
+                    }));
 
+                }
             }
+            catch { }
         }
 
         
@@ -122,18 +126,13 @@ namespace IPTVman.ViewModel
         }
 
 
-
         //close
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
-            if (_ping != null) _ping.stop();
-            if (ap!=null) ap.stop();
+            if (ap != null) ap.stop();
             ap = null;
-            _pingPREPARE = null;
-            _ping = null;
-
-
+            LongtaskCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
+          
             if (!update_ok)
             {
                // if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });

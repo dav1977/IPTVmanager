@@ -22,8 +22,6 @@ namespace IPTVman.ViewModel
 
     public partial class MainWindow : Window
     {
-       public static bool window_wait_open = false;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -31,8 +29,6 @@ namespace IPTVman.ViewModel
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
             WindowPING.Event_Refresh += new Delegate_UpdateALL(updateLIST);
-          
-
 
            // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
@@ -84,8 +80,22 @@ namespace IPTVman.ViewModel
         }
 
 
-        Window message;
-        Window wait;
+        public static void Window_Wait_close()
+        {
+            if (!LongtaskCANCELING.isENABLE()) return;
+            LongtaskCANCELING.stop();
+            Wait.Close();
+            //foreach (Window win in Application.Current.Windows)
+            //{
+            //    if (win.Name == "winwait")
+            //    {
+            //        win.Close();
+            //        window_wait_open = false;
+            //    }
+            //}
+        }
+
+        static Window message;
         private void timer_Tick(object sender, EventArgs e)
         {
             if (dialog.message_open)
@@ -112,33 +122,17 @@ namespace IPTVman.ViewModel
                 message.Show();
             }
 
-            if (loc.open)
+            if (LongtaskCANCELING.isENABLE())
             {
-                if (window_wait_open) return;
-                wait = new WindowWAIT()
-                {
-                    Title = "",
-                    Topmost = true,
-                    //WindowStyle = WindowStyle.ToolWindow,
-                    Name = "winwait"
-                };
-                wait.Show();
-                window_wait_open = true;
+
+                if (Wait.WindowIsOpen()) return;
+                Wait.Create("Ждите идет анализ файла");
+
             }
             else
             {
-                if (!window_wait_open) return;
-                else
-                {
-                    foreach (Window win in Application.Current.Windows)
-                    {
-                        if (win.Name == "winwait")
-                        {
-                            win.Close();
-                            window_wait_open = false;
-                        }
-                    }
-                }
+                if (Wait.WindowIsOpen()) Wait.Close();
+                else return;
             }
 
         }
@@ -325,6 +319,7 @@ namespace IPTVman.ViewModel
         Window win1;
         private void MYLIST_MouseDoubleClick_EDIT(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (LongtaskCANCELING.isENABLE()) return;
             if (win1 != null) return;
             int si = MYLIST.SelectedIndex;
             if (si < 0) { return; }

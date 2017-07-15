@@ -64,37 +64,42 @@ namespace IPTVman.ViewModel
         public async Task<string> AsyncTaskSTART(CancellationToken cancellationToken, string url)
         {
             string rez="";
+
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            string except = "";
             task1 = Task.Run(() =>
             {
-       
-                rez = ping_all(cancellationToken, myLIST);
+                try
+                {
+                    rez = ping_all(cancellationToken, myLIST); 
+                }
+                catch (OperationCanceledException e)
+                {
+                    except += e.Message.ToString();
+                }
+                catch (Exception e)
+                {
+                    except += e.Message.ToString();
+                }
                 return rez;
-
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
             try
             {
                 await task1;
-                if (task1.Status == TaskStatus.Canceled) { dialog.Show("AUTOtask1  Cancelled befor start"); }
-
-                //dialog.Show("AUTOtask1  end Success");
-
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException e)
             {
-                dialog.Show("AUTOtask1 Cancelled");
+                except += e.Message.ToString();
             }
             catch (Exception e)
             {
-                dialog.Show($"AUTOtask1 Error: {e.Message}");
-
+                except += e.Message.ToString();
             }
 
-
-            return rez;
-            
+            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
+            if (except != "") dialog.Show("ОШИБКА " + except);
+            return rez;  
         }
 
      

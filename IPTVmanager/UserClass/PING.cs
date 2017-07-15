@@ -168,7 +168,8 @@ namespace IPTVman.ViewModel
                 string newLine;
                 while ((newLine = sr.ReadLine()) != null)
                 {
-                    if (!iswork) {   exit("прерывание пинга "); return "прерывание пинга "; ; };
+                    if (cancellationToken.IsCancellationRequested || !iswork)
+                    {   exit("прерывание пинга "); return "прерывание пинга "; ; };
 
                     string[] words;
                     words = newLine.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);

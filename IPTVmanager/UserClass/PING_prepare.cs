@@ -18,14 +18,14 @@ using System.Net.NetworkInformation;
 
 namespace IPTVman.ViewModel
 {
-    class PING_prepare
+    public class PING_prepare
     {
         public static Task task1;
 
-        CancellationTokenSource cts = new CancellationTokenSource();
-        CancellationToken cancellationToken;
-        CancellationTokenSource cts2 = new CancellationTokenSource();
-        CancellationToken cancellationToken2;
+        public static CancellationTokenSource cts;
+        public static CancellationToken cancellationToken;
+        public static CancellationTokenSource cts2;
+        public static CancellationToken cancellationToken2;
 
         PING _ping;
         //примеры отмены задачи
@@ -38,11 +38,19 @@ namespace IPTVman.ViewModel
 
         public PING_prepare(PING p)
         {
+            cts = new CancellationTokenSource();
+            cts2 = new CancellationTokenSource();
+
             _ping = p;
              cancellationToken = cts.Token;//для task1
              cancellationToken2 = cts2.Token;
         }
 
+        public void stop()
+        {
+            cts.Cancel();
+       
+        }
         /// <summary>
         /// ВОЗВРАЩАЕТ ОТВЕТ СЕРВЕРА ПО url
         /// </summary>
@@ -67,18 +75,10 @@ namespace IPTVman.ViewModel
             }
             else
             {
-                //string ss= UDPtest("");
-                // result = NEW_UDP();
-
-
-                //if (result == "") result = "НЕТУ UDP";
-                //result=GETnoas(u);//синхр
-                 
-            
                 return "НЕ ПОДДЕРЖИВАЕТСЯ";
 
             }
-            return "--";//ip + ViewModelBase._ping.result;
+            return "старт...";//ip + ViewModelBase._ping.result;
         }
 
         public async Task<string> AsyncTaskGet(CancellationToken cancellationToken, string url)
@@ -87,37 +87,54 @@ namespace IPTVman.ViewModel
             string rez = "";
 
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            string except = "";
             task1 = Task.Run(() => 
-            {  
-                rez = _ping.GETnoas( cancellationToken, url);    
+            {
+                try
+                {
+                    rez = _ping.GETnoas(cancellationToken, url);
+                }
+                catch (OperationCanceledException e)
+                {
+                    except += e.Message.ToString();
+                }
+                catch (Exception e)
+                {
+                    except += e.Message.ToString();
+                }
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             try
             {
                 await  task1;
-               // if (task1.Status == TaskStatus.Canceled) { dialog.Show("task1  Cancelled befor start"); }
-
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException e)
             {
-                dialog.Show("task1 Cancelled");
+                except += e.Message.ToString();
             }
             catch (Exception e)
             {
-                dialog.Show($"task1 Error: {e.Message}");
-
+                except += e.Message.ToString();
             }
-
+            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
+            if (except != "") dialog.Show("ОШИБКА " + except);
             return rez;
         }
 
          void GETasyn(string url)
         {
-      
             data.start_ping = true;
             string rez =  AsyncTaskGet(cancellationToken, url).ToString();
-
         }
 
+
+        public bool stateTASKisCanceled()
+        {
+            if (task1==null) return true;
+            if (task1.Status == TaskStatus.RanToCompletion) return true;
+            else
+            { _ping.stop();   return false; }
+
+        }
     }
 }

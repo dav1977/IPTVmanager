@@ -77,23 +77,34 @@ namespace IPTVman.ViewModel
         {
 
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            string except = "";
             task1 = Task.Run(() =>
             {
-
-                foreach (var k in ViewModelMain.myLISTbase)
+                try
                 {
-                    if (chek1) { if (prov(k.name, k)) { continue; } }
-                    if (chek2) { if (prov(k.ping, k)) { continue; } }
-                    if (chek3) { if (prov(k.ExtFilter, k)) { continue; } }
-                    if (chek4) { if (prov(k.group_title, k)) { continue; } }
-                    if (chek5) { if (prov(k.http, k)) { continue; } }
-                    if (chek6) { if (prov(k.logo, k)) { continue; } }
-                    if (chek7) { if (prov(k.tvg_name, k)) { continue; } }
-                }
+                    foreach (var k in ViewModelMain.myLISTbase)
+                    {
+                        if (chek1) { if (prov(k.name, k)) { continue; } }
+                        if (chek2) { if (prov(k.ping, k)) { continue; } }
+                        if (chek3) { if (prov(k.ExtFilter, k)) { continue; } }
+                        if (chek4) { if (prov(k.group_title, k)) { continue; } }
+                        if (chek5) { if (prov(k.http, k)) { continue; } }
+                        if (chek6) { if (prov(k.logo, k)) { continue; } }
+                        if (chek7) { if (prov(k.tvg_name, k)) { continue; } }
+                    }
 
-                if (!find) dialog.Show("Не найдено '" + sel1 + "'");
-                else
-                if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
+                    if (!find) dialog.Show("Не найдено '" + sel1 + "'");
+                    else
+                    if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
+                }
+                catch (OperationCanceledException e)
+                {
+                    except += e.Message.ToString();
+                }
+                catch (Exception e)
+                {
+                    except += e.Message.ToString();
+                }
 
                 return "ok";
 
@@ -103,18 +114,18 @@ namespace IPTVman.ViewModel
             try
             {
                 await task1;
-                if (task1.Status == TaskStatus.Canceled) { dialog.Show("Replace Cancelled befor start"); }
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException e)
             {
-                dialog.Show("Replace task1 Cancelled");
+                except += e.Message.ToString();
             }
             catch (Exception e)
             {
-                dialog.Show($"Replace task1 Error: {e.Message}" );
-
+                except += e.Message.ToString();
             }
 
+            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
+            if (except != "") dialog.Show("ОШИБКА " + except);
             return "";
         }
 

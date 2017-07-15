@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using System;
-
+using System.Threading;
 
 namespace IPTVman.ViewModel
 {
@@ -57,14 +57,15 @@ namespace IPTVman.ViewModel
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _ping.stop();
-            _ping = null;
+            LongtaskCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
         }
 
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
             IPTVman.Model.play.URLPLAY = urlTEXT.Text;
             IPTVman.Model.play.playerUPDATE = true;
+            if (_pingPREPARE != null) _pingPREPARE.stop();
+            if (_ping != null) _ping.stop();
             this.Close();
         }
 
@@ -73,9 +74,13 @@ namespace IPTVman.ViewModel
 
         }
 
+
+        //CJ
         private void exit_Copy_Click(object sender, RoutedEventArgs e)
         {
-          
+            if (_pingPREPARE != null) _pingPREPARE.stop();
+            if (_ping != null) _ping.stop();
+
             this.Close();
         }
 

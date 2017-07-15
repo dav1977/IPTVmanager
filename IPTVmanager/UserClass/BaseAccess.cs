@@ -118,81 +118,90 @@ namespace IPTVman.ViewModel
         }
 
 
-
-
-
         Task task1;
         //******************* UPDATE data in table *************************
         public async Task<string> UPDATE_DATA(CancellationToken Token, string filterMDB, string filterManager, string mask)
         {
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            string except = "";
             task1 = Task.Run(() =>
             {
-
-
-            init_data();
-            string id_best = readIDbest(filterMDB);
-            //int id_bestcod = int.Parse(id_best);
-
-            if (id_best == "")
-            {
-                dialog.Show("не найдена группа " + filterMDB + "(ExtFilter)\nв базе mdb");
-                return "";
-            }
-
-            init_data();
-            DataTable dt = get_table("main");
-
-            if (Event_Print != null) Event_Print("");
-            if (Event_Print != null) Event_Print("Старт обновления id="+id_best+"\n");
-            //DataRow[] foundRows = data.Tables["main"].Select("Name = 'FOX HD'");
-
-            int index = 0;
-            foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
-            {
-                if (!find_mask(mask, row[2].ToString())) { index++;  continue; }
-                // получаем все ячейки строки
-                // object[] cells = row.ItemArray;
-                // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
-                if (row[34].ToString() == id_best)
+                try
                 {
-                    //if (Event_Print != null) Event_Print("Анализ "+ row[1].ToString()+"\n");
 
-                    foreach (var s in ViewModelMain.myLISTbase)
+                    init_data();
+                    string id_best = readIDbest(filterMDB);
+                    //int id_bestcod = int.Parse(id_best);
+
+                    if (id_best == "")
                     {
-                        if (s.name == row[1].ToString() && s.ExtFilter == filterManager && s.http!="")
-                        {
-                            if (Event_Print != null) Event_Print(
-                                "Обновлено "+s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http+"\n");
-                            //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
-                            data.Tables["main"].Rows[index]["Adress"] = s.http;
-                            break;//обновляем только одну запись
-                        }
+                        dialog.Show("не найдена группа " + filterMDB + "(ExtFilter)\nв базе mdb");
+                        return "";
                     }
+
+                    init_data();
+                    DataTable dt = get_table("main");
+
+                    if (Event_Print != null) Event_Print("");
+                    if (Event_Print != null) Event_Print("Старт обновления id=" + id_best + "\n");
+                    //DataRow[] foundRows = data.Tables["main"].Select("Name = 'FOX HD'");
+
+                    int index = 0;
+                    foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
+                    {
+                        if (!find_mask(mask, row[2].ToString())) { index++; continue; }
+                        // получаем все ячейки строки
+                        // object[] cells = row.ItemArray;
+                        // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
+                        if (row[34].ToString() == id_best)
+                        {
+                            //if (Event_Print != null) Event_Print("Анализ "+ row[1].ToString()+"\n");
+
+                            foreach (var s in ViewModelMain.myLISTbase)
+                            {
+                                if (s.name == row[1].ToString() && s.ExtFilter == filterManager && s.http != "")
+                                {
+                                    if (Event_Print != null) Event_Print(
+                                        "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");
+                                    //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
+                                    data.Tables["main"].Rows[index]["Adress"] = s.http;
+                                    break;//обновляем только одну запись
+                                }
+                            }
+                        }
+                        index++;
+                    }
+
+                    Save_to_base();
+
                 }
-                index++;
+                catch (OperationCanceledException e)
+                {
+                    except += e.Message.ToString();
                 }
-   
-                Save_to_base();
+                catch (Exception e)
+                {
+                    except += e.Message.ToString();
+                }
+
                 return "ok";
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
             try
             {
-                await task1;
-                if (task1.Status == TaskStatus.Canceled) { dialog.Show(" UPDATE_DATA Cancelled befor start"); }
+                await task1;  
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException e)
             {
-                dialog.Show(" UPDATE_DATA task1 Cancelled");
+                except += e.Message.ToString();
             }
             catch (Exception e)
             {
-                dialog.Show($" UPDATE_DATA task1 Error: {e.Message}");
-
+                except += e.Message.ToString();
             }
 
+            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
+            if (except != "") dialog.Show("ОШИБКА " + except);
             return "";
         }
 

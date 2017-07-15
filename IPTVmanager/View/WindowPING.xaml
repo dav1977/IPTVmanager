@@ -16,15 +16,10 @@
           Orientation="Horizontal"
           HorizontalAlignment="Center"
           Margin="10 10 10 10">
-            <StackPanel x:Uid="StackPanel_2_1"
-          Orientation="Horizontal" Height="20" Width="150">
+            <StackPanel x:Uid="StackPanel_2_1" Orientation="Horizontal" Height="20" Width="150">
+                
                 <TextBlock x:Uid="TextBlock_2_1" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14" VerticalAlignment="Center" Width="200" Height="20"><Run x:Name="tb1" Text="Идет выполнение..."/></TextBlock>
-
-                <TextBlock x:Uid="TextBlock_2_2"
-            x:Name="_pageNumberLabel"
-            Margin="3 0 3 0"
-            Text="{Binding PageNumber, ElementName=PrintProgress}"/>
-
+           
             </StackPanel>
         </StackPanel>
         <TextBlock x:Uid="ct" FontWeight="Bold" Height="22" Width="282" HorizontalAlignment="Center" Margin="24,0,17,0" FontSize="16"><Run x:Name="textct" Text="..........."/></TextBlock>
