@@ -22,7 +22,7 @@ namespace IPTVman.ViewModel
         public WindowMessage()
         {
             InitializeComponent();
-            label.Content = dialog.message;
+            txtMessage.Text = dialog.message;
         }
 
         private void exit_Copy_Click(object sender, RoutedEventArgs e)

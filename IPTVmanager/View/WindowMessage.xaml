@@ -12,11 +12,6 @@
         Height="191.214" Width="434.247" >
 
 
-    <Window.DataContext>
-        <!-- Declaratively create an instance of our  ИСТОЧНИК ДАННЫХ -->
-        <local:ViewModelWindowReplace />
-    </Window.DataContext>
-
 
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -25,10 +20,10 @@
         </LinearGradientBrush>
     </Window.Background>
 
-    <Grid HorizontalAlignment="Left" Height="179" Margin="18,15,0,-11" VerticalAlignment="Top" Width="401">
+    <Grid HorizontalAlignment="Left" Height="143" Margin="22,10,0,0" VerticalAlignment="Top" Width="397">
 
 
-        <Button x:Name="exit_Copy" Content="OK" Command="" HorizontalAlignment="Center" Margin="122,0,107,39" Width="172" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" VerticalContentAlignment="Center" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" >
+        <Button x:Name="exit_Copy" Content="OK" Command="" HorizontalAlignment="Center" Margin="115,0,110,10" Width="172" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" VerticalContentAlignment="Center" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -36,7 +31,8 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Label x:Name="label" Content="1" HorizontalAlignment="Center" Margin="5,4,10,82" VerticalAlignment="Center" Foreground="#FF48FF12" FontSize="16" Height="93" HorizontalContentAlignment="Center" RenderTransformOrigin="0.789,-0.296" Width="386"/>
+
+        <TextBlock x:Name="txtMessage" Width="377" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="Are you sure you're awesome?" Height="83" Foreground="#FFE6E6E6" Margin="10,10,10,50"/>
 
     </Grid>
 

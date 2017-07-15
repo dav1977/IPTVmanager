@@ -125,13 +125,13 @@ namespace IPTVman.ViewModel
             if (LongtaskCANCELING.isENABLE())
             {
 
-                if (Wait.WindowIsOpen()) return;
+                if (Wait.WaitIsOpen()) return;
                 Wait.Create("Ждите идет анализ файла");
 
             }
             else
             {
-                if (Wait.WindowIsOpen()) Wait.Close();
+                if (Wait.WaitIsOpen()) Wait.Close();
                 else return;
             }
 

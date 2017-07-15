@@ -20,27 +20,54 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class WindowWAIT : Window
     {
+        System.Timers.Timer Timer1;
+        string message;
+
+        public void CreateTimer1(int ms)
+        {
+            if (Timer1 == null)
+            {
+                Timer1 = new System.Timers.Timer();
+                //Timer1.AutoReset = false; //
+                Timer1.Interval = ms;
+                Timer1.Elapsed += Timer1Tick;
+                Timer1.Enabled = true;
+                Timer1.Start();
+            }
+        }
+
+        private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
+        {
+            if (IPTVman.Model.loc.enable_ostatok)
+            {
+                //label.Content = message + IPTVman.Model.loc.ostatok.ToString();
+            }
+        }
+
+
         public WindowWAIT()
         {
             InitializeComponent();
+            CreateTimer1(500);
             label.Content = IPTVman.Model.loc.longtaskSTRING;
+            message = IPTVman.Model.loc.longtaskSTRING;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
+       
 
     }
 
+
     public static class Wait
     {
-        static Window wait = null;
+        public static Window wait = null;
 
         public static void Create(string meesage)
         {
-            if (WindowIsOpen()) Close();
+            if (WaitIsOpen()) Close();
 
+
+            IPTVman.Model.loc.enable_ostatok = false;
             IPTVman.Model.loc.longtaskSTRING = meesage;
 
             wait = new WindowWAIT()
@@ -54,7 +81,7 @@ namespace IPTVman.ViewModel
             wait.Show();
         }
 
-        public static bool WindowIsOpen()
+        public static bool WaitIsOpen()
         {
             if (wait != null) return true;
             else return false;

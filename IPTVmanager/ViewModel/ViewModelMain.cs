@@ -171,7 +171,7 @@ namespace IPTVman.ViewModel
 
         void UPD_normal()
         {
-            if (Wait.WindowIsOpen()) return;
+            if (Wait.WaitIsOpen()) return;
 
             Match m1, m2, m3, m4;
             Regex regex1 = new Regex(data.f1, RegexOptions.IgnoreCase);
@@ -244,7 +244,7 @@ namespace IPTVman.ViewModel
 
         void UPD_best()
         {
-            if (Wait.WindowIsOpen()) return;
+            if (Wait.WaitIsOpen()) return;
 
             data.f2 = data.best1;
             data.f3 = data.best2;
@@ -271,7 +271,7 @@ namespace IPTVman.ViewModel
 
         public void UPDATE_FILTER()
         {
-            if (Wait.WindowIsOpen()) return;
+            if (Wait.WaitIsOpen()) return;
 
             if (data.f1 == null) data.f1 = "";
             if (data.f2 == null) data.f2 = "";

@@ -108,47 +108,90 @@ namespace IPTVman.ViewModel
         /// set all best
         /// </summary>
         /// <param name="parameter"></param>
-        void key_set_all_best(object parameter)
+        async void key_set_all_best(object parameter)
         {
+            if (LongtaskCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (data.canal.name == "") return;
 
-            MessageBoxResult result = MessageBox.Show("  Переместить пустые группы в избранное" , " ПЕРЕМЕЩЕНИЕ",
-                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult result = MessageAsk.Create("Переместить пустые группы в избранное?");
+            
+            //MessageBoxResult result = MessageBox.Show("  Переместить пустые группы в избранное" , " ПЕРЕМЕЩЕНИЕ",
+            //                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result != MessageBoxResult.Yes) return;
 
-            int ct=0;
-            data.set_best();
-
-
-            foreach (var s in ViewModelMain.myLISTbase)
-            {
-
-                ct = 0;
-                foreach (var j in ViewModelMain.myLISTfull)
-                {
-                    if (j.Compare() == s.Compare())
-                    {
-                        if ( s.group_title == "")
-                        {
-                            ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
-                            ViewModelMain.myLISTfull[ct].group_title = data.best2;
-                            break;
-                        }
-                        else
-                        {
-                            ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
-                            break;
-                        }
-                    }
-                    ct++;
-                }  
-               
-            }
-
-            Update_collection();
-
+            LongtaskCANCELING.enable();
+            Wait.Create("Идет заполнение ... ");
+            IPTVman.Model.loc.enable_ostatok = true;
+            string rez = await AsyncSetBest();
+           
         }
+
+        public Task<string> AsyncSetBest()
+        {
+
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            string except = "";
+            return Task.Run(() =>
+            {
+                //----------------
+                try
+                {
+                    int ct = 0;
+                    data.set_best();
+
+                    foreach (var s in ViewModelMain.myLISTbase)
+                    {
+                        IPTVman.Model.loc.ostatok = ViewModelMain.myLISTbase.Count - ct;
+                        ct = 0;
+                        foreach (var j in ViewModelMain.myLISTfull)
+                        {
+                            if (j.Compare() == s.Compare())
+                            {
+                                if (s.group_title == "")
+                                {
+                                    ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
+                                    ViewModelMain.myLISTfull[ct].group_title = data.best2;
+                                    break;
+                                }
+                                else
+                                {
+                                    ViewModelMain.myLISTfull[ct].ExtFilter = data.best1;
+                                    break;
+                                }
+                            }
+                            ct++;
+                        }
+
+                    }
+                }
+                catch (OperationCanceledException e)
+                {
+                    except += e.Message.ToString();
+                }
+                catch (Exception e)
+                {
+                    except += e.Message.ToString();
+                }
+
+                //dialog.Show("Статус закрытя "+ task1.Status.ToString());
+                if (except != "") dialog.Show("ОШИБКА " + except);
+
+                LongtaskCANCELING.stop();
+               // Wait.Close();
+                Update_collection();
+                return "";
+
+                //----------------
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        }
+
+
+
+
+
+
 
 
         Window ap;
@@ -236,10 +279,8 @@ namespace IPTVman.ViewModel
             if (myLISTfull == null) return;
             if (data.canal.name=="") return;
 
-            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ " + data.canal.name + "\n" + data.canal.http, "  УДАЛЕНИЕ",
-                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ " + data.canal.name + "\n" + data.canal.http);
             if (result != MessageBoxResult.Yes) return;
-
 
             var item = ViewModelMain.myLISTfull.Find(x =>
                   (x.http == data.canal.http && x.ExtFilter == data.canal.ExtFilter 
@@ -258,8 +299,7 @@ namespace IPTVman.ViewModel
         {
             if (myLISTfull == null) return;
 
-            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!", "  УДАЛЕНИЕ",
-                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!");
             if (result != MessageBoxResult.Yes) return;
 
             uint ct = 0;
@@ -283,9 +323,8 @@ namespace IPTVman.ViewModel
         void DelDUBLICAT(object parameter)
         {
             if (myLISTfull == null) return;
- 
-            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ДУБЛИКАТОВ name,url,Exfilter !!!", "  УДАЛЕНИЕ",
-                                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ДУБЛИКАТОВ name,url,Exfilter !!!");
             if (result != MessageBoxResult.Yes) return;
 
             bool first;
@@ -317,11 +356,10 @@ namespace IPTVman.ViewModel
                             {
                                 first = false;
                                 del_ok = true;
-                                result = MessageBox.Show(" Найдено дублировние\n Удалить " + item.name + "\n" + item.http +
-                                    "\n" + item.ExtFilter, "  УДАЛЕНИЕ",
-                                MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                                result = MessageAsk.Create(" Найдено дублировние\n Удалить " + item.name + "\n" + item.http +
+                                    "\n" + item.ExtFilter+" ?");
                                 if (result == MessageBoxResult.Yes) myLISTfull.Remove(item);
-                                if (result == MessageBoxResult.Cancel) { Update_collection(); return; }
+                                else { Update_collection(); return; }
                                 break;
                             }
                             if (item != null && !first) { first = true; }//нахождение самого себя
@@ -351,8 +389,7 @@ namespace IPTVman.ViewModel
         {
             if (myLISTfull == null) return;
 
-            MessageBoxResult result = MessageBox.Show("  УДАЛЕНИЕ ВСЕХ КРОМЕ ИЗБРАННЫХ(ExtFilter)!!!", "  УДАЛЕНИЕ",
-                                MessageBoxButton.YesNo, MessageBoxImage.Asterisk);
+            MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ КРОМЕ ИЗБРАННЫХ(ExtFilter)!!!");
             if (result != MessageBoxResult.Yes) return;
 
             uint ct = 0;
@@ -869,7 +906,7 @@ namespace IPTVman.ViewModel
                     }
 
                 LongtaskCANCELING.stop();
-                while (Wait.WindowIsOpen()) Thread.Sleep(100);
+                while (Wait.WaitIsOpen()) Thread.Sleep(100);
                 RaisePropertyChanged("mycol");///updte LIST!!
                 RaisePropertyChanged("numberCANALS");
 

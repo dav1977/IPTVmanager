@@ -11,6 +11,8 @@ namespace IPTVman.Model
     {
         public static bool edit = false;
         public static string longtaskSTRING;
+        public static bool enable_ostatok = false;
+        public static int ostatok=0;
         public static bool openfile = false;
         public static bool lokUP, lokDN = false;
         public static bool keyadd = false;//дребезг кнопки
