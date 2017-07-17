@@ -3,37 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:IPTVman.ViewModel"
+        xmlns:local="WindowWAIT"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="false"
     Title=""
     ResizeMode="NoResize">
-    <StackPanel x:Uid="StackPanel_1" Background="#FF8EA0BF" >
+
+
+    <StackPanel x:Uid="StackPanel_1" Background="#FF7397D6" >
 
         <StackPanel x:Uid="StackPanel_2"
           Orientation="Horizontal"
           HorizontalAlignment="Center"
           Margin="10 10 10 10" Width="298">
 
-            <Label Name="label" Content="wait" Width="298" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}" Foreground="#FF463224" FontSize="16" FontWeight="Bold"/>
-            
+            <Label Name="label" Content="wait" Width="298" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}" Foreground="#FF3416BB" FontSize="16" FontWeight="Bold">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF2A8D2E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
+
         </StackPanel>
         <StackPanel x:Uid="StackPanel_0"
           Margin="10 10 10 10"
-          Orientation="Horizontal">
-            <ProgressBar x:Uid="ProgressBar_1"
-          Name="_writingProgressBar"
-          IsIndeterminate="true" 
-          Width="300"
+          Orientation="Horizontal">  <ProgressBar x:Uid="ProgressBar_1"
+          Name="ProgressBar1"  Width="300"
           Minimum="0"
-          Maximum="10"
-          Value="{Binding Path=WritingProgressPercentage, UpdateSourceTrigger=Explicit, NotifyOnTargetUpdated=True}" Height="18" Foreground="#FF0F19B4">
+          Maximum="100"
+          Value="0" Height="18" Foreground="#FF0F19B4">
+
+
                 <ProgressBar.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FF878585" Offset="0"/>
-                        <GradientStop Color="#FFC51616" Offset="1"/>
+                        <GradientStop Color="#FF16C54E" Offset="1"/>
                     </LinearGradientBrush>
                 </ProgressBar.Background>
                 <ProgressBar.BorderBrush>
@@ -44,11 +52,9 @@
                     </RadialGradientBrush>
                 </ProgressBar.BorderBrush>
             </ProgressBar>
+
+
         </StackPanel>
-        <StackPanel x:Uid="StackPanel_3"
-          Margin="10 10 10 10"
-          HorizontalAlignment="Center" 
-          Orientation="Horizontal"/>
-       
+     
     </StackPanel>
 </Window>

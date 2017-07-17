@@ -19,11 +19,14 @@ namespace IPTVman.ViewModel
     public delegate void Delegate_SelectITEM(int a, ParamCanal b);
     public delegate void Delegate_WIN_WAIT(byte n);
     public delegate void Message(string mess);
-
+  
     public partial class MainWindow : Window
     {
+        public static Window header;
+
         public MainWindow()
         {
+            header = this;
             InitializeComponent();
             this.Title = "IPTV manager v1.0";
 
@@ -343,6 +346,13 @@ namespace IPTVman.ViewModel
         private void Win1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             win1 = null;
+        }
+
+        //mdb
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Model.bd_data.s2 = best1.Text;
+            Model.bd_data.s3 = best1.Text;
         }
     }
 }

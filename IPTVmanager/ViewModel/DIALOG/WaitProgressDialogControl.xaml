@@ -4,12 +4,19 @@
 		xmlns:DialogManagement="clr-namespace:Technewlogic.WpfDialogManagement"
 		x:ClassModifier="internal" x:Name="root">
 
-	<StackPanel Width="450" DataContext="{Binding ElementName=root}" VerticalAlignment="Center">
-		<DialogManagement:WaitAnimation Margin="10" HorizontalAlignment="Center"
-				Visibility="{Binding AnimationVisibility}" />
-		<TextBlock Margin="10" HorizontalAlignment="Center" Text="{Binding DisplayText}" TextWrapping="Wrap" />
-		<ProgressBar Margin="10" Height="30" Maximum="100" Minimum="0" Value="{Binding Progress}"
+    <StackPanel Width="450" DataContext="{Binding ElementName=root}" VerticalAlignment="Center">
+        <DialogManagement:WaitAnimation Margin="215,10,113,10" HorizontalAlignment="Center"
+				Visibility="{Binding AnimationVisibility}" Foreground="#FFA43535" Height="95" Width="122" >
+            <DialogManagement:WaitAnimation.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF572929" Offset="1"/>
+                </LinearGradientBrush>
+            </DialogManagement:WaitAnimation.BorderBrush>
+        </DialogManagement:WaitAnimation>
+        <TextBlock Margin="10" HorizontalAlignment="Center" Text="{Binding DisplayText}" TextWrapping="Wrap" />
+        <ProgressBar Margin="10" Height="30" Maximum="100" Minimum="0" Value="{Binding Progress}"
 				Visibility="{Binding ProgressVisibility}" />
-	</StackPanel>
+    </StackPanel>
 
 </UserControl>

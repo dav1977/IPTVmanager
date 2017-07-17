@@ -286,8 +286,7 @@ namespace IPTVman.ViewModel
                 bool ok = false;
                 try
                 {
-                    retPAGE = _pages[pageIndex][pageOffset];
-
+                    retPAGE = _pages[pageIndex][pageOffset]; 
                 }
                 catch
                 {

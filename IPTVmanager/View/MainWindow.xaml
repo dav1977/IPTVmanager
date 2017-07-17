@@ -408,7 +408,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="SimpleTV" Command="{Binding key_UpdateMDBCommand}"   CommandParameter=""  Margin="455,10,0,0" Focusable="False" Width="63" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF2A3159" Grid.Column="3" >
+        <Button Content="SimpleTV" Command="{Binding key_UpdateMDBCommand}"   CommandParameter=""  Margin="455,10,0,0" Focusable="False" Width="63" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF2A3159" Grid.Column="3" Click="Button_Click" >
             <Button.OpacityMask>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>

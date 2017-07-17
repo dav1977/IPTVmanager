@@ -138,8 +138,8 @@ namespace IPTVman.ViewModel
         {
             int i = 0;
   
-            if (loc.edit) return;
-            loc.edit = true;
+            if (GUI.edit) return;
+            GUI.edit = true;
             foreach (var obj in myLISTfull)
             {
                if (obj.Compare()==data.canal.Compare())

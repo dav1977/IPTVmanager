@@ -20,11 +20,91 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class WindowAsk : Window
     {
+        System.Timers.Timer Timer1;
+        byte poz = 0;
+
         public WindowAsk()
         {
             InitializeComponent();
             txtMessage.Text  = MessageAsk.message;
+            CreateTimer1(679);
         }
+
+      
+        public void CreateTimer1(int ms)
+        {
+            if (Timer1 == null)
+            {
+                Timer1 = new System.Timers.Timer();
+                //Timer1.AutoReset = false; //
+                Timer1.Interval = ms;
+                Timer1.Elapsed += Timer1Tick;
+                Timer1.Enabled = true;
+                Timer1.Start();
+            }
+        }
+
+        private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {  
+                r1.Dispatcher.Invoke(new Action(() =>
+                {
+                    r1.Visibility = Visibility.Hidden;
+                }));
+                r2.Dispatcher.Invoke(new Action(() =>
+                {
+                    r2.Visibility = Visibility.Hidden;
+                }));
+                r3.Dispatcher.Invoke(new Action(() =>
+                {
+                    r3.Visibility = Visibility.Hidden;
+                }));
+                r4.Dispatcher.Invoke(new Action(() =>
+                {
+                    r4.Visibility = Visibility.Hidden;
+                }));
+
+
+                poz++; if (poz > 4) poz = 1;
+
+                if (poz == 1)
+                {
+                    r1.Dispatcher.Invoke(new Action(() =>
+                    {
+                      
+                        r1.Visibility = Visibility.Visible;
+                    }));
+                }
+                if (poz == 2)
+                {
+                    r2.Dispatcher.Invoke(new Action(() =>
+                    {
+                        r2.Visibility = Visibility.Visible;
+                    }));
+                }
+                if (poz == 3)
+                {
+                    r3.Dispatcher.Invoke(new Action(() =>
+                    {
+                        r3.Visibility = Visibility.Visible;
+                    }));
+                }
+                if (poz == 4)
+                {
+                    r4.Dispatcher.Invoke(new Action(() =>
+                    {
+                        r4.Visibility = Visibility.Visible;
+                    }));
+                }
+
+            }
+            catch { }
+
+        }
+
+
+
 
 
         private void Yes_Click(object sender, RoutedEventArgs e)

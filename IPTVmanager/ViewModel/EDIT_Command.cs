@@ -82,7 +82,7 @@ namespace IPTVman.ViewModel
 
         void SAVE(object selectedItem)
         {
-            loc.edit = false;
+            GUI.edit = false;
             if (Event_UpdateEDIT != null) Event_UpdateEDIT(edit); 
         }
 

@@ -15,6 +15,8 @@ using System.Threading;
 
 namespace IPTVman.ViewModel
 {
+
+	
     /// <summary>
     /// Логика взаимодействия для WindowWAIT.xaml
     /// </summary>
@@ -38,10 +40,35 @@ namespace IPTVman.ViewModel
 
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
         {
-            if (IPTVman.Model.loc.enable_ostatok)
+            try
             {
-                //label.Content = message + IPTVman.Model.loc.ostatok.ToString();
+                ProgressBar1.Dispatcher.Invoke(new Action(() =>
+                {
+                    ProgressBar1.Maximum = Model.GUI.progressbar_max;
+                    ProgressBar1.Value = Model.GUI.progressbar;
+                    ProgressBar1.IsIndeterminate = Model.GUI.dynamic_progressbar;
+                    
+                }));
+
+                label.Dispatcher.Invoke(new Action(() =>
+                {
+                    if (!Model.GUI.dynamic_progressbar)
+                    {
+                        label.Content = message + " " +
+                        String.Format("{0:F1}%", 100 * (Model.GUI.progressbar / Model.GUI.progressbar_max));
+                    }
+                    else
+                    {
+                        label.Content = message;
+                    }
+                }));
+
+                //BindingExpression be = ProgressBar1.GetBindingExpression(ProgressBar.ValueProperty);
+                //if (be != null) be.UpdateSource();
+
             }
+            catch { }
+
         }
 
 
@@ -49,14 +76,15 @@ namespace IPTVman.ViewModel
         {
             InitializeComponent();
             CreateTimer1(500);
-            label.Content = IPTVman.Model.loc.longtaskSTRING;
-            message = IPTVman.Model.loc.longtaskSTRING;
+            label.Content = Model.GUI.longtaskSTRING;
+            message = Model.GUI.longtaskSTRING;
         }
 
        
 
     }
 
+    
 
     public static class Wait
     {
@@ -66,9 +94,9 @@ namespace IPTVman.ViewModel
         {
             if (WaitIsOpen()) Close();
 
-
-            IPTVman.Model.loc.enable_ostatok = false;
-            IPTVman.Model.loc.longtaskSTRING = meesage;
+            Model.GUI.progressbar = 0;
+            Model.GUI.dynamic_progressbar = false;
+            Model.GUI.longtaskSTRING = meesage;
 
             wait = new WindowWAIT()
             {
@@ -79,6 +107,7 @@ namespace IPTVman.ViewModel
             };
 
             wait.Show();
+            wait.Owner = MainWindow.header;
         }
 
         public static bool WaitIsOpen()

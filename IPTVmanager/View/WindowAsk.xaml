@@ -16,7 +16,8 @@
 
 
             <Viewbox Margin="0,0,10,25">
-                <TextBlock x:Name="txtMessage" Width="608" FontSize="36" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" Text="Are you sure you're awesome?" Height="155" Foreground="#FFE6E6E6" Margin="0,0,0,80"/>
+                <TextBlock x:Name="txtMessage" Width="608" FontSize="36" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" Height="155" Foreground="#FFE6E6E6" Margin="0,0,0,80"><Run Text="Ar"/><InlineUIContainer>  
+                    </InlineUIContainer><Run Text="e you sur"/><Run Text="e you're awesome?"/></TextBlock>
             </Viewbox>
 
             <Button x:Name="bn2" Content="НЕТ" Command="" HorizontalAlignment="Center" Margin="205,0,30,28" Width="110" Height="41" RenderTransformOrigin="-0.028,1.5" VerticalContentAlignment="Center" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Click="bn2_Click" >
@@ -38,7 +39,41 @@
                 </Button.Background>
             </Button>
 
-
+            <Rectangle Name="r3" Stroke="Black" Margin="0,159,0,0">
+            <Rectangle.Fill>
+                <LinearGradientBrush>
+                    <GradientStop Color="Blue" Offset="0" />
+                    <GradientStop Color="White" Offset="1" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+            </Rectangle>
+            
+            <Rectangle Name="r1"  Stroke="Black" Margin="1,0,0,159">
+            <Rectangle.Fill>
+                <LinearGradientBrush>
+                        <GradientStop Color="White" Offset="0" />
+                        <GradientStop Color="Blue" Offset="1" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+            </Rectangle>
+            
+            <Rectangle Name="r2" Stroke="Black" Margin="340,6,0,6">
+                <Rectangle.Fill>
+                    <LinearGradientBrush>
+                        <GradientStop Color="White" Offset="0" />
+                        <GradientStop Color="Blue" Offset="1" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            
+            <Rectangle Name="r4" Stroke="Black" Margin="0,6,340,6">
+                <Rectangle.Fill>
+                    <LinearGradientBrush>
+                        <GradientStop Color="Blue" Offset="0" />
+                        <GradientStop Color="White" Offset="1" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
         </Grid>
     </Border>
 </Window>
