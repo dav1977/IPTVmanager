@@ -119,7 +119,6 @@ namespace IPTVman.ViewModel
 
             LongtaskCANCELING.enable();
             Wait.Create("Идет заполнение ... ");
-            IPTVman.Model.GUI.dynamic_progressbar = true;
             string rez = await AsyncSetBest();
            
         }
@@ -500,7 +499,7 @@ namespace IPTVman.ViewModel
             Regex regex2 = new Regex("#EXTM3U");
             Match match = null;
 
-            if (str == null || str.Length<2) { dialog.Show("Каналы не найдены"); return; }
+            if (str == null || str.Length<2) { dialog.Show("Буфер пустой"); return; }
 
             
             //ПОИСК заголовка
@@ -513,6 +512,7 @@ namespace IPTVman.ViewModel
             // dialog.Show(str.Length.ToString());
             int ct_dublicat = 0;
             int index = 0;
+            bool flag_adding = false;
             //ПОИСК каналов
             foreach (var line in str)
             {
@@ -546,7 +546,7 @@ namespace IPTVman.ViewModel
 
                         split = line.Split(new Char[] { ',' });
 
-                        if (split.Length < 1) { dialog.Show("Каналы не найдены"); return; }
+                        if (split.Length < 1) { dialog.Show("Буфер пустой"); return; }
 
                         if (split.Length <=2) str_name = split[split.Length - 1];
 
@@ -599,7 +599,7 @@ namespace IPTVman.ViewModel
                     {
                             str_http = str[index].Substring(0, str[index].Length - 1);//remove перевода строки
                     }
-                    catch { }
+                    catch { dialog.Show("в буфере данных не найдено"); }
                        
 
                     }
@@ -616,6 +616,7 @@ namespace IPTVman.ViewModel
                 {
                         if (item == null)
                         {
+                             flag_adding = true;
                             ViewModelMain.myLISTfull.Add(new ParamCanal
                             {
                                 name = newname.Trim(),
@@ -634,7 +635,12 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("mycol");///updte LIST!!
             RaisePropertyChanged("numberCANALS");
 
-            if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
+            if (flag_adding)
+            {
+                if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
+                else  dialog.Show("Каналы добавлены успешно!");
+            }
+            else dialog.Show("Ссылки не распознаны");
         }
 
         async void key_OPEN(object parameter)
@@ -695,8 +701,6 @@ namespace IPTVman.ViewModel
             ct_update = 0;
             string line = null;
             string newname = "";
-            int ct = 0;
-
             List<int> list_update_channels= new List<int>();
 
             try

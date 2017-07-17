@@ -1,7 +1,7 @@
 ﻿<Window  x:Class="IPTVman.ViewModel.WindowAsk" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        
+        xmlns:cont="clr-namespace:IPTVman.ViewModel"
          xmlns:helpers="clr-namespace:IPTVman.Helpers" 
         xmlns:local="clr-namespace:IPTVman.ViewModel"
         
@@ -11,11 +11,24 @@
         AllowsTransparency="True" Background="Transparent">
 
     <Border BorderThickness="5" BorderBrush="Black" CornerRadius="20" Background="#FF121E68" Margin="0,0,54,90">
+
+
         <Grid Margin="17,19,14,16" Background="#FF2C1E38">
 
+            <cont:WaitAnimation x:Name="mycontrol" Margin="-16,-21,329,150" Height="Auto" Width="Auto" RenderTransformOrigin="1.256,-3.08" >
+                <local:WaitAnimation.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="0.847"/>
+                        <RotateTransform Angle="-300.543"/>
+                        <TranslateTransform Y="85.886" X="98.793"/>
+                    </TransformGroup>
+                </local:WaitAnimation.RenderTransform>
+            </cont:WaitAnimation>
 
 
             <Viewbox Margin="0,0,10,25">
+
                 <TextBlock x:Name="txtMessage" Width="608" FontSize="36" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" Height="155" Foreground="#FFE6E6E6" Margin="0,0,0,80"><Run Text="Ar"/><InlineUIContainer>  
                     </InlineUIContainer><Run Text="e you sur"/><Run Text="e you're awesome?"/></TextBlock>
             </Viewbox>
@@ -40,23 +53,23 @@
             </Button>
 
             <Rectangle Name="r3" Stroke="Black" Margin="0,159,0,0">
-            <Rectangle.Fill>
-                <LinearGradientBrush>
-                    <GradientStop Color="Blue" Offset="0" />
-                    <GradientStop Color="White" Offset="1" />
-                </LinearGradientBrush>
-            </Rectangle.Fill>
+                <Rectangle.Fill>
+                    <LinearGradientBrush>
+                        <GradientStop Color="Blue" Offset="0" />
+                        <GradientStop Color="White" Offset="1" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
             </Rectangle>
-            
+
             <Rectangle Name="r1"  Stroke="Black" Margin="1,0,0,159">
-            <Rectangle.Fill>
-                <LinearGradientBrush>
+                <Rectangle.Fill>
+                    <LinearGradientBrush>
                         <GradientStop Color="White" Offset="0" />
                         <GradientStop Color="Blue" Offset="1" />
-                </LinearGradientBrush>
-            </Rectangle.Fill>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
             </Rectangle>
-            
+
             <Rectangle Name="r2" Stroke="Black" Margin="340,6,0,6">
                 <Rectangle.Fill>
                     <LinearGradientBrush>
@@ -65,7 +78,7 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            
+
             <Rectangle Name="r4" Stroke="Black" Margin="0,6,340,6">
                 <Rectangle.Fill>
                     <LinearGradientBrush>
@@ -74,6 +87,38 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
+            <local:WaitAnimation x:Name="mycontrol_Copy" Margin="327,-21,-14,150" Height="Auto" Width="Auto" RenderTransformOrigin="1.256,-3.08" >
+                <local:WaitAnimation.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="0.847"/>
+                        <RotateTransform Angle="-300.543"/>
+                        <TranslateTransform Y="85.886" X="98.793"/>
+                    </TransformGroup>
+                </local:WaitAnimation.RenderTransform>
+            </local:WaitAnimation>
+            <local:WaitAnimation x:Name="mycontrol_Copy1" Margin="328,145,-15,-16" Height="Auto" Width="Auto" RenderTransformOrigin="1.256,-3.08" >
+                <local:WaitAnimation.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="0.847"/>
+                        <RotateTransform Angle="-300.543"/>
+                        <TranslateTransform Y="85.886" X="98.793"/>
+                    </TransformGroup>
+                </local:WaitAnimation.RenderTransform>
+            </local:WaitAnimation>
+            <local:WaitAnimation x:Name="mycontrol_Copy2" Margin="-16,145,329,-16" Height="Auto" Width="Auto" RenderTransformOrigin="1.256,-3.08" >
+                <local:WaitAnimation.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="0.847"/>
+                        <RotateTransform Angle="-300.543"/>
+                        <TranslateTransform Y="85.886" X="98.793"/>
+                    </TransformGroup>
+                </local:WaitAnimation.RenderTransform>
+            </local:WaitAnimation>
+
+
         </Grid>
     </Border>
 </Window>

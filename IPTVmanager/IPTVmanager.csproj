@@ -144,6 +144,9 @@
     <Compile Include="View\Player.xaml.cs">
       <DependentUpon>Player.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WaitAnimation.xaml.cs">
+      <DependentUpon>WaitAnimation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Window1_EDIT.xaml.cs">
       <DependentUpon>Window1_EDIT.xaml</DependentUpon>
     </Compile>
@@ -197,6 +200,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Player.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WaitAnimation.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

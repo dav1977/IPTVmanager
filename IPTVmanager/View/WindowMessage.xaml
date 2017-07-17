@@ -1,17 +1,15 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:helpers="clr-namespace:IPTVman.Helpers" 
         x:Class="IPTVman.ViewModel.WindowMessage" 
         xmlns:local="clr-namespace:IPTVman.ViewModel"
  
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         Height="191.214" Width="434.247" >
-
-
 
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -21,8 +19,6 @@
     </Window.Background>
 
     <Grid HorizontalAlignment="Left" Height="143" Margin="22,10,0,0" VerticalAlignment="Top" Width="397">
-
-
         <Button x:Name="exit_Copy" Content="OK" Command="" HorizontalAlignment="Center" Margin="115,0,110,10" Width="172" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" VerticalContentAlignment="Center" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
@@ -35,7 +31,6 @@
         <TextBlock x:Name="txtMessage" Width="377" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="Are you sure you're awesome?" Height="83" Foreground="#FFE6E6E6" Margin="10,10,10,50"/>
 
     </Grid>
-
 </Window>
     
     
