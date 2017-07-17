@@ -118,7 +118,7 @@ namespace IPTVman.ViewModel
             if (result != MessageBoxResult.Yes) return;
 
             LongtaskCANCELING.enable();
-            Wait.Create("Идет заполнение ... ");
+            Wait.Create("Идет заполнение ... ", true);
             string rez = await AsyncSetBest();
            
         }

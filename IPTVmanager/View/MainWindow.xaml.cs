@@ -129,7 +129,7 @@ namespace IPTVman.ViewModel
             {
 
                 if (Wait.WaitIsOpen()) return;
-                Wait.Create("Ждите идет анализ файла");
+                Wait.Create("Ждите идет анализ файла", true);
 
             }
             else

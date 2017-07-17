@@ -90,12 +90,13 @@ namespace IPTVman.ViewModel
     {
         public static Window wait = null;
 
-        public static void Create(string meesage)
+        public static void Create(string meesage,  bool en_dynamic_progressbar)
         {
             if (WaitIsOpen()) Close();
 
             Model.GUI.progressbar = 0;
-            Model.GUI.dynamic_progressbar = false;
+            if (en_dynamic_progressbar) Model.GUI.dynamic_progressbar = false;
+                 else Model.GUI.dynamic_progressbar = true;
             Model.GUI.longtaskSTRING = meesage;
 
             wait = new WindowWAIT()
@@ -177,9 +178,8 @@ namespace IPTVman.ViewModel
                     ct++;
                     if (ct == 5)
                     {
-                        LongtaskCANCELING.enable();
-                        Wait.Create("Ждите идет прерывание пинга");
-
+                        LongtaskCANCELING.enable(); 
+                        Wait.Create("Ждите идет прерывание пинга", false);
                         LongtaskCANCELING.enable(p, prep);
                         break;
                     }
