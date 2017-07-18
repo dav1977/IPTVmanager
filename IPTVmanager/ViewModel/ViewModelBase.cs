@@ -5,6 +5,9 @@ using System.Text;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
+using System.Windows.Input;
+using System.Web;
+
 
 namespace IPTVman.ViewModel
 {
@@ -22,7 +25,7 @@ namespace IPTVman.ViewModel
                 Timer1.Elapsed += Timer1Tick;
                 Timer1.Enabled = true;
                 Timer1.Start();
-            }  	
+            }
         }
 
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
@@ -36,13 +39,13 @@ namespace IPTVman.ViewModel
 
         internal void RaisePropertyChanged(string prop)
         {
-           if (PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-               
+
             }
         }
-       public  event PropertyChangedEventHandler PropertyChanged; //событие выбора канала
+        public event PropertyChangedEventHandler PropertyChanged; //событие выбора канала
 
         //Extra Stuff, shows why a base ViewModel is useful
         bool? _CloseWindowFlag;
@@ -60,10 +63,14 @@ namespace IPTVman.ViewModel
         {
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
-                CloseWindowFlag = CloseWindowFlag == null 
-                    ? true 
+                CloseWindowFlag = CloseWindowFlag == null
+                    ? true
                     : !CloseWindowFlag;
             }));
         }
+
+
     }
-}
+
+
+ }

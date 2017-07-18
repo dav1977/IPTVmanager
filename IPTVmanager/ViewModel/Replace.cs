@@ -13,40 +13,12 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Technewlogic.WpfDialogManagement;
-using Technewlogic.WpfDialogManagement.Contracts;
 
 namespace IPTVman.ViewModel
 {
-
-    partial class ViewModelWindowReplace2 
-    {
-        private readonly IDialogManager _dialogManager;
-
-        //============================== INIT ==================================
-        public ViewModelWindowReplace2(IDialogManager dialogManager)
-        {
-            _dialogManager = dialogManager;
-            ViewModelWindowReplace.Event_Message += ViewModelWindowReplace_Event_Message;
-        }
-
-        private void ViewModelWindowReplace_Event_Message(string obj)
-        {
-            _dialogManager
-               .CreateMessageDialog("Test"+obj, "I'm a dialog", DialogMode.Ok)
-               .Show();
-        }
-
-        //================
-
-
-    }
-
-
     partial class ViewModelWindowReplace : ViewModelMain
     {
         public static event Delegate_UpdateMOVE Event_UpdateCollection;
-        public static event Action<string> Event_Message;
        
         public RelayCommand key_ReplaceCommandSTART { get; set; }
 

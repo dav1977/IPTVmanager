@@ -14,8 +14,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Net.Sockets;
-using Technewlogic.WpfDialogManagement;
-using Technewlogic.WpfDialogManagement.Contracts;
 
 namespace IPTVman.ViewModel
 {
@@ -464,15 +462,12 @@ namespace IPTVman.ViewModel
             data.filtr_best = false;
             Update_collection();
         }
-
-
-      
+     
         void key_FILTERbest(object parameter)
         {
             data.filtr_best = true;
             Update_collection(); 
         }
-
 
         /// <summary>
         /// open from clipboard
@@ -486,22 +481,51 @@ namespace IPTVman.ViewModel
             CollectionisCreate();
             string[] str=null;
             string get=Clipboard.GetText();
+           
             try
             {
                  str = get.Split(new Char[] { '\n' });
             }
             catch (Exception ex)
             {
-                dialog.Show(ex.Message.ToString());
+                dialog.Show("ОШИБКА "+ex.Message.ToString());
             }
 
             Regex regex1 = new Regex("#EXTINF");
             Regex regex2 = new Regex("#EXTM3U");
             Match match = null;
 
-            if (str == null || str.Length<2) { dialog.Show("Буфер пустой"); return; }
+            if (str == null) { dialog.Show("Буфер пустой"); return; }
+            if (str.Length ==1)
+            {
+                Regex regex3 = new Regex("http:");
+                Regex regex4 = new Regex(".m3u");
+                match = regex3.Match(str[0]);
+     
+                if (match.Success)
+                {
+                    
+                    match = regex4.Match(str[0]);
+                    if (match.Success)
+                    {
+                        try
+                        {
+                            string path = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
+                            WebClient webClient = new WebClient();
+                            webClient.DownloadFile(str[0].ToString(), path);
 
-            
+                            PARSING_FILE(path);
+                            System.IO.File.Delete(path);
+                            return;
+                        }
+                        catch (Exception ex)
+                        {
+                            dialog.Show("Ошибка "+ex.Message.ToString());
+                        }
+                    }
+                }
+            }
+
             //ПОИСК заголовка
             foreach (var s in str)
             {       
@@ -632,15 +656,15 @@ namespace IPTVman.ViewModel
                 }
             }
 
-            RaisePropertyChanged("mycol");///updte LIST!!
-            RaisePropertyChanged("numberCANALS");
-
             if (flag_adding)
             {
                 if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
-                else  dialog.Show("Каналы добавлены успешно!");
+                else dialog.Show("Каналы добавлены успешно!");
             }
             else dialog.Show("Ссылки не распознаны");
+
+            RaisePropertyChanged("mycol");///updte LIST!!
+            RaisePropertyChanged("numberCANALS");  
         }
 
         async void key_OPEN(object parameter)
