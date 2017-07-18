@@ -393,7 +393,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="20,48,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Grid.Column="1"/>
+        <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1m,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Grid.Column="1"/>
         <Button Content="Удалить дубликаты" Command="{Binding key_DelDUBLICATCommand}"   CommandParameter=""  Margin="306,0,0,15" Focusable="False" Height="19" VerticalAlignment="Bottom" BorderBrush="#FF1BAC14" OpacityMask="#FFD4CC10" Grid.Column="3" HorizontalAlignment="Left" Width="126" Grid.Row="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -428,5 +428,6 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
+        <CheckBox Content="обрезать скобки" IsChecked="{Binding CH2m, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Grid.Column="1"/>
     </Grid>
 </Window>

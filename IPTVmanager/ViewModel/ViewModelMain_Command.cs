@@ -476,8 +476,7 @@ namespace IPTVman.ViewModel
         void key_OPEN_clipboard(object parameter)
         {
             if (LongtaskCANCELING.isENABLE()) return;
-            if (chek1) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ");return; }
-
+          
             CollectionisCreate();
             string[] str=null;
             string get=Clipboard.GetText();
@@ -526,6 +525,7 @@ namespace IPTVman.ViewModel
                 }
             }
 
+            if (chek1) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ"); return; }
             //ПОИСК заголовка
             foreach (var s in str)
             {       
@@ -719,10 +719,9 @@ namespace IPTVman.ViewModel
 
         void PARSING_FILE(string name)
         {
-            uint ct_dublicat;
-            ct_dublicat = 0;
-            uint ct_update;
-            ct_update = 0;
+            uint ct_dublicat = 0;
+            uint ct_update=0;
+            uint ct_ignore_update = 0;
             string line = null;
             string newname = "";
             List<int> list_update_channels= new List<int>();
@@ -863,10 +862,23 @@ namespace IPTVman.ViewModel
 
                             }
 
-                            
-                            if (!chek1)
-                            {
+                                if (chek2)//обрезание скобок
+                                {
+                                    string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
 
+                                    if (words != null)
+                                    {
+                                        if (words.Length != 0)
+                                        {
+                                            if (words[0] != null && words[0] != "") newname = words[0];
+                                        }
+                                    }
+                                    newname = newname.Trim();
+                                }
+
+
+                            if (!chek1)//Добавление
+                            {
                                 var item = ViewModelMain.myLISTfull.Find(x =>
                                 (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
 
@@ -888,53 +900,41 @@ namespace IPTVman.ViewModel
                                     }
                                     else ct_dublicat++;
                                 }
-
                             }
                             else//ОБНОВЛЕНИЕ
                             {
+                                bool fl = false;
                                 newname = newname.Trim();
-                                newname = newname.Trim();
-
-                                string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
-
-                                if (words != null)
+                              
+                                if (newname != "")
                                 {
-                                    if (words.Length != 0)
-                                    {
-                                        if (words[0] != null && words[0] != "") newname = words[0];
-                                    }
-                                }
-
-                                newname = newname.Trim();
-                                newname = newname.Trim();
-
-                           
-                            if (newname != "")
-                                {
-
                                     int index = 0;
                                     bool replace_ok;
+                                    bool ingore = false;
                                     replace_ok = false;
 
-                                    foreach (var k in ViewModelMain.myLISTbase)
-                                    {                                
+                                      foreach (var k in ViewModelMain.myLISTbase)
+                                      {
                                         if (newname == k.name)
                                         {
                                             int ind = 0;
                                             foreach (var j in ViewModelMain.myLISTfull)
                                             {
-
                                                 if (j.Compare() == k.Compare())
                                                 {
                                                     ViewModelMain.myLISTfull[ind].http = str_http;
-
                                                     //if (list_update_channels.Exist(x => x.Equals(ind))) 
-                                                    if (list_update_channels.Find(x=> x.Equals( ind) ) == ind)
-                                                    { }//этот канал уже был обновлен
+                                                    if (ct_update!=0 && (list_update_channels.Find(x => x.Equals(ind)) == ind))
+                                                    {
+                                                        ingore = true;   //этот канал уже был обновлен             
+                                                    }
                                                     else
                                                     {
-                                                        list_update_channels.Add(ind); ct_update++;  
+                                                        list_update_channels.Add(ind);
+                                                        ct_update++;
                                                     }
+
+                                                    fl = true;
                                                     replace_ok = true;
                                                     break;
 
@@ -946,10 +946,17 @@ namespace IPTVman.ViewModel
                                             if (replace_ok) { break; }
                                             break;
                                         }
+                                        else
+                                        {
+                                        
+                                        }
                                         index++;
 
-                                    }
+                                      }
+                                      if (ingore) ct_ignore_update++;
+                                      if (!fl) { }// MessageBox.Show("не обновленно " + newname);
                                 }
+                            
 
                             }
 
@@ -966,8 +973,10 @@ namespace IPTVman.ViewModel
             }
             catch { }
 
+            string addstr = "";
             if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
-            if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов");
+            if (ct_ignore_update != 0) addstr="\nПропущено дублированние " + ct_ignore_update.ToString();
+            if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов"+ addstr);
             loc.openfile = false;
         }
 

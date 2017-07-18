@@ -164,7 +164,7 @@ namespace IPTVman.ViewModel
         }
 
         bool chek1;
-        public new bool CH1
+        public bool CH1
         {
             get { return chek1; }
             set
