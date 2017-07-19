@@ -145,13 +145,11 @@ namespace ListViewDragDropManager
 
         private void Window_Closed(object sender, EventArgs e)
         {
-
-   
-
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            if (IPTVman.Model.loc.collection) return;
             int i = 0;
             foreach (var s in ListViewDragDropManager.Task.list)
             {

@@ -685,8 +685,12 @@ namespace IPTVman.ViewModel
             if (loc.openfile) return;
             loc.openfile = true;
             CollectionisCreate();
-            string rez = await AsyncTaskGet();
-          
+
+            try { await AsyncTaskGet(); }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА " + e.Message.ToString());
+            }
         }
 
         public Task<string> AsyncTaskGet()
@@ -700,30 +704,25 @@ namespace IPTVman.ViewModel
             }
 
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            string except = "";
             return Task.Run(() =>
             {
-                //----------------
+                var tcs = new TaskCompletionSource<string>();
                 try
                 {
                    if (name!="") PARSING_FILE(name);
                    else loc.openfile = false;
+
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
                 catch (Exception e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
-               
-                //dialog.Show("Статус закрытя "+ task1.Status.ToString());
-                if (except != "") dialog.Show("ОШИБКА " + except);
-
-                return "";
-
-                //----------------
+                return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         }

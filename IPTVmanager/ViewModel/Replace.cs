@@ -49,7 +49,7 @@ namespace IPTVman.ViewModel
         {
 
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            string except = "";
+            var tcs = new TaskCompletionSource<string>();
             task1 = Task.Run(() =>
             {
                 try
@@ -68,36 +68,28 @@ namespace IPTVman.ViewModel
                     if (!find) dialog.Show("Не найдено '" + sel1 + "'");
                     else
                     if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
                 catch (Exception e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
-
-                return "ok";
+                return tcs.Task;
 
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-            try
-            {
-                await task1;
-            }
-            catch (OperationCanceledException e)
-            {
-                except += e.Message.ToString();
-            }
+            try { await task1; }
             catch (Exception e)
             {
-                except += e.Message.ToString();
+                dialog.Show("ОШИБКА " + e.Message.ToString());
             }
-
-            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
-            if (except != "") dialog.Show("ОШИБКА " + except);
+            task1.Dispose();
+            task1 = null;
             return "";
         }
 

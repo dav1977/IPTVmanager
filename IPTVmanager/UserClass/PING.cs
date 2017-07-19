@@ -106,7 +106,7 @@ namespace IPTVman.ViewModel
                     foreach (string aliasName in entry.Aliases)
                         ip0 += aliasName + "\n";
                 }
-                else ip0 += " alias not ";
+                else ip0 += "";// " alias not ";
 
             }
             catch (Exception ex)
@@ -120,17 +120,15 @@ namespace IPTVman.ViewModel
         /// <summary>
         ///   СИНХРОННОЕ ОЖИДАНИЕ ОТВЕТА
         /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         public string GETnoas(CancellationToken cancellationToken, string url)
         {
             done = false;
             url = url.Trim();
             string ip_url = "";
-
+            char[] chars = new char[1000];
             string ip0 = GetIPAddress(url);
 
-            Regex regex1 = new Regex("(udp/)");//udp не возвращает url
+            Regex regex1 = new Regex("(udp/)");
 
             var r = regex1.Match(url);
 
@@ -156,35 +154,51 @@ namespace IPTVman.ViewModel
 
             try
             {
-                WebClient client = new WebClient();
- 
+                //WebClient client = new WebClient();
+                MyWebClient client = new MyWebClient(5000);
                 string rez = "";
                 if (ip_url != "") rez += "IP=" + ip_url + " ";
 
+                // string newLine;
+                //byte[] data = client.(url);
+                //if (data == null) { result = "НЕ СУЩЕСТВУЕТ нулевой ответ"; return result;  }
+
                 Stream stream = client.OpenRead(url);
-                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ.";  return (exit("errorSTREAMnull"));  }
+                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; return (exit("errorSTREAMnull")); }
 
                 StreamReader sr = new StreamReader(stream);
-                string newLine;
-                while ((newLine = sr.ReadLine()) != null)
-                {
-                    if (cancellationToken.IsCancellationRequested || !iswork)
-                    {   exit("прерывание пинга "); return "прерывание пинга "; ; };
+               
+                sr.ReadBlock(chars, 0, 500);
 
-                    string[] words;
-                    words = newLine.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
+                //while ((newLine = sr.sr.ReadLine() != null)
+                //{
+                //    if (cancellationToken.IsCancellationRequested || !iswork)
+                //    { exit("прерывание пинга "); return "прерывание пинга "; ; };
 
-                    foreach (var s in words)
-                    {
-                        rez += s.ToString() + '\n';
-                        if (!iswork) {  exit("прерывание пинга "); return "прерывание пинга "; };
-                    }
-                }
+                //    string[] words;
+                //    words = newLine.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
+
+                //    foreach (var s in words)
+                //    {
+                //        rez += s.ToString() + '\n';
+                //        if (!iswork) { exit("прерывание пинга "); return "прерывание пинга "; };
+                //    }
+                //}
+
+                if (sr != null) sr.Close();
                 if (stream != null) stream.Close();
 
-                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; }
-
-
+                int i = 0;
+                 if (chars != null)
+                 {
+                    foreach (var s in chars)
+                    {
+                        if (s < 32 || s>126) chars[i] = ' ';
+                        i++;
+                    }
+                 }
+               // char[] chars = Encoding.ASCII.GetChars(data);
+                rez = new string(chars);
                 return (exit(ip + rez));
             }
             catch (WebException ex)
@@ -210,17 +224,6 @@ namespace IPTVman.ViewModel
                     }
                      else   rez = "НЕ СУЩЕСТВУЕТ. WebException " + ex.Message.ToString() + " ";
                 }
-
-                // using (var str = ex.Response.GetResponseStream())
-                //using (var read = new StreamReader(str))
-                //{
-                //    rez += read.ToString() + '\n';
-                //}
-
-                // WebClient client = new WebClient();
-                // Stream stream = client.;
-
-            
                 return (exit(ip + rez));
             }
 
@@ -228,22 +231,54 @@ namespace IPTVman.ViewModel
             {
                 //MessageBox.Show("НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString(), "",    
                 //                    MessageBoxButton.OK);
-
                 return (exit("не определено ExceptionWebClient " + ex.Message));
-            }
-
-             
+            }    
         }
 
-        string exit(string s)
+        public string exit(string s)
         {
-            result = s;
-            data.start_ping = false;
+            result = s.Replace("#EXT-X-VERSION:3", "");
+            result = result.Replace("#EXT-X-VERSION:2", "");
+            result = result.Replace("#EXT-X-STREAM-INF", "");
+            result = result.Replace("#EXT-X-TARGET", "");
             done = true;
             return s;
         }
+    }
 
-       
 
+
+    public class MyWebClient : WebClient
+    {
+        //time in milliseconds
+        private int timeout;
+        public int Timeout
+        {
+            get
+            {
+                return timeout;
+            }
+            set
+            {
+                timeout = value;
+            }
+        }
+
+        public MyWebClient()
+        {
+            this.timeout = 5000;
+        }
+
+        public MyWebClient(int timeout)
+        {
+            this.timeout = timeout;
+        }
+
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            var result = base.GetWebRequest(address);
+            result.Timeout = this.timeout;
+            return result;
+        }
     }
 }

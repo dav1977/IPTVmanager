@@ -27,7 +27,8 @@ namespace IPTVman.ViewModel
 
         public static Task task1;
 
-        CancellationTokenSource cts1;
+        public static CancellationTokenSource cts1;
+        public static CancellationToken cancellationToken;
 
 
         //примеры отмены задачи
@@ -42,18 +43,10 @@ namespace IPTVman.ViewModel
         {
             _ping = p;
             _pingPREPARE = b;
-        }
 
-        public bool iswork
-        {
-            get
-            {
-                if (cts1.IsCancellationRequested) return false;
-                else return true;
-            }
-            set
-            {
-            }
+            cts1 = new CancellationTokenSource();
+
+            cancellationToken = cts1.Token;//для task1
         }
 
         public void stop()
@@ -61,70 +54,61 @@ namespace IPTVman.ViewModel
             cts1.Cancel();
         }
 
-        public async Task<string> AsyncTaskSTART(CancellationToken cancellationToken, string url)
-        {
-            string rez="";
 
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            string except = "";
-            task1 = Task.Run(() =>
-            {
-                try
-                {
-                    rez = ping_all(cancellationToken, myLIST); 
-                }
-                catch (OperationCanceledException e)
-                {
-                    except += e.Message.ToString();
-                }
-                catch (Exception e)
-                {
-                    except += e.Message.ToString();
-                }
-                return rez;
-            });
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            try
-            {
-                await task1;
-            }
-            catch (OperationCanceledException e)
-            {
-                except += e.Message.ToString();
-            }
-            catch (Exception e)
-            {
-                except += e.Message.ToString();
-            }
-
-            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
-            if (except != "") dialog.Show("ОШИБКА " + except);
-            return rez;  
-        }
-
-     
         public async void start()
         {
             myLIST = new List<ParamCanal>();//ПОСЛЕ ФИЛЬТРА
             try
             {
-
                 foreach (var i in ViewModelMain.myLISTbase)
                 {
                     myLIST.Add(i);
                 }
 
-                cts1 = new CancellationTokenSource();
-                string ss = await AsyncTaskSTART(cts1.Token, "");
+                 await AsyncTaskSTART(cts1.Token);
 
             }
             catch (Exception ex)
             {
-                dialog.Show(ex.ToString());
+                dialog.Show("Ошибка "+ex.ToString());
             }
+        }
 
-
-
+        public async Task<string> AsyncTaskSTART(CancellationToken cancellationToken)
+        {
+ 
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            string result = "";
+            task1 = Task.Run(() =>
+            {
+                var tcs = new TaskCompletionSource<string>();
+                try
+                {
+                   result = ping_all(cancellationToken, myLIST);
+                   tcs.SetResult("ok");
+                }
+                catch (OperationCanceledException e)
+                {
+                    tcs.SetException(e);
+                }
+                catch (Exception e)
+                {
+                    tcs.SetException(e);
+                }
+                loc.collection = false;
+                return tcs.Task;
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            try { await task1; }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА-АВТОПИНГ " + e.Message.ToString());
+                cts1.Cancel();
+            }
+         
+            task1.Dispose();
+            task1 = null;
+            return result;
         }
 
        
@@ -134,6 +118,7 @@ namespace IPTVman.ViewModel
 
             data.ping_all = myLIST.Count;
 
+            loc.collection = true;
             foreach (var i in myLIST)
             {
                 
@@ -180,6 +165,7 @@ namespace IPTVman.ViewModel
 
             }
 
+            loc.collection = false;
             if (Event_Print != null) Event_Print("end");
             return "";
         }

@@ -123,12 +123,11 @@ namespace IPTVman.ViewModel
         public async Task<string> UPDATE_DATA(CancellationToken Token, string filterMDB, string filterManager, string mask)
         {
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            string except = "";
             task1 = Task.Run(() =>
             {
+                var tcs = new TaskCompletionSource<string>();
                 try
                 {
-
                     init_data();
                     string id_best = readIDbest(filterMDB);
                     //int id_bestcod = int.Parse(id_best);
@@ -136,7 +135,7 @@ namespace IPTVman.ViewModel
                     if (id_best == "")
                     {
                         dialog.Show("не найдена группа " + filterMDB + "(ExtFilter)\nв базе mdb");
-                        return "";
+                        return tcs.Task;
                     }
 
                     init_data();
@@ -173,35 +172,27 @@ namespace IPTVman.ViewModel
                     }
 
                     Save_to_base();
-
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
                 catch (Exception e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
 
-                return "ok";
+                return tcs.Task; 
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            try
-            {
-                await task1;  
-            }
-            catch (OperationCanceledException e)
-            {
-                except += e.Message.ToString();
-            }
+            try { await task1; }
             catch (Exception e)
             {
-                except += e.Message.ToString();
+                dialog.Show("ОШИБКА " + e.Message.ToString());
             }
-
-            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
-            if (except != "") dialog.Show("ОШИБКА " + except);
+            task1.Dispose();
+            task1 = null;
             return "";
         }
 

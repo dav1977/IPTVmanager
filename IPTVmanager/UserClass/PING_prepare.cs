@@ -27,6 +27,9 @@ namespace IPTVman.ViewModel
         public static CancellationTokenSource cts2;
         public static CancellationToken cancellationToken2;
 
+        /// <summary>
+        /// вторая копия ссылки первая в ViewModelWindow1._ping 
+        /// </summary>
         PING _ping;
         //примеры отмены задачи
         // cancellationToken.ThrowIfCancellationRequested();
@@ -76,64 +79,72 @@ namespace IPTVman.ViewModel
             else
             {
                 return "НЕ ПОДДЕРЖИВАЕТСЯ";
-
             }
-            return "старт...";//ip + ViewModelBase._ping.result;
+            return "  Cтарт...";//ip + ViewModelBase._ping.result;
         }
+
+
+        void GETasyn(string url)
+        {
+            Thread.Sleep(100);//чтобы старт успела появиться
+            string rez = AsyncTaskGet(cancellationToken, url).ToString();
+        }
+
 
         public async Task<string> AsyncTaskGet(CancellationToken cancellationToken, string url)
         {
             _ping.iswork = true;
-            string rez = "";
 
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            string except = "";
+            string result = "";
             task1 = Task.Run(() => 
-            {
+            { 
+                var tcs = new TaskCompletionSource<string>();
                 try
                 {
-                    rez = _ping.GETnoas(cancellationToken, url);
+                    result = _ping.GETnoas(cancellationToken, url);
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
-                    except += e.Message.ToString();
+                    _ping.stop();
+                    _ping.exit("");
+                    tcs.SetException(e);
                 }
                 catch (Exception e)
                 {
-                    except += e.Message.ToString();
+                    _ping.stop();
+                    _ping.exit("");
+                    tcs.SetException(e);
                 }
+                return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            try
-            {
-                await  task1;
-            }
-            catch (OperationCanceledException e)
-            {
-                except += e.Message.ToString();
-            }
+            try { await task1; }
             catch (Exception e)
             {
-                except += e.Message.ToString();
+                dialog.Show("ОШИБКА pingPrepare " + e.Message.ToString());
+                _ping.stop();//без ошибки должна выполниться шататно
             }
-            //dialog.Show("Статус закрытя "+ task1.Status.ToString());
-            if (except != "") dialog.Show("ОШИБКА " + except);
-            return rez;
+            if (_ping.iswork) { _ping.iswork = false; }
+
+          //  ViewModelWindow1._ping = null;//уничтожаем первую ссылку на экземпляр
+           // _ping = null;//уничтожаем вторую ссылку на экземпляр
+            task1.Dispose();
+            task1 = null;
+            return result;
         }
 
-         void GETasyn(string url)
-        {
-            data.start_ping = true;
-            string rez =  AsyncTaskGet(cancellationToken, url).ToString();
-        }
-
-
+     
         public bool stateTASKisCanceled()
         {
             if (task1==null) return true;
             if (task1.Status == TaskStatus.RanToCompletion) return true;
             else
-            { _ping.stop();   return false; }
+            {
+                if (_ping!=null)_ping.stop();
+                return false;
+            }
 
         }
     }

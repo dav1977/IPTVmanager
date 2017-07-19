@@ -7,9 +7,6 @@ namespace IPTVman.ViewModel
 {
     public partial class Window1 : Window
     {
-        PING _ping;
-        PING_prepare _pingPREPARE;
-
         public Window1()
         {
 
@@ -20,11 +17,6 @@ namespace IPTVman.ViewModel
             ProgressBar1.Value = 0;
             textBoxPING.Text="";
             textBoxPING2.Text = "";
-
-
-            _ping = new PING();
-            _ping.result = "";
-            _pingPREPARE = new PING_prepare(_ping);
 
             //use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
@@ -37,36 +29,30 @@ namespace IPTVman.ViewModel
         private void timer_Tick(object sender, EventArgs e)
         {
 
-            if (_ping == null) return;
+            if (ViewModelWindow1._ping == null) return;
 
             if (ViewModelWindow1.edit.ping!="")
             {
-                textBoxPING.Text = _ping.result;
+                textBoxPING.Text = ViewModelWindow1._ping.result;
                 ProgressBar1.Value = 0;
             }
             else ProgressBar1.Value += 3;
            
-
-            //УСТАНОВКА ССЫЛКИ В ПОДЧИНЕННОМ ЭКЗЕМПЛЯРЕ
-            if (ViewModelWindow1._ping == null)
-            {
-                ViewModelWindow1._ping = _ping;
-                ViewModelWindow1._pingPREPARE = _pingPREPARE;
-            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            LongtaskCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
+            if (ViewModelWindow1._ping == null) return;
+            LongtaskCANCELING.analiz_closing_thread(ViewModelWindow1._ping, ViewModelWindow1._pingPREPARE);
         }
 
+
+        //key PLAY
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
-            IPTVman.Model.play.URLPLAY = urlTEXT.Text;
-            IPTVman.Model.play.playerUPDATE = true;
-            if (_pingPREPARE != null) _pingPREPARE.stop();
-            if (_ping != null) _ping.stop();
-            this.Close();
+            Model.play.URLPLAY = urlTEXT.Text;
+            Model.play.playerUPDATE = true;
+            exit();
         }
 
         private void ButtonBEST_Click(object sender, RoutedEventArgs e)
@@ -74,14 +60,18 @@ namespace IPTVman.ViewModel
 
         }
 
+        void exit()
+        {
 
-        //CJ
+            if (ViewModelWindow1._pingPREPARE != null) ViewModelWindow1._pingPREPARE.stop();
+            if (ViewModelWindow1._ping != null) ViewModelWindow1._ping.stop();
+            this.Close();
+        }
+
+        //key SAVE
         private void exit_Copy_Click(object sender, RoutedEventArgs e)
         {
-            if (_pingPREPARE != null) _pingPREPARE.stop();
-            if (_ping != null) _ping.stop();
-
-            this.Close();
+            exit();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

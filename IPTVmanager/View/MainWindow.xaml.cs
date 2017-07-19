@@ -123,6 +123,7 @@ namespace IPTVman.ViewModel
 
                 message.Closing += message_Closing;
                 message.Show();
+                message.Owner = MainWindow.header;
             }
 
             if (LongtaskCANCELING.isENABLE())

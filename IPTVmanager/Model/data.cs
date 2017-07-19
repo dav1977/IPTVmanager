@@ -11,7 +11,7 @@ namespace IPTVman.Model
     /// </summary>
     public static class loc
     {
-  
+        public static bool collection = false;
         public static bool openfile = false;
         public static bool lokUP, lokDN = false;
         public static bool keyadd = false;//дребезг кнопки
@@ -61,8 +61,6 @@ namespace IPTVman.Model
         public static string favorite3_1 = "kino";
         public static string favorite3_2 = "";
 
-       
-
         public static ParamCanal canal = new ParamCanal();
         public static ParamCanal edit = new ParamCanal();
 
@@ -71,8 +69,6 @@ namespace IPTVman.Model
         public static string f1,f2,f3,f4;
 
         public static bool filtr_best = false;
-
-        public static bool start_ping = false;
 
         public static int ct_ping = 0;
         public static int ping_all = 0;

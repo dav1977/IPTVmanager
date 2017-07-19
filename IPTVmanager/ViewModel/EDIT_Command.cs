@@ -48,20 +48,28 @@ namespace IPTVman.ViewModel
         private void Timer2Tick(object sender, EventArgs e)
         {
             if (_ping == null) return;
-            if (_ping.done)
+            try
             {
-                Thread.Sleep(1000);
-                strPING = _ping.result;
-                convPING(_ping.result);
-                _ping.done = false;
+                if (_ping.done)
+                {
+                    Thread.Sleep(1000);
+                    if (_ping == null) return;
+                    strPING = _ping.result;
+                    convPING(_ping.result);
+                    _ping.done = false;
 
+                }
             }
+            catch { }
            
         }
 
         //============================== INIT ==================================
         public ViewModelWindow1(string lastText)
         {
+            _ping = null;
+            _pingPREPARE = null;
+            strPING = "";
             CreateTimer2(500);
             loc.keyadd = false;
             edit =(ParamCanal) data.canal.Clone();
@@ -82,6 +90,7 @@ namespace IPTVman.ViewModel
 
         void SAVE(object selectedItem)
         {
+            if (loc.collection) return;
             GUI.edit = false;
             if (Event_UpdateEDIT != null) Event_UpdateEDIT(edit); 
         }
@@ -111,10 +120,10 @@ namespace IPTVman.ViewModel
             }
             catch
             {
-                IPTVman.Model.play.playerUPDATE = false;
+                play.playerUPDATE = false;
             }
 
-            if (IPTVman.Model.play.playerUPDATE == false)
+            if (play.playerUPDATE == false)
             {
 
                 REG_FIND reg = new REG_FIND();
@@ -171,7 +180,8 @@ namespace IPTVman.ViewModel
 
         void PING(object selectedItem)
         {
-            if (_pingPREPARE == null) return;
+            _ping = new ViewModel.PING();
+            _pingPREPARE = new PING_prepare(_ping);
             edit.ping = "";
             if (edit.http == null) return;
             strPING = _pingPREPARE.GET(edit.http);
@@ -183,17 +193,7 @@ namespace IPTVman.ViewModel
             edit.ping = "";
             if (strPING.Length > 5000) { edit.ping = "большой размер данных "+ strPING.Length.ToString();return; }
 
-            string n0 = strPING.ToString();
-            string n1 = n0.Replace("#EXTM3U", "");
-            string n2 = n1.Replace("#EXT-X-VERSION:3", "");
-            n2 = n2.Replace("#EXT-X-STREAM-", "");
-
-
-            //  n2 = n2.Trim(new char[] { '\n', '\r' });
-
-
-            string[] n3 = n2.Split(new char[] { '\n' });
-
+            string[] n3 = strPING.Split(new char[] { '\n' });
             foreach (string s in n3)
             {
                 edit.ping += s;
