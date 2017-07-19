@@ -50,16 +50,16 @@ namespace IPTVman.ViewModel
                     
                 }));
 
-                label.Dispatcher.Invoke(new Action(() =>
+                txtMessage.Dispatcher.Invoke(new Action(() =>
                 {
                     if (!Model.GUI.dynamic_progressbar)
                     {
-                        label.Content = message + " " +
+                        txtMessage.Text = message + " " +
                         String.Format("{0:F1}%", 100 * (Model.GUI.progressbar / Model.GUI.progressbar_max));
                     }
                     else
                     {
-                        label.Content = message;
+                        txtMessage.Text = message;
                     }
                 }));
 
@@ -76,18 +76,21 @@ namespace IPTVman.ViewModel
         {
             InitializeComponent();
             CreateTimer1(500);
-            label.Content = Model.GUI.longtaskSTRING;
+            txtMessage.Text = Model.GUI.longtaskSTRING;
             message = Model.GUI.longtaskSTRING;
         }
 
-       
-
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+           if (Wait.work) e.Cancel = true;
+        }
     }
 
-    
+
 
     public static class Wait
     {
+        public static bool work = false;
         public static Window wait = null;
 
         public static void Create(string meesage,  bool en_dynamic_progressbar)
@@ -103,10 +106,11 @@ namespace IPTVman.ViewModel
             {
                 Title = "",
                 Topmost = true,
-                //WindowStyle = WindowStyle.ToolWindow,
+                WindowStyle = WindowStyle.ThreeDBorderWindow,
                 Name = "winwait"
             };
 
+            work = true;
             wait.Show();
             wait.Owner = MainWindow.header;
         }
@@ -119,6 +123,7 @@ namespace IPTVman.ViewModel
 
         public static void Close()
         {
+            work = false;
             if (wait == null) return;
             wait.Close();
             wait = null;

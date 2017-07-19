@@ -140,7 +140,7 @@ namespace IPTVman.ViewModel
             }
             else
             {
-                if (ip0 == "") {   return (exit("нет IP   НЕ СУЩЕСТВУЕТ ")); }
+               if (ip0 == "") { ip0 = "не определен "; }
             }
             string ip = "ip=" + ip0 + "; ";
            

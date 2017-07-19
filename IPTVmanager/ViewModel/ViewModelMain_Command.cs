@@ -502,8 +502,7 @@ namespace IPTVman.ViewModel
                 match = regex3.Match(str[0]);
      
                 if (match.Success)
-                {
-                    
+                {     
                     match = regex4.Match(str[0]);
                     if (match.Success)
                     {
@@ -511,10 +510,10 @@ namespace IPTVman.ViewModel
                         {
                             string path = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
                             WebClient webClient = new WebClient();
-                            webClient.DownloadFile(str[0].ToString(), path);
-
-                            PARSING_FILE(path);
-                            System.IO.File.Delete(path);
+                            LongtaskCANCELING.enable();
+                            Wait.Create("Загружается\n"+ str[0].ToString(), false);
+                            webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
+                            webClient.DownloadFileAsync(new Uri (str[0].ToString()), path);
                             return;
                         }
                         catch (Exception ex)
@@ -667,6 +666,19 @@ namespace IPTVman.ViewModel
             RaisePropertyChanged("numberCANALS");  
         }
 
+        private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            LongtaskCANCELING.stop();
+            Wait.Close();
+            string path = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
+            PARSING_FILE(path);
+            try
+            {
+                System.IO.File.Delete(path);
+            }
+            catch { }
+        }
+
         async void key_OPEN(object parameter)
         {
             if (LongtaskCANCELING.isENABLE()) return;
@@ -719,6 +731,7 @@ namespace IPTVman.ViewModel
 
         void PARSING_FILE(string name)
         {
+            bool flag_adding_ok = false;
             uint ct_dublicat = 0;
             uint ct_update=0;
             uint ct_ignore_update = 0;
@@ -897,12 +910,14 @@ namespace IPTVman.ViewModel
                                             tvg_name = str_tvg.Trim()
 
                                         });
+                                        flag_adding_ok = true;
                                     }
                                     else ct_dublicat++;
                                 }
                             }
                             else//ОБНОВЛЕНИЕ
                             {
+                                flag_adding_ok = true;
                                 bool fl = false;
                                 newname = newname.Trim();
                               
@@ -974,6 +989,7 @@ namespace IPTVman.ViewModel
             catch { }
 
             string addstr = "";
+            if (!flag_adding_ok) dialog.Show("Каналы не обнаружены");
             if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
             if (ct_ignore_update != 0) addstr="\nПропущено дублированние " + ct_ignore_update.ToString();
             if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов"+ addstr);
