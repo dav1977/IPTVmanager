@@ -19,7 +19,14 @@
             <ColumnDefinition Width="496*"/>
             <ColumnDefinition Width="191*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="Button" Content="ПИНГ КАНАЛА" Command="{Binding key_PING}" HorizontalAlignment="Left" Margin="10,286,0,0" VerticalAlignment="Top" Width="107" Click="Button_Click"/>
+        <Button x:Name="Button" Content="ПИНГ КАНАЛА" Command="{Binding key_PING}" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Width="107" Click="Button_Click" Height="26">
+            <Button.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FFB43A3A" Offset="0.082"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
         <TextBox x:Name="textBox" Text="{Binding edit.name}" HorizontalAlignment="Left" Height="23" Margin="56,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="609" Grid.ColumnSpan="2"/>
         <TextBox x:Name="textBox1" Text="{Binding edit.ExtFilter}" HorizontalAlignment="Left" Height="23" Margin="56,89,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="609" Grid.ColumnSpan="2"/>
         <TextBox x:Name="textBox_Copy" Text="{Binding edit.group_title}" HorizontalAlignment="Left" Height="23" Margin="56,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="609" Grid.ColumnSpan="2"/>
@@ -32,9 +39,24 @@
         <Label x:Name="label_Copy1" Content="exfilter" HorizontalAlignment="Left" Margin="-3,89,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
         <Label x:Name="label_Copy2" Content="group" HorizontalAlignment="Left" Margin="0,117,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
         <Label x:Name="label_Copy3" Content="ping" HorizontalAlignment="Left" Margin="0,145,0,0" VerticalAlignment="Top" Foreground="#FF5BCD25"/>
-        <Button x:Name="ButtonBEST" Content="Добавить в ИЗБР." Command="{Binding key_ADDBEST}" HorizontalAlignment="Left" Margin="10,347,0,-2" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.509,3.614" Click="ButtonBEST_Click"/>
+        <Button x:Name="ButtonBEST" Content="Добавить в ИЗБР." Command="{Binding key_ADDBEST}" HorizontalAlignment="Left" Margin="10,358,0,-12" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.509,3.614" Click="ButtonBEST_Click" Height="24">
+            <Button.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FF5ABB16" Offset="0.082"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
         <ProgressBar Name="ProgressBar1" HorizontalAlignment="Left" Height="45" Margin="140,334,0,-9" VerticalAlignment="Top" Width="345" Foreground="#FF60D301" Background="#FF290D5B"/>
-        <Button x:Name="Button_PLAY" Content="PLAY" Command="{Binding key_PLAY}" HorizontalAlignment="Left" Margin="10,235,0,0" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.626,-2.026" Click="Button_Copy_Click"/>
+        <Button x:Name="Button_PLAY" Content="PLAY" Command="{Binding key_PLAY}" HorizontalAlignment="Left" Margin="10,232,0,0" VerticalAlignment="Top" Width="117" RenderTransformOrigin="0.626,-2.026" Click="Button_Copy_Click" Height="28">
+            <Button.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FFC2C759" Offset="0.082"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
+        <CheckBox Content="через aceplayer" IsChecked="{Binding CH1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,87" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center"/>
     </Grid>
 
 </Window>

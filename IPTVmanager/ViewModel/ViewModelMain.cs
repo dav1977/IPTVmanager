@@ -156,7 +156,6 @@ namespace IPTVman.ViewModel
 
         void updateLIST(ParamCanal item)
         {
-
             Update_collection();
         }
 
@@ -168,6 +167,7 @@ namespace IPTVman.ViewModel
             {
                 UPDATE_FILTER();
                 RaisePropertyChanged("mycol");///update LIST!!
+                RaisePropertyChanged("numberCANALS");
             }
         }
 

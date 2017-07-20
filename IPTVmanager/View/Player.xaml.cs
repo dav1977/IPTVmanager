@@ -26,27 +26,12 @@ namespace Vlc.DotNet
                 myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
                 myControl.MediaPlayer.EndInit();
             }
-            catch 
+            catch//(Exception ex)
             {
-                IPTVman.Model.play.playerUPDATE = false;
-               // dialog.Show("НЕТ библиотеки VLC "+ex.Message.ToString(), "Ошибка");
+                //IPTVman.ViewModel.dialog.Show("НЕТ библиотеки VLC "+ex.Message.ToString());
                 this.Close();
                 return;
-
             }
-
-
-
-            string url = IPTVman.Model.play.URLPLAY;
-            try
-            {
-                myControl.MediaPlayer.Play(new Uri(url));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString(), "error");
-            }
-
 
             //use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
@@ -55,9 +40,26 @@ namespace Vlc.DotNet
             timer.Start();
         }
 
+        public void Play()
+        {
+            try
+            {
+                if (myControl.MediaPlayer.IsPlaying)
+                {
+                    myControl.MediaPlayer.Stop();
+                    Thread.Sleep(200);
+                }
+
+                myControl.MediaPlayer.Play(new Uri(IPTVman.Model.play.URLPLAY));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "error");
+            }
+        }
+
         uint tick = 0;
         static byte i = 0;
-        bool lok=false;
         private void timer_Tick(object sender, EventArgs e)
         {
 
@@ -74,32 +76,7 @@ namespace Vlc.DotNet
                 i++;
                 if (i > 20) i = 1;
                 tick++;
-            }
-
-            if (lok) return;
-            lok = true;
-            if (IPTVman.Model.play.playerUPDATE)
-            {
-               // key1.Content = "not playing";
-                
-                if (myControl.MediaPlayer.IsPlaying) myControl.MediaPlayer.Stop();
-
-                Thread.Sleep(500);
-                string url = IPTVman.Model.play.URLPLAY;
-                try
-                {
-                    myControl.MediaPlayer.Play(new Uri(url));
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message.ToString(), "error");
-                 
-                }
-            }
-
-           // key1.Content = "STOP";
-            lok = false;
+            } 
         }
 
         private void OnVlcControlNeedsLibDirectory(object sender, Forms.VlcLibDirectoryNeededEventArgs e)
@@ -109,12 +86,8 @@ namespace Vlc.DotNet
             if (currentDirectory == null) return;
 
             string dir = Directory.GetCurrentDirectory();
-            
 
-            e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName  (dir.Replace(@"\", @"/")  + "/lib/") );
-
-
-          
+            e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName  (dir.Replace(@"\", @"/")  + "/VLClib/") );
 
             //if (AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture == ProcessorArchitecture.X86)
             //    e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x86/"));
@@ -124,10 +97,7 @@ namespace Vlc.DotNet
 
         private void OnPlayButtonClick(object sender, RoutedEventArgs e)
         {
-
-
             myControl.MediaPlayer.Stop();
-
             // myControl.MediaPlayer.Play(new Uri("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi"));
             //myControl.MediaPlayer.Play(new FileInfo(@"..\..\..\Vlc.DotNet\Samples\Videos\BBB trailer.mov"));
         }

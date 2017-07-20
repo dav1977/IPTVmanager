@@ -7,7 +7,7 @@ using IPTVman.Model;
 
 namespace IPTVman.ViewModel
 {
-    partial class ViewModelWindow1 : ViewModelMain 
+    partial class ViewModelWindow1 : ViewModelMain
     {
         public static ParamCanal edit { get; set; }
 
@@ -30,6 +30,19 @@ namespace IPTVman.ViewModel
                 }
             }
         }
+
+
+ 
+        public bool CH1
+        {
+            get { return data.type_player; }
+            set
+            {
+                if (data.type_player) data.type_player = false; else data.type_player = true;
+                RaisePropertyChanged("CH1");
+            }
+        }
+    
 
 
     }

@@ -290,8 +290,13 @@ namespace IPTVman.ViewModel
 
         protected override WebRequest GetWebRequest(Uri address)
         {
-            var result = base.GetWebRequest(address);
-            result.Timeout = this.timeout;
+            WebRequest result=null;
+            try
+            {
+                result = base.GetWebRequest(address);
+            }
+            catch { }
+            if (result!=null)result.Timeout = this.timeout;
             return result;
         }
     }

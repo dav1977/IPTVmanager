@@ -45,12 +45,12 @@ namespace IPTVman.Model
     {
         public static string path = "";
         public static Process playerV;
-        public static bool playerUPDATE = false;
         public static string URLPLAY = "";
     }
 
     public static class data
     {
+        public static bool type_player = false;
         public static string NOT_URL = "НЕ СУЩЕСТВУЕТ";
         public static byte current_favorites =1;
         public static string favorite1_1 = "best";

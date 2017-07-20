@@ -51,7 +51,6 @@ namespace IPTVman.ViewModel
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
             Model.play.URLPLAY = urlTEXT.Text;
-            Model.play.playerUPDATE = true;
             exit();
         }
 
@@ -75,6 +74,11 @@ namespace IPTVman.ViewModel
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
         }

@@ -69,7 +69,7 @@ namespace IPTVman.ViewModel
         {
             lock (threadLock)
             {
-                Trace.WriteLine("СОЗДАНИЕ ДИАПАЗОНА СТРАНИЦЫ: " + startIndex + "," + count);
+                //Trace.WriteLine("СОЗДАНИЕ ДИАПАЗОНА СТРАНИЦЫ: " + startIndex + "," + count);
                 // Thread.Sleep(_fetchDelay);
 
                 //создание страницы временной!!!
@@ -292,7 +292,7 @@ namespace IPTVman.ViewModel
                     }
                     catch
                     {
-                        //Trace.WriteLine("my crash");
+                        Trace.WriteLine("my crash");
                         LoadPage(pageIndex);
                     }
                     finally { ok = true; }
@@ -593,7 +593,7 @@ namespace IPTVman.ViewModel
                 {
                     _pages.Remove(key);
                     _pageTouchTimes.Remove(key);
-                    Trace.WriteLine("Removed Page: " + key);
+                   // Trace.WriteLine("Removed Page: " + key);
                 }
             }
         }
@@ -621,7 +621,7 @@ namespace IPTVman.ViewModel
                 {
                     _pages.Add(pageIndex, null);
                     _pageTouchTimes.Add(pageIndex, DateTime.Now);
-                    Trace.WriteLine("Added page: " + pageIndex + "  pages count="+ _pages.Count);
+                    //Trace.WriteLine("Added page: " + pageIndex + "  pages count="+ _pages.Count);
                     LoadPage(pageIndex);
                 }
                 else
@@ -649,7 +649,7 @@ namespace IPTVman.ViewModel
         /// <param name="pageIndex">Index of the page.</param>
         protected virtual void LoadPage(int pageIndex)
         {
-            Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ [2] " + pageIndex);
+            //Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ [2] " + pageIndex);
             PopulatePage(pageIndex, FetchPage(pageIndex));
         }
 
@@ -664,7 +664,7 @@ namespace IPTVman.ViewModel
         /// <returns></returns>
         protected IList<T> FetchPage(int pageIndex)
         {
-            Trace.WriteLine("ВОЗВРАТ СТРАНИЦЫ:  pageIndex=" + pageIndex);
+            //Trace.WriteLine("ВОЗВРАТ СТРАНИЦЫ:  pageIndex=" + pageIndex);
             return ItemsProvider.FetchRange(pageIndex * PageSize, PageSize);
         }
 
@@ -889,7 +889,7 @@ namespace IPTVman.ViewModel
         {
            
             int pageIndex = (int)args;
-            Trace.WriteLine("ЗАПРОС ");
+            //Trace.WriteLine("ЗАПРОС ");
             IList<T> page = FetchPage(pageIndex);
             SynchronizationContext.Send(LoadPageCompleted, new object[] { pageIndex, page });
         }
@@ -903,7 +903,7 @@ namespace IPTVman.ViewModel
             int pageIndex = (int)((object[])args)[0];
             IList<T> page = (IList<T>)((object[])args)[1];
 
-            Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ [1] " + pageIndex);
+            //Trace.WriteLine("ЗАПОЛНЕНИЕ СТРАНИЦЫ [1] " + pageIndex);
             PopulatePage(pageIndex, page);
             IsLoading = false;
             FireCollectionReset();

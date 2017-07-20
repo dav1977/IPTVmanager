@@ -97,34 +97,48 @@ namespace IPTVman.ViewModel
 
         void PLAY(object selectedItem)
         {
+            bool err = false;
             if (play.URLPLAY == "") return;
 
-            //сначала пробуем играть через библиотеку
-            try
+            if (!data.type_player)
             {
-                if (player == null)
+                //сначала пробуем играть через библиотеку
+                try
                 {
-                    player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
-                    player.Show();
-                }
-                else
-                {
-                    if (!player.window_enable)
+                    if (player == null)
                     {
-                        player.window_enable = true;
                         player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
+                        player.Topmost = true;
                         player.Show();
+                        player.Play();
                     }
+                    else
+                    {
+                        if (!player.window_enable)
+                        {
+                            player.window_enable = true;
+                            player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
+                            player.Topmost = true;
+                            player.Show();
+                            player.Play();
+                        }
+                        else
+                        {
+                            player.Play();
+                        }
 
+                    }
                 }
-            }
-            catch
-            {
-                play.playerUPDATE = false;
+                catch 
+                {
+                    err = true;
+                }
+                if (!err) return;
             }
 
-            if (play.playerUPDATE == false)
-            {
+
+            //Через ACEplayer
+
 
                 REG_FIND reg = new REG_FIND();
                 string rez = reg.FIND("ace_player.exe");
@@ -174,8 +188,6 @@ namespace IPTVman.ViewModel
                 }
                 else dialog.Show("Не найден файл ACE_PLAYER.exe по пути\n" + play.path);
 
-            }
-            IPTVman.Model.play.playerUPDATE = false;
         }
 
         void PING(object selectedItem)

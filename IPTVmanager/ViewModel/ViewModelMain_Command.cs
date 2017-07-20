@@ -263,9 +263,7 @@ namespace IPTVman.ViewModel
             if (parameter == null) return;
             myLISTfull.Add(new ParamCanal
             { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
-
             Update_collection();
-
         }
         
         /// <summary>
@@ -664,8 +662,8 @@ namespace IPTVman.ViewModel
             }
             else dialog.Show("Ссылки не распознаны");
 
-            RaisePropertyChanged("mycol");///updte LIST!!
-            RaisePropertyChanged("numberCANALS");  
+            Update_collection();
+           
         }
 
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -679,6 +677,7 @@ namespace IPTVman.ViewModel
                 System.IO.File.Delete(path);
             }
             catch { }
+            Update_collection();
         }
 
         async void key_OPEN(object parameter)
@@ -693,6 +692,8 @@ namespace IPTVman.ViewModel
             {
                 dialog.Show("ОШИБКА " + e.Message.ToString());
             }
+            Thread.Sleep(300);
+            Update_collection();
         }
 
         public Task<string> AsyncTaskGet()
@@ -983,8 +984,6 @@ namespace IPTVman.ViewModel
 
                 LongtaskCANCELING.stop();
                 while (Wait.WaitIsOpen()) Thread.Sleep(100);
-                RaisePropertyChanged("mycol");///updte LIST!!
-                RaisePropertyChanged("numberCANALS");
 
             }
             catch { }
