@@ -58,7 +58,7 @@ namespace IPTVman.ViewModel
 
         }
 
-
+        private object threadLock = new object();
         /// <summary>
         /// Fetches a range of items.
         /// </summary>
@@ -67,43 +67,40 @@ namespace IPTVman.ViewModel
         /// <returns></returns>
         public IList<ParamCanal> FetchRange(int startIndex, int count)
         {
-          
-
-            Trace.WriteLine("СОЗДАНИЕ ДИАПАЗОНА СТРАНИЦЫ: " + startIndex + "," + count);
-            // Thread.Sleep(_fetchDelay);
-
-            //создание страницы временной!!!
-            ViewModelMain.myLIST = new List<ParamCanal>();
-
-            ParamCanal customer = null;
-     
-
-            for (int i = startIndex; i < startIndex + count; i++)
+            lock (threadLock)
             {
-                
+                Trace.WriteLine("СОЗДАНИЕ ДИАПАЗОНА СТРАНИЦЫ: " + startIndex + "," + count);
+                // Thread.Sleep(_fetchDelay);
+
+                //создание страницы временной!!!
+                ViewModelMain.myLIST = new List<ParamCanal>();
+
+                ParamCanal customer = null;
+
+
+                for (int i = startIndex; i < startIndex + count; i++)
+                {
+
 
                     if (i >= ViewModelMain.myLISTbase.Count) break;
 
-                try
-                {
-                    customer = new ParamCanal
-                {
-                    name = ViewModelMain.myLISTbase[i].name,
-                    ExtFilter = ViewModelMain.myLISTbase[i].ExtFilter,
-                    group_title = ViewModelMain.myLISTbase[i].group_title,
-                    http = ViewModelMain.myLISTbase[i].http,
-                    logo = ViewModelMain.myLISTbase[i].logo,
-                    tvg_name = ViewModelMain.myLISTbase[i].tvg_name,
-                    ping = ViewModelMain.myLISTbase[i].ping,
-                };
-
-
-                
-                    ViewModelMain.myLIST.Add(customer);
+                    try
+                    {
+                        customer = new ParamCanal
+                        {
+                            name = ViewModelMain.myLISTbase[i].name,
+                            ExtFilter = ViewModelMain.myLISTbase[i].ExtFilter,
+                            group_title = ViewModelMain.myLISTbase[i].group_title,
+                            http = ViewModelMain.myLISTbase[i].http,
+                            logo = ViewModelMain.myLISTbase[i].logo,
+                            tvg_name = ViewModelMain.myLISTbase[i].tvg_name,
+                            ping = ViewModelMain.myLISTbase[i].ping,
+                        };
+                        ViewModelMain.myLIST.Add(customer);
+                    }
+                    catch { }
                 }
-                catch { }
             }
-          
             return ViewModelMain.myLIST;
         }
     }
@@ -126,6 +123,8 @@ namespace IPTVman.ViewModel
     /// <typeparam name="T"></typeparam>
     public class VirtualizingCollection<T> : IList<T>, IList
     {
+        private object threadLock = new object();
+
         #region Constructors
 
         /// <summary>
@@ -252,56 +251,59 @@ namespace IPTVman.ViewModel
         {
             get 
             {
-               
-                // determine which page and offset within page
-                int pageIndex = index / PageSize;
-                int pageOffset = index % PageSize;
-
-                // request primary page
-                RequestPage(pageIndex);
-
-                // if accessing upper 50% then request next page
-                if (pageOffset > PageSize / 2 && pageIndex < Count / PageSize)
-                { RequestPage(pageIndex + 1);  }
-
-                // if accessing lower 50% then request prev page
-                if (pageOffset < PageSize / 2 && pageIndex > 0)
-                { RequestPage(pageIndex - 1); }
-
-                // remove stale pages
-                CleanUpPages();
-
-                //defensive check in case of async load
-                if (_pages[pageIndex] == null)
-                {   Trace.WriteLine(" return default");
-                    return default(T); }
-
-
-                //Trace.WriteLine( "ALLPAGES=" + _pages.Count);
-                // Trace.WriteLine("main " +" index=" + pageIndex + " pageOffset =" + pageOffset +"  cou="+ Count );
-
-                /////fix crash
-               T retPAGE = default(T);
-
-                bool ok = false;
-                try
+                lock (threadLock)
                 {
-                    retPAGE = _pages[pageIndex][pageOffset]; 
+                    // determine which page and offset within page
+                    int pageIndex = index / PageSize;
+                    int pageOffset = index % PageSize;
+
+                    // request primary page
+                    RequestPage(pageIndex);
+
+                    // if accessing upper 50% then request next page
+                    if (pageOffset > PageSize / 2 && pageIndex < Count / PageSize)
+                    { RequestPage(pageIndex + 1); }
+
+                    // if accessing lower 50% then request prev page
+                    if (pageOffset < PageSize / 2 && pageIndex > 0)
+                    { RequestPage(pageIndex - 1); }
+
+                    // remove stale pages
+                    CleanUpPages();
+
+                    //defensive check in case of async load
+                    if (_pages[pageIndex] == null)
+                    {
+                        //Trace.WriteLine(" return default");
+                        return default(T);
+                    }
+
+
+                    //Trace.WriteLine( "ALLPAGES=" + _pages.Count);
+                    // Trace.WriteLine("main " +" index=" + pageIndex + " pageOffset =" + pageOffset +"  cou="+ Count );
+
+                    /////fix crash
+                    T retPAGE = default(T);
+
+                    bool ok = false;
+                    try
+                    {
+                        retPAGE = _pages[pageIndex][pageOffset];
+                    }
+                    catch
+                    {
+                        //Trace.WriteLine("my crash");
+                        LoadPage(pageIndex);
+                    }
+                    finally { ok = true; }
+
+
+                    if (ok) return retPAGE;
+                    else return  //_pages[pageIndex][0];
+                    default(T);
+
+                    // return requested item
                 }
-                catch
-                {
-                    Trace.WriteLine("my crash");
-                    LoadPage(pageIndex);
-                }
-                finally { ok = true; }
-
-
-                if (ok) return retPAGE;
-                else return  //_pages[pageIndex][0];
-                default(T);
-
-                // return requested item
-
             }
             set { throw new NotSupportedException(); }
         }
@@ -687,11 +689,13 @@ namespace IPTVman.ViewModel
     /// <typeparam name="T">The type of items in the collection</typeparam>
     public class AsyncVirtualizingCollection<T> : VirtualizingCollection<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {
-
+        private object threadLock = new object();
         public void UPDATE()
         {
-
-            LoadPage(0);
+            lock (threadLock)
+            {
+                LoadPage(0);
+            }
         }
         #region Constructors
 

@@ -48,9 +48,9 @@
         <CheckBox x:Name="checkBox_Copy3" IsChecked="{Binding Path=CH5,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="url" HorizontalAlignment="Left" Margin="320,94,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="130" FontSize="16"/>
         <CheckBox x:Name="checkBox_Copy4" IsChecked="{Binding Path=CH6,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="logo" HorizontalAlignment="Left" Margin="320,116,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16"/>
         <CheckBox x:Name="checkBox_Copy5" IsChecked="{Binding Path=CH7,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="tvg" HorizontalAlignment="Left" Margin="320,136,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="130" FontSize="16"/>
-        <TextBox x:Name="textBox" Text="{Binding Selected1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
-        <TextBox x:Name="urlTEXT" Text="{Binding Selected2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
-        <Label x:Name="label" Content="Что" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="12"/>
+        <TextBox x:Name="textBox" Text="{Binding Selected1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="39" Margin="10,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
+        <TextBox x:Name="urlTEXT" Text="{Binding Selected2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="39" Margin="10,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
+        <Label x:Name="label" Content="Что" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="12"/>
         <Label x:Name="label_Copy" Content="Чем" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Foreground="#FF28FF12" FontSize="12"/>
 
     </Grid>

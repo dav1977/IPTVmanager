@@ -110,25 +110,34 @@ namespace IPTVman.ViewModel
             if (data.canal.name == "") return;
 
             MessageBoxResult result = MessageAsk.Create("Переместить пустые группы в избранное?");
-            
+
+            CancellationTokenSource cts1 = new CancellationTokenSource();
+            CancellationToken cancellationToken;
+
             //MessageBoxResult result = MessageBox.Show("  Переместить пустые группы в избранное" , " ПЕРЕМЕЩЕНИЕ",
             //                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result != MessageBoxResult.Yes) return;
 
             LongtaskCANCELING.enable();
             Wait.Create("Идет заполнение ... ", true);
-            string rez = await AsyncSetBest();
-           
+
+            cancellationToken = cts1.Token;//для task1
+            try { await AsyncSetBest(cancellationToken); }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА SetBest " + e.Message.ToString());
+            }
+            LongtaskCANCELING.stop();
+            Update_collection();
+
         }
 
-        public Task<string> AsyncSetBest()
+        public Task<string> AsyncSetBest(CancellationToken cts)
         {
-
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            string except = "";
             return Task.Run(() =>
             {
-                //----------------
+                var tcs = new TaskCompletionSource<string>();
                 try
                 {
                     GUI.set_ProgressBar(ViewModelMain.myLISTbase.Count, true);
@@ -137,6 +146,7 @@ namespace IPTVman.ViewModel
 
                     foreach (var s in ViewModelMain.myLISTbase)
                     {
+                        if (cts.IsCancellationRequested) break;
                         GUI.progressbar++;
                         ct = 0;
                         foreach (var j in ViewModelMain.myLISTfull)
@@ -159,25 +169,17 @@ namespace IPTVman.ViewModel
                         }
 
                     }
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
                 catch (Exception e)
                 {
-                    except += e.Message.ToString();
+                    tcs.SetException(e);
                 }
-
-                //dialog.Show("Статус закрытя "+ task1.Status.ToString());
-                if (except != "") dialog.Show("ОШИБКА " + except);
-
-                LongtaskCANCELING.stop();
-               // Wait.Close();
-                Update_collection();
-                return "";
-
-                //----------------
+                return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         }

@@ -111,7 +111,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                ip0 = "error НЕ СУЩЕСТВУЕТ.  " + ex.Message.ToString();// Console.WriteLine(ex.ToString());
+                ip0 = "error "+data.NOT_URL+".  " + ex.Message.ToString();// Console.WriteLine(ex.ToString());
             }
 
             return ip0;
@@ -146,7 +146,7 @@ namespace IPTVman.ViewModel
             string[] split = url.Split(new Char[] { '.' });
 
            
-            if (split.Length < 2) {  return (exit("нет IP  НЕ СУЩЕСТВУЕТ " + ip) ); }
+            if (split.Length < 2) {  return (exit("нет IP  "+data.NOT_URL+" " + ip) ); }
 
             result = ip;
 
@@ -161,10 +161,10 @@ namespace IPTVman.ViewModel
 
                 // string newLine;
                 //byte[] data = client.(url);
-                //if (data == null) { result = "НЕ СУЩЕСТВУЕТ нулевой ответ"; return result;  }
+                //if (data == null) { result = "+data.NOT_URL+" нулевой ответ"; return result;  }
 
                 Stream stream = client.OpenRead(url);
-                if (stream == null) { result = "НЕ СУЩЕСТВУЕТ."; return (exit("errorSTREAMnull")); }
+                if (stream == null) { result = data.NOT_URL+"."; return (exit("errorSTREAMnull")); }
 
                 StreamReader sr = new StreamReader(stream);
                
@@ -222,14 +222,14 @@ namespace IPTVman.ViewModel
                     if (r.Success)
                     {
                     }
-                     else   rez = "НЕ СУЩЕСТВУЕТ. WebException " + ex.Message.ToString() + " ";
+                     else   rez = data.NOT_URL+". WebException " + ex.Message.ToString() + " ";
                 }
                 return (exit(ip + rez));
             }
 
             catch (Exception ex)
             {
-                //MessageBox.Show("НЕ СУЩЕСТВУЕТ "+ ex.Message.ToString(), "",    
+                //MessageBox.Show(data.NOT_URL+" "+ ex.Message.ToString(), "",    
                 //                    MessageBoxButton.OK);
                 return (exit("не определено ExceptionWebClient " + ex.Message));
             }    
@@ -241,6 +241,20 @@ namespace IPTVman.ViewModel
             result = result.Replace("#EXT-X-VERSION:2", "");
             result = result.Replace("#EXT-X-STREAM-INF", "");
             result = result.Replace("#EXT-X-TARGET", "");
+
+            //Исключения
+            Regex regex1 = new Regex("Сервер нарушил протокол");
+            var m = regex1.Match(result);
+            if (m.Success) { result = result.Replace(data.NOT_URL, ""); result = result.Replace(data.NOT_URL, ""); }
+
+            regex1 = new Regex("Обычно - это временная ошибка");
+            m = regex1.Match(result);
+            if (m.Success) { result = result.Replace(data.NOT_URL, ""); result = result.Replace(data.NOT_URL, ""); }
+
+            regex1 = new Regex("Этот хост неизвестен");
+            m = regex1.Match(result);
+            if (m.Success) { result = result.Replace(data.NOT_URL, ""); result = result.Replace(data.NOT_URL, ""); }
+
             done = true;
             return s;
         }

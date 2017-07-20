@@ -161,11 +161,14 @@ namespace IPTVman.ViewModel
         }
 
 
+        private object threadLock = new object();
         public void Update_collection()
         {
-
-            UPDATE_FILTER();
-            RaisePropertyChanged("mycol");///update LIST!!
+            lock (threadLock)
+            {
+                UPDATE_FILTER();
+                RaisePropertyChanged("mycol");///update LIST!!
+            }
         }
 
 

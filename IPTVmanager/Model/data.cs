@@ -51,6 +51,7 @@ namespace IPTVman.Model
 
     public static class data
     {
+        public static string NOT_URL = "НЕ СУЩЕСТВУЕТ";
         public static byte current_favorites =1;
         public static string favorite1_1 = "best";
         public static string favorite1_2 = "";

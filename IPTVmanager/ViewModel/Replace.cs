@@ -19,7 +19,11 @@ namespace IPTVman.ViewModel
     partial class ViewModelWindowReplace : ViewModelMain
     {
         public static event Delegate_UpdateMOVE Event_UpdateCollection;
-       
+        CancellationTokenSource cts1 = new CancellationTokenSource();
+        CancellationToken cancellationToken;
+        Task task1;
+
+
         public RelayCommand key_ReplaceCommandSTART { get; set; }
 
         //============================== INIT ==================================
@@ -32,9 +36,7 @@ namespace IPTVman.ViewModel
 
 
         bool find = false;
-        CancellationTokenSource cts1 = new CancellationTokenSource();
-        Task task1;
-
+        
         async void key_replace(object selectedItem)
         {
             find = false;
@@ -42,12 +44,12 @@ namespace IPTVman.ViewModel
             if (ViewModelMain.myLISTbase == null) return;
             if (ViewModelMain.myLISTbase.Count == 0) return;
 
-            string rez = await Replace(cts1.Token);
+            cancellationToken = cts1.Token;//для task1
+            string rez = await Replace(cancellationToken);
         }
 
         async Task<string> Replace(CancellationToken Token)
         {
-
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             var tcs = new TaskCompletionSource<string>();
             task1 = Task.Run(() =>
