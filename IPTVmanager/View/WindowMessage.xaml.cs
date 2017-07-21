@@ -23,6 +23,7 @@ namespace IPTVman.ViewModel
         {
             InitializeComponent();
             txtMessage.Text = dialog.message;
+            if (dialog.message.Length > 120) txtMessage.FontSize = 8;
         }
 
         private void exit_Copy_Click(object sender, RoutedEventArgs e)
@@ -39,7 +40,7 @@ namespace IPTVman.ViewModel
         public static void Show(string s)
         {
             message = s;
-            message_open = true;
+           message_open = true;
         }
 
     }

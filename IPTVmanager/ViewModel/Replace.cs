@@ -18,7 +18,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelWindowReplace : ViewModelMain
     {
-        public static event Delegate_UpdateMOVE Event_UpdateCollection;
+        public static event Delegate_UpdateCollection Event_UpdateCollection;
         CancellationTokenSource cts1 = new CancellationTokenSource();
         CancellationToken cancellationToken;
         Task task1;
@@ -30,6 +30,7 @@ namespace IPTVman.ViewModel
         public ViewModelWindowReplace()
         {
             key_ReplaceCommandSTART = new RelayCommand(key_replace);
+            sel1 = "";
         }
         //======================================================================
 
@@ -67,7 +68,8 @@ namespace IPTVman.ViewModel
                         if (chek7) { if (prov(k.tvg_name, k)) { continue; } }
                     }
 
-                    if (!find) dialog.Show("Не найдено '" + sel1 + "'");
+                    if (!find) if (sel1 != "") dialog.Show("Не найдено '" + sel1 + "'");
+                                                else dialog.Show("НЕ ЗАДАНА СТРОКА ПОИСКА");
                     else
                     if (Event_UpdateCollection != null) Event_UpdateCollection(ViewModelMain.myLISTbase[0]);
                     tcs.SetResult("ok");

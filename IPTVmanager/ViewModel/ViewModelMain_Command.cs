@@ -317,64 +317,95 @@ namespace IPTVman.ViewModel
 
         }
 
-        void DelDUBLICAT(object parameter)
-        {
-            if (myLISTfull == null) return;
 
+        async void DelDUBLICAT(object parameter)
+        {
+
+            if (myLISTfull == null) return;
+            if (myLISTbase == null) return;
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ДУБЛИКАТОВ name,url,Exfilter !!!");
             if (result != MessageBoxResult.Yes) return;
 
+
+            //Task task1 = Task.Run(() =>
+            //{
+            //    var tcs = new TaskCompletionSource<string>();
+            //    try
+            //    {
+
+            //        tcs.SetResult("ok");
+            //    }
+            //    catch (OperationCanceledException e)
+            //    {
+            //        tcs.SetException(e);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        tcs.SetException(e);
+            //    }
+            //    return;
+            //});
+
+            //try
+            //{
+            //    await task1;
+            //}
+            //catch(Exception ex) { MessageBox.Show(ex.Message.ToString()); }
+            ////dialog.Show("Поиск дубликатов ЗАВЕРШЕН");
+            //task1 = null;
             bool first;
             first = false;
             bool del_ok;
-
             uint index = 0;
-
             while (1 == 1)
             {
-                
+
                 del_ok = false;
                 first = false;
-                Update_collection();
+                //Update_collection();
                 foreach (var k in myLISTbase)
                 {
                     //dialog..Show("СТАРТ "+k.http);
                     first = false;
                     foreach (var j in myLISTbase)
                     {
-
+                        //dialog.Show("Идет поиск дубликатов ...");
                         if (k.name == j.name && k.http == j.http && k.ExtFilter == j.ExtFilter)
                         {
-                            //dialog..Show("нашли " + j.http+"  "+first.ToString());
+
                             var item = ViewModelMain.myLISTfull.Find(x =>
                              (x.http == k.http && x.ExtFilter == k.ExtFilter && x.name == k.name));
 
                             if (item != null && first)
                             {
+
                                 first = false;
                                 del_ok = true;
                                 result = MessageAsk.Create(" Найдено дублирование\n Удалить " + item.name + "\n" + item.http +
-                                    "\n" + item.ExtFilter+" ?");
+                                    "\n" + item.ExtFilter + " ?");
                                 if (result == MessageBoxResult.Yes) myLISTfull.Remove(item);
                                 else { Update_collection(); return; }
                                 break;
                             }
+                            //else dialog.Show("нашли " + j.http + "  " + first.ToString());
                             if (item != null && !first) { first = true; }//нахождение самого себя
                         }
 
                     }
                     index++;
                     if (del_ok) break;
-                   
+
 
                 }
 
                 if (index > myLISTbase.Count) break;
+
             }
 
             Update_collection();
             //dialog.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
             //                   MessageBoxButton.OK, MessageBoxImage.Information);
+
 
         }
 

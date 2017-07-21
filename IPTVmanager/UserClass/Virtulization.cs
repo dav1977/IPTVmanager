@@ -272,11 +272,11 @@ namespace IPTVman.ViewModel
                     CleanUpPages();
 
                     //defensive check in case of async load
-                    if (_pages[pageIndex] == null)
-                    {
-                        //Trace.WriteLine(" return default");
-                        return default(T);
-                    }
+                    //if (_pages[pageIndex] == null)
+                    //{
+                    //    //Trace.WriteLine(" return default");
+                    //    return default(T);
+                    //}
 
 
                     //Trace.WriteLine( "ALLPAGES=" + _pages.Count);
@@ -288,11 +288,13 @@ namespace IPTVman.ViewModel
                     bool ok = false;
                     try
                     {
-                        retPAGE = _pages[pageIndex][pageOffset];
+                        // Trace.WriteLine($"[1]index={pageIndex}  offser={pageOffset} size={_pages.Count} i={index} ps={PageSize} ");
+                        if (_pages[pageIndex] != null) retPAGE = _pages[pageIndex][pageOffset];
+
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                        Trace.WriteLine("my crash");
+                        Trace.WriteLine($"my crash {ex.Message.ToString()} size={_pages.Count} i={index} ps={PageSize} ");
                         LoadPage(pageIndex);
                     }
                     finally { ok = true; }

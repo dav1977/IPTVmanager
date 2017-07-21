@@ -26,7 +26,6 @@ namespace IPTVman.ViewModel
 
         public PING()
         {
-            WindowPING.Event_Close_ping += WindowPING_Event_Close_ping;
         }
 
 
@@ -49,10 +48,6 @@ namespace IPTVman.ViewModel
             _iswork = false;
         }
 
-        private void WindowPING_Event_Close_ping(string s)
-        {
-           string nl=exit(s);
-        }
 
         public static string GetIPlocalAddress(string serverName)
         {

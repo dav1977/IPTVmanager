@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace IPTVman.ViewModel
 {
 
-    public delegate void Delegate_UpdateMOVE(ParamCanal a);
+    public delegate void Delegate_UpdateCollection(ParamCanal a);
 
     //public class MultiValueConverter : IMultiValueConverter     //  http://www.codearsenal.net/2013/12/wpf-multibinding-example.html
     //{
@@ -86,10 +86,11 @@ namespace IPTVman.ViewModel
         {
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
-            ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateMOVE(updateLIST);
-            ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateMOVE(updateLIST);
-            WindowPING.Event_updateFILTER += new Delegate_UpdateEDIT(updateLIST);
-            ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateMOVE(updateLIST);
+            ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
+            ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
+            ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
+            WindowPING.Event_Refresh += new Delegate_UpdateCollection(updateLIST);
+
 
             ini_command();
             CreateTimer1(500);

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Threading;
+using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
@@ -25,12 +26,10 @@ namespace IPTVman.ViewModel
         static PING _ping;
         static PING_prepare _pingPREPARE;
 
-        public static event Delegate_UpdateEDIT Event_updateFILTER;
-        public static event Delegate_UpdateALL Event_Refresh;
-        public static event Delegate_CLOSEPING Event_Close_ping;
+        public static event Delegate_UpdateCollection Event_Refresh;
 
         int size = 0;
-        static AUTOPING ap;
+        AUTOPING ap;
         bool update_ok=false;
         System.Timers.Timer Timer1;
         
@@ -77,68 +76,72 @@ namespace IPTVman.ViewModel
                     }));
 
                 }
+            //----------------------------------------------
+                if (start_add)
+                {
+                    string z = message_add;
+                    textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        size++;
+                        if (size > 500) { textBox.Clear(); size = 0; }
+
+                        textct.Text = String.Format("{0} из {1} ", Model.data.ct_ping,  Model.data.ping_all);
+
+                        if (message_add == "end")
+                        {
+                            _writingProgressBar.Visibility = Visibility.Hidden;
+                            message_add = "== АВТО ПИНГ ЗАКОНЧЕН==";
+                            tb1.Text = "ВЫПОЛНЕНО";
+                            button.Visibility = Visibility.Visible;
+                        }
+                        textBox.AppendText(message_add + Environment.NewLine);
+                        textBox.ScrollToEnd();
+
+
+                    }));
+
+                    if (z == "end") update();
+
+                    start_add = false;
+                }
+
+
             }
             catch { }
         }
 
-        
+        bool start_add = false;
+        string message_add;
         void add(string s)
         {
-            string e = s;
-            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-            {
-                size++;
-                if (size > 500) { textBox.Clear(); size = 0; }
-
-                textct.Text = String.Format("{0} из {1} ", IPTVman.Model.data.ct_ping, IPTVman.Model.data.ping_all);
-
-                if (s == "end")
-                {
-                    _writingProgressBar.Visibility = Visibility.Hidden;
-                    s = "== АВТО ПИНГ ЗАКОНЧЕН==";
-                    tb1.Text = "ВЫПОЛНЕНО";
-                    button.Visibility = Visibility.Visible;
-                }
-                textBox.AppendText(s + Environment.NewLine);
-                textBox.ScrollToEnd();
-           
-           
-            }));
-
-
-            if (e == "end")
-            {
-                if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });
-                if (Event_Refresh != null) Event_Refresh(1);
-                update_ok = true;
-            }
-
+            message_add = s;
+            start_add = true;
         }
 
 
         //key ЗАКРЫТЬ
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            if (Event_Close_ping != null) Event_Close_ping("");
             if  (_ping!=null) _ping.stop();
-            this.Close();
-            
+            this.Close();  
         }
 
+        void update()
+        {
+            if (Event_Refresh != null) Event_Refresh(new Model.ParamCanal { });
+            update_ok = true;
+        }
 
         //close
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            //Trace.WriteLine("----------------- клосинг");
             if (ap != null) ap.stop();
             ap = null;
             LongtaskCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
           
-            if (!update_ok)
-            {
-               // if (Event_updateFILTER != null) Event_updateFILTER(new Model.ParamCanal { });
-                if (Event_Refresh != null) Event_Refresh(1);
-                update_ok = true;
-            }
+            if (!update_ok) update();
+
         }
     }
 }

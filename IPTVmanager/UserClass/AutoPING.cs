@@ -70,13 +70,13 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                dialog.Show("Ошибка "+ex.ToString());
+                dialog.Show("Ошибка autoping "+ex.ToString());
             }
         }
-
+         private object threadLock = new object();
         public async Task<string> AsyncTaskSTART(CancellationToken cancellationToken)
         {
- 
+
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             string result = "";
             task1 = Task.Run(() =>
@@ -84,8 +84,11 @@ namespace IPTVman.ViewModel
                 var tcs = new TaskCompletionSource<string>();
                 try
                 {
-                   result = ping_all(cancellationToken, myLIST);
-                   tcs.SetResult("ok");
+                    lock (threadLock)
+                    {
+                        result = ping_all(cancellationToken, myLIST);
+                    }
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
@@ -103,10 +106,20 @@ namespace IPTVman.ViewModel
             catch (Exception e)
             {
                 dialog.Show("ОШИБКА-АВТОПИНГ " + e.Message.ToString());
-                cts1.Cancel();
             }
-         
-            task1.Dispose();
+            cts1.Cancel();
+            //int ct = 0;
+            //while (true)
+            //{
+            //    ct++;
+            //    if (ct > 10) { task1 = null; return result; }
+            //    if (task1.IsCompleted) break;
+            //    if (task1.IsFaulted) break;
+            //    if (task1.IsCanceled) break;
+            //    Thread.Sleep(500);
+
+            //}
+            //if (task1 != null) task1.Dispose();
             task1 = null;
             return result;
         }

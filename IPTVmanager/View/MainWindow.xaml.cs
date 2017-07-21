@@ -6,6 +6,7 @@ using IPTVman.Model;
 using IPTVman.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace IPTVman.ViewModel
@@ -23,6 +24,7 @@ namespace IPTVman.ViewModel
     public partial class MainWindow : Window
     {
         public static Window header;
+        bool start_update = false;
 
         public MainWindow()
         {
@@ -31,8 +33,7 @@ namespace IPTVman.ViewModel
             this.Title = "IPTV manager v1.0";
 
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
-            WindowPING.Event_Refresh += new Delegate_UpdateALL(updateLIST);
-
+  
            // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
@@ -49,38 +50,43 @@ namespace IPTVman.ViewModel
             changefav = false;
 
 
+
+
+
+            //MYLIST.Loaded += (sender, args) => { IPTVman.ViewModel.MainWindow.u = MYLIST.Dispatcher; };
+
             //Binding bind = new Binding();
             //bind.Source = grid1;
             //bind.Path = new PropertyPath("grid1.ItemsSource.Count");  
             //bind.Mode = BindingMode.OneWay;
             //label_kanals.SetBinding(label_kanals.Content, bind);
         }
-     
 
+
+
+
+        private object threadLock = new object();
         void updateLIST(int size)
         {
-            try
-            {
-                MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                {
-                    bDELETE.Content = "";
-                    MYLIST.Items.Refresh();
+            start_update = true;
+           // Task.Factory.StartNew(() =>
+           // {
+               
+            //});
 
-                }));
 
-            }
-            catch
-            {
-
-            }
+            
         }
 
         void select (int a, ParamCanal b)
         {
-            MYLIST.SelectedIndex = 10;
-            MYLIST.Focusable = true;
-            MYLIST.Focus();
-        }
+            lock (threadLock)
+            {
+                MYLIST.SelectedIndex = 10;
+                MYLIST.Focusable = true;
+                MYLIST.Focus();
+            }
+       }
 
 
         public static void Window_Wait_close()
@@ -101,43 +107,76 @@ namespace IPTVman.ViewModel
         static Window message;
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (dialog.message_open)
+            try
             {
-                dialog.message_open = false;
 
-                if (message != null)
+                if (start_update)
                 {
-                    message.Close();
-                    message = null;
+
+                    lock (threadLock)
+                    {
+                        //object lockObj = new object();
+                        //BindingOperations.EnableCollectionSynchronization(, lockObj);
+                        try
+                        {
+
+                             MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                            {
+                                bDELETE.Content = "";
+                                MYLIST.Items.Refresh();
+
+                            }));
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+
+                    start_update = false;
                 }
-                message = new WindowMessage()
+
+
+
+                    if (dialog.message_open)
                 {
-                    Title = "Сообщение",
-                    Topmost = true,
-                    WindowStyle = WindowStyle.ToolWindow,
-                    Name = "message",
-                    SizeToContent = SizeToContent.WidthAndHeight,
-                    ResizeMode = ResizeMode.NoResize
-                   // WindowStartupLocation = WindowStartupLocation.CenterOwner
-                };
+                    dialog.message_open = false;
 
-                message.Closing += message_Closing;
-                message.Show();
-                message.Owner = MainWindow.header;
+                    if (message != null)
+                    {
+                        message.Close();
+                        message = null;
+                    }
+                    message = new WindowMessage()
+                    {
+                        Title = "Сообщение",
+                        Topmost = true,
+                        WindowStyle = WindowStyle.ToolWindow,
+                        Name = "message",
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                        // WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
+
+                    message.Closing += message_Closing;
+                    message.Show();
+                    message.Owner = MainWindow.header;
+                }
+
+                if (LongtaskCANCELING.isENABLE())
+                {
+
+                    if (Wait.WaitIsOpen()) return;
+                    Wait.Create("Ждите идет анализ файла", true);
+
+                }
+                else
+                {
+                    if (Wait.WaitIsOpen()) Wait.Close();
+                    else return;
+                }
             }
-
-            if (LongtaskCANCELING.isENABLE())
-            {
-
-                if (Wait.WaitIsOpen()) return;
-                Wait.Create("Ждите идет анализ файла", true);
-
-            }
-            else
-            {
-                if (Wait.WaitIsOpen()) Wait.Close();
-                else return;
-            }
+            catch { }
 
         }
         private void message_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -311,13 +350,13 @@ namespace IPTVman.ViewModel
 
      
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            var a = MYLIST.Items[2];
-            MYLIST.SelectedItem = a;
-            MYLIST.Items.Refresh();
-            MYLIST.Focus();
-        }
+        //private void Button_Click_1(object sender, RoutedEventArgs e)
+        //{
+        //    var a = MYLIST.Items[2];
+        //    MYLIST.SelectedItem = a;
+        //    MYLIST.Items.Refresh();
+        //    MYLIST.Focus();
+        //}
 
 
         Window win1;
