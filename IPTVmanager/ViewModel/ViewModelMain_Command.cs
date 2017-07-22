@@ -190,8 +190,10 @@ namespace IPTVman.ViewModel
 
 
 
-
-        Window ap;
+        AUTOPING ap;
+        Window winap;
+        PING _ping;
+        PING_prepare _pingPREPARE;
         /// <summary>
         /// AUTO PING
         /// </summary>
@@ -201,9 +203,16 @@ namespace IPTVman.ViewModel
             if (LongtaskCANCELING.isENABLE()) return;
             if (myLISTbase==null) return;
             if (myLISTbase.Count == 0) return;
-            if (ap!=null) return;
+            if (winap!=null) return;
 
-            ap = new WindowPING
+            _ping = new PING();
+            _pingPREPARE = new PING_prepare(_ping);
+
+            ap = new AUTOPING(_ping, _pingPREPARE);
+            ap.start();
+
+
+            winap = new WindowPING
             {
                 Title = "АВТО ПИНГ",
                 Topmost = true,
@@ -211,14 +220,19 @@ namespace IPTVman.ViewModel
                 Name = "winPING"
             };
 
-            ap.Closing += Ap_Closing;
-            ap.Show();
-            ap.Owner = MainWindow.header;
+            winap.Closing += Ap_Closing;
+            winap.Show();
+            winap.Owner = MainWindow.header;
         }
 
         private void Ap_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            LongtaskCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
+            winap = null;
+            ap.stop();
+            ap.Dispose();
             ap = null;
+            Update_collection();
         }
 
 

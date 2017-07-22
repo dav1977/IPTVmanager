@@ -23,33 +23,16 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class WindowPING : Window 
     {
-        static PING _ping;
-        static PING_prepare _pingPREPARE;
-
-        public static event Delegate_UpdateCollection Event_Refresh;
-
         int size = 0;
-        AUTOPING ap;
-        bool update_ok=false;
         System.Timers.Timer Timer1;
         
         public WindowPING()
         {
             InitializeComponent();
-
-            _ping = new PING();
-            _pingPREPARE = new PING_prepare(_ping);
-
-            button.Visibility = Visibility.Hidden;
-            ap = new AUTOPING(_ping, _pingPREPARE);
-            AUTOPING.Event_Print += new Delegate_Print(add);
-            ap.start();
-            
+            button.Visibility = Visibility.Hidden;          
             CreateTimer1(500);
+            AUTOPING.Event_Print += new Delegate_Print(add);
         }
-
-
-
         public void CreateTimer1(int ms)
         {
             if (Timer1 == null)
@@ -67,7 +50,7 @@ namespace IPTVman.ViewModel
         {
             try
             {
-                if (IPTVman.Model.data.ping_waiting > 20)
+                if (Model.data.ping_waiting > 20)
                 {
                     textct.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                     {
@@ -99,9 +82,6 @@ namespace IPTVman.ViewModel
 
 
                     }));
-
-                    if (z == "end") update();
-
                     start_add = false;
                 }
 
@@ -110,6 +90,10 @@ namespace IPTVman.ViewModel
             catch { }
         }
 
+
+        /// <summary>
+        /// ДОБАВЛЕНИЕ. для запуска из другого потока
+        /// </summary>
         bool start_add = false;
         string message_add;
         void add(string s)
@@ -118,30 +102,17 @@ namespace IPTVman.ViewModel
             start_add = true;
         }
 
-
         //key ЗАКРЫТЬ
         private void button_Click(object sender, RoutedEventArgs e)
-        {
-            if  (_ping!=null) _ping.stop();
+        {  
             this.Close();  
-        }
-
-        void update()
-        {
-            if (Event_Refresh != null) Event_Refresh(new Model.ParamCanal { });
-            update_ok = true;
         }
 
         //close
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //Trace.WriteLine("----------------- клосинг");
-            if (ap != null) ap.stop();
-            ap = null;
-            LongtaskCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
-          
-            if (!update_ok) update();
-
+            Model.data.ping_waiting = 0;
         }
+
     }
 }

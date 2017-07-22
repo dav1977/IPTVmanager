@@ -24,9 +24,7 @@ namespace IPTVman.ViewModel
         PING_prepare _pingPREPARE;
         public static event Delegate_Print Event_Print;
         List<ParamCanal> myLIST;
-
         public static Task task1;
-
         public static CancellationTokenSource cts1;
         public static CancellationToken cancellationToken;
 
@@ -39,19 +37,38 @@ namespace IPTVman.ViewModel
         //throw new OperationCanceledException(new CancellationToken(true));
         //throw new OperationCanceledException(new CancellationToken(false));
 
+
+
         public AUTOPING(PING p, PING_prepare b)
         {
             _ping = p;
             _pingPREPARE = b;
-
-            cts1 = new CancellationTokenSource();
-
+            cts1 = new CancellationTokenSource();       
             cancellationToken = cts1.Token;//для task1
         }
 
         public void stop()
         {
             cts1.Cancel();
+        }
+
+        public void Dispose()
+        {
+            //int ct = 0;
+            //while (true)
+            //{
+            //    ct++;
+            //    if (ct > 10) { task1 = null; return result; }
+            //    if (task1.IsCompleted) break;
+            //    if (task1.IsFaulted) break;
+            //    if (task1.IsCanceled) break;
+            //    Thread.Sleep(500);
+
+            //}
+            //if (task1 != null) task1.Dispose();
+            task1 = null;
+            loc.collection = false;
+            data.ping_waiting = 0;
         }
 
 
@@ -108,19 +125,7 @@ namespace IPTVman.ViewModel
                 dialog.Show("ОШИБКА-АВТОПИНГ " + e.Message.ToString());
             }
             cts1.Cancel();
-            //int ct = 0;
-            //while (true)
-            //{
-            //    ct++;
-            //    if (ct > 10) { task1 = null; return result; }
-            //    if (task1.IsCompleted) break;
-            //    if (task1.IsFaulted) break;
-            //    if (task1.IsCanceled) break;
-            //    Thread.Sleep(500);
-
-            //}
-            //if (task1 != null) task1.Dispose();
-            task1 = null;
+           
             return result;
         }
 

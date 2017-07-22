@@ -154,7 +154,6 @@ namespace ListViewDragDropManager
             {
                 if (IPTVman.Model.loc.collection) return;
                 int i = 0;
-                Trace.Write("start rotation");
                 foreach (var s in ListViewDragDropManager.Task.list)
                 {
                     if (i < ListViewDragDropManager.Task.list.Count)

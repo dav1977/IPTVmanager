@@ -89,13 +89,9 @@ namespace IPTVman.ViewModel
             ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
-            WindowPING.Event_Refresh += new Delegate_UpdateCollection(updateLIST);
-
-
+         
             ini_command();
-            CreateTimer1(500);
-
-            
+            CreateTimer1(500);   
         }
 
 
