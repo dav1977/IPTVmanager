@@ -125,7 +125,7 @@ namespace IPTVman.ViewModel
             get
             {
                 if (myLISTbase == null) return "Всего каналов: 0";
-                return "Всего каналов: " + myLISTfull.Count.ToString() +"   Отфильтрованных="+myLISTbase.Count.ToString();
+                return "Всего каналов: " + myLISTfull.Count.ToString() +"   Отфильтрованных: "+myLISTbase.Count.ToString();
             }
        
         }

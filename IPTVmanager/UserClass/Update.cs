@@ -21,11 +21,6 @@ namespace IPTVman.ViewModel
         private List<ParamCanal> myLISTbase;
         private List<ParamCanal> myLISTfullNEW;
 
-
-        List<ParamCanal> myLISTdublicate1a;//временный
-        List<ParamCanal> myLISTdublicate1b;//временный
-        List<ParamCanal> myLISTdublicate2;//временный
-
         /// <summary>
         /// 
         /// </summary>
@@ -175,10 +170,15 @@ namespace IPTVman.ViewModel
 
         public List<ParamCanal> find_dublicate(List<ParamCanal> glob)
         {
+
+            List<ParamCanal> myLISTdublicate1a;//временный
+            List<ParamCanal> myLISTdublicate1b;//временный
+            List<ParamCanal> myLISTdublicate2;//временный
+
             myLISTdublicate1a = new List<ParamCanal>();
             myLISTdublicate1b = new List<ParamCanal>();
             myLISTdublicate2 = new List<ParamCanal>();
-
+            int ct = 0;
             foreach (var c in glob)
             {
                 myLISTdublicate1a.Add( (ParamCanal)c.Clone());
@@ -191,11 +191,12 @@ namespace IPTVman.ViewModel
             ParamCanal nextitem = new ParamCanal();
             ParamCanal firsttItem = null;
 
+            myLISTdublicate2.Clear();
             foreach (var main in myLISTdublicate1a)
             {
                 first = false;
                 next = false;
-                if (ind != 0) myLISTdublicate1a[ind - 1].name = "delete" + ind.ToString();
+                if (ind != 0) myLISTdublicate1a[ind - 1].name = "$delete$_COPY" + ind.ToString();
                 index = 0;
 
                 foreach (var j in myLISTdublicate1b)
@@ -207,16 +208,16 @@ namespace IPTVman.ViewModel
                                 if (!next)
                                 {
                                     nextitem = (ParamCanal)j.Clone();
-                                    myLISTdublicate2.Add(firsttItem);
-                                    myLISTdublicate2.Add(nextitem);
-                                    myLISTdublicate1b[index].name = "deleteCOPY" + index.ToString();
+                                    myLISTdublicate2.Add(firsttItem); ct++; ct++;
+                                myLISTdublicate2.Add(nextitem);
+                                    myLISTdublicate1b[index].name = "$delete$COPY" + index.ToString();
                                     next = true;
                                 }
                                 else
                                 {
                                     nextitem = (ParamCanal)j.Clone();
-                                    myLISTdublicate2.Add(nextitem);
-                                    myLISTdublicate1b[index].name = "deleteCOPY" + index.ToString();
+                                    myLISTdublicate2.Add(nextitem); ct++;
+                                myLISTdublicate1b[index].name = "$delete$COPY" + index.ToString();
                                 }
                             }
                             else
@@ -230,9 +231,20 @@ namespace IPTVman.ViewModel
                 ind++;
                 GUI.progressbar++;
             }
+
+           
+            //чистка
+            List<ParamCanal> resul = new List<ParamCanal>();
+            foreach (var c in myLISTdublicate2)
+            {
+                if (c.name.Contains("$delete$")) { }
+                else resul.Add((ParamCanal)c.Clone());
+            }
+
             myLISTdublicate1a = null;
             myLISTdublicate1b = null;
-            return myLISTdublicate2;
+            myLISTdublicate2 = null;
+            return resul;
         }  
       
 
