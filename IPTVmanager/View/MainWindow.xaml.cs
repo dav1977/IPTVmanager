@@ -49,10 +49,6 @@ namespace IPTVman.ViewModel
             data.best2 = best2.Text;
             changefav = false;
 
-
-
-
-
             //MYLIST.Loaded += (sender, args) => { IPTVman.ViewModel.MainWindow.u = MYLIST.Dispatcher; };
 
             //Binding bind = new Binding();
@@ -63,47 +59,23 @@ namespace IPTVman.ViewModel
         }
 
 
-
-
         private object threadLock = new object();
         void updateLIST(int size)
         {
-            start_update = true;
-           // Task.Factory.StartNew(() =>
-           // {
-               
-            //});
-
-
-            
+            start_update = true;    
         }
 
-        void select (int a, ParamCanal b)
-        {
-            lock (threadLock)
-            {
-                MYLIST.SelectedIndex = 10;
-                MYLIST.Focusable = true;
-                MYLIST.Focus();
-            }
-       }
+       // void select (int a, ParamCanal b)
+       // {
+       //     lock (threadLock)
+       //     {
+       //         MYLIST.SelectedIndex = 10;
+       //         MYLIST.Focusable = true;
+       //         MYLIST.Focus();
+       //     }
+       //}
 
-
-        public static void Window_Wait_close()
-        {
-            if (!LongtaskCANCELING.isENABLE()) return;
-            LongtaskCANCELING.stop();
-            Wait.Close();
-            //foreach (Window win in Application.Current.Windows)
-            //{
-            //    if (win.Name == "winwait")
-            //    {
-            //        win.Close();
-            //        window_wait_open = false;
-            //    }
-            //}
-        }
-
+       
         static Window message;
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -120,12 +92,12 @@ namespace IPTVman.ViewModel
                         try
                         {
 
-                             MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                            {
-                                bDELETE.Content = "";
-                                MYLIST.Items.Refresh();
+                            MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                           {
+                               bDELETE.Content = "";
+                               MYLIST.Items.Refresh();
 
-                            }));
+                           }));
                         }
                         catch
                         {
@@ -138,7 +110,7 @@ namespace IPTVman.ViewModel
 
 
 
-                    if (dialog.message_open)
+                if (dialog.message_open)
                 {
                     dialog.message_open = false;
 
@@ -163,18 +135,8 @@ namespace IPTVman.ViewModel
                     message.Owner = MainWindow.header;
                 }
 
-                if (LongtaskCANCELING.isENABLE())
-                {
+                Wait.manager();
 
-                    if (Wait.WaitIsOpen()) return;
-                    Wait.Create("Ждите идет анализ файла", true);
-
-                }
-                else
-                {
-                    if (Wait.WaitIsOpen()) Wait.Close();
-                    else return;
-                }
             }
             catch { }
 
@@ -362,7 +324,7 @@ namespace IPTVman.ViewModel
         Window win1;
         private void MYLIST_MouseDoubleClick_EDIT(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (LongtaskCANCELING.isENABLE()) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
             if (win1 != null) return;
             int si = MYLIST.SelectedIndex;
             if (si < 0) { return; }
@@ -393,6 +355,11 @@ namespace IPTVman.ViewModel
         {
             Model.bd_data.s2 = best1.Text;
             Model.bd_data.s3 = best1.Text;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

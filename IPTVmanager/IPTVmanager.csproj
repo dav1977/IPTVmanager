@@ -93,6 +93,7 @@
     <Compile Include="Model\ParamCanal.cs" />
     <Compile Include="UserClass\Registy_Find.cs" />
     <Compile Include="UserClass\BaseAccess.cs" />
+    <Compile Include="UserClass\Update.cs" />
     <Compile Include="ViewModel\MOVE\DragAdorner.cs" />
     <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
     <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />

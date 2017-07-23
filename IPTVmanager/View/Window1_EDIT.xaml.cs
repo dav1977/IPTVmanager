@@ -43,7 +43,7 @@ namespace IPTVman.ViewModel
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (ViewModelWindow1._ping == null) return;
-            LongtaskCANCELING.analiz_closing_thread(ViewModelWindow1._ping, ViewModelWindow1._pingPREPARE);
+            LongtaskPingCANCELING.analiz_closing_thread(ViewModelWindow1._ping, ViewModelWindow1._pingPREPARE);
         }
 
 

@@ -40,14 +40,12 @@ namespace IPTVman.ViewModel
         private object threadLock = new object();
         internal void RaisePropertyChanged(string prop)
         {
-            lock (threadLock)
-            {
+
                 if (PropertyChanged != null)
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs(prop));
 
                 }
-            }
         }
         public event PropertyChangedEventHandler PropertyChanged; //событие выбора канала
 

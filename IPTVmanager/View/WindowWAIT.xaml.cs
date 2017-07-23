@@ -78,11 +78,12 @@ namespace IPTVman.ViewModel
             CreateTimer1(500);
             txtMessage.Text = Model.GUI.longtaskSTRING;
             message = Model.GUI.longtaskSTRING;
+          
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-           if (Wait.work) e.Cancel = true;
+        {  
+          if (Wait.open) e.Cancel = true;//запрет закрытия
         }
     }
 
@@ -90,49 +91,80 @@ namespace IPTVman.ViewModel
 
     public static class Wait
     {
-        public static bool work = false;
+        public static bool open = false;//state window
         public static Window wait = null;
 
-        public static void Create(string meesage,  bool en_dynamic_progressbar)
+        public static bool need_close = false;
+        public static bool create = false;
+        public static string message = "";
+        public static bool en_progress = false;
+
+
+        public static void Create(string mes, bool en_dynamic_progressbar)
         {
-            if (WaitIsOpen()) Close();
-
-            Model.GUI.progressbar = 0;
-            if (en_dynamic_progressbar) Model.GUI.dynamic_progressbar = false;
-                 else Model.GUI.dynamic_progressbar = true;
-            Model.GUI.longtaskSTRING = meesage;
-
-            wait = new WindowWAIT()
-            {
-                Title = "",
-                Topmost = true,
-                WindowStyle = WindowStyle.ThreeDBorderWindow,
-                Name = "winwait"
-            };
-
-            work = true;
-            wait.Show();
-            wait.Owner = MainWindow.header;
+            message = mes;
+            en_progress = en_dynamic_progressbar;
+            create = true;
         }
+
+            public static void Create_on_timer()
+            {
+                if (WaitIsOpen()) Close_on_timer();
+                create = false;
+
+                Model.GUI.progressbar = 0;
+                if (en_progress) Model.GUI.dynamic_progressbar = false;
+                     else Model.GUI.dynamic_progressbar = true;
+                Model.GUI.longtaskSTRING = message;
+
+                wait = new WindowWAIT()
+                {
+                    Title = "",
+                    Topmost = true,
+                    WindowStyle = WindowStyle.ThreeDBorderWindow,
+                    Name = "winwait"
+                };
+
+                wait.Show();
+                wait.Owner = MainWindow.header;
+                open = true;
+            }
 
         public static bool WaitIsOpen()
         {
-            if (wait != null) return true;
+            if (open) return true;
             else return false;
         }
 
+        public static void Close_on_timer()
+        {
+            if (wait == null) return;
+            open = false;
+            need_close = false;
+            wait.Close();
+        }
         public static void Close()
         {
-            work = false;
-            if (wait == null) return;
-            wait.Close();
-            wait = null;
+            need_close = true;
         }
+
+        public static void manager()//работа из UI потока
+        {
+            if (open)
+            {
+                if (need_close) { Close_on_timer(); }
+            }
+            else
+            {
+                if (create) { Create_on_timer(); }
+            }
+        }
+
     }
 
 
 
-    public static class LongtaskCANCELING
+    public static class LongtaskPingCANCELING
     {
         static PING _ping;
         static PING_prepare _ping_prepare;
@@ -166,8 +198,8 @@ namespace IPTVman.ViewModel
             _ping = null;
             _ping_prepare = null;
             en = false;
+            Wait.Close();
         }
-
 
         public static void analiz_closing_thread(PING p, PING_prepare prep)
         {
@@ -183,9 +215,9 @@ namespace IPTVman.ViewModel
                     ct++;
                     if (ct == 5)
                     {
-                        LongtaskCANCELING.enable(); 
+                        LongtaskPingCANCELING.enable(); 
                         Wait.Create("Ждите идет прерывание пинга", false);
-                        LongtaskCANCELING.enable(p, prep);
+                        LongtaskPingCANCELING.enable(p, prep);
                         break;
                     }
                     Thread.Sleep(100);

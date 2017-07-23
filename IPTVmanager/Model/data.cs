@@ -6,6 +6,8 @@ using System.Diagnostics;
 
 namespace IPTVman.Model
 {
+    public enum typefilter { last, normal, best, dublicate };
+
     /// <summary>
     /// данные локирования
     /// </summary>
@@ -13,6 +15,7 @@ namespace IPTVman.Model
     {
         public static bool collection = false;
         public static bool openfile = false;
+        public static bool finddublic = false;
         public static bool lokUP, lokDN = false;
         public static bool keyadd = false;//дребезг кнопки
     }
@@ -50,6 +53,8 @@ namespace IPTVman.Model
 
     public static class data
     {
+       
+
         public static bool type_player = false;
         public static string NOT_URL = "НЕ СУЩЕСТВУЕТ";
         public static byte current_favorites =1;
@@ -68,8 +73,6 @@ namespace IPTVman.Model
         public static string best1,best2;
   
         public static string f1,f2,f3,f4;
-
-        public static bool filtr_best = false;
 
         public static int ct_ping = 0;
         public static int ping_all = 0;

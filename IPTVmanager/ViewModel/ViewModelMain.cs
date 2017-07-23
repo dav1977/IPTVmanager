@@ -46,7 +46,7 @@ namespace IPTVman.ViewModel
     {
         public static event Delegate_UpdateALL Event_UpdateLIST;
 
-     
+        Update_Collection _update = new Update_Collection();
 
         //public ObservableCollection<ParamCanal> Canal { get; set; }
         //  public MyCollection<ParamCanal> CanalOUT { get; set; }
@@ -58,7 +58,9 @@ namespace IPTVman.ViewModel
         public static List<ParamCanal> myLISTfull;//ДО ФИЛЬТРА
 
 
-       // public static ParamCanal list;
+        public static List<ParamCanal> myLISTdub;//ДО ФИЛЬТРА
+
+        // public static ParamCanal list;
         /// <summary>
         /// SelectedItem is an object instead of a ParamCanal, only because we are allowing "CanUserAddRows=true" 
         /// NewItemPlaceHolder represents a new row, and this is not the same as ParamCanal class
@@ -75,7 +77,7 @@ namespace IPTVman.ViewModel
         ///   at System.Windows.Data.BindingExpression.ConvertBackHelper(IValueConverter converter, Object value, Type sourceType, Object parameter, CultureInfo culture)'
         /// </summary>
 
-       
+
         public CollectionProvider myProvider;
         public AsyncVirtualizingCollection<ParamCanal> ACOLL;
 
@@ -89,7 +91,7 @@ namespace IPTVman.ViewModel
             ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
-         
+           
             ini_command();
             CreateTimer1(500);   
         }
@@ -102,9 +104,9 @@ namespace IPTVman.ViewModel
             int fetchDelay = 1;// 
             myProvider = new CollectionProvider(numItems, fetchDelay);
 
+            myLISTdub = new List<ParamCanal>();//после фильтра
             myLISTbase = new List<ParamCanal>();//после фильтра
             myLISTfull = new List<ParamCanal>();
-
             // create the collection according to specified parameters
             int pageSize = 100;// размер страницы
             int pageTimeout = 1000;//мс ВРЕМЯ ЖИЗНИ ВРЕМЕННОЙ СТРАНИЦЫ после неиспользования
@@ -127,7 +129,7 @@ namespace IPTVman.ViewModel
             data.canal.ExtFilter = data.best1;
             data.canal.group_title = data.best2;
             myLISTfull.Add(data.canal);
-            Update_collection(); 
+            Update_collection(typefilter.last); 
         }
 
 
@@ -147,151 +149,30 @@ namespace IPTVman.ViewModel
                 i++;
             }
 
-            Update_collection();
+            Update_collection(typefilter.last);
         }
 
 
         void updateLIST(ParamCanal item)
         {
-            Update_collection();
+            Update_collection(typefilter.last);
         }
 
 
         private object threadLock = new object();
-        public void Update_collection()
+        public void Update_collection(typefilter t)
         {
             lock (threadLock)
             {
-                UPDATE_FILTER();
+                _update.UPDATE_FILTER(t, myLISTbase, myLISTfull);
+                Thread.Sleep(300);
                 RaisePropertyChanged("mycol");///update LIST!!
                 RaisePropertyChanged("numberCANALS");
             }
         }
 
 
-        void UPD_normal()
-        {
-            if (Wait.WaitIsOpen()) return;
-
-            Match m1, m2, m3, m4;
-            Regex regex1 = new Regex(data.f1, RegexOptions.IgnoreCase);
-            Regex regex2 = new Regex(data.f2, RegexOptions.IgnoreCase);
-            Regex regex3 = new Regex(data.f3, RegexOptions.IgnoreCase);
-            Regex regex4 = new Regex(data.f4);
-
-
-            myLISTbase.Clear();
-            foreach (var c in myLISTfull)
-            {
-                //Trace.WriteLine("z = " + ViewModelMain._filter + "n="+ c.name + " ");
-
-
-                bool not_filter = false;
-                if (data.f1 == "" && data.f2 == "" && data.f3 == "" && data.f4 == "") not_filter = true;
-
-                if (not_filter) { myLISTbase.Add(c); continue; }
-
-
-                m1 = regex1.Match(c.name);
-                if ((m1.Success && data.f2 == "" && data.f3 == "" && data.f4 == "")) myLISTbase.Add(c);
-
-                else
-                {
-                    //----------------------------------
-                    m2 = regex2.Match(c.ExtFilter);
-
-                    if (m2.Success && data.f2 != "" && data.f3 == "") myLISTbase.Add(c);
-                    //----------------------------------
-
-
-                    //----------------------------------
-                    m3 = regex3.Match(c.group_title);
-
-                    if (m3.Success && data.f3 != "" && data.f2 == "") myLISTbase.Add(c);
-                    //----------------------------------
-
-                    if (m3.Success && data.f3 != "" && m2.Success && data.f2 != "") myLISTbase.Add(c);
-
-                }
-
-                if (data.f4 != "" && (m1.Success || data.f1 == ""))
-                {
-
-                    //all
-                    if (c.http != null)
-                    {
-                        m4 = regex4.Match(c.http);
-                        if ((m4.Success)) myLISTbase.Add(c);
-                    }
-                    if (c.ping != null)
-                    {
-                        m4 = regex4.Match(c.ping);
-                        if ((m4.Success)) myLISTbase.Add(c);
-                    }
-                    if (c.tvg_name != null)
-                    {
-                        m4 = regex4.Match(c.tvg_name);
-                        if ((m4.Success)) myLISTbase.Add(c);
-                    }
-
-
-                }
-
-            }
-        }
-
-
-
-        void UPD_best()
-        {
-            if (Wait.WaitIsOpen()) return;
-
-            data.f2 = data.best1;
-            data.f3 = data.best2;
-
-            Match m1;
-            Regex regex1 = new Regex(data.f1, RegexOptions.IgnoreCase);
-
-            myLISTbase.Clear();
-
-            foreach (var c in myLISTfull)
-            {
-                m1 = regex1.Match(c.name);
-
-
-                if( ( //(m1.Success && data.f2 == c.ExtFilter && data.f3 == c.group_title)
-                    (data.best1== c.ExtFilter && data.best2 == c.group_title)  ||
-                    (data.best1 == c.ExtFilter && data.best2 == "") ||
-                    (data.best1 == "" && data.best2 == c.group_title)
-                    )  && (data.f1=="" || m1.Success ))
-                        myLISTbase.Add(c);
-            }
-
-        }
-
-        public void UPDATE_FILTER()
-        {
-            if (Wait.WaitIsOpen()) return;
-
-            if (data.f1 == null) data.f1 = "";
-            if (data.f2 == null) data.f2 = "";
-            if (data.f3 == null) data.f3 = "";
-            if (data.f4 == null) data.f4 = "";
-
-            if (myLISTfull != null && myLISTbase != null)
-            {
-                if (!data.filtr_best) { UPD_normal(); } else UPD_best();
-            }
-
-        }
-
-        public void UPDATE_BEST(string b1, string b2)
-        {
-            if (b1!=null)data.best1 = b1;
-            if (b2!=null)data.best2 = b2;
-         
-        }
-
+      
 
     }//class
 }//namespace

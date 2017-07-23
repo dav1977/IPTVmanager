@@ -129,8 +129,9 @@ namespace IPTVman.ViewModel
             }
             if (_ping.iswork) { _ping.iswork = false; }
 
-          //  ViewModelWindow1._ping = null;//уничтожаем первую ссылку на экземпляр
-           // _ping = null;//уничтожаем вторую ссылку на экземпляр
+            //  ViewModelWindow1._ping = null;//уничтожаем первую ссылку на экземпляр
+            // _ping = null;//уничтожаем вторую ссылку на экземпляр
+            Wait.Close();
             task1.Dispose();
             task1 = null;
             return result;

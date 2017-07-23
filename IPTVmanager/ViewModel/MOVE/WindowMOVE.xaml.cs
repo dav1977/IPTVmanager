@@ -178,6 +178,11 @@ namespace ListViewDragDropManager
 
                     if (item != null) IPTVman.ViewModel.ViewModelMain.myLISTfull.Remove(item);
 
+                    item = IPTVman.ViewModel.ViewModelMain.myLISTdub.Find(x =>
+                    (x.name == s.Name && x.ExtFilter == s.ExtFilter && x.group_title == s.Group_title));
+
+                    IPTVman.ViewModel.ViewModelMain.myLISTdub.Remove(item);
+
                 }
 
 

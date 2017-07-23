@@ -27,7 +27,7 @@ namespace IPTVman.ViewModel
                 // {
                 //  RaisePropertyChanged("mycol");
                 
-                UPDATE_FILTER();
+               // UPDATE_FILTER();
                 if (ACOLL!=null) ACOLL.UPDATE();
                 
                
@@ -74,7 +74,7 @@ namespace IPTVman.ViewModel
                 if (_best1 != value)
                 {
                     _best1 = value;
-                    UPDATE_BEST(_best1.ToString(), null);
+                    _update.UPDATE_BEST(_best1.ToString(), null);
                     RaisePropertyChanged("best1");
 
                 }
@@ -92,7 +92,7 @@ namespace IPTVman.ViewModel
                 if (_best2 != value)
                 {
                     _best2 = value;
-                    UPDATE_BEST(null, _best2.ToString());
+                    _update.UPDATE_BEST(null, _best2.ToString());
                     RaisePropertyChanged("best2");
 
                 }

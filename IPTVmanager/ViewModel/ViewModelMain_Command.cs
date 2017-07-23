@@ -76,6 +76,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_Replace(object parameter)
         {
+            if (Wait.WaitIsOpen()) return;
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
             if (winrep != null) return;
@@ -105,7 +106,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         async void key_set_all_best(object parameter)
         {
-            if (LongtaskCANCELING.isENABLE()) return;
+            if (Wait.WaitIsOpen()) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (data.canal.name == "") return;
 
@@ -118,7 +120,7 @@ namespace IPTVman.ViewModel
             //                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result != MessageBoxResult.Yes) return;
 
-            LongtaskCANCELING.enable();
+            LongtaskPingCANCELING.enable();
             Wait.Create("Идет заполнение ... ", true);
 
             cancellationToken = cts1.Token;//для task1
@@ -127,8 +129,8 @@ namespace IPTVman.ViewModel
             {
                 dialog.Show("ОШИБКА SetBest " + e.Message.ToString());
             }
-            LongtaskCANCELING.stop();
-            Update_collection();
+            LongtaskPingCANCELING.stop();
+            Update_collection(typefilter.last);
 
         }
 
@@ -200,7 +202,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_AUTOPING(object parameter)
         {
-            if (LongtaskCANCELING.isENABLE()) return;
+            if (Wait.WaitIsOpen()) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTbase==null) return;
             if (myLISTbase.Count == 0) return;
             if (winap!=null) return;
@@ -227,12 +230,12 @@ namespace IPTVman.ViewModel
 
         private void Ap_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            LongtaskCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
+            LongtaskPingCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
             winap = null;
             ap.stop();
             ap.Dispose();
             ap = null;
-            Update_collection();
+            Update_collection(typefilter.last);
         }
 
 
@@ -244,7 +247,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void Update_MDB(object parameter)
         {
-            if (LongtaskCANCELING.isENABLE()) return;
+            if (Wait.WaitIsOpen()) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
             if (mdb != null) return;
@@ -273,11 +277,12 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_ADD(object parameter)
         {
+            if (Wait.WaitIsOpen()) return;
             CollectionisCreate();
             if (parameter == null) return;
             myLISTfull.Add(new ParamCanal
             { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
-            Update_collection();
+            Update_collection(typefilter.last);
         }
         
         /// <summary>
@@ -286,6 +291,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_del(object parameter)
         {
+            if (Wait.WaitIsOpen()) return;
             //if (parameter == null || !data.delete) return;
             if (myLISTfull == null) return;
             if (data.canal.name=="") return;
@@ -299,7 +305,15 @@ namespace IPTVman.ViewModel
 
             myLISTfull.Remove(item);
 
-            Update_collection();
+            if (myLISTdub != null)
+            {
+                item = ViewModelMain.myLISTdub.Find(x =>
+                      (x.http == data.canal.http && x.ExtFilter == data.canal.ExtFilter
+                          && x.group_title == data.canal.group_title));
+
+                myLISTdub.Remove(item);
+            }
+            Update_collection(typefilter.last);
         }
 
         /// <summary>
@@ -308,6 +322,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_delFILTER(object parameter)
         {
+            if (Wait.WaitIsOpen()) return;
             if (myLISTfull == null) return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!");
@@ -324,8 +339,9 @@ namespace IPTVman.ViewModel
 
             }
 
-
-            Update_collection();
+            if (_update.lastfilter() == typefilter.dublicate) Update_collection(typefilter.normal);
+            else
+            Update_collection(typefilter.last);
             //dialog.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
             //                   MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -334,94 +350,72 @@ namespace IPTVman.ViewModel
 
         async void DelDUBLICAT(object parameter)
         {
-
+            if (Wait.WaitIsOpen()) return;
             if (myLISTfull == null) return;
             if (myLISTbase == null) return;
-            MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ДУБЛИКАТОВ name,url,Exfilter !!!");
-            if (result != MessageBoxResult.Yes) return;
+            if (loc.finddublic) return;
 
+            loc.finddublic = true;
+            List<ParamCanal> rez =null;
 
-            //Task task1 = Task.Run(() =>
-            //{
-            //    var tcs = new TaskCompletionSource<string>();
-            //    try
-            //    {
-
-            //        tcs.SetResult("ok");
-            //    }
-            //    catch (OperationCanceledException e)
-            //    {
-            //        tcs.SetException(e);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        tcs.SetException(e);
-            //    }
-            //    return;
-            //});
-
-            //try
-            //{
-            //    await task1;
-            //}
-            //catch(Exception ex) { MessageBox.Show(ex.Message.ToString()); }
-            ////dialog.Show("Поиск дубликатов ЗАВЕРШЕН");
-            //task1 = null;
-            bool first;
-            first = false;
-            bool del_ok;
-            uint index = 0;
-            while (1 == 1)
+            Wait.Create("Идет поиск дубликатов ...", true);
+            GUI.set_ProgressBar(myLISTbase.Count, true);
+            try
             {
+                rez = await find_dublicate_task();
+            }
+            catch(Exception e) { dialog.Show("ошибка "+e.Message); }
+            Wait.Close();
 
-                del_ok = false;
-                first = false;
-                //Update_collection();
-                foreach (var k in myLISTbase)
+            if (rez.Count == 0) dialog.Show("Дубликатов не найдено");
+            else
+            {
+                ViewModelMain.myLISTdub.Clear();
+                foreach (var c in rez)
                 {
-                    //dialog..Show("СТАРТ "+k.http);
-                    first = false;
-                    foreach (var j in myLISTbase)
-                    {
-                        //dialog.Show("Идет поиск дубликатов ...");
-                        if (k.name == j.name && k.http == j.http && k.ExtFilter == j.ExtFilter)
-                        {
-
-                            var item = ViewModelMain.myLISTfull.Find(x =>
-                             (x.http == k.http && x.ExtFilter == k.ExtFilter && x.name == k.name));
-
-                            if (item != null && first)
-                            {
-
-                                first = false;
-                                del_ok = true;
-                                result = MessageAsk.Create(" Найдено дублирование\n Удалить " + item.name + "\n" + item.http +
-                                    "\n" + item.ExtFilter + " ?");
-                                if (result == MessageBoxResult.Yes) myLISTfull.Remove(item);
-                                else { Update_collection(); return; }
-                                break;
-                            }
-                            //else dialog.Show("нашли " + j.http + "  " + first.ToString());
-                            if (item != null && !first) { first = true; }//нахождение самого себя
-                        }
-
-                    }
-                    index++;
-                    if (del_ok) break;
-
-
+                    ViewModelMain.myLISTdub.Add((ParamCanal)c.Clone());
                 }
-
-                if (index > myLISTbase.Count) break;
-
+               
+                 Update_collection(typefilter.dublicate);
             }
 
-            Update_collection();
-            //dialog.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
-            //                   MessageBoxButton.OK, MessageBoxImage.Information);
-
-
+            loc.finddublic = false;
         }
+
+        List<ParamCanal> result = null;
+        async Task<List<ParamCanal>> find_dublicate_task()
+        {
+            
+            Task task1 = Task.Run(() =>
+            {
+                var tcs = new TaskCompletionSource<string>();
+                try
+                {
+                    result = _update.find_dublicate(myLISTbase);
+                    tcs.SetResult("ok");
+                }
+                catch (OperationCanceledException e)
+                {
+                    tcs.SetException(e);
+                }
+                catch (Exception e)
+                {
+                    tcs.SetException(e);
+                }
+                return tcs.Task;
+            });
+            try { await task1; }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА " + e.Message.ToString());
+            }
+
+            return result;
+        }
+
+       
+
+           
 
         /// <summary>
         /// del krome best
@@ -429,6 +423,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_delALLkromeBEST(object parameter)
         {
+            if (Wait.WaitIsOpen()) return;
             if (myLISTfull == null) return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ КРОМЕ ИЗБРАННЫХ(ExtFilter)!!!");
@@ -454,7 +449,7 @@ namespace IPTVman.ViewModel
                 dialog.Show("Ошибка удаления \n" + ex.Message.ToString());
             }
 
-            Update_collection();
+            Update_collection(typefilter.last);
             dialog.Show("  УДАЛЕНО " + ct.ToString() + " Каналов");
 
         }
@@ -466,7 +461,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_SAVE(object parameter)
         {
-            if (LongtaskCANCELING.isENABLE()) return;
+            if (Wait.WaitIsOpen()) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (myLISTfull.Count == 0) return;
 
@@ -504,14 +500,12 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_FILTER(object parameter)
         {
-            data.filtr_best = false;
-            Update_collection();
+            Update_collection(typefilter.normal);
         }
      
         void key_FILTERbest(object parameter)
         {
-            data.filtr_best = true;
-            Update_collection(); 
+            Update_collection(typefilter.best); 
         }
 
         /// <summary>
@@ -520,7 +514,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_OPEN_clipboard(object parameter)
         {
-            if (LongtaskCANCELING.isENABLE()) return;
+            if (Wait.WaitIsOpen()) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
           
             CollectionisCreate();
             string[] str=null;
@@ -555,7 +550,7 @@ namespace IPTVman.ViewModel
                         {
                             string path = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
                             WebClient webClient = new WebClient();
-                            LongtaskCANCELING.enable();
+                            LongtaskPingCANCELING.enable();
                             Wait.Create("Загружается\n"+ str[0].ToString(), false);
                             webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
                             webClient.DownloadFileAsync(new Uri (str[0].ToString()), path);
@@ -707,13 +702,13 @@ namespace IPTVman.ViewModel
             }
             else dialog.Show("Ссылки не распознаны");
 
-            Update_collection();
+            Update_collection(typefilter.last);
            
         }
 
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            LongtaskCANCELING.stop();
+            LongtaskPingCANCELING.stop();
             Wait.Close();
             string path = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
             PARSING_FILE(path);
@@ -722,27 +717,17 @@ namespace IPTVman.ViewModel
                 System.IO.File.Delete(path);
             }
             catch { }
-            Update_collection();
+            Update_collection(typefilter.last);
         }
 
         async void key_OPEN(object parameter)
         {
-            if (LongtaskCANCELING.isENABLE()) return;
+            if (Wait.WaitIsOpen()) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
             if (loc.openfile) return;
             loc.openfile = true;
             CollectionisCreate();
 
-            try { await AsyncTaskGet(); }
-            catch (Exception e)
-            {
-                dialog.Show("ОШИБКА " + e.Message.ToString());
-            }
-            Thread.Sleep(300);
-            Update_collection();
-        }
-
-        public Task<string> AsyncTaskGet()
-        {
             string name = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -751,6 +736,21 @@ namespace IPTVman.ViewModel
                 name = openFileDialog.FileName;
             }
 
+            Wait.Create("Идет анализ файла", true);
+            try { await AsyncOPEN(name); }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА " + e.Message.ToString());
+            }
+            Thread.Sleep(300);
+            Wait.Close();
+            Update_collection(typefilter.normal);         
+            loc.openfile = false;
+        }
+
+        public Task<string> AsyncOPEN(string name)
+        {
+            
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             return Task.Run(() =>
             {
@@ -759,8 +759,7 @@ namespace IPTVman.ViewModel
                 {
                    if (name!="") PARSING_FILE(name);
                    else loc.openfile = false;
-
-                    tcs.SetResult("ok");
+                   tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
@@ -788,7 +787,6 @@ namespace IPTVman.ViewModel
 
             try
             {
-                    LongtaskCANCELING.enable();
                     Regex regex1 = new Regex("#EXTINF");
                     Regex regex2 = new Regex("#EXTM3U");
                     Match match = null;
@@ -1026,9 +1024,6 @@ namespace IPTVman.ViewModel
 
 
                     }
-
-                LongtaskCANCELING.stop();
-                while (Wait.WaitIsOpen()) Thread.Sleep(100);
 
             }
             catch { }

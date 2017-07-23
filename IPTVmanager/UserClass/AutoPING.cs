@@ -125,6 +125,7 @@ namespace IPTVman.ViewModel
                 dialog.Show("ОШИБКА-АВТОПИНГ " + e.Message.ToString());
             }
             cts1.Cancel();
+            Wait.Close();
            
             return result;
         }
