@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
@@ -99,6 +100,7 @@ namespace IPTVman.ViewModel
         public static string message = "";
         public static bool en_progress = false;
 
+        static byte delay_open = 0;
 
         public static void Create(string mes, bool en_dynamic_progressbar)
         {
@@ -107,9 +109,9 @@ namespace IPTVman.ViewModel
             create = true;
         }
 
-            public static void Create_on_timer()
+            private static void Create_on_timer()
             {
-                if (WaitIsOpen()) Close_on_timer();
+                if (WaitIsOpen) Close_on_timer();
                 create = false;
 
                 Model.GUI.progressbar = 0;
@@ -130,33 +132,43 @@ namespace IPTVman.ViewModel
                 open = true;
             }
 
-        public static bool WaitIsOpen()
+        public static bool WaitIsOpen
         {
-            if (open) return true;
-            else return false;
+            get
+            {
+                if (open) return true;
+                else return false;
+            }
         }
 
-        public static void Close_on_timer()
+        private static void Close_on_timer()
         {
             if (wait == null) return;
             open = false;
             need_close = false;
+            create = false;
             wait.Close();
         }
         public static void Close()
         {
-            need_close = true;
+            need_close = true; 
         }
 
         public static void manager()//работа из UI потока
         {
             if (open)
             {
-                if (need_close) { Close_on_timer(); }
+                if (create) create = false;
+                if (need_close) { delay_open = 0;  Close_on_timer(); return; }
             }
             else
             {
-                if (create) { Create_on_timer(); }
+                if (need_close) { create = false; need_close = false; delay_open = 0; return; }
+                if (create)
+                {
+                    delay_open++;
+                    if (delay_open > 1)  Create_on_timer(); 
+                }
             }
         }
 

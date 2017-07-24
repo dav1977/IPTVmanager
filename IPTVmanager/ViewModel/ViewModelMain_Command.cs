@@ -76,7 +76,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_Replace(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
             if (winrep != null) return;
@@ -106,7 +106,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         async void key_set_all_best(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (data.canal.name == "") return;
@@ -202,7 +202,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_AUTOPING(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTbase==null) return;
             if (myLISTbase.Count == 0) return;
@@ -247,7 +247,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void Update_MDB(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
@@ -277,7 +277,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_ADD(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             CollectionisCreate();
             if (parameter == null) return;
             myLISTfull.Add(new ParamCanal
@@ -291,7 +291,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_del(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             //if (parameter == null || !data.delete) return;
             if (myLISTfull == null) return;
             if (data.canal.name=="") return;
@@ -322,7 +322,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_delFILTER(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (myLISTfull == null) return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!");
@@ -350,7 +350,7 @@ namespace IPTVman.ViewModel
 
         async void DelDUBLICAT(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (myLISTfull == null) return;
             if (myLISTbase == null) return;
             if (loc.finddublic) return;
@@ -424,7 +424,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_delALLkromeBEST(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (myLISTfull == null) return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ КРОМЕ ИЗБРАННЫХ(ExtFilter)!!!");
@@ -462,7 +462,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_SAVE(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (myLISTfull.Count == 0) return;
@@ -515,7 +515,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_OPEN_clipboard(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
           
             CollectionisCreate();
@@ -723,7 +723,7 @@ namespace IPTVman.ViewModel
 
         async void key_OPEN(object parameter)
         {
-            if (Wait.WaitIsOpen()) return;
+            if (Wait.WaitIsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (loc.openfile) return;
             loc.openfile = true;
