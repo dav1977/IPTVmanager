@@ -353,7 +353,7 @@ namespace IPTVman.ViewModel
         //mdb
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Model.bd_data.s2 = best1.Text;
+            Model.bd_data.s2 = data.favorite1_1 + ", "+ data.favorite2_1 + ", " + data.favorite3_1 + ", ";
             Model.bd_data.s3 = best1.Text;
         }
 

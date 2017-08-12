@@ -76,7 +76,7 @@ namespace IPTVman.ViewModel
 
       
 
-        void Save_to_base()
+        int Save_to_base()
         {
             // Сохранить в базе данных
             sql.CommandText = "UPDATE [main] SET [Name] = ?, Adress = ?  WHERE ([Id] = ?)";
@@ -103,20 +103,52 @@ namespace IPTVman.ViewModel
 
             adapter.UpdateCommand = sql;
             sql.Connection = connector;
+            int kol = 0;
             try
             {
                 // Update возвращает количество измененных строк
-                var kol = adapter.Update(data, "main");
-                dialog.Show("Обновлено " + kol.ToString() + " записей");
+                kol = adapter.Update(data, "main"); 
             }
             catch (Exception ex)
             {
                 dialog.Show(ex.Message.ToString());
             }
 
-
+            return kol;
         }
 
+        void UpdateBD(string id_best, string filterMDB, string filterManager, string mask)
+        {
+            DataTable dt = get_table("main");
+            //DataRow[] foundRows = data.Tables["main"].Select("Name = 'FOX HD'");
+            if (Event_Print != null) Event_Print("Старт обновления "+ filterMDB + "    id=" + id_best + "\n");
+
+            int index = 0;
+            foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
+            {
+                if (!find_mask(mask, row[2].ToString())) { index++; continue; }
+                // получаем все ячейки строки
+                // object[] cells = row.ItemArray;
+                // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
+                if (row[34].ToString() == id_best)
+                {
+                    //if (Event_Print != null) Event_Print("Анализ "+ row[1].ToString()+"\n");
+
+                    foreach (var s in ViewModelMain.myLISTbase)
+                    {
+                        if (s.name == row[1].ToString() && (s.ExtFilter == filterManager || filterManager == "") && s.http != "")
+                        {
+                            if (Event_Print != null) Event_Print(
+                                "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");
+                            //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
+                            data.Tables["main"].Rows[index]["Adress"] = s.http;
+                            break;//обновляем только одну запись
+                        }
+                    }
+                }
+                index++;
+            }
+        }
 
         Task task1;
         //******************* UPDATE data in table *************************
@@ -125,53 +157,32 @@ namespace IPTVman.ViewModel
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             task1 = Task.Run(() =>
             {
+                int kol = 0;
                 var tcs = new TaskCompletionSource<string>();
                 try
                 {
                     init_data();
-                    string id_best = readIDbest(filterMDB);
-                    //int id_bestcod = int.Parse(id_best);
-
-                    if (id_best == "")
-                    {
-                        dialog.Show("не найдена группа " + filterMDB + "(ExtFilter)\nв базе mdb");
-                        return tcs.Task;
-                    }
-
-                    init_data();
-                    DataTable dt = get_table("main");
-
                     if (Event_Print != null) Event_Print("");
-                    if (Event_Print != null) Event_Print("Старт обновления id=" + id_best + "\n");
-                    //DataRow[] foundRows = data.Tables["main"].Select("Name = 'FOX HD'");
+                   
+                    string[] word = filterMDB.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    int index = 0;
-                    foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
+                    foreach (var group in word)
                     {
-                        if (!find_mask(mask, row[2].ToString())) { index++; continue; }
-                        // получаем все ячейки строки
-                        // object[] cells = row.ItemArray;
-                        // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
-                        if (row[34].ToString() == id_best)
+                        if (group == "" || group ==" " || group == "  ") continue;
+                        string newgroup = group.Trim();
+                        string id_best = readIDbest(newgroup);
+
+                        if (id_best == "")
                         {
-                            //if (Event_Print != null) Event_Print("Анализ "+ row[1].ToString()+"\n");
-
-                            foreach (var s in ViewModelMain.myLISTbase)
-                            {
-                                if (s.name == row[1].ToString() && (s.ExtFilter == filterManager || filterManager=="") && s.http != "")
-                                {
-                                    if (Event_Print != null) Event_Print(
-                                        "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");
-                                    //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
-                                    data.Tables["main"].Rows[index]["Adress"] = s.http;
-                                    break;//обновляем только одну запись
-                                }
-                            }
+                            dialog.Show("не найдена группа " + newgroup + "(ExtFilter)\nв базе mdb");
+                            return tcs.Task;
                         }
-                        index++;
-                    }
 
-                    Save_to_base();
+                        init_data();
+                        UpdateBD(id_best.Trim(), newgroup.Trim(), filterManager.Trim(), mask.Trim());
+                        kol += Save_to_base();
+                    }
+                    
                     tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
@@ -183,6 +194,7 @@ namespace IPTVman.ViewModel
                     tcs.SetException(e);
                 }
 
+                dialog.Show("Обновлено " + kol.ToString() + " записей");
                 return tcs.Task; 
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&

@@ -41,8 +41,8 @@ namespace IPTVman.Model
     public static class bd_data
     {
         public static string s1 = "ace";
-        public static string s2 = "best";
-        public static string s3 = "best";
+        public static string s2 = "-";
+        public static string s3 = "-";
     }
     public static class play
     {
