@@ -158,7 +158,7 @@ namespace IPTVman.ViewModel
 
                             foreach (var s in ViewModelMain.myLISTbase)
                             {
-                                if (s.name == row[1].ToString() && s.ExtFilter == filterManager && s.http != "")
+                                if (s.name == row[1].ToString() && (s.ExtFilter == filterManager || filterManager=="") && s.http != "")
                                 {
                                     if (Event_Print != null) Event_Print(
                                         "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");

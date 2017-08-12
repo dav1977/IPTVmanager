@@ -35,7 +35,7 @@ namespace IPTVman.ViewModel
 
             TEXTmask.Text = IPTVman.Model.bd_data.s1;
             TEXT1.Text = IPTVman.Model.bd_data.s2;
-            TEXT2.Text = IPTVman.Model.bd_data.s3;
+            TEXT2.Text = "";// IPTVman.Model.bd_data.s3;
         }
 
         private void Access_Event_Print(string obj)
