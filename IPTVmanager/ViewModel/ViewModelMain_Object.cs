@@ -39,7 +39,9 @@ namespace IPTVman.ViewModel
 
 
 
-
+        /// <summary>
+        /// только обновлять
+        /// </summary>
         bool chek1;
         public bool CH1m
         {
@@ -50,7 +52,9 @@ namespace IPTVman.ViewModel
                 RaisePropertyChanged("CH1m");
             }
         }
-
+        /// <summary>
+        /// обрезать скобки
+        /// </summary>
         bool chek2;
         public bool CH2m
         {

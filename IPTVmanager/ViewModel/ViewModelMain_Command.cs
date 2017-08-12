@@ -19,6 +19,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
+        readonly string tempname= "temp_m3u_IPTVmanager";
         public RelayCommand key_UpdateMDBCommand { get; set; }
         public RelayCommand key_DelDUBLICATCommand { get; set; }
         public RelayCommand key_ReplaceCommand { get; set; }
@@ -536,7 +537,7 @@ namespace IPTVman.ViewModel
             Match match = null;
 
             if (str == null) { dialog.Show("Буфер пустой"); return; }
-            if (str.Length ==1)
+            if (str.Length == 1)
             {
                 Regex regex3 = new Regex("http:");
                 Regex regex4 = new Regex(".m3u");
@@ -549,7 +550,7 @@ namespace IPTVman.ViewModel
                     {
                         try
                         {
-                            string path = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
+                            string path = System.IO.Path.GetTempPath() + tempname;
                             WebClient webClient = new WebClient();
                             LongtaskPingCANCELING.enable();
                             Wait.Create("Загружается\n"+ str[0].ToString(), false);
@@ -711,7 +712,7 @@ namespace IPTVman.ViewModel
         {
             LongtaskPingCANCELING.stop();
             Wait.Close();
-            string path = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
+            string path = System.IO.Path.GetTempPath() + tempname;
             PARSING_FILE(path);
             try
             {
@@ -776,6 +777,25 @@ namespace IPTVman.ViewModel
         }
 
 
+        void Parsing_link(string s)
+        {
+            try
+            {
+                string path = System.IO.Path.GetTempPath() + tempname;
+                WebClient webClient = new WebClient();
+                LongtaskPingCANCELING.enable();
+                Wait.Create("Загружается\n" + s, false);
+                webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
+                webClient.DownloadFileAsync(new Uri(s), path);
+                return;
+            }
+            catch (Exception ex)
+            {
+                dialog.Show("Ошибка " + ex.Message.ToString());
+            }
+        }
+       
+
         void PARSING_FILE(string name)
         {
             bool flag_adding_ok = false;
@@ -788,6 +808,7 @@ namespace IPTVman.ViewModel
 
             try
             {
+                    Regex regex_link = new Regex("http://");
                     Regex regex1 = new Regex("#EXTINF");
                     Regex regex2 = new Regex("#EXTM3U");
                     Match match = null;
@@ -835,18 +856,20 @@ namespace IPTVman.ViewModel
                         string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
                         bool yes = false;
 
-                        while (!sr.EndOfStream)
+                    while (!sr.EndOfStream)
+                    {
+                        try
                         {
-                            try
-                            {
-                                line = sr.ReadLine();
-                                GUI.progressbar++;  
-                            }
-                            catch { }
+                            line = sr.ReadLine();
+                            GUI.progressbar++;
+                        }
+                        catch { }
 
-                            if (line == null || line == "") continue;
+                        if (line == null || line == "") continue;
 
-
+                        match = regex_link.Match(line);
+                        if (match.Success) { Parsing_link(line); flag_adding_ok = true;  break; }
+                   
                             match = regex1.Match(line);
                             if (match.Success) yes = true; else yes = false;
 
@@ -923,15 +946,9 @@ namespace IPTVman.ViewModel
 
                                 if (chek2)//обрезание скобок
                                 {
-                                    string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
-
-                                    if (words != null)
-                                    {
-                                        if (words.Length != 0)
-                                        {
-                                            if (words[0] != null && words[0] != "") newname = words[0];
-                                        }
-                                    }
+                                    //string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
+                                    var ind = newname.LastIndexOf('(');
+                                    if (ind>0) newname= newname.Substring(0, ind);
                                     newname = newname.Trim();
                                 }
 
