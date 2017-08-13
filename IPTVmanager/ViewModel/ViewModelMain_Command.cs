@@ -746,7 +746,8 @@ namespace IPTVman.ViewModel
             }
             Thread.Sleep(300);
             Wait.Close();
-            Update_collection(typefilter.normal);         
+            Update_collection(typefilter.normal);
+            LongtaskPingCANCELING.stop();
             loc.openfile = false;
         }
 

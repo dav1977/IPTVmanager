@@ -6,14 +6,12 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Security.Permissions;
 using Microsoft.Win32;
-
+using System.Diagnostics;
 
 namespace IPTVman.Model
 {
- 
     class REG_FIND
     {
-
        public REG_FIND()
         {
         }
@@ -58,7 +56,7 @@ namespace IPTVman.Model
             if (key == null || string.IsNullOrEmpty(find))
                 return null;
 
-            if (ct > 3000) return null;//ВЫХОД ИЗ РЕКУРСИИ
+            if (ct > 30000) return null;//ВЫХОД ИЗ РЕКУРСИИ
 
             string[] props = key.GetValueNames();
             object value = null;
@@ -88,8 +86,6 @@ namespace IPTVman.Model
                     try
                     {
                         ct++;
-                       // Console.WriteLine("ct="+ct.ToString());
-
                         //РЕКУРСИЯ!!!
                         retVal = RegFind(key.OpenSubKey(subkey, RegistryKeyPermissionCheck.ReadSubTree), find);
                     }
@@ -121,7 +117,6 @@ namespace IPTVman.Model
 
             foreach (RegistryKey rk in key)
             {
-                
                 RegFindValue r= RegFind(rk, f);
 
                 if (r != null)

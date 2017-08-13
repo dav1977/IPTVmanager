@@ -136,14 +136,11 @@ namespace IPTVman.ViewModel
                 if (!err) return;
             }
 
-
+            
             //Через ACEplayer
-
-
                 REG_FIND reg = new REG_FIND();
                 string rez = reg.FIND("ace_player.exe");
-
-
+    
                 string[] words = rez.Split(new char[] { '"' });
                 if (words.Length < 2) rez = "";
 

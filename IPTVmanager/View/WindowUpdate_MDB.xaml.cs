@@ -97,5 +97,13 @@ namespace IPTVman.ViewModel
         {
             if (this != null) this.Close();
         }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            {
+                textBox.ScrollToEnd();
+            }));
+        }
     }
 }
