@@ -32,6 +32,8 @@ namespace IPTVman.ViewModel
             InitializeComponent();
             this.Title = "IPTV manager v1.0";
 
+            SETTING.ReadFromXML();
+
             ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
   
            // use a timer to periodically update the memory usage
@@ -353,13 +355,17 @@ namespace IPTVman.ViewModel
         //mdb
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Model.bd_data.s2 = data.favorite1_1 + ", "+ data.favorite2_1 + ", " + data.favorite3_1 + ", ";
-            Model.bd_data.s3 = best1.Text;
+            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Model.SETTING.SaveInXmlFormat();
         }
     }
 }

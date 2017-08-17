@@ -33,9 +33,9 @@ namespace IPTVman.ViewModel
             textBox.Text = "";
             Access.Event_Print += Access_Event_Print;
 
-            TEXTmask.Text = IPTVman.Model.bd_data.s1;
-            TEXT1.Text = IPTVman.Model.bd_data.s2;
-            TEXT2.Text = "";// IPTVman.Model.bd_data.s3;
+            TEXTmask.Text = Model.bd_data.mask;
+            TEXT1.Text = Model.bd_data.filter1;
+            TEXT2.Text = Model.bd_data.filter2;
         }
 
         private void Access_Event_Print(string obj)
@@ -87,9 +87,9 @@ namespace IPTVman.ViewModel
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ViewModelWindowMDB._bd = null;
-            IPTVman.Model.bd_data.s1 = TEXTmask.Text;
-            IPTVman.Model.bd_data.s2 = TEXT1.Text;
-            IPTVman.Model.bd_data.s3 = TEXT2.Text;
+            Model.bd_data.mask = TEXTmask.Text;
+            Model.bd_data.filter1 = TEXT1.Text;
+            Model.bd_data.filter2 = TEXT2.Text;
         }
 
         //key ЗАКРЫТЬ
@@ -104,6 +104,19 @@ namespace IPTVman.ViewModel
             {
                 textBox.ScrollToEnd();
             }));
+        }
+
+        private void ButtonReplace_Copy1_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void ButtonUPDATE(object sender, RoutedEventArgs e)
+        {
+            Model.bd_data.filter1 = ViewModelWindowMDB.sel1;
+            Model.bd_data.filter2 = ViewModelWindowMDB.sel2;
+            Model.bd_data.mask = ViewModelWindowMDB._mask;
+            Model.SETTING.SaveInXmlFormat();
         }
     }
 }

@@ -170,10 +170,10 @@ namespace IPTVman.ViewModel
 
         public List<ParamCanal> find_dublicate(List<ParamCanal> glob)
         {
-
-            List<ParamCanal> myLISTdublicate1a;//временный
-            List<ParamCanal> myLISTdublicate1b;//временный
-            List<ParamCanal> myLISTdublicate2;//временный
+            const string _NAME = "$delete$_COPY";
+            List<ParamCanal> myLISTdublicate1a;//временный 1
+            List<ParamCanal> myLISTdublicate1b;//временный 2
+            List<ParamCanal> myLISTdublicate2;//временный итоговый
 
             myLISTdublicate1a = new List<ParamCanal>();
             myLISTdublicate1b = new List<ParamCanal>();
@@ -185,45 +185,36 @@ namespace IPTVman.ViewModel
                 myLISTdublicate1b.Add((ParamCanal)c.Clone());
             }
             bool first = false;
-            bool next = false;
             int index = 0;
             int ind = 0;
-            ParamCanal nextitem = new ParamCanal();
+            ParamCanal nextitem = null;
             ParamCanal firsttItem = null;
 
             myLISTdublicate2.Clear();
             foreach (var main in myLISTdublicate1a)
             {
                 first = false;
-                next = false;
-                if (ind != 0) myLISTdublicate1a[ind - 1].name = "$delete$_COPY" + ind.ToString();
+                if (ind != 0) myLISTdublicate1a[ind - 1].name = _NAME + ind.ToString();
                 index = 0;
+                string mn = main.http.Trim();
 
                 foreach (var j in myLISTdublicate1b)
                 {
-                    if (/*main.name == j.name &&*/ main.http.Trim() == j.http.Trim())
+                    if (mn == j.http.Trim() )
                     {
                             if (first)
-                            {
-                                if (!next)
-                                {
+                            {  
                                     nextitem = (ParamCanal)j.Clone();
-                                    myLISTdublicate2.Add(firsttItem); ct++; ct++;
-                                myLISTdublicate2.Add(nextitem);
-                                    myLISTdublicate1b[index].name = "$delete$COPY" + index.ToString();
-                                    next = true;
-                                }
-                                else
-                                {
-                                    nextitem = (ParamCanal)j.Clone();
-                                    myLISTdublicate2.Add(nextitem); ct++;
-                                myLISTdublicate1b[index].name = "$delete$COPY" + index.ToString();
-                                }
+                                    myLISTdublicate2.Add(j);
+                                    ct++; 
+                                    myLISTdublicate1b[index].name = _NAME +ind.ToString() + index.ToString();
+                                    myLISTdublicate1b[index].http = _NAME + ind.ToString() + index.ToString();
                             }
                             else
                             {//нахождение самого себя
                                 first = true;
-                                firsttItem = (ParamCanal)main.Clone();
+                                //firsttItem = (ParamCanal)main.Clone();
+                                myLISTdublicate2.Add(main);
                             }
                     }
                     index++;

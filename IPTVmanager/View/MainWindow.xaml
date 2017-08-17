@@ -7,7 +7,7 @@
         x:Class="IPTVman.ViewModel.MainWindow" WindowStartupLocation="CenterScreen"
         Title="" Height="637.341" Width="1040.102" Background="#FF282076" 
         DataContext="{DynamicResource ViewModelMain}" 
-        Foreground="#FF20D10F">
+        Foreground="#FF20D10F" Closing="Window_Closing">
 
 
     <Window.Resources>

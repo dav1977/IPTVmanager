@@ -29,7 +29,6 @@ namespace IPTVman.ViewModel
             //sel1 = "что";
             //sel2 = "чем";
             _bd = new Access();
-
         }
         //======================================================================
 
@@ -57,7 +56,7 @@ namespace IPTVman.ViewModel
 
 
         //============================== object ==================================
-        string sel1=data.best1;
+        public static string sel1=Model.bd_data.filter1;
         public string Selected1
         {
             get { return sel1; }
@@ -67,7 +66,7 @@ namespace IPTVman.ViewModel
                 RaisePropertyChanged("Selected1");
             }
         }
-        string sel2="";
+        public static string sel2= Model.bd_data.filter2;
         public string Selected2
         {
             get { return sel2; }
@@ -78,7 +77,7 @@ namespace IPTVman.ViewModel
             }
         }
 
-        string _mask = "ace:";
+        public static string _mask = Model.bd_data.mask;
         public string mask
         {
             get { return _mask; }

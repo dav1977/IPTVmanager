@@ -40,9 +40,9 @@ namespace IPTVman.Model
 
     public static class bd_data
     {
-        public static string s1 = "ace";
-        public static string s2 = "-";
-        public static string s3 = "-";
+        public static string mask = "ace";
+        public static string filter1 = "best, music, kino, ";
+        public static string filter2 = "";
     }
     public static class play
     {
@@ -53,8 +53,6 @@ namespace IPTVman.Model
 
     public static class data
     {
-       
-
         public static bool type_player = false;
         public static string NOT_URL = "НЕ СУЩЕСТВУЕТ";
         public static byte current_favorites =1;
