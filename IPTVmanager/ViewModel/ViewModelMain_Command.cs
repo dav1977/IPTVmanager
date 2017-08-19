@@ -77,7 +77,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_Replace(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
             if (winrep != null) return;
@@ -107,7 +107,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         async void key_set_all_best(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (data.canal.name == "") return;
@@ -121,7 +121,6 @@ namespace IPTVman.ViewModel
             //                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result != MessageBoxResult.Yes) return;
 
-            LongtaskPingCANCELING.enable();
             Wait.Create("Идет заполнение ... ", true);
 
             cancellationToken = cts1.Token;//для task1
@@ -130,7 +129,7 @@ namespace IPTVman.ViewModel
             {
                 dialog.Show("ОШИБКА SetBest " + e.Message.ToString());
             }
-            LongtaskPingCANCELING.stop();
+            Wait.Close();
             Update_collection(typefilter.last);
 
         }
@@ -203,7 +202,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_AUTOPING(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTbase==null) return;
             if (myLISTbase.Count == 0) return;
@@ -248,7 +247,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void Update_MDB(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
@@ -278,7 +277,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_ADD(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             CollectionisCreate();
             if (parameter == null) return;
             myLISTfull.Add(new ParamCanal
@@ -292,7 +291,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_del(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             //if (parameter == null || !data.delete) return;
             if (myLISTfull == null) return;
             if (data.canal.name=="") return;
@@ -323,7 +322,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_delFILTER(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (myLISTfull == null) return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ ПО ФИЛЬТРУ !!!");
@@ -351,7 +350,7 @@ namespace IPTVman.ViewModel
 
         async void DelDUBLICAT(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (myLISTfull == null) return;
             if (myLISTbase == null) return;
             if (loc.finddublic) return;
@@ -425,7 +424,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_delALLkromeBEST(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (myLISTfull == null) return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ ВСЕХ КРОМЕ ИЗБРАННЫХ(ExtFilter)!!!");
@@ -463,7 +462,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_SAVE(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (myLISTfull.Count == 0) return;
@@ -516,7 +515,7 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         void key_OPEN_clipboard(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
           
             CollectionisCreate();
@@ -552,7 +551,6 @@ namespace IPTVman.ViewModel
                         {
                             string path = System.IO.Path.GetTempPath() + tempname;
                             WebClient webClient = new WebClient();
-                            LongtaskPingCANCELING.enable();
                             Wait.Create("Загружается\n"+ str[0].ToString(), false);
                             webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
                             webClient.DownloadFileAsync(new Uri (str[0].ToString()), path);
@@ -561,6 +559,7 @@ namespace IPTVman.ViewModel
                         catch (Exception ex)
                         {
                             dialog.Show("Ошибка "+ex.Message.ToString());
+                            Wait.Close();
                         }
                     }
                 }
@@ -655,16 +654,16 @@ namespace IPTVman.ViewModel
 
                             //}//for
 
-                        if (str_name != "")
+                            if (str_name != "")
                             if (str_name.IndexOf('\r') != -1)
                                 newname = str_name.Substring(0, str_name.Length - 1);//remove перевода строки
                             else newname = str_name;
-                    }
-                    try
-                    {
+                        }
+                        try
+                        {
                             str_http = str[index].Substring(0, str[index].Length - 1);//remove перевода строки
-                    }
-                    catch { dialog.Show("в буфере данных не найдено"); }
+                        }
+                        catch { dialog.Show("в буфере данных не найдено"); }
                        
 
                     }
@@ -705,12 +704,12 @@ namespace IPTVman.ViewModel
             else dialog.Show("Ссылки не распознаны");
 
             Update_collection(typefilter.last);
-           
+            Wait.Close();
+            loc.openfile = false;
         }
 
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            LongtaskPingCANCELING.stop();
             Wait.Close();
             string path = System.IO.Path.GetTempPath() + tempname;
             PARSING_FILE(path);
@@ -720,11 +719,12 @@ namespace IPTVman.ViewModel
             }
             catch { }
             Update_collection(typefilter.last);
+            Wait.Close();
         }
 
         async void key_OPEN(object parameter)
         {
-            if (Wait.WaitIsOpen) return;
+            if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (loc.openfile) return;
             loc.openfile = true;
@@ -747,7 +747,7 @@ namespace IPTVman.ViewModel
             Thread.Sleep(300);
             Wait.Close();
             Update_collection(typefilter.normal);
-            LongtaskPingCANCELING.stop();
+            Wait.Close();
             loc.openfile = false;
         }
 
@@ -784,7 +784,6 @@ namespace IPTVman.ViewModel
             {
                 string path = System.IO.Path.GetTempPath() + tempname;
                 WebClient webClient = new WebClient();
-                LongtaskPingCANCELING.enable();
                 Wait.Create("Загружается\n" + s, false);
                 webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
                 webClient.DownloadFileAsync(new Uri(s), path);
@@ -793,6 +792,7 @@ namespace IPTVman.ViewModel
             catch (Exception ex)
             {
                 dialog.Show("Ошибка " + ex.Message.ToString());
+                Wait.Close();
             }
         }
        
@@ -851,11 +851,13 @@ namespace IPTVman.ViewModel
                 }
 
                 GUI.set_ProgressBar(all_str/2, true);
+
+                bool stop_parsing = false;
                 //ПОИСК каналов
                 using (StreamReader sr = new StreamReader(name))
-                    {
-                        string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
-                        bool yes = false;
+                {
+                    string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
+                    bool yes = false;
 
                     while (!sr.EndOfStream)
                     {
@@ -868,15 +870,18 @@ namespace IPTVman.ViewModel
 
                         if (line == null || line == "") continue;
 
-                        match = regex_link.Match(line);
-                        if (match.Success) { Parsing_link(line); flag_adding_ok = true;  break; }
-                   
-                            match = regex1.Match(line);
-                            if (match.Success) yes = true; else yes = false;
+                        if (!stop_parsing)
+                        {
+                            stop_parsing = true;//ссылка должна быть только в первой строке
+                            match = regex_link.Match(line);
+                            if (match.Success) { Parsing_link(line); flag_adding_ok = true; break; }
+                        }
 
+                        match = regex1.Match(line);
+                        if (match.Success) yes = true; else yes = false;
 
-                            ///========== разбор EXINF
-                            if (yes)
+                        ///========== разбор EXINF
+                        if (yes)
                             {
 
                                 Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);

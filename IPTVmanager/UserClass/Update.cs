@@ -191,6 +191,7 @@ namespace IPTVman.ViewModel
             ParamCanal firsttItem = null;
 
             myLISTdublicate2.Clear();
+            //1111111111111111
             foreach (var main in myLISTdublicate1a)
             {
                 first = false;
@@ -198,23 +199,25 @@ namespace IPTVman.ViewModel
                 index = 0;
                 string mn = main.http.Trim();
 
+                //22222222222222222
                 foreach (var j in myLISTdublicate1b)
                 {
                     if (mn == j.http.Trim() )
                     {
                             if (first)
-                            {  
-                                    nextitem = (ParamCanal)j.Clone();
-                                    myLISTdublicate2.Add(j);
-                                    ct++; 
-                                    myLISTdublicate1b[index].name = _NAME +ind.ToString() + index.ToString();
-                                    myLISTdublicate1b[index].http = _NAME + ind.ToString() + index.ToString();
+                            {
+                                nextitem = (ParamCanal)j.Clone();
+                                if (firsttItem!=null) myLISTdublicate2.Add(firsttItem);
+                                firsttItem = null;
+                                myLISTdublicate2.Add(nextitem);
+                                ct++; 
+                                myLISTdublicate1b[index].name = _NAME +ind.ToString() + index.ToString();
+                                myLISTdublicate1b[index].http = _NAME + ind.ToString() + index.ToString();
                             }
                             else
                             {//нахождение самого себя
                                 first = true;
-                                //firsttItem = (ParamCanal)main.Clone();
-                                myLISTdublicate2.Add(main);
+                                firsttItem = (ParamCanal)main.Clone();                       
                             }
                     }
                     index++;

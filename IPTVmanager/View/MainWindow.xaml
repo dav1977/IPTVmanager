@@ -299,7 +299,7 @@
             <Button.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                    <GradientStop Color="#FFECEC29" Offset="0.064"/>
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
@@ -382,17 +382,17 @@
             </Button.Background>
         </Button>
         <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1m,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Grid.Column="1"/>
-        <Button Content="дубликаты" Command="{Binding key_DelDUBLICATCommand}"   CommandParameter=""  Margin="306,0,0,15" Focusable="False" Height="19" VerticalAlignment="Bottom" BorderBrush="#FF1BAC14" OpacityMask="#FFD4CC10" Grid.Column="3" HorizontalAlignment="Left" Width="126" Grid.Row="1" Click="Button_Click_1">
+        <Button Content="дубликаты" Command="{Binding key_DelDUBLICATCommand}"   CommandParameter=""  Margin="306,0,0,15" Focusable="False" Height="19" VerticalAlignment="Bottom" BorderBrush="#FF092047" OpacityMask="#FFB4EC20" Grid.Column="3" HorizontalAlignment="Left" Width="126" Grid.Row="1" Click="Button_Click_1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
-                    <GradientStop Color="#FFFB5454" Offset="0.749"/>
+                    <GradientStop Color="#FF7A0000" Offset="0.749"/>
                 </LinearGradientBrush>
             </Button.Background>
             <Button.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                    <GradientStop Color="#FFBCBF7F" Offset="0.011"/>
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>

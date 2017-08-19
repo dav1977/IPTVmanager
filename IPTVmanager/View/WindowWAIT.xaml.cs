@@ -111,7 +111,7 @@ namespace IPTVman.ViewModel
 
             private static void Create_on_timer()
             {
-                if (WaitIsOpen) Close_on_timer();
+                if (IsOpen) Close_on_timer();
                 create = false;
 
                 Model.GUI.progressbar = 0;
@@ -132,7 +132,7 @@ namespace IPTVman.ViewModel
                 open = true;
             }
 
-        public static bool WaitIsOpen
+        public static bool IsOpen
         {
             get
             {
