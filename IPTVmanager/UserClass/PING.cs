@@ -117,71 +117,88 @@ namespace IPTVman.ViewModel
         /// </summary>
         public string GETnoas(CancellationToken cancellationToken, string url)
         {
-            done = false;
+           
+
+             done = false;
             url = url.Trim();
             string ip_url = "";
+            string ip0="";
             char[] chars = new char[1000];
-            string ip0 = GetIPAddress(url);
-
-            Regex regex1 = new Regex("(udp/)");
-
-            var r = regex1.Match(url);
-
-            if (r.Success)
-            {
-
-            }
+            if (new Regex("udp://").Match(url).Success)
+            { }
             else
             {
-               if (ip0 == "") { ip0 = "не определен "; }
+                ip0 = GetIPAddress(url);
+                if (ip0 == "") { ip0 = "не определен "; }
             }
+
             string ip = "ip=" + ip0 + "; ";
-           
-   
+          
             string[] split = url.Split(new Char[] { '.' });
 
-           
             if (split.Length < 2) {  return (exit("нет IP  "+data.NOT_URL+" " + ip) ); }
 
             result = ip;
 
             if (!iswork) {  exit("прерывание пинга "); return "прерывание пинга "; };
 
+
+
             try
             {
-                //WebClient client = new WebClient();
-                MyWebClient client = new MyWebClient(5000);
+                if (new Regex("udp://").Match(url).Success)
+                {
+                    IPAddress ipAddr = IPAddress.Parse(parseUDP(url));
+                    UdpClient client = new UdpClient(portUDP(url));
+                    // IP-адрес группы
+                    IPAddress multicastIP = IPAddress.Parse(parseUDP(url));
+
+                    client.DontFragment = true;
+                    client.EnableBroadcast = true;
+                    // Соединяемся с удаленным хостом
+                    client.Connect(ipAddr, portUDP(url));
+                    // Присоединяемся к группе
+                    //client.JoinMulticastGroup(multicastIP);
+
+                    //Отправка простого сообщения
+                    byte[] bytes = Encoding.UTF8.GetBytes("Test");
+                    var sr=client.Send(bytes, bytes.Length);
+
+                    // Создаем переменную IPEndPoint, чтобы передать ссылку на нее в Receive()
+                    IPEndPoint RemoteIPEndPoint = null;
+
+                    // Получение данных
+                    //byte[] bytes = client.Receive(ref RemoteIPEndPoint);
+                    // string results = Encoding.UTF8.GetString(bytes);
+
+                    if (client != null) ip = parseUDP(url) + " port=" + portUDP(url)+ " result "+sr.ToString();
+                  
+                    // Закрываем соединение
+                    if (client != null)
+                    {
+                        //client.Close();
+                        //client.DropMulticastGroup(multicastIP);
+                    }
+                }
+                else
+                {
+                    Stream stream;
+                    MyWebClient client = new MyWebClient(5000);
+                    stream = client.OpenRead(url);
+                    if (stream == null) { result = data.NOT_URL + "."; return (exit("errorSTREAMnull")); }
+
+                    StreamReader sr = new StreamReader(stream);
+
+                    sr.ReadBlock(chars, 0, 500);
+                    if (sr != null) sr.Close();
+                    if (stream != null) stream.Close();
+                }
                 string rez = "";
                 if (ip_url != "") rez += "IP=" + ip_url + " ";
 
                 // string newLine;
                 //byte[] data = client.(url);
                 //if (data == null) { result = "+data.NOT_URL+" нулевой ответ"; return result;  }
-
-                Stream stream = client.OpenRead(url);
-                if (stream == null) { result = data.NOT_URL+"."; return (exit("errorSTREAMnull")); }
-
-                StreamReader sr = new StreamReader(stream);
-               
-                sr.ReadBlock(chars, 0, 500);
-
-                //while ((newLine = sr.sr.ReadLine() != null)
-                //{
-                //    if (cancellationToken.IsCancellationRequested || !iswork)
-                //    { exit("прерывание пинга "); return "прерывание пинга "; ; };
-
-                //    string[] words;
-                //    words = newLine.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
-
-                //    foreach (var s in words)
-                //    {
-                //        rez += s.ToString() + '\n';
-                //        if (!iswork) { exit("прерывание пинга "); return "прерывание пинга "; };
-                //    }
-                //}
-
-                if (sr != null) sr.Close();
-                if (stream != null) stream.Close();
 
                 int i = 0;
                  if (chars != null)
@@ -200,9 +217,9 @@ namespace IPTVman.ViewModel
             {        
                 string rez = "";
                 string error = ex.Message.ToString();
-                regex1 = new Regex("(500)");//ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
+                var regex1 = new Regex("(500)");//ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
 
-                r = regex1.Match(error);
+                var r = regex1.Match(error);
 
                 if (r.Success)
                 {
@@ -226,10 +243,33 @@ namespace IPTVman.ViewModel
             {
                 //MessageBox.Show(data.NOT_URL+" "+ ex.Message.ToString(), "",    
                 //                    MessageBoxButton.OK);
-                return (exit("не определено ExceptionWebClient " + ex.Message));
+                return (exit(" не определено ExceptionWebClient " + ex.Message));
             }    
         }
 
+        string parseUDP(string url)
+        {
+            string s = "";
+            string[] w = url.Split(new char[] { ':' });
+            s= w[1].Replace("//@", " ");
+            s = s.Replace("//", " ");
+
+            return s.Trim();
+        }
+        int portUDP(string url)
+        {
+            string s = "";
+            string[] w = url.Split(new char[] { ':' });
+            s = w[2].Replace("&tvssrc=T", " ");
+            int rez = 0;
+            try
+            {
+                rez = int.Parse(s.Trim());
+            }
+            catch { rez = 1234;  }
+            return rez;
+            
+        }
         public string exit(string s)
         {
             result = s.Replace("#EXT-X-VERSION:3", "");
