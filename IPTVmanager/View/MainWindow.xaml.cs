@@ -367,5 +367,26 @@ namespace IPTVman.ViewModel
         {
             Model.SETTING.SaveInXmlFormat();
         }
+
+        Window about;
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (LongtaskPingCANCELING.isENABLE()) return;
+            if (about != null) return;
+            about = new WindowAbout
+            {
+                Title = "",
+                Topmost = true,
+                //WindowStyle = WindowStyle.ToolWindow,
+                Name = "winABOUT"
+            };
+
+            about.Closing += WinABOUT_Closing;
+            about.Show();
+        }
+        private void WinABOUT_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            about = null;
+        }
     }
 }

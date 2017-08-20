@@ -165,7 +165,7 @@ namespace IPTVman.ViewModel
                     var sr=client.Send(bytes, bytes.Length);
 
                     // Создаем переменную IPEndPoint, чтобы передать ссылку на нее в Receive()
-                    IPEndPoint RemoteIPEndPoint = null;
+                    //IPEndPoint RemoteIPEndPoint = null;
 
                     // Получение данных
                     //byte[] bytes = client.Receive(ref RemoteIPEndPoint);

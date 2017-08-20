@@ -128,6 +128,9 @@
     <Compile Include="View\Window2_Move.xaml.cs">
       <DependentUpon>Window2_Move.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WindowAbout.xaml.cs">
+      <DependentUpon>WindowAbout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowAsk.xaml.cs">
       <DependentUpon>WindowAsk.xaml</DependentUpon>
     </Compile>
@@ -175,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Window2_Move.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WindowAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
