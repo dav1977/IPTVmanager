@@ -388,5 +388,17 @@ namespace IPTVman.ViewModel
         {
             about = null;
         }
+
+        private void sizeinc_Click(object sender, RoutedEventArgs e)
+        {
+            MYLIST.FontSize += 1;
+            if (MYLIST.FontSize >56) MYLIST.FontSize = 56;
+        }
+
+        private void sizedec_Click(object sender, RoutedEventArgs e)
+        {
+            MYLIST.FontSize -= 1;
+            if (MYLIST.FontSize < 8) MYLIST.FontSize = 8;
+        }
     }
 }

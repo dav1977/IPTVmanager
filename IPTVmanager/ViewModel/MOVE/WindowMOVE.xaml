@@ -121,5 +121,10 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
+        <Button x:Name="inc" Content="+" HorizontalAlignment="Right" Margin="0,116,61,0" Grid.Row="1" VerticalAlignment="Top" Width="35" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click">
+           
+        </Button>
+        <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,116,21,0" Grid.Row="1" VerticalAlignment="Top" Width="35" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click"/>
+
     </Grid>
 </Window>

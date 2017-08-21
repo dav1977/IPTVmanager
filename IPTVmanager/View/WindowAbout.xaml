@@ -8,8 +8,16 @@
         Background="Black" Width="500" Height="400" BorderThickness="0.0" 
         WindowStartupLocation="CenterScreen"
     >
+
     <Grid>
-        <Viewport3D Name="World">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Background="#01000000" Grid.ColumnSpan="2">
+            <Image Visibility="Visible" x:Name="logo" Source="logo_cobra.png" Height="93" Margin="221,64,44,0" RenderTransformOrigin="0.533,-3.625"/>
+        </StackPanel>
+        <Viewport3D Name="World" Grid.ColumnSpan="2">
             <Viewport3D.Camera>
                 <OrthographicCamera Position="0,0,32" LookDirection="0,0,-32" UpDirection="0,1,0" Width="128" />
             </Viewport3D.Camera>
@@ -24,10 +32,11 @@
                 </ModelVisual3D>
             </Viewport3D.Children>
         </Viewport3D>
-        <DockPanel Background="#01000000">
-            <Label Visibility="Visible" Name="F1" DockPanel.Dock="Top" Content="**********" FontSize="36" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.775,3.308" FontFamily="Freestyle Script" Margin="88,0,70,0" Width="334" Foreground="#FFD6BEE6" Height="51"/>
-            <Label Visibility="Visible" Name="F2" DockPanel.Dock="Top" Foreground="#FFF0FDFF" Content="**********" FontSize="20" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontFamily="Bookman Old Style" Height="41" Margin="28,0,23,0" Width="441"/>
 
-        </DockPanel>
+
+        <StackPanel Background="#01000000" Grid.ColumnSpan="2">
+            <Label Visibility="Visible" Name="F1" DockPanel.Dock="Top" Content="**********" FontSize="36" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.775,3.308" FontFamily="Freestyle Script" Margin="88,0,70,0" Width="334" Foreground="#FFD6BEE6" Height="51"/>
+            <Label Visibility="Visible" x:Name="F2" Foreground="#FFF0FDFF" Content="**********" FontSize="20" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontFamily="Bookman Old Style" Height="299" Margin="30,0,23,0" Width="439"/>
+        </StackPanel>
     </Grid>
 </Window>

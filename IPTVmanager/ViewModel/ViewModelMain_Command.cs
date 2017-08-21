@@ -364,10 +364,9 @@ namespace IPTVman.ViewModel
             {
                 rez = await find_dublicate_task();
             }
-            catch(Exception e) { dialog.Show("ошибка "+e.Message); return; }
-            Wait.Close();
+            catch(Exception e) { dialog.Show("ошибка "+e.Message); goto exit; }
 
-            if (rez == null) return;
+            if (rez == null) { goto exit; }
             if (rez.Count == 0) dialog.Show("Дубликатов не найдено");
             else
             {
@@ -380,6 +379,8 @@ namespace IPTVman.ViewModel
                  Update_collection(typefilter.dublicate);
             }
 
+            exit:
+            Wait.Close();
             loc.finddublic = false;
         }
 

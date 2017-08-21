@@ -431,5 +431,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
+        <Button x:Name="sizeinc" Content="+" Grid.Column="3" HorizontalAlignment="Right" Margin="0,126,33,0" VerticalAlignment="Top" Width="20" Click="sizeinc_Click" Height="18" RenderTransformOrigin="4.062,3"/>
+        <Button x:Name="sizedec" Content="-" Grid.Column="3" HorizontalAlignment="Right" Margin="0,126,10,0" VerticalAlignment="Top" Width="20" Click="sizedec_Click" Height="18"/>
     </Grid>
 </Window>

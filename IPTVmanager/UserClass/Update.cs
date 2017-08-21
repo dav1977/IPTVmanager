@@ -197,11 +197,13 @@ namespace IPTVman.ViewModel
                 first = false;
                 if (ind != 0) myLISTdublicate1a[ind - 1].name = _NAME + ind.ToString();
                 index = 0;
+                if (main.http == null) continue;
                 string mn = main.http.Trim();
 
                 //22222222222222222
                 foreach (var j in myLISTdublicate1b)
                 {
+                    if (j.http == null) continue;
                     if (mn == j.http.Trim() )
                     {
                             if (first)

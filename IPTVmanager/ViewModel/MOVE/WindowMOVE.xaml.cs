@@ -202,5 +202,16 @@ namespace ListViewDragDropManager
 
         }
 
+        private void inc_Click(object sender, RoutedEventArgs e)
+        {
+            listView.FontSize += 1;
+            if (listView.FontSize > 56) listView.FontSize = 56;
+        }
+
+        private void dec_Click(object sender, RoutedEventArgs e)
+        {
+            listView.FontSize -= 1;
+            if (listView.FontSize < 8) listView.FontSize = 8;
+        }
     }
 }
