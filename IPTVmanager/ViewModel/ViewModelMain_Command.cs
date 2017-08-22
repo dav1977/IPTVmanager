@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+//using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
@@ -553,7 +554,7 @@ namespace IPTVman.ViewModel
                             string path = System.IO.Path.GetTempPath() + tempname;
                             WebClient webClient = new WebClient();
                             Wait.Create("Загружается\n"+ str[0].ToString(), false);
-                            webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
+                            webClient.DownloadFileCompleted += WebClient_DownloadFileCompletedClipb;
                             webClient.DownloadFileAsync(new Uri (str[0].ToString()), path);
                             return;
                         }
@@ -709,16 +710,32 @@ namespace IPTVman.ViewModel
             loc.openfile = false;
         }
 
+        private void WebClient_DownloadFileCompletedClipb(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            string path = System.IO.Path.GetTempPath() + tempname;
+            add_file_to_memory(path);
+            parse_temp_file();
+        }
+
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            Wait.Close();
+            //копия
             string path = System.IO.Path.GetTempPath() + tempname;
+            add_file_to_memory(path);
+            wait_download = false;
+
+        }
+
+        private void parse_temp_file()
+        {
+            string path = System.IO.Path.GetTempPath() + tempname;
+            add_memoty_to_file(path);
             PARSING_FILE(path);
             try
             {
                 System.IO.File.Delete(path);
             }
-            catch { }
+            catch(Exception ex) { dialog.Show("ошибка удаления "+ex.Message.ToString()); }
             Update_collection(typefilter.last);
             Wait.Close();
         }
@@ -750,6 +767,7 @@ namespace IPTVman.ViewModel
             Update_collection(typefilter.normal);
             Wait.Close();
             loc.openfile = false;
+            bufferstring.Clear();
         }
 
         public Task<string> AsyncOPEN(string name)
@@ -761,6 +779,8 @@ namespace IPTVman.ViewModel
                 var tcs = new TaskCompletionSource<string>();
                 try
                 {
+                   mode_work_with_links = true;
+                   bufferstring.Clear();
                    if (name!="") PARSING_FILE(name);
                    else loc.openfile = false;
                    tcs.SetResult("ok");
@@ -790,14 +810,17 @@ namespace IPTVman.ViewModel
                 webClient.DownloadFileAsync(new Uri(s), path);
                 return;
             }
-            catch (Exception ex)
+            catch
             {
-                dialog.Show("Ошибка " + ex.Message.ToString());
+                wait_download = false;
+                dialog.Show("Ошибка parsing "+s);
                 Wait.Close();
             }
         }
-       
 
+
+        bool wait_download = false;
+        bool mode_work_with_links = false;
         void PARSING_FILE(string name)
         {
             bool flag_adding_ok = false;
@@ -810,50 +833,35 @@ namespace IPTVman.ViewModel
 
             try
             {
-                    Regex regex_link = new Regex("http://");
-                    Regex regex1 = new Regex("#EXTINF");
-                    Regex regex2 = new Regex("#EXTM3U");
-                    Match match = null;
+                Regex regex_link = new Regex("http://");
+                Regex regex1 = new Regex("#EXTINF");
+                Regex regex2 = new Regex("#EXTM3U");
+                Match match = null;
 
-                    //ПОИСК заголовка
+                int all_str = 0;
+                byte null_str = 0;
+            
+                try
+                {
+                    //определение макс строк СКАНЕР ФАЙЛА
                     using (StreamReader sr = new StreamReader(name))
                     {
-                        string header = "";
-                        while (true)
+                        while (!sr.EndOfStream)
                         {
-                            try
-                            {
-                               header = sr.ReadLine();
-                            }
-                            catch
-                            {
-                               dialog.Show("Ошибка m3u\nвозможно нет заголовка");
-                            }
-
-                            if (header == null) header = "";
-                            if (sr.EndOfStream) break;
-
-                            match = regex2.Match(header);
-                            if (match.Success) break;
+                            string rez = sr.ReadLine();
+                            if (rez != "" && rez != null)
+                                if (new Regex("#EXTINF").Match(rez).Success) { all_str++; null_str = 0; }
+                                else null_str++; if (null_str > 100) goto exit_open;
+                            match = regex2.Match(rez);
+                            if (match.Success) text_title = rez;
                         }
-                        text_title = header;
                     }
 
-
-                int all_str=0;
-                //определение макс строк
-                using (StreamReader sr = new StreamReader(name))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        string rez= sr.ReadLine();
-                        if (rez!="" && rez!=null) all_str++;
-                    }
                 }
-
-                GUI.set_ProgressBar(all_str/2, true);
-
-                bool stop_parsing = false;
+                catch(Exception ex) { MessageBox.Show("ошибка сканирования "+ex.Message.ToString()); goto exit_open; }
+                
+                GUI.set_ProgressBar(all_str, true);
+                //=========================================================
                 //ПОИСК каналов
                 using (StreamReader sr = new StreamReader(name))
                 {
@@ -870,13 +878,36 @@ namespace IPTVman.ViewModel
                         catch { }
 
                         if (line == null || line == "") continue;
+                       
+                        //*******************************************************//-------------------- закачка Links
+                        if (mode_work_with_links)
+                        {                            
+                           while (wait_download) Thread.Sleep(100);  
 
-                        if (!stop_parsing)
-                        {
-                            stop_parsing = true;//ссылка должна быть только в первой строке
-                            match = regex_link.Match(line);
-                            if (match.Success) { Parsing_link(line); flag_adding_ok = true; break; }
+                            if (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
+                                    !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
+                                      regex_link.Match(line).Success
+                                   )
+                                {
+                                    mode_work_with_links = true;
+                                    Parsing_link(line);
+                                    wait_download = true;
+                                    flag_adding_ok = true;
+                                    continue;
+                                }
+                            //--------------------------
+
+                            if (mode_work_with_links)
+                            {
+                                mode_work_with_links = false;
+                                if (flag_adding_ok)
+                                {
+                                    parse_temp_file(); return;
+                                }
+                            }//рекурсия
+
                         }
+                        //***********************************************************
 
                         match = regex1.Match(line);
                         if (match.Success) yes = true; else yes = false;
@@ -903,8 +934,6 @@ namespace IPTVman.ViewModel
                                 }
                                 else
                                 {
-
-
                                     int i = 0;
                                     for (i = 0; i < split.Length; i++)
                                     {
@@ -1053,6 +1082,18 @@ namespace IPTVman.ViewModel
             }
             catch { }
 
+            if (mode_work_with_links)
+            {
+                while (wait_download) Thread.Sleep(100);
+                mode_work_with_links = false;
+                if (flag_adding_ok)
+                {
+                    parse_temp_file(); return;
+                }
+            }//рекурсия
+
+
+        exit_open:
             string addstr = "";
             if (!flag_adding_ok) dialog.Show("Каналы не обнаружены");
             if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
@@ -1061,7 +1102,34 @@ namespace IPTVman.ViewModel
             loc.openfile = false;
         }
 
+        List<string> bufferstring = new List<string>();
+        void add_file_to_memory(string name)
+        {
+            using (StreamReader sr = new StreamReader(name))
+            {
+                while (!sr.EndOfStream)
+                {
+                    try
+                    {
+                        bufferstring.Add(sr.ReadLine());
+                    }
+                    catch(Exception ex) { MessageBox.Show(ex.ToString()); }
+                }
+            }
+        }
+
+        void add_memoty_to_file(string name)
+        {
+            using (StreamWriter sr = new StreamWriter(name))
+            {
+                foreach (string s in bufferstring)
+                {
+                    sr.Write(s);
+                    sr.WriteLine();
+                }
+            }
+        }
+
 
     }//class
-
 }//namespace

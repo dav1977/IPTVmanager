@@ -39,14 +39,14 @@
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="412,10,0,0" VerticalAlignment="Top" Width="93" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" Grid.Column="1" />
-        <Button x:Name="ButtonReplace_Copy1" Content="ВЫБРАТЬ ФАЙЛ И ОБНОВИТЬ" Command="{Binding key_UPDATECommand}" Margin="107,118,0,0" Width="242" RenderTransformOrigin="-0.038,-1.709" Height="29" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Click="ButtonUPDATE" />
+        <Button x:Name="ButtonReplace_Copy1" Content="ВЫБРАТЬ ФАЙЛ И ОБНОВИТЬ" Command="{Binding key_UPDATECommand}" Margin="144,123,0,0" Width="242" RenderTransformOrigin="-0.038,-1.709" Height="29" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Click="ButtonUPDATE" />
         <Label x:Name="label" Content="ОБНОВИТЬ Ссылки в базе данных Simple TV" HorizontalAlignment="Left" Margin="16,4,0,0" VerticalAlignment="Top" Foreground="#FFFF12C9" FontSize="22" Width="430" Grid.ColumnSpan="2"/>
         <TextBox x:Name="TEXT1" Text="{Binding Selected1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="153,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.Column="1"/>
         <TextBox x:Name="TEXT2" Text="{Binding Selected2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="249,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" Grid.Column="1"/>
         <Label x:Name="label_Copy" Content="ExtFilter в БАЗЕ" HorizontalAlignment="Left" Margin="69,40,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="11" Width="78" Grid.Column="1"/>
         <Label x:Name="label_Copy1" Content="ExtFilter в Отфильтрованном списке" HorizontalAlignment="Left" Margin="69,77,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="11" Width="176" Grid.Column="1"/>
-        <Label x:Name="label_Copy2" Content="Маска url" HorizontalAlignment="Left" Margin="16,42,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="11" Height="16" Width="52" Grid.ColumnSpan="2"/>
-        <Label x:Name="label_Copy3" Content="в БАЗЕ" HorizontalAlignment="Left" Margin="16,58,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="11" Height="16" Width="39" Grid.ColumnSpan="2"/>
+        <Label x:Name="label_Copy2" Content="Маска url" HorizontalAlignment="Left" Margin="14,81,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="11" Height="16" Width="52" Grid.ColumnSpan="2"/>
+        <Label x:Name="label_Copy3" Content="в БАЗЕ" HorizontalAlignment="Left" Margin="13,94,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="11" Height="16" Width="39" Grid.ColumnSpan="2"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="113" Margin="18,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="524" Grid.ColumnSpan="2" TextChanged="textBox_TextChanged">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
@@ -73,7 +73,7 @@
                 </LinearGradientBrush>
             </TextBox.Background>
         </TextBox>
-        <TextBox x:Name="TEXTmask" Text="{Binding mask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="16,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="TEXTmask" Text="{Binding mask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="44" Margin="15,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" Grid.ColumnSpan="2"/>
 
     </Grid>
 

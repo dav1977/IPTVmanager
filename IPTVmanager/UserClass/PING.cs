@@ -117,9 +117,7 @@ namespace IPTVman.ViewModel
         /// </summary>
         public string GETnoas(CancellationToken cancellationToken, string url)
         {
-           
-
-             done = false;
+            done = false;
             url = url.Trim();
             string ip_url = "";
             string ip0="";

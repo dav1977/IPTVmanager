@@ -123,31 +123,36 @@ namespace IPTVman.ViewModel
             //DataRow[] foundRows = data.Tables["main"].Select("Name = 'FOX HD'");
             if (Event_Print != null) Event_Print("Старт обновления "+ filterMDB + "    id=" + id_best + "\n");
 
-            int index = 0;
-            foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
-            {
-                if (!find_mask(mask, row[2].ToString())) { index++; continue; }
-                // получаем все ячейки строки
-                // object[] cells = row.ItemArray;
-                // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
-                if (row[34].ToString() == id_best)
+                string work_mask="";
+                foreach (var s in ViewModelMain.myLISTbase)
                 {
-                    //if (Event_Print != null) Event_Print("Анализ "+ row[1].ToString()+"\n");
 
-                    foreach (var s in ViewModelMain.myLISTbase)
+                    if (!find_mask(mask, s.http, ref work_mask)) { continue; }
+                    //if (!find_mask(mask, row[2].ToString(),  ref work_mask)) { index++; continue; };
+
+                    int index = 0;
+                    foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
                     {
-                        if (s.name == row[1].ToString() && (s.ExtFilter == filterManager || filterManager == "") && s.http != "")
-                        {
-                            if (Event_Print != null) Event_Print(
-                                "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");
-                            //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
-                            data.Tables["main"].Rows[index]["Adress"] = s.http;
-                            break;//обновляем только одну запись
-                        }
+                        // получаем все ячейки строки
+                        // object[] cells = row.ItemArray;
+                        // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
+
+                            if (row[34].ToString() == id_best && (new Regex(work_mask).Match(s.http).Success))
+                            {
+                                if (s.name == row[1].ToString() && (s.ExtFilter == filterManager || filterManager == "") )
+                                {
+
+                                    data.Tables["main"].Rows[index]["Adress"] = s.http;
+                                    if (Event_Print != null) Event_Print(
+                                    "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");
+                                    //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
+                                    break;//обновляем только одну запись, последующие совпадения ссылки пропускаем
+                               
+                                }
+                            }
+                    index++;
                     }
                 }
-                index++;
-            }
         }
 
         Task task1;
@@ -254,15 +259,25 @@ namespace IPTVman.ViewModel
         }
 
 
-        bool find_mask(string mask, string url)
+        bool find_mask(string mask, string url, ref string maskextern)
         {
+            string[] list_mask=null;
+            try
+            {
+                list_mask = mask.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+            catch { maskextern = ""; return false; }
+
             Regex regex1;
             Match r;
-           
-                regex1 = new Regex(mask, RegexOptions.IgnoreCase);
+
+            foreach (string s in list_mask)
+            {
+                regex1 = new Regex(s.Trim(), RegexOptions.IgnoreCase);
                 r = regex1.Match(url);
-                if (r.Success) return true;
-       
+                if (r.Success) { maskextern = s.Trim();  return true; }
+            }
+            maskextern = "";
             return false;
         }
 
