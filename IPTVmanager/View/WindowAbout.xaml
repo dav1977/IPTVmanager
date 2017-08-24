@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:IPTVman.ViewModel"
         mc:Ignorable="d"
         Background="Black" Width="500" Height="400" BorderThickness="0.0" 
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" Cursor="Arrow" MouseDoubleClick="Window_MouseDoubleClick" ShowInTaskbar="False"
     >
 
     <Grid>
@@ -36,7 +36,7 @@
 
         <StackPanel Background="#01000000" Grid.ColumnSpan="2">
             <Label Visibility="Visible" Name="F1" DockPanel.Dock="Top" Content="**********" FontSize="36" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.775,3.308" FontFamily="Freestyle Script" Margin="88,0,70,0" Width="334" Foreground="#FFD6BEE6" Height="51"/>
-            <Label Visibility="Visible" x:Name="F2" Foreground="#FFF0FDFF" Content="**********" FontSize="20" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontFamily="Bookman Old Style" Height="299" Margin="30,0,23,0" Width="439"/>
+            <Label Visibility="Visible" x:Name="F2" Foreground="#FFF0FDFF" Content="**********" FontSize="20" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontFamily="Bookman Old Style" Height="299" Margin="30,0,23,0" Width="439" MouseDoubleClick="F2_MouseDoubleClick"/>
         </StackPanel>
     </Grid>
 </Window>

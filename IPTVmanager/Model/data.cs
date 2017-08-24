@@ -46,14 +46,16 @@ namespace IPTVman.Model
     }
     public static class play
     {
+        public static IPTVman.ViewModel.Player player;
         public static string path = "";
         public static Process playerV;
         public static string URLPLAY = "";
+        public static string name = "";
     }
 
     public static class data
     {
-        public static bool type_player = false;
+        public static byte type_player = 0;
         public static string NOT_URL = "НЕ СУЩЕСТВУЕТ";
         public static byte current_favorites =1;
         public static string favorite1_1 = "best";

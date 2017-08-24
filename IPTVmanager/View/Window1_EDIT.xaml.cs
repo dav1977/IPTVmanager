@@ -9,7 +9,6 @@ namespace IPTVman.ViewModel
     {
         public Window1()
         {
-
             InitializeComponent();
             //Configure the ProgressBar
             ProgressBar1.Minimum = 0;
@@ -17,7 +16,9 @@ namespace IPTVman.ViewModel
             ProgressBar1.Value = 0;
             textBoxPING.Text="";
             textBoxPING2.Text = "";
-
+            if (IPTVman.Model.data.type_player == 1) ViewModelWindow1._ch1 = true;
+            else if (IPTVman.Model.data.type_player == 2) ViewModelWindow1._ch2 = true;
+            else { ViewModelWindow1._ch1 = false; ViewModelWindow1._ch2 = false; }
             //use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);
@@ -51,6 +52,7 @@ namespace IPTVman.ViewModel
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
             Model.play.URLPLAY = urlTEXT.Text;
+            Model.play.name = textBox.Text;
             exit();
         }
 

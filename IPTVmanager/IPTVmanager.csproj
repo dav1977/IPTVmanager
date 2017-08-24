@@ -45,7 +45,59 @@
   <PropertyGroup>
     <ApplicationIcon>cube.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '64|AnyCPU'">
+    <OutputPath>bin\64\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '64|x64'">
+    <OutputPath>bin\x64\64\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nVLC, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nVLC.2.1.0.3\lib\net40\nVLC.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -59,25 +111,11 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Vlc.DotNet.Core, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Core.2.1.134\lib\net45\x86\Vlc.DotNet.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Core.Interops, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Core.Interops.2.1.134\lib\net45\x86\Vlc.DotNet.Core.Interops.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Forms, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Forms.2.1.134\lib\net45\x86\Vlc.DotNet.Forms.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Wpf, Version=2.1.134.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Wpf.2.1.134\lib\net45\x86\Vlc.DotNet.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -89,12 +127,12 @@
     <Compile Include="Helpers\IClosableViewModel.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Model\Serialization.cs" />
-    <Compile Include="UserClass\AutoPING.cs" />
+    <Compile Include="Model\UserClass\AutoPING.cs" />
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
-    <Compile Include="UserClass\Registy_Find.cs" />
-    <Compile Include="UserClass\BaseAccess.cs" />
-    <Compile Include="UserClass\Update.cs" />
+    <Compile Include="Model\UserClass\Registy_Find.cs" />
+    <Compile Include="Model\UserClass\BaseAccess.cs" />
+    <Compile Include="Model\UserClass\Update.cs" />
     <Compile Include="ViewModel\MOVE\DragAdorner.cs" />
     <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
     <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />
@@ -102,9 +140,9 @@
     <Compile Include="ViewModel\MOVE\WindowMOVE.xaml.cs">
       <DependentUpon>WindowMOVE.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserClass\PING.cs" />
-    <Compile Include="UserClass\PING_prepare.cs" />
-    <Compile Include="UserClass\UDPclient.cs" />
+    <Compile Include="Model\UserClass\PING.cs" />
+    <Compile Include="Model\UserClass\PING_prepare.cs" />
+    <Compile Include="Model\UserClass\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
     <Compile Include="ViewModel\UPDATE_MDB_Command.cs" />
@@ -112,7 +150,7 @@
     <Compile Include="ViewModel\MOVE_Object.cs" />
     <Compile Include="ViewModel\EDIT_Object.cs" />
     <Compile Include="ViewModel\MOVE_Command.cs" />
-    <Compile Include="UserClass\Virtulization.cs" />
+    <Compile Include="Model\UserClass\Virtulization.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
     <Compile Include="ViewModel\EDIT_Command.cs" />
@@ -241,6 +279,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo_cobra.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

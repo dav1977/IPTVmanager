@@ -9,15 +9,15 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Windows;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Diagnostics;
+
 
 
 namespace IPTVman.ViewModel
 {
     partial class ViewModelWindow1 : ViewModelMain
     {
-        public static Vlc.DotNet.Player player = null;
-
         public static event Delegate_UpdateEDIT Event_UpdateEDIT;
         public static event Delegate_ADDBEST Event_ADDBEST;
        
@@ -87,60 +87,49 @@ namespace IPTVman.ViewModel
             Thread.Sleep(300);
         }
 
-
         void SAVE(object selectedItem)
         {
             if (loc.collection) return;
             GUI.edit = false;
             if (Event_UpdateEDIT != null) Event_UpdateEDIT(edit); 
         }
-
+ 
         void PLAY(object selectedItem)
         {
-            bool err = false;
             if (play.URLPLAY == "") return;
 
-            if (!data.type_player)
+            if (data.type_player == 0)
             {
-                //сначала пробуем играть через библиотеку
                 try
                 {
-                    if (player == null)
+                    if (play.player == null)
                     {
-                        player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
-                        player.Topmost = true;
-                        player.Show();
-                        player.Play();
+                        play.player = new Player();
+                        play.player.Topmost = true;
+                        play.player.Show();
+                        play.player.Closed += (sender, args) => { play.player = null; };
+                        play.player.Play(play.URLPLAY);
                     }
                     else
                     {
-                        if (!player.window_enable)
-                        {
-                            player.window_enable = true;
-                            player = new Vlc.DotNet.Player { DataContext = new ViewModelWindow1("") };
-                            player.Topmost = true;
-                            player.Show();
-                            player.Play();
-                        }
-                        else
-                        {
-                            player.Play();
-                        }
-
+                        play.player.Play(play.URLPLAY);
                     }
+
                 }
-                catch 
+                catch (Exception ex)
                 {
-                    err = true;
+                    MessageBox.Show(ex.Message);
                 }
-                if (!err) return;
+
             }
 
-            
-            //Через ACEplayer
+  
+            if (data.type_player == 1)
+            {
+                //Через ACEplayer
                 REG_FIND reg = new REG_FIND();
                 string rez = reg.FIND("ace_player.exe");
-    
+
                 string[] words = rez.Split(new char[] { '"' });
                 if (words.Length < 2) rez = "";
 
@@ -170,20 +159,55 @@ namespace IPTVman.ViewModel
 
                 if (File.Exists(play.path))
                 {
-                    //   Process.Start(player_path);
                     ProcessStartInfo startInfo = new ProcessStartInfo();
                     startInfo.CreateNoWindow = false;
                     startInfo.UseShellExecute = false;
                     startInfo.FileName = play.path;
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     startInfo.Arguments = play.URLPLAY;
 
                     play.playerV = Process.Start(startInfo);
-                    // Process.Start(startInfo);
-                   
 
                 }
                 else dialog.Show("Не найден файл ACE_PLAYER.exe по пути\n" + play.path);
+            }
+
+            if (data.type_player == 2)
+            {
+                //Через VLC
+                REG_FIND reg = new REG_FIND();
+                string rez = reg.FIND("vlc.exe");
+
+                string[] words = rez.Split(new char[] { '"' });
+                if (words.Length < 2) rez = "";
+
+                if (rez == "")
+                {
+                    dialog.Show("Не найден vlc.exe в реестре");
+                    return;
+                }
+                else
+                {
+                    play.path = words[1];
+                    play.path = play.path.Replace(@"\", @"/");
+                }
+
+                if (File.Exists(play.path))
+                {
+                    Task task4 = Task.Factory.StartNew(() =>
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.CreateNoWindow = false;
+                        startInfo.UseShellExecute = false;
+                        startInfo.FileName = play.path;
+                        //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        startInfo.Arguments = play.URLPLAY;
+
+                        play.playerV = Process.Start(startInfo);
+                     });
+            }
+                else dialog.Show("Не найден файл vlc.exe по пути\n" + play.path);
+            }
 
         }
 

@@ -11,7 +11,6 @@ namespace IPTVman.ViewModel
     {
         public static ParamCanal edit { get; set; }
 
-
         object _strPING;
         public object strPING
         {
@@ -24,26 +23,37 @@ namespace IPTVman.ViewModel
                 if (_strPING != value)
                 {
                     _strPING = value;
-
                     RaisePropertyChanged("strPING");
-
                 }
             }
         }
 
 
- 
+        public static bool _ch1 = false;
         public bool CH1
         {
-            get { return data.type_player; }
+            get { return _ch1; }
             set
             {
-                if (data.type_player) data.type_player = false; else data.type_player = true;
+                if (_ch1) { _ch1 = false; data.type_player = 0; }
+                else { _ch1 = true; _ch2 = false; data.type_player = 1; }  
                 RaisePropertyChanged("CH1");
+                RaisePropertyChanged("CH2");
             }
         }
-    
 
+        public static bool _ch2 = false;
+        public bool CH2
+        {
+            get { return _ch2; }
+            set
+            {
+                if (_ch2) { _ch2 = false; data.type_player = 0; }
+                else { _ch2 = true; _ch1 = false; data.type_player = 2; }
+                RaisePropertyChanged("CH1");
+                RaisePropertyChanged("CH2");
+            }
+        }
 
     }
 }

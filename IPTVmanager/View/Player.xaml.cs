@@ -3,146 +3,239 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Threading;
-//using Vlc.DotNet.Wpf;
-//using Vlc.DotNet.Forms;
-//using Vlc.DotNet.Core;
 using System.Windows.Threading;
+using System.ComponentModel;
+using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
+using Declarations;
+using Declarations.Events;
+using Declarations.Media;
+using Declarations.Players;
+using Implementation;
+using System.Threading.Tasks;
 
-
-namespace Vlc.DotNet
+namespace IPTVman.ViewModel
 {
     /// <summary>
+    /// nVLC lib Player
     /// </summary>
     public partial class Player : Window
     {
-        public bool window_enable = false;
+        IMediaPlayerFactory m_factory;
+        IVideoPlayer m_player;
+        IMedia m_media;
+       
         public Player()
         {
-            tick = 0; i = 0;
             InitializeComponent();
-            window_enable = true;
-            try
-            {
-                myControl.MediaPlayer.VlcLibDirectoryNeeded += OnVlcControlNeedsLibDirectory;
-                myControl.MediaPlayer.EndInit();
-            }
-            catch//(Exception ex)
-            {
-                //IPTVman.ViewModel.dialog.Show("НЕТ библиотеки VLC "+ex.Message.ToString());
-                this.Close();
-                return;
-            }
+            init();
+            slider2.Value = 100;
 
+            tick = 0; i = 0;
+        
             //use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += timer_Tick;
             timer.Start();
+
+            slider2.Focus();
+        }
+        void init()
+        {
+            System.Windows.Forms.Panel p = new System.Windows.Forms.Panel();
+            p.BackColor = System.Drawing.Color.Black;
+            windowsFormsHost1.Child = p;
+
+            m_factory = new MediaPlayerFactory(true);
+            m_player = m_factory.CreatePlayer<IVideoPlayer>();
+
+            this.DataContext = m_player;
+
+            m_player.Events.PlayerPositionChanged += new EventHandler<MediaPlayerPositionChanged>(Events_PlayerPositionChanged);
+            m_player.Events.TimeChanged += new EventHandler<MediaPlayerTimeChanged>(Events_TimeChanged);
+            m_player.Events.MediaEnded += new EventHandler(Events_MediaEnded);
+            m_player.Events.PlayerStopped += new EventHandler(Events_PlayerStopped);
+
+            m_player.WindowHandle = p.Handle;
         }
 
-        public void Play()
+        string play_link;
+        public void Play(string link)
         {
-            try
+            if (m_player == null)
             {
-                if (myControl.MediaPlayer.IsPlaying)
-                {
-                    myControl.MediaPlayer.Stop();
-                    Thread.Sleep(200);
-                }
+                init();
+            }
+            if (m_player.IsPlaying) m_player.Stop();
+            if (play_link!=link) m_player.Stop();
+            while (m_player.IsPlaying) Thread.Sleep(100);
 
-                myControl.MediaPlayer.Play(new Uri(IPTVman.Model.play.URLPLAY));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString(), "error");
-            }
+            play_link = link;
+            m_media = m_factory.CreateMedia<IMedia>(link);
+
+            m_media.Events.DurationChanged += new EventHandler<MediaDurationChange>(Events_DurationChanged);
+            m_media.Events.StateChanged += new EventHandler<MediaStateChange>(Events_StateChanged);
+
+            m_player.Open(m_media);
+            m_media.Parse(true);
+
+            m_player.Play();
         }
 
         uint tick = 0;
         static byte i = 0;
         private void timer_Tick(object sender, EventArgs e)
         {
+            if (m_player == null) return;
+                if (m_player.IsPlaying) { this.Title = "Build VLC:   "
+                    + Model.play.name; tick = 0; i = 0; }
+                else
+                {
+                    if (i == 0)
+                        this.Title = "Opening ... ";
+                    if (i < 5) this.Title = "Opening .   " + tick.ToString();
+                    if (i > 5 && i < 10) this.Title = "Opening . .   " + tick.ToString();
+                    if (i > 10 && i < 15) this.Title = "Opening . . .   " + tick.ToString();
+                    if (i > 15 && i < 20) this.Title = "Opening . . . . . . .   " + tick.ToString();
+                    i++;
+                    if (i > 20) i = 1;
+                    tick++;
+                }
+        }
 
-
-            if (myControl.MediaPlayer.IsPlaying) { this.Title = "VLC Player";  tick = 0; i = 0; }
-            else
+        void Events_PlayerStopped(object sender, EventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(delegate
             {
-                if (i == 0)
-                    this.Title = "Opening ... ";
-                if (i < 5) this.Title = "Opening .   " + tick.ToString();
-                if (i > 5 && i < 10) this.Title = "Opening . .   " + tick.ToString();
-                if (i > 10 && i < 15) this.Title = "Opening . . .   " + tick.ToString();
-                if (i > 15 && i < 20) this.Title = "Opening . . . . . . .   " + tick.ToString();
-                i++;
-                if (i > 20) i = 1;
-                tick++;
-            } 
+                InitControls();
+            }));
         }
 
-        private void OnVlcControlNeedsLibDirectory(object sender, Forms.VlcLibDirectoryNeededEventArgs e)
+        void Events_MediaEnded(object sender, EventArgs e)
         {
-            var currentAssembly = Assembly.GetEntryAssembly();
-            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-            if (currentDirectory == null) return;
-
-            string dir = Directory.GetCurrentDirectory();
-
-            e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName  (dir.Replace(@"\", @"/")  + "/VLClib/") );
-
-            //if (AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture == ProcessorArchitecture.X86)
-            //    e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x86/"));
-            //else
-            //    e.VlcLibDirectory = new DirectoryInfo(Path.GetDirectoryName("c:/VLC/lib/x64/"));
-        }
-
-        private void OnPlayButtonClick(object sender, RoutedEventArgs e)
-        {
-            myControl.MediaPlayer.Stop();
-            // myControl.MediaPlayer.Play(new Uri("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi"));
-            //myControl.MediaPlayer.Play(new FileInfo(@"..\..\..\Vlc.DotNet\Samples\Videos\BBB trailer.mov"));
-        }
-
-        private void OnForwardButtonClick(object sender, RoutedEventArgs e)
-        {
-            myControl.MediaPlayer.Rate = 2;
-        }
-
-        private void GetLength_Click(object sender, RoutedEventArgs e)
-        {
-           // GetLength.Content = myControl.MediaPlayer.Length + " ms";
-        }
-
-        private void GetCurrentTime_Click(object sender, RoutedEventArgs e)
-        {
-           // GetCurrentTime.Content = myControl.MediaPlayer.Time + " ms";
-        }
-
-        private void SetCurrentTime_Click(object sender, RoutedEventArgs e)
-        {
-           // myControl.MediaPlayer.Time = 5000;
-           // SetCurrentTime.Content = myControl.MediaPlayer.Time + " ms";
-        }
-
-        private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (myControl.MediaPlayer != null)
+            this.Dispatcher.BeginInvoke(new Action(delegate
             {
-                myControl.MediaPlayer.Stop();
-                myControl.MediaPlayer.Dispose();
-               
+                InitControls();
+            }));
+        }
+
+        private void InitControls()
+        {
+            
+        }
+
+        void Events_TimeChanged(object sender, MediaPlayerTimeChanged e)
+        {
+            //this.Dispatcher.BeginInvoke(new Action(delegate
+            //{
+            //    //label1.Content = TimeSpan.FromMilliseconds(e.NewTime).ToString().Substring(0, 8);
+            //}));
+        }
+
+        void Events_PlayerPositionChanged(object sender, MediaPlayerPositionChanged e)
+        {
+           
+        }
+
+        void Events_StateChanged(object sender, MediaStateChange e)
+        {
+           
+        }
+
+        void Events_DurationChanged(object sender, MediaDurationChange e)
+        {
+           
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            m_player.Pause();
+        }
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+   
+        }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            m_player.Stop();
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            m_player.ToggleMute();
+        }
+
+        private void slider2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (m_player != null)
+            {
+                m_player.Volume = (int)e.NewValue;
             }
-            window_enable = false;
+        }
 
+        private void slider1_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+        }
+
+        private void slider1_DragStarted(object sender, DragStartedEventArgs e)
+        {
+        }
+
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        { 
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (myControl.MediaPlayer != null)
+            if (m_player != null)
             {
-                myControl.MediaPlayer.Stop();
-                myControl.MediaPlayer.Dispose();
+                m_player.Stop();
+                //while (m_player.IsPlaying) Thread.Sleep(100);
             }
-            window_enable = false;
+        }
+
+        private void Window_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+           
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+           
+        }
+
+        private void Window_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+           
+        }
+
+        private void windowsFormsHost1_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+          
+        }
+
+        private void windowsFormsHost1_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+           
+        }
+
+        private void windowsFormsHost1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+    
+        }
+
+        private void windowsFormsHost1_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            
+            
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
         }
     }
 }

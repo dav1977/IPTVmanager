@@ -64,7 +64,12 @@ namespace IPTVman.ViewModel
         {
             if (e.Key == System.Windows.Input.Key.Escape)
                 this.Close();
+            else
+                System.Diagnostics.Process.Start("https://github.com/dav1977/IPTVmanager");
         }
+
+        
+     
 
         private void OnFrame(object sender, EventArgs e)
         {
@@ -83,8 +88,8 @@ namespace IPTVman.ViewModel
                 frameCount = 0;
                 // this.FrameRateLabel.Content = "FPS: " + frameRate.ToString() + "  Particles: " + pm.ActiveParticleCount.ToString();
 
-                this.F1.Content = "by COBRA";
-                this.F2.Content = "https://github.com/dav1977/IPTVmanager";
+                this.F1.Content = "IPTVmanager by COBRA";
+                this.F2.Content = "Press any key to open links";
 
             }
 
@@ -108,6 +113,20 @@ namespace IPTVman.ViewModel
             this.spawnPoint = new Point3D(s * 32.0, c * 32.0, 0.0);
         }
 
+        private void Window_MouseEnter(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+           
+        }
+
+        private void F2_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+        
+        }
     }
     public class ParticleSystemManager
     {

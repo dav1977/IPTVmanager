@@ -48,7 +48,7 @@
             </Button.Background>
         </Button>
         <ProgressBar Name="ProgressBar1" HorizontalAlignment="Left" Height="45" Margin="140,334,0,-9" VerticalAlignment="Top" Width="345" Foreground="#FF60D301" Background="#FF290D5B"/>
-        <Button x:Name="Button_PLAY" Content="PLAY" Command="{Binding key_PLAY}" HorizontalAlignment="Left" Margin="10,232,0,0" VerticalAlignment="Top" Width="117" RenderTransformOrigin="0.626,-2.026" Click="Button_Copy_Click" Height="28">
+        <Button x:Name="Button_PLAY" Content="PLAY" Command="{Binding key_PLAY}" HorizontalAlignment="Left" Margin="10,221,0,0" VerticalAlignment="Top" Width="117" RenderTransformOrigin="0.626,-2.026" Click="Button_Copy_Click" Height="28">
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -56,7 +56,8 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <CheckBox Content="через aceplayer" IsChecked="{Binding CH1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,87" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center"/>
+        <CheckBox Content="через aceplayer" IsChecked="{Binding CH1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,98" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center"/>
+        <CheckBox Content="через vlc" IsChecked="{Binding CH2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,78" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center"/>
     </Grid>
 
 </Window>
