@@ -27,7 +27,8 @@ namespace IPTVman.ViewModel
         public WindowMDB()
         {
             InitializeComponent();
-            CreateTimer1(5000);
+            //CreateTimer1(5000);
+            textBox.PreviewTextInput += new TextCompositionEventHandler(textBox_PreviewTextInput);
             textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.Text = "";
@@ -54,9 +55,7 @@ namespace IPTVman.ViewModel
         }
         private void update_block(string text)
         {
-
             if (text == "") clear();
-
             textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
             {
                 ct++; if (ct > 500) clear();
@@ -82,7 +81,10 @@ namespace IPTVman.ViewModel
         {
 
         }
-
+        void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = true; //if (!Char.IsDigit(e.Text, 0)) e.Handled = true;
+        }
         //closing
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -100,17 +102,15 @@ namespace IPTVman.ViewModel
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            try
             {
-                textBox.ScrollToEnd();
-            }));
+                textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                {
+                    textBox.ScrollToEnd();
+                }));
+            }
+            catch { }
         }
-
-        private void ButtonReplace_Copy1_Click(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
         private void ButtonUPDATE(object sender, RoutedEventArgs e)
         {
             Model.bd_data.filter1 = ViewModelWindowMDB.sel1;

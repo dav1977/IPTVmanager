@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPTVmanager", "IPTVmanager\IPTVmanager.csproj", "{845FA2B6-500A-4757-A398-D0E7FDBEE2B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NVLC player", "VLC player\NVLC player.csproj", "{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		64|Any CPU = 64|Any CPU
@@ -37,6 +39,24 @@ Global
 		{845FA2B6-500A-4757-A398-D0E7FDBEE2B5}.Release|x64.Deploy.0 = Release|x64
 		{845FA2B6-500A-4757-A398-D0E7FDBEE2B5}.Release|x86.ActiveCfg = Release|x86
 		{845FA2B6-500A-4757-A398-D0E7FDBEE2B5}.Release|x86.Build.0 = Release|x86
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.64|Any CPU.ActiveCfg = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.64|Any CPU.Build.0 = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.64|x64.ActiveCfg = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.64|x64.Build.0 = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.64|x86.ActiveCfg = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.64|x86.Build.0 = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Debug|x64.Build.0 = Debug|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Release|x64.ActiveCfg = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Release|x64.Build.0 = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

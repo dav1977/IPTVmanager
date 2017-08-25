@@ -46,7 +46,7 @@ namespace IPTVman.Model
     }
     public static class play
     {
-        public static IPTVman.ViewModel.Player player;
+        public static Process playerNVLC;
         public static string path = "";
         public static Process playerV;
         public static string URLPLAY = "";

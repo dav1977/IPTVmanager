@@ -93,37 +93,36 @@ namespace IPTVman.ViewModel
             GUI.edit = false;
             if (Event_UpdateEDIT != null) Event_UpdateEDIT(edit); 
         }
- 
+       
         void PLAY(object selectedItem)
         {
             if (play.URLPLAY == "") return;
 
             if (data.type_player == 0)
             {
-                try
-                {
-                    if (play.player == null)
-                    {
-                        play.player = new Player();
-                        play.player.Topmost = true;
-                        play.player.Show();
-                        play.player.Closed += (sender, args) => { play.player = null; };
-                        play.player.Play(play.URLPLAY);
-                    }
-                    else
-                    {
-                        play.player.Play(play.URLPLAY);
-                    }
+                //Через NVLC
+                play.path = System.Reflection.Assembly.GetExecutingAssembly().Location+ "Player/NVLC player.exe";
+                play.path = play.path.Replace(@"\", @"/");
+                play.path = play.path.Replace(@"IPTVmanager.exe", @"");
 
-                }
-                catch (Exception ex)
+                if (File.Exists(play.path))
                 {
-                    MessageBox.Show(ex.Message);
-                }
+                    Task taskNVLC = Task.Factory.StartNew(() =>
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.CreateNoWindow = false;
+                        startInfo.UseShellExecute = false;
+                        startInfo.FileName = play.path;
+                        //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        startInfo.Arguments = play.URLPLAY+" "+play.name;
 
+                        play.playerV = Process.Start(startInfo);
+                    });
+                }
+                else dialog.Show("Не найден файл NVLC player по пути\n" + play.path);
             }
 
-  
+
             if (data.type_player == 1)
             {
                 //Через ACEplayer
@@ -194,7 +193,7 @@ namespace IPTVman.ViewModel
 
                 if (File.Exists(play.path))
                 {
-                    Task task4 = Task.Factory.StartNew(() =>
+                    Task taskvlc = Task.Factory.StartNew(() =>
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo();
                         startInfo.CreateNoWindow = false;
