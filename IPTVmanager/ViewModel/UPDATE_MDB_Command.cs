@@ -21,11 +21,13 @@ namespace IPTVman.ViewModel
     {
         public static Access _bd;
         public RelayCommand key_UPDATECommand { get; set; }
+        public RelayCommand key_bastUPDATECommand { get; set; }
 
         //============================== INIT ==================================
         public ViewModelWindowMDB()
         {
             key_UPDATECommand = new RelayCommand(key_update);
+            key_bastUPDATECommand = new RelayCommand(key_FASTupdateBD);
             //sel1 = "что";
             //sel2 = "чем";
             _bd = new Access();
@@ -34,26 +36,34 @@ namespace IPTVman.ViewModel
 
 
         CancellationTokenSource cts1= new CancellationTokenSource();
-
+        private object threadLock = new object();
         async void key_update(object selectedItem)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "access files(*.mdb)|*.mdb";
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "access files(*.mdb)|*.mdb";
 
-            if (openFileDialog.ShowDialog() == true)
-            {
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    bd_data.path = openFileDialog.FileName;
 
-                _bd.connect(openFileDialog.FileName);
+                    _bd.connect(openFileDialog.FileName);
 
-                if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n"+_bd.error);  return; }
+                    if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n" + _bd.error); return; }
 
-                string rez= await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
+                    var r = await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
             }
-
-           
         }
 
+        async void key_FASTupdateBD(object selectedItem)
+        {
+      
+                if (bd_data.path == "") return;
+                _bd.connect(bd_data.path);
 
+                if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n" + _bd.error); return; }
+
+                string rez = await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
+        }
 
         //============================== object ==================================
         public static string sel1=Model.bd_data.filter1;

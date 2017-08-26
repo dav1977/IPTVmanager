@@ -67,23 +67,21 @@ namespace IPTVman.ViewModel
             start_update = true;    
         }
 
-       // void select (int a, ParamCanal b)
-       // {
-       //     lock (threadLock)
-       //     {
-       //         MYLIST.SelectedIndex = 10;
-       //         MYLIST.Focusable = true;
-       //         MYLIST.Focus();
-       //     }
-       //}
+        // void select (int a, ParamCanal b)
+        // {
+        //     lock (threadLock)
+        //     {
+        //         MYLIST.SelectedIndex = 10;
+        //         MYLIST.Focusable = true;
+        //         MYLIST.Focus();
+        //     }
+        //}
 
-       
         static Window message;
         private void timer_Tick(object sender, EventArgs e)
         {
             try
-            {
-
+            { 
                 if (start_update)
                 {
 
@@ -110,24 +108,25 @@ namespace IPTVman.ViewModel
                     start_update = false;
                 }
 
-
-
-                if (dialog.message_open)
+                Wait.manager();
+  
+                if (dialog.dialog_enable && !Wait.IsOpen)
                 {
-                    dialog.message_open = false;
+                    dialog.dialog_enable = false;
 
                     if (message != null)
                     {
                         message.Close();
                         message = null;
                     }
+
                     message = new WindowMessage()
                     {
                         Title = "Сообщение",
                         Topmost = true,
                         WindowStyle = WindowStyle.ToolWindow,
                         Name = "message",
-                        SizeToContent = SizeToContent.WidthAndHeight,
+                        //SizeToContent = SizeToContent.WidthAndHeight,
                         ResizeMode = ResizeMode.NoResize
                         // WindowStartupLocation = WindowStartupLocation.CenterOwner
                     };
@@ -136,18 +135,15 @@ namespace IPTVman.ViewModel
                     message.Show();
                     message.Owner = MainWindow.header;
                 }
-
-                Wait.manager();
-
             }
-            catch { }
+            catch (Exception ex) { MessageBox.Show("timer error "+ex.Message); }
 
         }
+
         private void message_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             message = null;
         }
-
 
         private void tb1_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {

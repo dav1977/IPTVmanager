@@ -19,11 +19,13 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class WindowMessage : Window
     {
+        
         public WindowMessage()
         {
             InitializeComponent();
-            txtMessage.Text = dialog.message;
-            if (dialog.message.Length > 120) txtMessage.FontSize = 8;
+            txtMessage.Text = dialog.get_current_message();
+            if (dialog.get_current_message().Length > 120)
+            { MessageBox.Show(dialog.get_current_message()); this.Close(); }
         }
 
         private void exit_Copy_Click(object sender, RoutedEventArgs e)
@@ -35,12 +37,17 @@ namespace IPTVman.ViewModel
 
     public static class dialog
     {
-       public static string message;
-       public static bool message_open = false;
+        static string message;
+        public static bool dialog_enable;
+        public static string get_current_message()
+        {
+            return message;
+        }
+
         public static void Show(string s)
         {
             message = s;
-           message_open = true;
+            dialog_enable = true;
         }
 
     }

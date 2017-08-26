@@ -119,7 +119,7 @@ namespace IPTVman.ViewModel
                         play.playerV = Process.Start(startInfo);
                     });
                 }
-                else dialog.Show("Не найден файл NVLC player по пути\n" + play.path);
+                else dialog.Show("Не найден файл nVLC player по пути\n" + play.path);
             }
 
 

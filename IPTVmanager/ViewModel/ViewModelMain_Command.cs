@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Web;
 //using System.Diagnostics;
 
 namespace IPTVman.ViewModel
@@ -553,7 +554,7 @@ namespace IPTVman.ViewModel
                         {
                             string path = System.IO.Path.GetTempPath() + tempname;
                             WebClient webClient = new WebClient();
-                            Wait.Create("Загружается\n"+ str[0].ToString(), false);
+                            Wait.Create("Загружается\n"+ (str[0].ToString()), false);
                             webClient.DownloadFileCompleted += WebClient_DownloadFileCompletedClipb;
                             webClient.DownloadFileAsync(new Uri (str[0].ToString()), path);
                             return;
@@ -723,7 +724,6 @@ namespace IPTVman.ViewModel
             string path = System.IO.Path.GetTempPath() + tempname;
             add_file_to_memory(path);
             wait_download = false;
-
         }
 
         private void parse_temp_file()
@@ -798,23 +798,25 @@ namespace IPTVman.ViewModel
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         }
 
-
         void Parsing_link(string s)
         {
+            string ss = s;
+            //try { ss = HttpUtility.UrlEncode(s); } catch { ss = s; } 
             try
             {
                 string path = System.IO.Path.GetTempPath() + tempname;
                 WebClient webClient = new WebClient();
-                Wait.Create("Загружается\n" + s, false);
+                Wait.Create("Загружается\n" + ss, false);
                 webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-                webClient.DownloadFileAsync(new Uri(s), path);
+                webClient.DownloadFileAsync(new Uri(ss), path);
                 return;
             }
             catch
             {
-                wait_download = false;
                 dialog.Show("Ошибка parsing "+s);
                 Wait.Close();
+                wait_download = false;
+                loc.openfile = false;
             }
         }
 
@@ -1097,7 +1099,7 @@ namespace IPTVman.ViewModel
             string addstr = "";
             if (!flag_adding_ok) dialog.Show("Каналы не обнаружены");
             if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
-            if (ct_ignore_update != 0) addstr="\nПропущено дублированние " + ct_ignore_update.ToString();
+            if (ct_ignore_update != 0) addstr= "\nПропущено дублирование " + ct_ignore_update.ToString();
             if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов"+ addstr);
             loc.openfile = false;
         }

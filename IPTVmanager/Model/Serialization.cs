@@ -22,6 +22,7 @@ namespace IPTVman.Model
         public string filter1 { get; set; }
         public string filter2 { get; set; }
         public string mask { get; set; }
+        public string pathBD { get; set; }
 
         public ser_data()
         {
@@ -38,6 +39,7 @@ namespace IPTVman.Model
             filter1 = bd_data.filter1;
             filter2 = bd_data.filter2;
             mask = bd_data.mask;
+            pathBD = bd_data.path;
         }
 
         public void Update_new_data()
@@ -51,6 +53,7 @@ namespace IPTVman.Model
             bd_data.filter1 = filter1;
             bd_data.filter2 = filter2;
             bd_data.mask = mask;
+            bd_data.path = pathBD;
         }
     }
     public static class SETTING 

@@ -109,18 +109,25 @@ namespace IPTVman.ViewModel
         }
         uint tick = 0;
         static byte i = 0;
+        bool updatename=false;
         private void timer_Tick(object sender, EventArgs e)
         {
             try
             {
                 if (m_player == null) return;
 
-                if (m_player.IsPlaying)
+                if (!updatename)
                 {
-                    this.Title = "Build VLC:   " + data.name; reset();
+                    if (m_player.IsPlaying)
+                    {
+                        this.Title = data.name +" "+ data.url;
+                        reset();
+                        updatename = true;
+                    }
                 }
-                else
+                if (!m_player.IsPlaying)
                 {
+                    updatename = false;
                     if (taskPLAY.IsFaulted || taskPLAY.IsCanceled)
                     { this.Title = "STOPPED!!!"; return; }
                     string s = "Opening";

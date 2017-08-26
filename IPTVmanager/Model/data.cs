@@ -40,6 +40,7 @@ namespace IPTVman.Model
 
     public static class bd_data
     {
+        public static string path = "";
         public static string mask = "acestream:, http:, udp:, rtmp:, ";
         public static string filter1 = "best, music, kino, ";
         public static string filter2 = "";

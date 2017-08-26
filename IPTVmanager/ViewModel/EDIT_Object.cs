@@ -28,6 +28,22 @@ namespace IPTVman.ViewModel
             }
         }
 
+        object _path;
+        public object path
+        {
+            get
+            {
+                return _path;
+            }
+            set
+            {
+                if (_path != value)
+                {
+                    _path = value;
+                    RaisePropertyChanged("path");
+                }
+            }
+        }
 
         public static bool _ch1 = false;
         public bool CH1

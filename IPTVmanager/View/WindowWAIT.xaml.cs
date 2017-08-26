@@ -16,15 +16,12 @@ using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
-
-	
     /// <summary>
     /// Логика взаимодействия для WindowWAIT.xaml
     /// </summary>
     public partial class WindowWAIT : Window
     {
         System.Timers.Timer Timer1;
-        string message;
 
         public void CreateTimer1(int ms)
         {
@@ -51,16 +48,19 @@ namespace IPTVman.ViewModel
                     
                 }));
 
+                double proc = 100 * (Model.GUI.progressbar / Model.GUI.progressbar_max);
+                if (proc > 100) proc = 100;
+
                 txtMessage.Dispatcher.Invoke(new Action(() =>
                 {
                     if (!Model.GUI.dynamic_progressbar)
                     {
-                        txtMessage.Text = message + " " +
-                        String.Format("{0:F1}%", 100 * (Model.GUI.progressbar / Model.GUI.progressbar_max));
+                        txtMessage.Text = Wait.message + " " +
+                        String.Format("{0:f1}%", proc);
                     }
                     else
                     {
-                        txtMessage.Text = message;
+                        txtMessage.Text = Wait.message;
                     }
                 }));
 
@@ -72,20 +72,18 @@ namespace IPTVman.ViewModel
 
         }
 
-
         public WindowWAIT()
         {
             InitializeComponent();
-            CreateTimer1(500);
-            txtMessage.Text = Model.GUI.longtaskSTRING;
-            message = Model.GUI.longtaskSTRING;
-          
+            txtMessage.Text = Wait.message;
+            CreateTimer1(500);       
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {  
           if (Wait.open) e.Cancel = true;//запрет закрытия
         }
+ 
     }
 
 

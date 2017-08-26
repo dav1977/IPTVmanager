@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:IPTVman.Helpers" x:Class="IPTVman.ViewModel.Window1" WindowStartupLocation="CenterScreen"
     
-        DataContext="{DynamicResource ViewModelWindow1}" Height="441.881" Width="722.413" Closing="Window_Closing">
+        Height="441.881" Width="722.413" Closing="Window_Closing">
 
 
 

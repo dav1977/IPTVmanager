@@ -27,13 +27,13 @@ namespace IPTVman.ViewModel
         public WindowMDB()
         {
             InitializeComponent();
-            //CreateTimer1(5000);
+            //CreateTimer1(500);
             textBox.PreviewTextInput += new TextCompositionEventHandler(textBox_PreviewTextInput);
             textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.Text = "";
+            path.Text = Model.bd_data.path;
             Access.Event_Print += Access_Event_Print;
-
             TEXTmask.Text = Model.bd_data.mask;
             TEXT1.Text = Model.bd_data.filter1;
             TEXT2.Text = Model.bd_data.filter2;
@@ -56,12 +56,18 @@ namespace IPTVman.ViewModel
         private void update_block(string text)
         {
             if (text == "") clear();
+            ct++; //if (ct > 500) clear();
             textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
             {
-                ct++; if (ct > 500) clear();
                 textBox.Text += text;
+                textBox.ScrollToEnd();
             }));
 
+                path.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                {
+                    path.Text = Model.bd_data.path;
+                }));
+   
         }
 
         public void CreateTimer1(int ms)
@@ -79,7 +85,7 @@ namespace IPTVman.ViewModel
 
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
         {
-
+            
         }
         void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -102,14 +108,14 @@ namespace IPTVman.ViewModel
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                {
-                    textBox.ScrollToEnd();
-                }));
-            }
-            catch { }
+            //try
+            //{
+            //    textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            //    {
+            //        textBox.ScrollToEnd();
+            //    }));
+            //}
+            //catch { }
         }
         private void ButtonUPDATE(object sender, RoutedEventArgs e)
         {
