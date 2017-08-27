@@ -90,7 +90,7 @@ namespace IPTVman.ViewModel
             try { await task1; }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА " + e.Message.ToString());
+                dialog.Show("ОШИБКА replace " + e.Message.ToString());
             }
             task1.Dispose();
             task1 = null;

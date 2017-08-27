@@ -17,6 +17,7 @@ using System.Net;
 using System.IO;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
+using System.Diagnostics;
 
 
 namespace IPTVman.ViewModel
@@ -121,42 +122,49 @@ namespace IPTVman.ViewModel
         {
             DataTable dt = get_table("main");
             //DataRow[] foundRows = data.Tables["main"].Select("Name = 'FOX HD'");
-            if (Event_Print != null) Event_Print("Старт обновления "+ filterMDB + "    id=" + id_best + "\n");
-
+           
                 string work_mask="";
                 foreach (var s in ViewModelMain.myLISTbase)
                 {
-
-                    if (!find_mask(mask, s.http, ref work_mask)) { continue; }
-                    //if (!find_mask(mask, row[2].ToString(),  ref work_mask)) { index++; continue; };
-
-                    int index = 0;
+                if (!find_mask(mask, s.http, ref work_mask)) { continue; }
+                //if (!find_mask(mask, row[2].ToString(),  ref work_mask)) { index++; continue; };
+                int index = 0;
                     foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
                     {
                         // получаем все ячейки строки
                         // object[] cells = row.ItemArray;
                         // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
 
-                            if (row[34].ToString() == id_best && (new Regex(work_mask).Match(s.http).Success))
+                            if (row[34].ToString() == id_best)
                             {
-                                if (s.name == row[1].ToString() && (s.ExtFilter == filterManager || filterManager == "") )
+                                if (s.name == row[1].ToString() && (s.ExtFilter == filterManager || filterManager == ""))
                                 {
+                                    if (find_mask(work_mask, (string)data.Tables["main"].Rows[index]["Adress"]))
+                                    {
+                                    
+                                        data.Tables["main"].Rows[index]["Adress"] = s.http;
+                                        if (Event_Print != null) Event_Print(
+                                        "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");
+                                        //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
+                                        break;//обновляем только одну запись, последующие совпадения ссылки пропускаем
 
-                                    data.Tables["main"].Rows[index]["Adress"] = s.http;
-                                    if (Event_Print != null) Event_Print(
-                                    "Обновлено " + s.name + " url = " + row[2].ToString() + "\n  новый url = " + s.http + "\n");
-                                    //dialog.Show("Обновление ссылки\n " + "старый url:\n"+ row[2].ToString() +"\nновый url: \n"+ s.http);
-                                    break;//обновляем только одну запись, последующие совпадения ссылки пропускаем
-                               
+                                    }
                                 }
                             }
-                    index++;
+                        index++;
                     }
                 }
         }
 
         Task task1;
-        //******************* UPDATE data in table *************************
+        /// <summary>
+        /// Обновление в БАЗЕ
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="filterMDB"></param>
+        /// <param name="filterManager"></param>
+        /// <param name="mask"></param>
+        /// <returns></returns>
         public async Task<string> UPDATE_DATA(CancellationToken Token, string filterMDB, string filterManager, string mask)
         {
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -173,8 +181,10 @@ namespace IPTVman.ViewModel
 
                     foreach (var group in word)
                     {
-                        if (group == "" || group ==" " || group == "  ") continue;
+                        if (group == "" || group ==" " || group == "  " || group==null) continue;
                         string newgroup = group.Trim();
+
+                        if (Event_Print != null) Event_Print("Старт обновления " + group + "\n");
                         string id_best = readIDbest(newgroup);
 
                         if (id_best == "")
@@ -206,7 +216,7 @@ namespace IPTVman.ViewModel
             try { await task1; }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА " + e.Message.ToString());
+                dialog.Show("ОШИБКА bd " + e.Message.ToString());
             }
             task1.Dispose();
             task1 = null;
@@ -226,7 +236,7 @@ namespace IPTVman.ViewModel
             {
                 adapter.Fill(data, column);
             }
-            catch (Exception ex) { dialog.Show("ошибка " + ex.Message.ToString()); return ""; }
+            catch (Exception ex) { dialog.Show("ошибка id " + ex.Message.ToString()); return ""; }
 
             DataTable dt = data.Tables[0];//выбираем первую таблицу
 
@@ -258,26 +268,30 @@ namespace IPTVman.ViewModel
 
         }
 
-
+        string[] list_mask = null;
         bool find_mask(string mask, string url, ref string maskextern)
         {
-            string[] list_mask=null;
             try
             {
                 list_mask = mask.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
-            catch { maskextern = ""; return false; }
-
-            Regex regex1;
-            Match r;
+            catch
+            {
+                maskextern = "";
+                return false;
+            }
 
             foreach (string s in list_mask)
             {
-                regex1 = new Regex(s.Trim(), RegexOptions.IgnoreCase);
-                r = regex1.Match(url);
-                if (r.Success) { maskextern = s.Trim();  return true; }
+                if (new Regex(s.Trim()).Match(url).Success) { maskextern = s.Trim(); return true; }
             }
             maskextern = "";
+            return false;
+        }
+
+        bool find_mask(string workmask, string url)
+        {
+            if (new Regex(workmask).Match(url).Success) return true; 
             return false;
         }
 

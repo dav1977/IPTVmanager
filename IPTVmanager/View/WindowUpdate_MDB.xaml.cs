@@ -32,7 +32,7 @@ namespace IPTVman.ViewModel
             textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.Text = "";
-            path.Text = Model.bd_data.path;
+            pa.Content = Model.bd_data.path;
             Access.Event_Print += Access_Event_Print;
             TEXTmask.Text = Model.bd_data.mask;
             TEXT1.Text = Model.bd_data.filter1;
@@ -63,9 +63,9 @@ namespace IPTVman.ViewModel
                 textBox.ScrollToEnd();
             }));
 
-                path.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                pa.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
                 {
-                    path.Text = Model.bd_data.path;
+                    pa.Content = Model.bd_data.path;
                 }));
    
         }

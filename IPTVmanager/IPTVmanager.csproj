@@ -125,12 +125,12 @@
     <Compile Include="Helpers\IClosableViewModel.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Model\Serialization.cs" />
-    <Compile Include="Model\UserClass\AutoPING.cs" />
+    <Compile Include="UserClass\AutoPING.cs" />
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
-    <Compile Include="Model\UserClass\Registy_Find.cs" />
-    <Compile Include="Model\UserClass\BaseAccess.cs" />
-    <Compile Include="Model\UserClass\Update.cs" />
+    <Compile Include="UserClass\Registy_Find.cs" />
+    <Compile Include="UserClass\BaseAccess.cs" />
+    <Compile Include="UserClass\Update.cs" />
     <Compile Include="ViewModel\MOVE\DragAdorner.cs" />
     <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
     <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />
@@ -138,9 +138,9 @@
     <Compile Include="ViewModel\MOVE\WindowMOVE.xaml.cs">
       <DependentUpon>WindowMOVE.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\UserClass\PING.cs" />
-    <Compile Include="Model\UserClass\PING_prepare.cs" />
-    <Compile Include="Model\UserClass\UDPclient.cs" />
+    <Compile Include="UserClass\PING.cs" />
+    <Compile Include="UserClass\PING_prepare.cs" />
+    <Compile Include="UserClass\UDPclient.cs" />
     <Compile Include="ViewModel\ViewModelMain_Command.cs" />
     <Compile Include="ViewModel\ViewModelMain_Object.cs" />
     <Compile Include="ViewModel\UPDATE_MDB_Command.cs" />
@@ -148,7 +148,7 @@
     <Compile Include="ViewModel\MOVE_Object.cs" />
     <Compile Include="ViewModel\EDIT_Object.cs" />
     <Compile Include="ViewModel\MOVE_Command.cs" />
-    <Compile Include="Model\UserClass\Virtulization.cs" />
+    <Compile Include="UserClass\Virtulization.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelMain.cs" />
     <Compile Include="ViewModel\EDIT_Command.cs" />

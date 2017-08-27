@@ -366,7 +366,7 @@ namespace IPTVman.ViewModel
             {
                 rez = await find_dublicate_task();
             }
-            catch(Exception e) { dialog.Show("ошибка "+e.Message); goto exit; }
+            catch(Exception e) { dialog.Show("ошибка fdub "+e.Message); goto exit; }
 
             if (rez == null) { goto exit; }
             if (rez.Count == 0) dialog.Show("Дубликатов не найдено");
@@ -411,7 +411,7 @@ namespace IPTVman.ViewModel
             try { await task1; }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА " + e.Message.ToString());
+                dialog.Show("ОШИБКА fdtsk " + e.Message.ToString());
             }
 
             return result;
@@ -531,7 +531,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                dialog.Show("ОШИБКА "+ex.Message.ToString());
+                dialog.Show("ОШИБКА clb "+ex.Message.ToString());
             }
 
             Regex regex1 = new Regex("#EXTINF");
@@ -561,7 +561,7 @@ namespace IPTVman.ViewModel
                         }
                         catch (Exception ex)
                         {
-                            dialog.Show("Ошибка "+ex.Message.ToString());
+                            dialog.Show("Ошибка parsclb "+ex.Message.ToString());
                             Wait.Close();
                         }
                     }
@@ -760,7 +760,7 @@ namespace IPTVman.ViewModel
             try { await AsyncOPEN(name); }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА " + e.Message.ToString());
+                dialog.Show("ОШИБКА analiz " + e.Message.ToString());
             }
             Thread.Sleep(300);
             Wait.Close();
@@ -888,6 +888,9 @@ namespace IPTVman.ViewModel
 
                             if (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
+                                    !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
+                                    !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
+                                    !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
                                       regex_link.Match(line).Success
                                    )
                                 {
@@ -1029,14 +1032,14 @@ namespace IPTVman.ViewModel
                                     bool ingore = false;
                                     replace_ok = false;
 
-                                      foreach (var k in ViewModelMain.myLISTbase)
+                                      foreach (var k in ViewModelMain.myLISTbase)//обновление только отфильтрофанных
                                       {
                                         if (newname == k.name)
                                         {
                                             int ind = 0;
                                             foreach (var j in ViewModelMain.myLISTfull)
                                             {
-                                                if (j.Compare() == k.Compare())
+                                                if (j.Compare() == k.Compare() && Comparehttp(ViewModelMain.myLISTfull[ind].http, str_http))//находим в полном списке
                                                 {
                                                     ViewModelMain.myLISTfull[ind].http = str_http;
                                                     //if (list_update_channels.Exist(x => x.Equals(ind))) 
@@ -1103,6 +1106,17 @@ namespace IPTVman.ViewModel
             if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов"+ addstr);
             loc.openfile = false;
         }
+
+
+        bool Comparehttp(string s1, string s2)
+        {
+            string[] split1 = s1.Split(new Char[] { ':' });
+            string[] split2 = s2.Split(new Char[] { ':' });
+            if (split1[0] == split2[0]) return true;
+            return false;
+        }
+
+
 
         List<string> bufferstring = new List<string>();
         void add_file_to_memory(string name)

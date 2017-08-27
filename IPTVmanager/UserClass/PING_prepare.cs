@@ -124,7 +124,7 @@ namespace IPTVman.ViewModel
             try { await task1; }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКАping pingPrepare " + e.Message.ToString());
+                dialog.Show("ОШИБКА ping pingPrepare " + e.Message.ToString());
                 _ping.stop();//без ошибки должна выполниться шататно
             }
             if (_ping.iswork) { _ping.iswork = false; }

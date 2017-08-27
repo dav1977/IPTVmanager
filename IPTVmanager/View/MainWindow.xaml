@@ -75,7 +75,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="tvg" Width="50">
+                        <GridViewColumn Header="tvg-name" Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding tvg_name}"/>
