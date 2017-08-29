@@ -33,10 +33,17 @@ namespace IPTVman.ViewModel
         OleDbConnection connector;
         OleDbCommand sql;
 
+        Task task1;
+        public CancellationTokenSource cts1;
+        public CancellationToken cancellationToken;
+
         public static event Action<string> Event_Print;
         public string error = "";
         public void connect(string path)
         {
+            cts1 = new CancellationTokenSource();
+            cancellationToken = cts1.Token;
+
             try
             {
                 connector = new OleDbConnection(
@@ -89,16 +96,16 @@ namespace IPTVman.ViewModel
             (
                 new OleDbParameter
                 (
-                "Original_Id",
-                OleDbType.Integer,
-                0,
-                ParameterDirection.Input,
-                false,
-                (Byte)0,
-                (Byte)0,
-                "Id",
-                System.Data.DataRowVersion.Original,
-                null
+                    "Original_Id",
+                    OleDbType.Integer,
+                    0,
+                    ParameterDirection.Input,
+                    false,
+                    (Byte)0,
+                    (Byte)0,
+                    "Id",
+                    System.Data.DataRowVersion.Original,
+                    null
                 )
             );
 
@@ -126,11 +133,15 @@ namespace IPTVman.ViewModel
                 string work_mask="";
                 foreach (var s in ViewModelMain.myLISTbase)
                 {
-                if (!find_mask(mask, s.http, ref work_mask)) { continue; }
-                //if (!find_mask(mask, row[2].ToString(),  ref work_mask)) { index++; continue; };
-                int index = 0;
+
+                    if (cancellationToken.IsCancellationRequested) break;
+                    if (!find_mask(mask, s.http, ref work_mask)) { continue; }
+                    //if (!find_mask(mask, row[2].ToString(),  ref work_mask)) { index++; continue; };
+                    int index = 0;
+
                     foreach (DataRow row in dt.Rows)// перебор всех строк таблицы
                     {
+                        if (cancellationToken.IsCancellationRequested) break;
                         // получаем все ячейки строки
                         // object[] cells = row.ItemArray;
                         // dialog.Show((row[1].ToString() + "\n" + row[2].ToString()));
@@ -156,7 +167,10 @@ namespace IPTVman.ViewModel
                 }
         }
 
-        Task task1;
+        public void Stop()
+        {
+            cts1.Cancel();
+        }
         /// <summary>
         /// Обновление в БАЗЕ
         /// </summary>
@@ -181,6 +195,8 @@ namespace IPTVman.ViewModel
 
                     foreach (var group in word)
                     {
+                        if (cancellationToken.IsCancellationRequested) break;
+
                         if (group == "" || group ==" " || group == "  " || group==null) continue;
                         string newgroup = group.Trim();
 

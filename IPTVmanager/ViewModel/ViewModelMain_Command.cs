@@ -291,18 +291,18 @@ namespace IPTVman.ViewModel
         /// DEL
         /// </summary>
         /// <param name="parameter"></param>
-        void key_del(object parameter)
+        public void key_del(object parameter)
         {
             if (Wait.IsOpen) return;
             //if (parameter == null || !data.delete) return;
             if (myLISTfull == null) return;
-            if (data.canal.name=="") return;
+            if (data.canal.name == "") return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ " + data.canal.name + "\n" + data.canal.http);
             if (result != MessageBoxResult.Yes) return;
 
             var item = ViewModelMain.myLISTfull.Find(x =>
-                  (x.http == data.canal.http && x.ExtFilter == data.canal.ExtFilter 
+                  (x.http == data.canal.http && x.ExtFilter == data.canal.ExtFilter
                       && x.group_title == data.canal.group_title));
 
             myLISTfull.Remove(item);
@@ -317,7 +317,6 @@ namespace IPTVman.ViewModel
             }
             Update_collection(typefilter.last);
         }
-
         /// <summary>
         /// del filter
         /// </summary>

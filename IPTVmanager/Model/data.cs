@@ -18,6 +18,7 @@ namespace IPTVman.Model
         public static bool finddublic = false;
         public static bool lokUP, lokDN = false;
         public static bool keyadd = false;//дребезг кнопки
+        public static bool updateMDB = false;
     }
     
     /// <summary>

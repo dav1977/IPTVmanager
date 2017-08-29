@@ -21,7 +21,7 @@ namespace IPTVman.ViewModel
     public partial class WindowReplace : Window 
     {
         public static event Delegate_UpdateEDIT Event_updateFILTER;
-        public static event Delegate_UpdateALL Event_Refresh;
+        public static event Action<int> Event_Refresh;
 
         public WindowReplace()
         {

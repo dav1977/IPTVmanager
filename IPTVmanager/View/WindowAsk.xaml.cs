@@ -28,9 +28,15 @@ namespace IPTVman.ViewModel
             InitializeComponent();
             txtMessage.Text  = MessageAsk.message;
             CreateTimer1(679);
+            this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
         }
 
-      
+        void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+           // if (e.Key == System.Windows.Input.Key.Enter) { DialogResult = true; this.Close(); }
+            if (e.Key == System.Windows.Input.Key.Escape) { DialogResult = false; this.Close(); }
+        }
+
         public void CreateTimer1(int ms)
         {
             if (Timer1 == null)
@@ -65,14 +71,12 @@ namespace IPTVman.ViewModel
                     r4.Visibility = Visibility.Hidden;
                 }));
 
-
                 poz++; if (poz > 4) poz = 1;
 
                 if (poz == 1)
                 {
                     r1.Dispatcher.Invoke(new Action(() =>
                     {
-                      
                         r1.Visibility = Visibility.Visible;
                     }));
                 }

@@ -104,7 +104,9 @@
     </Window.Resources>
 
 
-
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding key_delCommand}" Key="Delete"/>
+    </Window.InputBindings>
 
 
     <Grid Margin="0,0,-3,-3">

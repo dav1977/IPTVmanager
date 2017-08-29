@@ -19,7 +19,7 @@ namespace IPTVman.ViewModel
     partial class ViewModelWindow1 : ViewModelMain
     {
         public static event Delegate_UpdateEDIT Event_UpdateEDIT;
-        public static event Delegate_ADDBEST Event_ADDBEST;
+        public static event Action Event_ADDBEST;
        
         public RelayCommand key_PLAY { get; set; }
         public RelayCommand key_PING { get; set; }

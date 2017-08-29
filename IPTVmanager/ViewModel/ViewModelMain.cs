@@ -44,7 +44,7 @@ namespace IPTVman.ViewModel
 
     partial class ViewModelMain : ViewModelBase
     {
-        public static event Delegate_UpdateALL Event_UpdateLIST;
+        public static event Action<int> Event_UpdateLIST;
 
         Update_Collection _update = new Update_Collection();
 
@@ -87,7 +87,7 @@ namespace IPTVman.ViewModel
         public ViewModelMain()
         {
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
-            ViewModelWindow1.Event_ADDBEST += new Delegate_ADDBEST(BEST_ADD);
+            ViewModelWindow1.Event_ADDBEST += new Action(BEST_ADD);
             ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);

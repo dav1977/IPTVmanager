@@ -76,7 +76,13 @@ namespace IPTVman.ViewModel
         {
             InitializeComponent();
             txtMessage.Text = Wait.message;
-            CreateTimer1(500);       
+            CreateTimer1(500);
+            this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
+        }
+
+        void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter) this.Close();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

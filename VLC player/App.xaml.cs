@@ -15,14 +15,18 @@ namespace VLC_player
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            byte i = 0;
-            IPTVman.ViewModel.data.url = e.Args[0];
-            foreach (string arg in e.Args)
+            try
             {
-                if (i!=0) IPTVman.ViewModel.data.name += arg + " ";
-                i++;
-                if (i > 90) break;
+                byte i = 0;
+                IPTVman.ViewModel.data.url = e.Args[0];
+                foreach (string arg in e.Args)
+                {
+                    if (i != 0) IPTVman.ViewModel.data.name += arg + " ";
+                    i++;
+                    if (i > 90) break;
+                }
             }
+            catch { }
            
         }
     }

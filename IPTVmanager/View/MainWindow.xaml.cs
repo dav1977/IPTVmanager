@@ -11,16 +11,9 @@ using System.Threading.Tasks;
 
 namespace IPTVman.ViewModel
 {
-
-    public delegate void Delegate_UpdateFILTER();
-    public delegate void Delegate_UpdateALL(int size);
     public delegate void Delegate_UpdateEDIT( ParamCanal k);
-    public delegate void Delegate_Window1();
-    public delegate void Delegate_ADDBEST();
     public delegate void Delegate_SelectITEM(int a, ParamCanal b);
-    public delegate void Delegate_WIN_WAIT(byte n);
-    public delegate void Message(string mess);
-  
+
     public partial class MainWindow : Window
     {
         public static Window header;
@@ -34,7 +27,7 @@ namespace IPTVman.ViewModel
 
             SETTING.ReadFromXML();
 
-            ViewModelMain.Event_UpdateLIST += new Delegate_UpdateALL(updateLIST);
+            ViewModelMain.Event_UpdateLIST += new Action<int>(updateLIST);
   
            // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
@@ -51,16 +44,15 @@ namespace IPTVman.ViewModel
             data.best2 = best2.Text;
             changefav = false;
 
-            //MYLIST.Loaded += (sender, args) => { IPTVman.ViewModel.MainWindow.u = MYLIST.Dispatcher; };
-
-            //Binding bind = new Binding();
-            //bind.Source = grid1;
-            //bind.Path = new PropertyPath("grid1.ItemsSource.Count");  
-            //bind.Mode = BindingMode.OneWay;
-            //label_kanals.SetBinding(label_kanals.Content, bind);
+            //this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
         }
-
-
+        //public void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        //{
+        //    if (e.Key == System.Windows.Input.Key.Delete)
+        //    {
+                
+        //    }
+        //}
         private object threadLock = new object();
         void updateLIST(int size)
         {
@@ -308,8 +300,6 @@ namespace IPTVman.ViewModel
             update_favorites(best1.Text, best2.Text);
         }
 
-     
-
         //private void Button_Click_1(object sender, RoutedEventArgs e)
         //{
         //    var a = MYLIST.Items[2];
@@ -365,6 +355,7 @@ namespace IPTVman.ViewModel
         }
 
         Window about;
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             if (LongtaskPingCANCELING.isENABLE()) return;

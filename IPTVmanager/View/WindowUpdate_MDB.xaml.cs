@@ -94,6 +94,8 @@ namespace IPTVman.ViewModel
         //closing
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Model.loc.updateMDB = false;
+            ViewModelWindowMDB._bd.Stop(); ;
             ViewModelWindowMDB._bd = null;
             Model.bd_data.mask = TEXTmask.Text;
             Model.bd_data.filter1 = TEXT1.Text;

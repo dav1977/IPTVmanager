@@ -39,6 +39,7 @@ namespace IPTVman.ViewModel
         private object threadLock = new object();
         async void key_update(object selectedItem)
         {
+            if (loc.updateMDB) return;
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "access files(*.mdb)|*.mdb";
 
@@ -50,19 +51,23 @@ namespace IPTVman.ViewModel
 
                     if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n" + _bd.error); return; }
 
+                    loc.updateMDB = true;
                     var r = await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
-            }
+                    loc.updateMDB = false;
+                }
         }
 
         async void key_FASTupdateBD(object selectedItem)
         {
-      
-                if (bd_data.path == "") return;
+            if (loc.updateMDB) return;
+            if (bd_data.path == "") return;
                 _bd.connect(bd_data.path);
 
-                if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n" + _bd.error); return; }
+            if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n" + _bd.error); return; }
 
-                string rez = await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
+            loc.updateMDB = true;
+            string rez = await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
+            loc.updateMDB = false;
         }
 
         //============================== object ==================================

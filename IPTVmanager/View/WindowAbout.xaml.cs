@@ -57,7 +57,7 @@ namespace IPTVman.ViewModel
             rand = new Random(this.GetHashCode());
 
             this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
-            this.Cursor = System.Windows.Input.Cursors.None;
+            //this.Cursor = System.Windows.Input.Cursors.None;
         }
 
         void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
