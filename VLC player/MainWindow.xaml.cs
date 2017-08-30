@@ -26,6 +26,7 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class Player : Window
     {
+        //Application.StartupPath
         public static Window header;
         Window message;
         IMediaPlayerFactory m_factory;
@@ -56,8 +57,9 @@ namespace IPTVman.ViewModel
 
             slider2.Focus();
             Thread.Sleep(100);
-            
-            if (IPTVman.ViewModel.data.url != "") Play(data.url);
+            this.mes.Content = data.name;
+
+            if (data.url != "") Play(data.url);
         }
 
 

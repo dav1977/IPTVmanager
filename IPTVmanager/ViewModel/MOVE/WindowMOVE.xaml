@@ -47,6 +47,12 @@
     </Window.Resources>
 
     <Grid Margin="0,0,2,7">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="#FF5F6C34" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -57,9 +63,9 @@
 
         <ListView Name="listView"   
       ItemContainerStyle="{StaticResource ItemContStyle}"
-      Margin="10,12,131,25" 
+      Margin="10,12,131,7" 
       Padding="2"
-      SelectionMode="Single" Grid.Row="1"
+      SelectionMode="Single" Grid.Row="1" Background="#FF787474" Foreground="#FF05050A"
       
 >
             <ListView.View>
@@ -74,7 +80,8 @@
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="175" />
                     <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="175" />
                     <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="175" />
-                    <GridViewColumn Header="url" DisplayMemberBinding="{Binding Http}" Width="175" />
+                    <GridViewColumn Header="url" DisplayMemberBinding="{Binding Http}" Width="140" />
+                    <GridViewColumn Header="ping" DisplayMemberBinding="{Binding Ping}" Width="140" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -102,6 +109,7 @@
                     <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="175" />
                     <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="340" />
                     <GridViewColumn Header="http" DisplayMemberBinding="{Binding Http}" Width="340" />
+                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Ping}" Width="180" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -109,7 +117,7 @@
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FFFF1313" Offset="0.082"/>
+                    <GradientStop Color="#FF1333FF" Offset="0.082"/>
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
@@ -122,7 +130,7 @@
             </Button.Background>
         </Button>
         <Button x:Name="inc" Content="+" HorizontalAlignment="Right" Margin="0,116,61,0" Grid.Row="1" VerticalAlignment="Top" Width="35" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click">
-           
+
         </Button>
         <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,116,21,0" Grid.Row="1" VerticalAlignment="Top" Width="35" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click"/>
 

@@ -42,18 +42,18 @@ namespace IPTVman.ViewModel
             {
                 ProgressBar1.Dispatcher.Invoke(new Action(() =>
                 {
-                    ProgressBar1.Maximum = Model.GUI.progressbar_max;
-                    ProgressBar1.Value = Model.GUI.progressbar;
-                    ProgressBar1.IsIndeterminate = Model.GUI.dynamic_progressbar;
+                    ProgressBar1.Maximum = Wait.progressbar_max;
+                    ProgressBar1.Value = Wait.progressbar;
+                    ProgressBar1.IsIndeterminate = Wait.dynamic_progressbar;
                     
                 }));
 
-                double proc = 100 * (Model.GUI.progressbar / Model.GUI.progressbar_max);
+                double proc = 100 * (Wait.progressbar / Wait.progressbar_max);
                 if (proc > 100) proc = 100;
 
                 txtMessage.Dispatcher.Invoke(new Action(() =>
                 {
-                    if (!Model.GUI.dynamic_progressbar)
+                    if (!Wait.dynamic_progressbar)
                     {
                         txtMessage.Text = Wait.message + " " +
                         String.Format("{0:f1}%", proc);
@@ -87,7 +87,7 @@ namespace IPTVman.ViewModel
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {  
-          if (Wait.open) e.Cancel = true;//запрет закрытия
+          if (Wait.IsOpen) e.Cancel = true;//запрет закрытия
         }
  
     }
@@ -96,15 +96,18 @@ namespace IPTVman.ViewModel
 
     public static class Wait
     {
-        public static bool open = false;//state window
-        public static Window wait = null;
-
-        public static bool need_close = false;
-        public static bool create = false;
         public static string message = "";
-        public static bool en_progress = false;
+        public static double progressbar = 0;
+        public static double progressbar_max = 0;
+        public static bool dynamic_progressbar = false;
 
-        static byte delay_open = 0;
+        private static Window wait = null;
+        private static bool open;
+        private static bool need_close = false;
+        private static bool create = false;
+        private static bool en_progress = false;
+        private static string longtaskSTRING;
+        private static byte delay_open = 0;
 
         public static void Create(string mes, bool en_dynamic_progressbar)
         {
@@ -113,15 +116,29 @@ namespace IPTVman.ViewModel
             create = true;
         }
 
-            private static void Create_on_timer()
+        public static void Create(string mes, double max)
+        {
+            message = mes;
+            progressbar_max = max;
+            en_progress = true;
+            create = true;
+        }
+
+        public static void set_ProgressBar(double max)
+        {
+            progressbar_max = max;
+            dynamic_progressbar = false;
+        }
+
+        private static void Create_on_timer()
             {
                 if (IsOpen) Close_on_timer();
                 create = false;
 
-                Model.GUI.progressbar = 0;
-                if (en_progress) Model.GUI.dynamic_progressbar = false;
-                     else Model.GUI.dynamic_progressbar = true;
-                Model.GUI.longtaskSTRING = message;
+                progressbar = 0;
+                if (en_progress) dynamic_progressbar = false;
+                     else dynamic_progressbar = true;
+                longtaskSTRING = message;
 
                 wait = new WindowWAIT()
                 {
@@ -140,6 +157,7 @@ namespace IPTVman.ViewModel
         {
             get
             {
+                if (wait == null) return false;
                 if (open) return true;
                 else return false;
             }
@@ -176,6 +194,8 @@ namespace IPTVman.ViewModel
             }
         }
 
+        
+       
     }
 
 

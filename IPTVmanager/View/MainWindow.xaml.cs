@@ -84,7 +84,7 @@ namespace IPTVman.ViewModel
                         try
                         {
 
-                            MYLIST.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                            MYLIST.Dispatcher.Invoke( new Action(() =>
                            {
                                bDELETE.Content = "";
                                MYLIST.Items.Refresh();
@@ -229,7 +229,7 @@ namespace IPTVman.ViewModel
                 //DataContext = new ViewModelWindow2(tb1.Text),
                 Title = "ПЕРЕМЕЩЕНИЕ",
                 Topmost = true,
-                WindowStyle = WindowStyle.ToolWindow,
+                //WindowStyle = WindowStyle.ToolWindow,
                 Name = "win2iptvMANAGER3"
             }.Show(); ;
 

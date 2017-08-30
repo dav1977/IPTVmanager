@@ -13,21 +13,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPF.JoshSmith.ServiceProviders.UI;
 using System.Windows.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace ListViewDragDropManager
 {
     /// <summary>
     /// Demonstrates how to use the ListViewDragManager class.
     /// </summary>
-    public partial class WindowMOVE : System.Windows.Window
+    public partial class WindowMOVE : Window
     {
         ListViewDragDropManager<Task> dragMgr;
         ListViewDragDropManager<Task> dragMgr2;
-
-
         public static event IPTVman.ViewModel.Delegate_UpdateCollection Event_UpdateCollection;
-
-
         public WindowMOVE()
         {
             InitializeComponent();
@@ -148,58 +146,17 @@ namespace ListViewDragDropManager
         {
         }
 
+        //save
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (IPTVman.Model.loc.collection) return;
-                int i = 0;
-                foreach (var s in ListViewDragDropManager.Task.list)
-                {
-                    if (i < ListViewDragDropManager.Task.list.Count)
-                    {
-                        IPTVman.ViewModel.ViewModelMain.myLISTbase[i].name = s.Name;
-                        IPTVman.ViewModel.ViewModelMain.myLISTbase[i].ExtFilter = s.ExtFilter;
-                        IPTVman.ViewModel.ViewModelMain.myLISTbase[i].group_title = s.Group_title;
-                        IPTVman.ViewModel.ViewModelMain.myLISTbase[i].http = s.Http;
-                        IPTVman.ViewModel.ViewModelMain.myLISTbase[i].ping = s.Ping;
-                        IPTVman.ViewModel.ViewModelMain.myLISTbase[i].logo = s.Logo;
-                        IPTVman.ViewModel.ViewModelMain.myLISTbase[i].tvg_name = s.Tvg;
-                    }
-                    i++;
-                }
-
-                foreach (var s in ListViewDragDropManager.Task.list)
-                {
-                    if (!s.Finished) continue;
-
-                    var item = IPTVman.ViewModel.ViewModelMain.myLISTfull.Find(x =>
-                    (x.name == s.Name && x.ExtFilter == s.ExtFilter && x.group_title == s.Group_title));
-
-                    if (item != null) IPTVman.ViewModel.ViewModelMain.myLISTfull.Remove(item);
-
-                    item = IPTVman.ViewModel.ViewModelMain.myLISTdub.Find(x =>
-                    (x.name == s.Name && x.ExtFilter == s.ExtFilter && x.group_title == s.Group_title));
-
-                    IPTVman.ViewModel.ViewModelMain.myLISTdub.Remove(item);
-
-                }
-
-
-                if (Event_UpdateCollection != null) Event_UpdateCollection(new IPTVman.Model.ParamCanal());
-                this.Close();
-
-            }
-            catch { }
+            IPTVman.ViewModel.Update_Collection.SAVE_MOVE();
+            this.Close();
         }
-
 
         private void button_ClickCANCEL(object sender, RoutedEventArgs e)
         {
-
             if (Event_UpdateCollection != null) Event_UpdateCollection(new IPTVman.Model.ParamCanal());
             this.Close();
-
         }
 
         private void inc_Click(object sender, RoutedEventArgs e)

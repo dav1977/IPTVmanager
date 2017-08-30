@@ -33,9 +33,6 @@ namespace IPTVman.ViewModel
             sel1 = "";
         }
         //======================================================================
-
-
-
         bool find = false;
         
         async void key_replace(object selectedItem)
@@ -132,10 +129,6 @@ namespace IPTVman.ViewModel
                 index++;
             }
         }
-
-
-
-
 
         //============================== object ==================================
         string sel1;

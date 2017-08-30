@@ -12,7 +12,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*"/>
             <ColumnDefinition Width="9*"/>
-            <ColumnDefinition Width="156*"/>
+            <ColumnDefinition Width="114*"/>
+            <ColumnDefinition Width="42*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="356*" />
@@ -26,8 +27,10 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 </RadialGradientBrush>
             </Button.Background> Mute
         </Button>
-        <my:WindowsFormsHost Name="windowsFormsHost1" xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="0,0,0,11" MouseWheel="windowsFormsHost1_MouseWheel" />
-        <Slider Height="11" Margin="86,0,15,0" Name="slider2" Grid.Row="1" ValueChanged="slider2_ValueChanged" Maximum="100" Grid.Column="2" RenderTransformOrigin="0.497,-0.458" BorderBrush="#FF1A8D44" Foreground="#FF682B2B" OpacityMask="#FF0D6E58" FontSize="9" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" >
+
+        <my:WindowsFormsHost Name="windowsFormsHost1" Opacity="0.7" xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" Grid.RowSpan="2" Margin="0,0,0,11" Grid.ColumnSpan="4" />
+
+        <Slider Height="11" Margin="86,0,15,0" Name="slider2" Grid.Row="1" ValueChanged="slider2_ValueChanged" Maximum="100" Grid.Column="2" RenderTransformOrigin="0.497,-0.458" BorderBrush="#FF1A8D44" Foreground="#FF682B2B" OpacityMask="#FF0D6E58" FontSize="9" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" Grid.ColumnSpan="2" >
             <Slider.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -35,5 +38,16 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 </LinearGradientBrush>
             </Slider.Background>
         </Slider>
+
+        <Label x:Name="mes" Content="---------------" Margin="1,1,383,0" VerticalAlignment="Top" Height="23" Width="140" Foreground="#FF83E068" FontSize="18" FontWeight="Bold" Grid.ColumnSpan="3">
+            <Label.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF628FDC" Offset="1"/>
+                </LinearGradientBrush>
+            </Label.BorderBrush>
+        </Label>
+
+
     </Grid>
 </Window>

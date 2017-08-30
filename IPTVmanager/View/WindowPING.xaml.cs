@@ -52,7 +52,7 @@ namespace IPTVman.ViewModel
             {
                 if (Model.data.ping_waiting > 20)
                 {
-                    textct.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                    textct.Dispatcher.Invoke( new Action(() =>
                     {
                         textct.Text = String.Format("{0} из {1}   ожидание {2} ", IPTVman.Model.data.ct_ping,
                                            IPTVman.Model.data.ping_all, IPTVman.Model.data.ping_waiting - 20);
@@ -63,7 +63,7 @@ namespace IPTVman.ViewModel
                 if (start_add)
                 {
                     string z = message_add;
-                    textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                    textBox.Dispatcher.Invoke(new Action(() =>
                     {
                         size++;
                         if (size > 500) { textBox.Clear(); size = 0; }

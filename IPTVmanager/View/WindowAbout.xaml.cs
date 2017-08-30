@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Media3D;
+using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
@@ -65,7 +66,14 @@ namespace IPTVman.ViewModel
             if (e.Key == System.Windows.Input.Key.Escape)
                 this.Close();
             else
-                System.Diagnostics.Process.Start("https://github.com/dav1977/IPTVmanager");
+                try
+                {
+                    System.Diagnostics.Process.Start( "https://github.com/dav1977/IPTVmanager");
+                }
+                catch
+                {
+                    dialog.Show("Браузер по умолчанию не найден ");
+                }
         }
 
         

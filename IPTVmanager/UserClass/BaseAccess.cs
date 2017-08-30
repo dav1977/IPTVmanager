@@ -34,14 +34,13 @@ namespace IPTVman.ViewModel
         OleDbCommand sql;
 
         Task task1;
-        public CancellationTokenSource cts1;
+        public CancellationTokenSource cts1 = new CancellationTokenSource();
         public CancellationToken cancellationToken;
 
         public static event Action<string> Event_Print;
         public string error = "";
         public void connect(string path)
         {
-            cts1 = new CancellationTokenSource();
             cancellationToken = cts1.Token;
 
             try
@@ -169,7 +168,7 @@ namespace IPTVman.ViewModel
 
         public void Stop()
         {
-            cts1.Cancel();
+            if (cts1!=null) cts1.Cancel();
         }
         /// <summary>
         /// Обновление в БАЗЕ

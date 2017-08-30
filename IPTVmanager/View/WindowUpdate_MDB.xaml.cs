@@ -48,7 +48,7 @@ namespace IPTVman.ViewModel
 
         private void clear()
         {
-            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            textBox.Dispatcher.Invoke(new Action(() =>
             {
                 textBox.Text = "";
             }));
@@ -57,16 +57,16 @@ namespace IPTVman.ViewModel
         {
             if (text == "") clear();
             ct++; //if (ct > 500) clear();
-            textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            textBox.Dispatcher.Invoke( new Action(() =>
             {
                 textBox.Text += text;
                 textBox.ScrollToEnd();
             }));
 
-                pa.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                {
-                    pa.Content = Model.bd_data.path;
-                }));
+            pa.Dispatcher.Invoke( new Action(() =>
+            {
+                pa.Content = Model.bd_data.path;
+            }));
    
         }
 
@@ -95,8 +95,11 @@ namespace IPTVman.ViewModel
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Model.loc.updateMDB = false;
-            ViewModelWindowMDB._bd.Stop(); ;
-            ViewModelWindowMDB._bd = null;
+            if (ViewModelWindowMDB._bd != null)
+            {
+                ViewModelWindowMDB._bd.Stop(); ;
+                ViewModelWindowMDB._bd = null;
+            }
             Model.bd_data.mask = TEXTmask.Text;
             Model.bd_data.filter1 = TEXT1.Text;
             Model.bd_data.filter2 = TEXT2.Text;
@@ -105,19 +108,12 @@ namespace IPTVman.ViewModel
         //key ЗАКРЫТЬ
         private void exit_Copy_Click(object sender, RoutedEventArgs e)
         {
-            if (this != null) this.Close();
+            this.Close();
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //try
-            //{
-            //    textBox.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-            //    {
-            //        textBox.ScrollToEnd();
-            //    }));
-            //}
-            //catch { }
+           
         }
         private void ButtonUPDATE(object sender, RoutedEventArgs e)
         {

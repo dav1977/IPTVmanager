@@ -90,7 +90,7 @@ namespace IPTVman.ViewModel
         void SAVE(object selectedItem)
         {
             if (loc.collection) return;
-            GUI.edit = false;
+            loc.edit = false;
             if (Event_UpdateEDIT != null) Event_UpdateEDIT(edit); 
         }
        

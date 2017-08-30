@@ -19,26 +19,9 @@ namespace IPTVman.Model
         public static bool lokUP, lokDN = false;
         public static bool keyadd = false;//дребезг кнопки
         public static bool updateMDB = false;
+        public static bool edit = false;
     }
     
-    /// <summary>
-    /// данные для формы
-    /// </summary>
-    public static class GUI
-    {
-      public static  double progressbar=0;
-      public static double progressbar_max = 0;
-      public static bool dynamic_progressbar = false;
-      public static bool edit = false;
-      public static string longtaskSTRING;
-
-        public static void set_ProgressBar(double max, bool en )
-        {
-            progressbar_max = max;
-            if (en) dynamic_progressbar = false; else dynamic_progressbar = true;
-        }
-    }
-
     public static class bd_data
     {
         public static string path = "";

@@ -89,6 +89,7 @@ namespace IPTVman.ViewModel
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Action(BEST_ADD);
             ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
+            Update_Collection.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
            
@@ -137,8 +138,8 @@ namespace IPTVman.ViewModel
         {
             int i = 0;
   
-            if (GUI.edit) return;
-            GUI.edit = true;
+            if (loc.edit) return;
+            loc.edit = true;
             foreach (var obj in myLISTfull)
             {
                if (obj.Compare()==data.canal.Compare())

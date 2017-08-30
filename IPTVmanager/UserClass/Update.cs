@@ -20,7 +20,7 @@ namespace IPTVman.ViewModel
     {
         private List<ParamCanal> myLISTbase;
         private List<ParamCanal> myLISTfullNEW;
-
+        public static event Delegate_UpdateCollection Event_UpdateCollection;
         /// <summary>
         /// 
         /// </summary>
@@ -225,7 +225,7 @@ namespace IPTVman.ViewModel
                     index++;
                 }
                 ind++;
-                GUI.progressbar++;
+                Wait.progressbar++;
             }
 
            
@@ -241,8 +241,105 @@ namespace IPTVman.ViewModel
             myLISTdublicate1b = null;
             myLISTdublicate2 = null;
             return resul;
-        }  
-      
+        }
+
+
+
+        /// <summary>
+        /// MOVE SAVE
+        /// </summary>
+        static CancellationTokenSource cts1 = new CancellationTokenSource();
+        static Task task1;
+
+        public async static void SAVE_MOVE()
+        {
+            if (ViewModelMain.myLISTbase == null) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
+
+            var cancellationToken = cts1.Token;//для task1
+            string rez = await WorkSave(cancellationToken);
+        }
+
+        async static Task<string> WorkSave(CancellationToken Token)
+        {
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            var tcs = new TaskCompletionSource<string>();
+            task1 = Task.Run(() =>
+            {
+                try
+                {
+                    Move_save();
+                    tcs.SetResult("ok");
+                }
+                catch (OperationCanceledException e)
+                {
+                    tcs.SetException(e);
+                }
+                catch (Exception e)
+                {
+                    tcs.SetException(e);
+                }
+                return tcs.Task;
+
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+            try { await task1; }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА Применения " + e.Message.ToString());
+            }
+            task1.Dispose();
+            task1 = null;
+            Wait.Close();
+            return "";
+        }
+
+
+        private static void Move_save()
+        {
+            try
+            {
+                if (loc.collection) { dialog.Show("Ошибка Коллеция заблокирована"); return; }
+                Wait.Create("Сохранение...", ListViewDragDropManager.Task.list.Count);
+                int i = 0;
+                foreach (var s in ListViewDragDropManager.Task.list)
+                {
+                    if (i < ListViewDragDropManager.Task.list.Count)
+                    {
+                        ViewModelMain.myLISTbase[i].name = s.Name;
+                        ViewModelMain.myLISTbase[i].ExtFilter = s.ExtFilter;
+                        ViewModelMain.myLISTbase[i].group_title = s.Group_title;
+                        ViewModelMain.myLISTbase[i].http = s.Http;
+                        ViewModelMain.myLISTbase[i].ping = s.Ping;
+                        ViewModelMain.myLISTbase[i].logo = s.Logo;
+                        ViewModelMain.myLISTbase[i].tvg_name = s.Tvg;
+                    }
+                    i++;
+                }
+
+                foreach (var s in ListViewDragDropManager.Task.list)
+                {
+                    Wait.progressbar++;
+                    if (!s.Finished) continue;
+
+                    var item = ViewModelMain.myLISTfull.Find(x =>
+                    (x.name == s.Name && x.ExtFilter == s.ExtFilter && x.group_title == s.Group_title));
+
+                    if (item != null) ViewModelMain.myLISTfull.Remove(item);
+
+                    item = ViewModelMain.myLISTdub.Find(x =>
+                    (x.name == s.Name && x.ExtFilter == s.ExtFilter && x.group_title == s.Group_title));
+
+                    ViewModelMain.myLISTdub.Remove(item);
+                }
+
+                if (Event_UpdateCollection != null) Event_UpdateCollection(new IPTVman.Model.ParamCanal());
+
+            }
+            catch { }
+        }
+
 
     }
 }

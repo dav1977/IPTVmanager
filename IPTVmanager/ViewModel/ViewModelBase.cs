@@ -61,7 +61,7 @@ namespace IPTVman.ViewModel
 
         public virtual void CloseWindow(bool? result = true)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke(/*DispatcherPriority.Background,*/ new Action(() =>
             {
                 CloseWindowFlag = CloseWindowFlag == null
                     ? true

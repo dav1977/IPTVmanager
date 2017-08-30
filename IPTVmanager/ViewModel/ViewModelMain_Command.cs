@@ -144,14 +144,14 @@ namespace IPTVman.ViewModel
                 var tcs = new TaskCompletionSource<string>();
                 try
                 {
-                    GUI.set_ProgressBar(ViewModelMain.myLISTbase.Count, true);
+                    Wait.set_ProgressBar(ViewModelMain.myLISTbase.Count);
                     int ct = 0;
                     data.set_best();
 
                     foreach (var s in ViewModelMain.myLISTbase)
                     {
                         if (cts.IsCancellationRequested) break;
-                        GUI.progressbar++;
+                        Wait.progressbar++;
                         ct = 0;
                         foreach (var j in ViewModelMain.myLISTfull)
                         {
@@ -227,7 +227,7 @@ namespace IPTVman.ViewModel
 
             winap.Closing += Ap_Closing;
             winap.Show();
-            winap.Owner = MainWindow.header;
+            //winap.Owner = MainWindow.header;
         }
 
         private void Ap_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -265,7 +265,7 @@ namespace IPTVman.ViewModel
 
             mdb.Closing += MDB_Closing;
             mdb.Show();
-            mdb.Owner = MainWindow.header;
+            //mdb.Owner = MainWindow.header;
         }
 
         private void MDB_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -360,7 +360,7 @@ namespace IPTVman.ViewModel
             List<ParamCanal> rez =null;
 
             Wait.Create("Идет поиск дубликатов ...", true);
-            GUI.set_ProgressBar(myLISTbase.Count, true);
+            Wait.set_ProgressBar(myLISTbase.Count);
             try
             {
                 rez = await find_dublicate_task();
@@ -861,7 +861,7 @@ namespace IPTVman.ViewModel
                 }
                 catch(Exception ex) { MessageBox.Show("ошибка сканирования "+ex.Message.ToString()); goto exit_open; }
                 
-                GUI.set_ProgressBar(all_str, true);
+                Wait.set_ProgressBar(all_str);
                 //=========================================================
                 //ПОИСК каналов
                 using (StreamReader sr = new StreamReader(name))
@@ -874,7 +874,7 @@ namespace IPTVman.ViewModel
                         try
                         {
                             line = sr.ReadLine();
-                            GUI.progressbar++;
+                            Wait.progressbar++;
                         }
                         catch { }
 

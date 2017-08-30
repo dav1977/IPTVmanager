@@ -49,7 +49,7 @@ namespace IPTVman.ViewModel
 
         public void stop()
         {
-            cts1.Cancel();
+           if(cts1!=null) cts1.Cancel();
         }
 
         public void Dispose()
@@ -124,7 +124,7 @@ namespace IPTVman.ViewModel
             {
                 dialog.Show("ОШИБКА-АВТОПИНГ " + e.Message.ToString());
             }
-            cts1.Cancel();
+            if (cts1!=null)cts1.Cancel();
             Wait.Close();
            
             return result;

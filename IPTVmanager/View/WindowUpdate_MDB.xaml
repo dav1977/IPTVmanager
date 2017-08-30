@@ -38,7 +38,7 @@
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="412,10,0,0" VerticalAlignment="Top" Width="93" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" Grid.Column="1" />
+        <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="412,10,0,0" VerticalAlignment="Top" Width="90" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" Grid.Column="1" />
         <Button x:Name="ButtonReplace_Copy1" Content="ВЫБРАТЬ ФАЙЛ И ОБНОВИТЬ" Command="{Binding key_UPDATECommand}" Margin="133,132,0,0" Width="242" RenderTransformOrigin="-0.038,-1.709" Height="29" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Click="ButtonUPDATE" />
         <Label x:Name="label" Content="ОБНОВИТЬ Ссылки в базе данных Simple TV" HorizontalAlignment="Left" Margin="16,4,0,0" VerticalAlignment="Top" Foreground="#FFFF12C9" FontSize="22" Width="430" Grid.ColumnSpan="2"/>
         <TextBox x:Name="TEXT1" Text="{Binding Selected1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="153,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Grid.Column="1"/>
@@ -74,7 +74,7 @@
             </TextBox.Background>
         </TextBox>
         <TextBox x:Name="TEXTmask" Text="{Binding mask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="44" Margin="15,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" Grid.ColumnSpan="2"/>
-        <Button x:Name="fastupdate" Content="ОБНОВИТЬ" Command="{Binding key_bastUPDATECommand }" Margin="401,133,-1,0" Width="113" RenderTransformOrigin="-0.038,-1.709" Height="29" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="5" Click="ButtonUPDATE"/>
+        <Button x:Name="fastupdate" Content="ОБНОВИТЬ" Command="{Binding key_bastUPDATECommand }" Margin="401,133,0,0" Width="101" RenderTransformOrigin="-0.038,-1.709" Height="29" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Click="ButtonUPDATE"/>
         <Label x:Name="pa" Content="" HorizontalAlignment="Left" Margin="133,102,0,0" VerticalAlignment="Top" Foreground="#FF129EFF" FontSize="12" Width="370" Grid.Column="1"/>
 
     </Grid>
