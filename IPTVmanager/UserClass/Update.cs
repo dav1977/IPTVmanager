@@ -37,7 +37,6 @@ namespace IPTVman.ViewModel
             Regex regex3 = new Regex(data.f3, RegexOptions.IgnoreCase);
             Regex regex4 = new Regex(data.f4);
 
-
             myLISTbase.Clear();
             foreach (var c in myLISTfullNEW)
             {

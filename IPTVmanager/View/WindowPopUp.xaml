@@ -1,0 +1,12 @@
+﻿<Window x:Class="IPTVman.ViewModel.WindowPOP"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="" Height="123.029" Width="162.776"
+        AllowsTransparency="True" Background="Transparent" WindowStyle="None" Closed="Window_Closed">
+    <Grid Margin="0,0,27,25">
+        <Border Width="auto" Height="auto" BorderBrush="LimeGreen" BorderThickness="2"
+                CornerRadius="80,80,80,80" Margin="0,0,2,0" Background="#FF11251D">
+            <Label x:Name="label" Content="Label" Height="Auto" Margin="27,31,20,30" HorizontalAlignment="Center"/>
+        </Border>
+    </Grid>
+</Window>

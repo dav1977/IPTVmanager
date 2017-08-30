@@ -80,12 +80,15 @@ namespace IPTVman.ViewModel
 
         public CollectionProvider myProvider;
         public AsyncVirtualizingCollection<ParamCanal> ACOLL;
-
+        System.Windows.Threading.DispatcherTimer tmr;
+        
         //**********************************************************
         // INIT
         //**********************************************************
         public ViewModelMain()
         {
+            if (loc.start_one) return;
+            loc.start_one = true;
             ViewModelWindow1.Event_UpdateEDIT += new Delegate_UpdateEDIT(updateEDIT);
             ViewModelWindow1.Event_ADDBEST += new Action(BEST_ADD);
             ViewModelWindow2.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
@@ -94,11 +97,28 @@ namespace IPTVman.ViewModel
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
            
             ini_command();
-            CreateTimer1(500);   
+            CreateTimer1(500);//500 мс
+            CreateTMR(1);// 1sec
         }
 
+        void CreateTMR(int s)
+        {
+            tmr = new System.Windows.Threading.DispatcherTimer();
+            tmr.Tick += new EventHandler(timerTick);
+            tmr.Interval = new TimeSpan(0, 0, s);
+            tmr.Start();
+        }
 
-
+        private void timerTick(object sender, EventArgs e)
+        {
+            if (loc.timer_tmr) return;
+            loc.timer_tmr = true;
+            if (Model.data.arguments_startup != null)
+                if (Model.data.arguments_startup[0] != "") Open_arguments();   
+            tmr.Stop();
+            tmr = null;
+        }
+      
         private void Create_Virtual_Collection()
             {
             int numItems=1000000;
@@ -114,15 +134,12 @@ namespace IPTVman.ViewModel
             ACOLL = new AsyncVirtualizingCollection<ParamCanal>(myProvider, pageSize, pageTimeout);
 
         }
-
-
-       
+    
         void CollectionisCreate()
         {
             if (myLISTfull==null) { Create_Virtual_Collection();  }
         }
-
-       
+     
         void BEST_ADD()
         {
             if (loc.keyadd) return;
@@ -132,7 +149,6 @@ namespace IPTVman.ViewModel
             myLISTfull.Add(data.canal);
             Update_collection(typefilter.last); 
         }
-
 
         void updateEDIT(ParamCanal item)
         {

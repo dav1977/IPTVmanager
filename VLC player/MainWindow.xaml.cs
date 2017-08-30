@@ -28,12 +28,11 @@ namespace IPTVman.ViewModel
     {
         //Application.StartupPath
         public static Window header;
-        Window message;
         IMediaPlayerFactory m_factory;
         IVideoPlayer m_player;
         IMedia m_media;
         System.Windows.Forms.Panel p;
-        int timer_off = 0;
+        public static int timer_off = 0;
         int timer_ct = 0;
 
         public Player()
@@ -45,7 +44,7 @@ namespace IPTVman.ViewModel
             //this.Cursor = System.Windows.Input.Cursors.None;
 
 
-            if (IPTVman.ViewModel.data.url != "") init();  else this.Title = "Нечего проигрывать";
+            if (data.url != "") init();  else this.Title = "Нечего проигрывать";
             slider2.Value = 100;
             reset();
 
@@ -64,17 +63,17 @@ namespace IPTVman.ViewModel
 
 
         void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            
+        {    
            // if (e.Key == System.Windows.Input.Key.Escape)this.Close();
             if (e.Key == System.Windows.Input.Key.T)
             {
-                timer_off += 18000;
-                int min = timer_off / 10 /60;
-                if (min > 240) { timer_off = 0; dialog.Show("Таймер закрытия ОТКЛЮЧЕН"); return; }
-               dialog.Show("Таймер закрытия "+ min.ToString() + " мин      " + data.name);
+                WindowMessage.WindowAutoClose();
             }
 
+            if (e.Key == System.Windows.Input.Key.W)
+            {
+                WinPOP.Create(data.name, 0, header);
+            }
         }
 
         void init()
@@ -147,7 +146,7 @@ namespace IPTVman.ViewModel
                 //18000 - 30min
             }
 
-            manager_message();
+            dialog.manager();
 
             try
             {
@@ -182,44 +181,6 @@ namespace IPTVman.ViewModel
             catch { }
 
            
-        }
-
-        void manager_message()
-        {
-            if (dialog.dialog_enable)
-            {
-                dialog.dialog_enable = false;
-
-                if (message != null)
-                {
-                    //message.Close();
-                    //message = null;
-                    this.Focus();
-                    return;
-                }
-
-                message = new WindowMessage()
-                {
-                    Title = "Сообщение",
-                    Topmost = true,
-                    WindowStyle = WindowStyle.ToolWindow,
-                    Name = "message",
-                    //SizeToContent = SizeToContent.WidthAndHeight,
-                    ResizeMode = ResizeMode.NoResize,
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner
-                };
-
-                message.Closing += message_Closing;
-                message.Show();
-                message.Owner = Player.header;
-
-                this.Focus();
-            }
-        }
-
-        private void message_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            message = null;
         }
 
         void Events_PlayerStopped(object sender, EventArgs e)
@@ -282,7 +243,11 @@ namespace IPTVman.ViewModel
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
-            if (m_player!=null) m_player.ToggleMute();
+            if (m_player != null)
+            {
+                m_player.ToggleMute();
+                if (m_player.Mute) { bMUTE.FontSize += 4; } else { bMUTE.FontSize -= 4; }
+            }
         }
 
         private void slider2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

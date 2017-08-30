@@ -84,8 +84,6 @@ namespace IPTVman.ViewModel
             if (myLISTbase.Count == 0) return;
             if (winrep != null) return;
 
-
-
             winrep = new WindowReplace()
             {
                 Title = "ЗАМЕНА",
@@ -296,6 +294,7 @@ namespace IPTVman.ViewModel
             if (Wait.IsOpen) return;
             //if (parameter == null || !data.delete) return;
             if (myLISTfull == null) return;
+            if (myLISTfull.Count == 0) return;
             if (data.canal.name == "") return;
 
             MessageBoxResult result = MessageAsk.Create("  УДАЛЕНИЕ " + data.canal.name + "\n" + data.canal.http);
@@ -737,6 +736,29 @@ namespace IPTVman.ViewModel
             catch(Exception ex) { dialog.Show("ошибка удаления "+ex.Message.ToString()); }
             Update_collection(typefilter.last);
             Wait.Close();
+        }
+
+        async void Open_arguments()
+        {
+            loc.openfile = true;
+            CollectionisCreate();
+            string name = data.arguments_startup[0];
+            Wait.Create("Идет анализ файла", true);
+            loc.block_dialog_window = true;
+            try { await AsyncOPEN(name); }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА анализа файла " + e.Message.ToString());
+            }
+            Thread.Sleep(300);
+            Wait.Close();
+            Update_collection(typefilter.normal);
+            Wait.Close();
+            loc.openfile = false;
+
+            dialog.dialog_enable = false;
+            loc.block_dialog_window = false;
+            bufferstring.Clear();
         }
 
         async void key_OPEN(object parameter)

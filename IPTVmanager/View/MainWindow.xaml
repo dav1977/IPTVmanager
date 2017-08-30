@@ -201,10 +201,10 @@
 
         <!-- <КНОПКИ>-->
         <Button Name="bDELETE" Content="" Command="{Binding key_delCommand}" CommandParameter="" Margin="10,0,0,5" Focusable="False" Width="428" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="4" BorderBrush="#FFECECEC" Background="Black" Foreground="#FFF1410D"/>
-        <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,10,3" Focusable="False" Grid.Column="3" Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Button  Content="Добавить канал" Command="{Binding key_ADDCommand}" CommandParameter="{Binding Text, ElementName=tb1}" Margin="0,0,10,3" Focusable="False" Grid.Column="3" Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Click_6"/>
 
         <Label x:Name="label_kanals" Content="{Binding numberCANALS ,UpdateSourceTrigger=PropertyChanged }" Grid.Column="1" HorizontalAlignment="Left" Margin="48,0,0,8" VerticalAlignment="Bottom" FontSize="18.667" Foreground="#FF0EE840" Width="531" Height="32" Grid.Row="1" Grid.ColumnSpan="3"/>
-        <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Margin="0,0,15,8" Foreground="#FF41E466" Grid.Row="1" FontSize="13.333" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="23" Width="214" />
+        <Label x:Name="mem" Content="{Binding memory, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Margin="0,0,15,8" Foreground="#FF41E466" Grid.Row="1" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="23" Width="214" FontFamily="Bookman Old Style" />
 
 
 
@@ -212,16 +212,16 @@
 
         <Label x:Name="label" Content="Избранное" Grid.Column="3" HorizontalAlignment="Right" Margin="0,6,121,0" Width="56" Background="#FF1B2583" VerticalAlignment="Top" RenderTransformOrigin="1.5,0.769" Height="25" FontSize="10" Foreground="#FF12FF88"/>
 
-        <GroupBox Header="ФИЛЬТР названия" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="9,79,0,0" Grid.ColumnSpan="2" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200">
+        <GroupBox Header="ФИЛЬТР названия" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="78,84,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Grid.Column="1" Grid.ColumnSpan="3">
             <TextBox x:Name="Ffilter1" Text="{Binding filter1}" Margin="10,0,0,0"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
-        <GroupBox Header="ФИЛЬТР exfilter" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="181,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="3" Width="200">
+        <GroupBox Header="ФИЛЬТР exfilter" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="82,84,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Width="200">
             <TextBox x:Name="Ffilter2" Text="{Binding filter2}" Margin="10,0,0,0"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
-        <GroupBox Header="ФИЛЬТР grouptitle" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="186,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Width="200">
+        <GroupBox Header="ФИЛЬТР grouptitle" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="286,84,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Width="200">
             <TextBox x:Name="Ffilter3" Text="{Binding filter3}" Margin="10,0,0,0"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
-        <GroupBox Header="ФИЛЬТР url ping" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="390,79,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Width="200">
+        <GroupBox Header="ФИЛЬТР url ping" BorderBrush="#FFD3E04B" Foreground="#FF26F55F" RenderTransformOrigin="0.5,0.5" Margin="490,84,0,0" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Width="200">
             <TextBox x:Name="Ffilter4" Text="{Binding filter4}" Margin="10,0,0,0"  Width="167" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
         </GroupBox>
         <Button x:Name="buttonfav1" Content="B" Grid.Column="3" HorizontalAlignment="Right" Margin="0,5,85,0" VerticalAlignment="Top" Width="24" Click="button_Click_5"/>
@@ -263,11 +263,11 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}"   CommandParameter=""  Margin="595,96,0,0" Focusable="False" Width="95" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_3">
+        <Button Content="Отфильтровать" Command="{Binding key_FILTERCommand}"   CommandParameter=""  Margin="11,90,0,0" Focusable="False" Width="91" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Click="Button_Click_3" Grid.ColumnSpan="2">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
-                    <GradientStop Color="#FF54F3FB" Offset="0.749"/>
+                    <GradientStop Color="#FF73EC1F" Offset="0.749"/>
                 </LinearGradientBrush>
             </Button.Background>
             <Button.Foreground>
@@ -277,7 +277,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="Фильтр Избр" Command="{Binding key_FilterOnlyBESTCommand}"    CommandParameter=""  Margin="0,96,10,0" Focusable="False" Width="89" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_3">
+        <Button Content="Фильтр Избр" Command="{Binding key_FilterOnlyBESTCommand}"    CommandParameter=""  Margin="0,101,11,0" Focusable="False" Width="89" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_Click_3">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -347,7 +347,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button Content="Уст.всех" Command="{Binding key_SetAllBestCommand}"  CommandParameter=""  Margin="0,6,182,0" Focusable="False" Width="56" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
+        <Button Content="Уст.всех" Command="{Binding key_SetAllBestCommand}"  CommandParameter=""  Margin="0,10,188,0" Focusable="False" Width="54" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" >
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -433,7 +433,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Button x:Name="sizeinc" Content="+" Grid.Column="3" HorizontalAlignment="Right" Margin="0,126,33,0" VerticalAlignment="Top" Width="20" Click="sizeinc_Click" Height="18" RenderTransformOrigin="4.062,3"/>
-        <Button x:Name="sizedec" Content="-" Grid.Column="3" HorizontalAlignment="Right" Margin="0,126,10,0" VerticalAlignment="Top" Width="20" Click="sizedec_Click" Height="18"/>
+        <Button x:Name="sizeinc" Content="+" HorizontalAlignment="Left" Margin="11,119,0,0" VerticalAlignment="Top" Width="20" Click="sizeinc_Click" Height="18" RenderTransformOrigin="4.062,3"/>
+        <Button x:Name="sizedec" Content="-" Grid.Column="1" HorizontalAlignment="Left" Margin="6,119,0,0" VerticalAlignment="Top" Width="20" Click="sizedec_Click" Height="18"/>
     </Grid>
 </Window>

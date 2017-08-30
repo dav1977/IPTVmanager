@@ -56,6 +56,44 @@ namespace IPTVman.ViewModel
             dialog_enable = true;
         }
 
+        static Window header;
+        public static void manager()
+        {
+            if (dialog_enable)
+            {
+                if (!Model.loc.block_dialog_window && !Wait.IsOpen)
+                {
+                    dialog.dialog_enable = false;
+
+                    if (header != null)
+                    {
+                        header.Close();
+                        header = null;
+                    }
+
+                    header = new WindowMessage()
+                    {
+                        Title = "Сообщение",
+                        Topmost = true,
+                        WindowStyle = WindowStyle.ToolWindow,
+                        Name = "message",
+                        //SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                        // WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
+
+                    header.Closing += header_Closing;
+                    header.Show();
+                    header.Owner = MainWindow.header;
+                }
+            }
+        }
+
+        private static void header_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            header = null;
+        }
+
     }
     
 }

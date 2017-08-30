@@ -12,8 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-
-
 namespace IPTVman.ViewModel
 {
     partial class ViewModelWindow1 : ViewModelMain

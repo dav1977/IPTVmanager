@@ -75,6 +75,27 @@ namespace IPTVman
                 else SystemCommands.MaximizeWindow(w);
             });
         }
+
+    }
+
+    public partial class App : Application
+    {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            if (Model.loc.start_one) return;
+            try
+            {
+                byte i = 0;
+                foreach (string arg in e.Args)
+                {
+                    if (Model.data.arguments_startup == null) Model.data.arguments_startup = new string[100];
+                    Model.data.arguments_startup[i] = arg;
+                    if (i > 90) break;
+                }
+            }
+            catch { }
+
+        }
     }
 
     internal static class LocalExtensions

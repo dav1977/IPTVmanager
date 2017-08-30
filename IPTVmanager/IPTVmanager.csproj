@@ -179,6 +179,9 @@
     <Compile Include="View\WindowMessage.xaml.cs">
       <DependentUpon>WindowMessage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WindowPopUp.xaml.cs">
+      <DependentUpon>WindowPopUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WindowWAIT.xaml.cs">
       <DependentUpon>WindowWAIT.xaml</DependentUpon>
     </Compile>
@@ -231,6 +234,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\WindowMessage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\WindowPopUp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

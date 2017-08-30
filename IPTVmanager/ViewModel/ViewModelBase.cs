@@ -27,14 +27,14 @@ namespace IPTVman.ViewModel
                 Timer1.Start();
             }
         }
-
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
-        {
+        {         
             if (PropertyChanged != null)
             {
                 RaisePropertyChanged("memory");
             }
         }
+
 
         private object threadLock = new object();
         internal void RaisePropertyChanged(string prop)

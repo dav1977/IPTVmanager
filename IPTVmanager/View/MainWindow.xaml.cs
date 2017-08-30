@@ -7,7 +7,7 @@ using IPTVman.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System.Windows.Controls;
 
 namespace IPTVman.ViewModel
 {
@@ -45,6 +45,7 @@ namespace IPTVman.ViewModel
             changefav = false;
 
             //this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
+
         }
         //public void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         //{
@@ -69,7 +70,6 @@ namespace IPTVman.ViewModel
         //     }
         //}
 
-        static Window message;
         private void timer_Tick(object sender, EventArgs e)
         {
             try
@@ -100,41 +100,14 @@ namespace IPTVman.ViewModel
                     start_update = false;
                 }
 
+
+                if (WinPOP.need_to_close) WinPOP.Close();
                 Wait.manager();
-  
-                if (dialog.dialog_enable && !Wait.IsOpen)
-                {
-                    dialog.dialog_enable = false;
-
-                    if (message != null)
-                    {
-                        message.Close();
-                        message = null;
-                    }
-
-                    message = new WindowMessage()
-                    {
-                        Title = "Сообщение",
-                        Topmost = true,
-                        WindowStyle = WindowStyle.ToolWindow,
-                        Name = "message",
-                        //SizeToContent = SizeToContent.WidthAndHeight,
-                        ResizeMode = ResizeMode.NoResize
-                        // WindowStartupLocation = WindowStartupLocation.CenterOwner
-                    };
-
-                    message.Closing += message_Closing;
-                    message.Show();
-                    message.Owner = MainWindow.header;
-                }
+                dialog.manager();
+                
             }
             catch (Exception ex) { MessageBox.Show("timer error "+ex.Message); }
 
-        }
-
-        private void message_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            message = null;
         }
 
         private void tb1_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -142,11 +115,8 @@ namespace IPTVman.ViewModel
 
         }
 
-
-
         private void MYLIST_LostTouchCapture(object sender, System.Windows.Input.TouchEventArgs e)
         {
-
 
         }
 
@@ -351,7 +321,7 @@ namespace IPTVman.ViewModel
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Model.SETTING.SaveInXmlFormat();
+           SETTING.SaveInXmlFormat();
         }
 
         Window about;
@@ -386,6 +356,28 @@ namespace IPTVman.ViewModel
         {
             MYLIST.FontSize -= 1;
             if (MYLIST.FontSize < 8) MYLIST.FontSize = 8;
+        }
+
+        //add new item
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            //MYLIST.Dispatcher.Invoke(new Action(() =>
+            //{
+            //    //MYLIST.Items.MoveCurrentToLast();
+            //    // ScrollToLastItem();
+            //}));
+        }
+
+        public void ScrollToLastItem()
+        {
+            if (MYLIST.Items.Count < 3) return;
+            MYLIST.SelectedItem = MYLIST.Items.GetItemAt(MYLIST.Items.Count-2);
+
+            MYLIST.Items.MoveCurrentToLast();
+
+            ListViewItem item = MYLIST.ItemContainerGenerator.ContainerFromItem(MYLIST.SelectedItem) as ListViewItem;
+
+            item.Focus();
         }
     }
 }

@@ -20,6 +20,9 @@ namespace IPTVman.Model
         public static bool keyadd = false;//дребезг кнопки
         public static bool updateMDB = false;
         public static bool edit = false;
+        public static bool block_dialog_window = false;
+        public static bool start_one = false;
+        public static bool timer_tmr = false;
     }
     
     public static class bd_data
@@ -40,6 +43,7 @@ namespace IPTVman.Model
 
     public static class data
     {
+        public static string[] arguments_startup;
         public static byte type_player = 0;
         public static string NOT_URL = "НЕ СУЩЕСТВУЕТ";
         public static byte current_favorites =1;

@@ -58,7 +58,7 @@ namespace IPTVman.ViewModel
 
         private void ButtonBEST_Click(object sender, RoutedEventArgs e)
         {
-
+            if (!Model.loc.keyadd) WinPOP.Create("Добавлено",2, this);
         }
 
         void exit()
