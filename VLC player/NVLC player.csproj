@@ -7,7 +7,7 @@
     <ProjectGuid>{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>VLC_player</RootNamespace>
-    <AssemblyName>NVLC player</AssemblyName>
+    <AssemblyName>nvlcp</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,6 +38,9 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bass.Net">
+      <HintPath>..\IPTVmanager\bin\Debug\Player\Bass.Net.dll</HintPath>
+    </Reference>
     <Reference Include="nVLC, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\nVLC.2.1.0.3\lib\net40\nVLC.dll</HintPath>
     </Reference>
@@ -65,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AudioBass.cs" />
     <Compile Include="WindowMessage.xaml.cs">
       <DependentUpon>WindowMessage.xaml</DependentUpon>
     </Compile>

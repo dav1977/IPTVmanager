@@ -22,7 +22,7 @@ namespace IPTVman.ViewModel
        public static string name="";
     }
     /// <summary>
-    /// nVLC lib Player
+    /// nVLC lib  and bass lib   Player
     /// </summary>
     public partial class Player : Window
     {
@@ -34,6 +34,7 @@ namespace IPTVman.ViewModel
         System.Windows.Forms.Panel p;
         public static int timer_off = 0;
         int timer_ct = 0;
+        bool mode_radio = false;
 
         public Player()
         {
@@ -42,8 +43,6 @@ namespace IPTVman.ViewModel
             this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
             windowsFormsHost1.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
             //this.Cursor = System.Windows.Input.Cursors.None;
-
-
             if (data.url != "") init();  else this.Title = "Нечего проигрывать";
             slider2.Value = 100;
             reset();
@@ -55,10 +54,6 @@ namespace IPTVman.ViewModel
             timer.Start();
 
             slider2.Focus();
-            Thread.Sleep(100);
-            this.mes.Content = data.name;
-
-            if (data.url != "") Play(data.url);
         }
 
 
@@ -126,7 +121,7 @@ namespace IPTVman.ViewModel
                     reset();
                     m_player.Play();
                 }
-                catch (Exception ex) { System.Windows.Forms.MessageBox.Show("error vlc " + ex.Message); }
+                catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка vlc " + ex.Message); }
             });
         }
 
@@ -134,11 +129,17 @@ namespace IPTVman.ViewModel
         {
             tick = 0; i = 0;
         }
+
         uint tick = 0;
         static byte i = 0;
         bool updatename=false;
+        int ct = 0;
+        bool loc = false;
+
         private void timer_Tick(object sender, EventArgs e)
         {
+            if (loc) return;
+            loc = true;
             if (timer_off != 0)
             {
                 timer_ct++;
@@ -148,10 +149,39 @@ namespace IPTVman.ViewModel
 
             dialog.manager();
 
+            if (ct<10)ct++;
+            if (ct > 8 && ct<11)
+            {
+                ct = 255;
+                try
+                {
+                    if (!mode_radio) if (data.url != "") { init(); Play(data.url); }
+                }
+                catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка библиотеки vlc " + ex.Message); }
+
+                try
+                {
+                    if (!WinPOP.init_ok)
+                    {
+                        WinPOP._bass = new AudioBass();
+                        WinPOP._bass.init();
+                        WinPOP._bass.create_stream(data.url,mode_radio, this);
+                        if (mode_radio)
+                        {
+                            this.Title = data.name + " " + data.url;
+                            WinPOP._bass.play();
+                        }
+                    }
+
+                }
+                catch (Exception ex) { System.Windows.MessageBox.Show("Ошибка библиотеки bass " +ex.ToString()); }
+          
+            }
+
+            if (mode_radio || m_player == null) goto exit;
+
             try
             {
-                if (m_player == null) return;
-
                 if (!updatename)
                 {
                     if (m_player.IsPlaying)
@@ -165,7 +195,7 @@ namespace IPTVman.ViewModel
                 {
                     updatename = false;
                     if (taskPLAY.IsFaulted || taskPLAY.IsCanceled)
-                    { this.Title = "STOPPED!!!"; return; }
+                    { this.Title = "STOPPED!!!"; goto exit; }
                     string s = "Opening";
                     if (i == 0)
                         this.Title = s + " ... ";
@@ -180,7 +210,8 @@ namespace IPTVman.ViewModel
             }
             catch { }
 
-           
+            exit:
+            loc = false;
         }
 
         void Events_PlayerStopped(object sender, EventArgs e)
@@ -243,7 +274,7 @@ namespace IPTVman.ViewModel
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
-            if (m_player != null)
+            if (!mode_radio && m_player != null)
             {
                 m_player.ToggleMute();
                 if (m_player.Mute) { bMUTE.FontSize += 4; } else { bMUTE.FontSize -= 4; }
@@ -252,7 +283,7 @@ namespace IPTVman.ViewModel
 
         private void slider2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (m_player != null) m_player.Volume = (int)e.NewValue; 
+            if (!mode_radio && m_player != null) m_player.Volume = (int)e.NewValue; 
         }
 
         private void slider1_DragCompleted(object sender, DragCompletedEventArgs e)
@@ -270,12 +301,13 @@ namespace IPTVman.ViewModel
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (m_player != null) m_player.Stop();
+            if (!mode_radio && m_player != null) m_player.Stop();
+            if (mode_radio && WinPOP._bass != null) WinPOP._bass.stop();
         }
 
         private void Window_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-
+           
         }
 
         private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -317,6 +349,21 @@ namespace IPTVman.ViewModel
         private void windowsFormsHost1_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
            
+        }
+
+        private void windowsFormsHost1_TouchEnter(object sender, System.Windows.Input.TouchEventArgs e)
+        {
+           
+        }
+
+        private void win_TouchEnter(object sender, System.Windows.Input.TouchEventArgs e)
+        {
+           
+        }
+
+        private void win_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            
         }
     }
 }

@@ -25,7 +25,7 @@
                 <Setter.Value>
                     <GridView>
 
-                        <GridViewColumn Header="Name" Width="200">
+                        <GridViewColumn Header="Name" Width="250">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding name}"/>
@@ -59,7 +59,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="url" Width="350">
+                        <GridViewColumn Header="url" Width="300">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding http}"/>
@@ -144,7 +144,7 @@
                 </Grid.RowDefinitions>
 
 
-                <ListView x:Name="MYLIST" Margin="10,0,0,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="3" Width="Auto" Height="Auto" Grid.ColumnSpan="4" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_EDIT" LostTouchCapture="MYLIST_LostTouchCapture" SelectionChanged="MYLIST_SelectionChanged" IsManipulationEnabled="True" Background="#FF90958E" Foreground="#FF07090E"/>
+                <ListView x:Name="MYLIST" Margin="10,0,0,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="3" Width="Auto" Height="Auto" Grid.ColumnSpan="4" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_EDIT" LostTouchCapture="MYLIST_LostTouchCapture" SelectionChanged="MYLIST_SelectionChanged" IsManipulationEnabled="True" Background="#FF90958E" Foreground="#FF07090E" FontSize="14"/>
 
                 <!--   <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                 -->

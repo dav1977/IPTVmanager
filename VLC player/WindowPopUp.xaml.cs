@@ -24,6 +24,7 @@ namespace IPTVman.ViewModel
         System.Timers.Timer Timer1;
         byte ct = 0;
         Window handle;
+       
 
         public WindowPOP()
         {
@@ -31,8 +32,11 @@ namespace IPTVman.ViewModel
             InitializeComponent();
             ct = 0;
             if (WinPOP.sec!=0) CreateTimer1(WinPOP.sec);
-            label.Content = WinPOP.message_win_pop;
+            label1.Content = WinPOP.message1_win_pop;
+            label2.Content = WinPOP.message2_win_pop;
             this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
+
+           
         }
 
         public void CreateTimer1(int ms)
@@ -55,6 +59,7 @@ namespace IPTVman.ViewModel
 
         void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            //close any key
             //if (e.Key == System.Windows.Input.Key.Escape)
                 WinPOP.loc = false;
                 this.Close();
@@ -73,9 +78,12 @@ namespace IPTVman.ViewModel
 
     public static class WinPOP
     {
+        public static AudioBass _bass;
+        public static bool init_ok = false;
         static Window p;
         public static bool need_to_close = false;
-        public static string message_win_pop = "";
+        public static string message1_win_pop = "";
+        public static string message2_win_pop = "";
         public static byte sec;
         public static bool loc = false;
 
@@ -85,7 +93,11 @@ namespace IPTVman.ViewModel
             if (loc) return;
             loc = true;
             sec = s;
-            message_win_pop = mes;
+
+            string bitr = "?";
+            message2_win_pop = WinPOP._bass.get_tags(data.url, ref bitr);
+            if (bitr != "?") message1_win_pop = mes + "   [" + bitr + " кбит/с ]"; else message1_win_pop = mes;
+
             p = new WindowPOP()
             {
                 Title = "",

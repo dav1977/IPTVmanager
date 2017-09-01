@@ -99,7 +99,7 @@ namespace IPTVman.ViewModel
             if (data.type_player == 0)
             {
                 //Через NVLC
-                play.path = System.Reflection.Assembly.GetExecutingAssembly().Location+ "Player/NVLC player.exe";
+                play.path = System.Reflection.Assembly.GetExecutingAssembly().Location+ "Player/nvlcp.exe";
                 play.path = play.path.Replace(@"\", @"/");
                 play.path = play.path.Replace(@"IPTVmanager.exe", @"");
 
