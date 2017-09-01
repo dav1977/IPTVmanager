@@ -134,7 +134,7 @@ namespace IPTVman.ViewModel
             init_tag();
 
             // ok, do some pre-buffering...
-            header.Title = "Buffering ...";
+            data.buff = "Buffering ...";
             if (!isWMA)
             {
                 // display buffering for MP3, OGG...
@@ -154,7 +154,7 @@ namespace IPTVman.ViewModel
                         break; // over 75% full, enough
                     }
 
-                    header.Title = String.Format("Buffering ... {0}%", progress);
+                    data.buff = String.Format("Buffering ... {0}%", progress);
                 }
             }
             else
@@ -170,7 +170,7 @@ namespace IPTVman.ViewModel
                     {
                         break; // over 75% full, enough
                     }
-                    header.Title = String.Format("Buffering... {0}%", len);
+                    data.buff = String.Format("Buffering... {0}%", len);
                 }
             }
 
@@ -181,72 +181,82 @@ namespace IPTVman.ViewModel
 
         void init_tag()
         {
-            _tagInfo = new TAG_INFO(_url);
-            BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(_Stream);
-            if (info.ctype == BASSChannelType.BASS_CTYPE_STREAM_WMA) isWMA = true;
+            try
+            {
+                _tagInfo = new TAG_INFO(_url);
+                BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(_Stream);
+                if (info.ctype == BASSChannelType.BASS_CTYPE_STREAM_WMA) isWMA = true;
+            }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
       
         public string get_tags(string nm, ref string bitr)
         {
-            init_tag();
-
-            // get the meta tags (manually - will not work for WMA streams here)
-            //string[] icy = Bass.BASS_ChannelGetTagsICY(_Stream);
-            //if (icy == null)
-            //{
-            //    // try http...
-            //    icy = Bass.BASS_ChannelGetTagsHTTP(_Stream);
-            //}
-            //if (icy != null)
-            //{
-            //    foreach (string tag in icy)
-            //    {
-            //        tags += "ICY: " + tag + Environment.NewLine;
-            //    }
-            //}
-            //// get the initial meta data (streamed title...)
-            //icy = Bass.BASS_ChannelGetTagsMETA(_Stream);
-            //if (icy != null)
-            //{
-            //    foreach (string tag in icy)
-            //    {
-            //        tags += "Meta: " + tag + Environment.NewLine;
-            //    }
-            //}
-            //else
-            //{
-            //    // an ogg stream meta can be obtained here
-            //    icy = Bass.BASS_ChannelGetTagsOGG(_Stream);
-            //    if (icy != null)
-            //    {
-            //        foreach (string tag in icy)
-            //        {
-            //            tags += "Meta: " + tag + Environment.NewLine;
-            //        }
-            //    }
-            //}
-
-            if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
+            if (_Stream != null) if (_Stream == 0) return "";
+            try
             {
-                bitr= _tagInfo.bitrate.ToString();
-                return (_tagInfo.artist + " - " + _tagInfo.title);
+                
+                init_tag();
+
+                // get the meta tags (manually - will not work for WMA streams here)
+                //string[] icy = Bass.BASS_ChannelGetTagsICY(_Stream);
+                //if (icy == null)
+                //{
+                //    // try http...
+                //    icy = Bass.BASS_ChannelGetTagsHTTP(_Stream);
+                //}
+                //if (icy != null)
+                //{
+                //    foreach (string tag in icy)
+                //    {
+                //        tags += "ICY: " + tag + Environment.NewLine;
+                //    }
+                //}
+                //// get the initial meta data (streamed title...)
+                //icy = Bass.BASS_ChannelGetTagsMETA(_Stream);
+                //if (icy != null)
+                //{
+                //    foreach (string tag in icy)
+                //    {
+                //        tags += "Meta: " + tag + Environment.NewLine;
+                //    }
+                //}
+                //else
+                //{
+                //    // an ogg stream meta can be obtained here
+                //    icy = Bass.BASS_ChannelGetTagsOGG(_Stream);
+                //    if (icy != null)
+                //    {
+                //        foreach (string tag in icy)
+                //        {
+                //            tags += "Meta: " + tag + Environment.NewLine;
+                //        }
+                //    }
+                //}
+
+                if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
+                {
+                    bitr= _tagInfo.bitrate.ToString();
+                    return (_tagInfo.artist + " - " + _tagInfo.title);
+                }
+
+                
+                    // alternatively to the above, you might use the TAG_INFO (see BassTags add-on)
+                    // This will also work for WMA streams here ;-)
+                    //if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
+                    //{
+                    //    // and display what we get
+                    //    //this.textBoxAlbum.Text = _tagInfo.album;
+                    //    //this.textBoxArtist.Text = _tagInfo.artist;
+                    //    //this.textBoxTitle.Text = _tagInfo.title;
+                    //    //this.textBoxComment.Text = _tagInfo.comment;
+                    //    //this.textBoxGenre.Text = _tagInfo.genre;
+                    //    //this.textBoxYear.Text = _tagInfo.year;
+                    //}
+
             }
-
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             return "null";
-            // alternatively to the above, you might use the TAG_INFO (see BassTags add-on)
-            // This will also work for WMA streams here ;-)
-            //if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
-            //{
-            //    // and display what we get
-            //    //this.textBoxAlbum.Text = _tagInfo.album;
-            //    //this.textBoxArtist.Text = _tagInfo.artist;
-            //    //this.textBoxTitle.Text = _tagInfo.title;
-            //    //this.textBoxComment.Text = _tagInfo.comment;
-            //    //this.textBoxGenre.Text = _tagInfo.genre;
-            //    //this.textBoxYear.Text = _tagInfo.year;
-            //}
-
-
         }
 
         public void play()
@@ -276,6 +286,25 @@ namespace IPTVman.ViewModel
             // record the stream
             //Bass.BASS_ChannelPlay(rechandle, false);
         }
+
+        public void mute(bool m)
+        {
+             if (_Stream == 0) return;
+            if (m == true) Bass.BASS_ChannelPause(_Stream);
+            else Bass.BASS_ChannelPlay(_Stream, false);
+           
+            Bass.BASS_ChannelUpdate(_Stream, 1000);
+            Thread.Sleep(500);
+
+        }
+
+        public void volume(float v)
+        {
+            if (_Stream == 0) return;
+           // Bass.BASS_ChannelUpdate(v);
+        }
+
+
         public void stop()
         {
 

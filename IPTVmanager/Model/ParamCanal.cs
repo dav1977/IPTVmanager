@@ -35,6 +35,23 @@ namespace IPTVman.Model
             }
         }
 
+        string _playing;
+        public string playing
+        {
+            get
+            {
+                return _playing;
+            }
+            set
+            {
+                if (_playing != value)
+                {
+                    _playing = value;
+                    RaisePropertyChanged("playing");
+                }
+            }
+        }
+
         string _ExtFilter;
         public string ExtFilter
         {

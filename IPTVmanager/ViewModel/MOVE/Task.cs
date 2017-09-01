@@ -24,7 +24,7 @@ namespace ListViewDragDropManager
             foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTbase)
             {
 
-                list.Add(new Task(TaskDuration.VeryShort,  s.name, s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
+                list.Add(new Task(TaskDuration.VeryShort,  s.name, s.playing, s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
 
             }
             return list;
@@ -32,6 +32,7 @@ namespace ListViewDragDropManager
 
 		TaskDuration duration;
 		string name;
+        string playing;
         string extfilter;
         string group_title;
         string http;
@@ -41,10 +42,11 @@ namespace ListViewDragDropManager
 
         bool finished;
 
-		public Task( TaskDuration duration, string name, string ExtFilter, string group_title, string http, string _ping, string _logo, string _tvg, bool finished )
+		public Task( TaskDuration duration, string name, string playing, string ExtFilter, string group_title, string http, string _ping, string _logo, string _tvg, bool finished )
 		{
 			this.duration = duration;
-			this.name = name;
+            if (this.playing != null) this.playing= playing;
+            this.name = name;
             this.extfilter = ExtFilter;
             this.group_title = group_title;
             this.http = http;
@@ -69,6 +71,11 @@ namespace ListViewDragDropManager
 		{
 			get { return this.name; }
 		}
+
+        public string Playing
+        {
+            get { return this.playing; }
+        }
 
         public string ExtFilter
         {

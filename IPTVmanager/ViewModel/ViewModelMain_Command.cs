@@ -35,6 +35,7 @@ namespace IPTVman.ViewModel
         public RelayCommand key_SAVECommand { get; set; }
         public RelayCommand key_delCommand { get; set; }
         public RelayCommand key_DelFILTERCommand { get; set; }
+        public RelayCommand key_radio { get; set; }
         public RelayCommand key_DelALLkromeBESTCommand{ get; set; }
         public RelayCommand key_FILTERCommand { get; set; }
         public RelayCommand key_FilterOnlyBESTCommand { get; set; }
@@ -47,6 +48,7 @@ namespace IPTVman.ViewModel
             key_OPENclipboarCommand = new RelayCommand(key_OPEN_clipboard);
             key_SetAllBestCommand = new RelayCommand(key_set_all_best);
             key_FILTERmoveDragCommand = new RelayCommand(key_dragdrop);
+            key_radio = new RelayCommand(Key_radio);
             key_FILTERmoveCommand = new RelayCommand(key_move);
             key_AUTOPINGCommand = new RelayCommand(key_AUTOPING);
             key_ADDCommand = new RelayCommand(key_ADD);
@@ -64,7 +66,11 @@ namespace IPTVman.ViewModel
 
 
         }
+        void Key_radio(object parameter)
+        {
 
+
+        }
         void key_move(object parameter)
         {
 

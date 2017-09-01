@@ -205,6 +205,29 @@ namespace IPTVman.ViewModel
 
 
         }
+        private void Button_ClickRadio(object sender, RoutedEventArgs e)
+        {
+            if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
+            if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+
+            foreach (Window win in Application.Current.Windows)
+            {
+                if (win.Name == "win2radio")
+                {
+                    return;
+                }
+            }
+            new ListViewDragDropManager.WindowRadio
+            {
+                //DataContext = new ViewModelWindow2(tb1.Text),
+                Title = "Интернет РАДИО",
+                Topmost = true,
+                //WindowStyle = WindowStyle.ToolWindow,
+                Name = "win2radio"
+            }.Show(); ;
+
+
+        }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {

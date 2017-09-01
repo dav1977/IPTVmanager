@@ -435,5 +435,19 @@
         </Button>
         <Button x:Name="sizeinc" Content="+" HorizontalAlignment="Left" Margin="11,119,0,0" VerticalAlignment="Top" Width="20" Click="sizeinc_Click" Height="18" RenderTransformOrigin="4.062,3"/>
         <Button x:Name="sizedec" Content="-" Grid.Column="1" HorizontalAlignment="Left" Margin="6,119,0,0" VerticalAlignment="Top" Width="20" Click="sizedec_Click" Height="18"/>
+        <Button Content="R" Command="{Binding key_radio}"  CommandParameter=""  Margin="562,51,0,0" Focusable="False" Width="29" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_ClickRadio">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF72FB54" Offset="0.749"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF0627BB" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
     </Grid>
 </Window>

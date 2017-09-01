@@ -135,6 +135,9 @@
     <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
     <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />
     <Compile Include="ViewModel\MOVE\Task.cs" />
+    <Compile Include="ViewModel\MOVE\WindowRadioList.xaml.cs">
+      <DependentUpon>WindowRadioList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MOVE\WindowMOVE.xaml.cs">
       <DependentUpon>WindowMOVE.xaml</DependentUpon>
     </Compile>
@@ -185,6 +188,10 @@
     <Compile Include="View\WindowWAIT.xaml.cs">
       <DependentUpon>WindowWAIT.xaml</DependentUpon>
     </Compile>
+    <Page Include="ViewModel\MOVE\WindowRadioList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ViewModel\MOVE\WindowMOVE.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

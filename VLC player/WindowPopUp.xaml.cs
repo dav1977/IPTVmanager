@@ -35,8 +35,6 @@ namespace IPTVman.ViewModel
             label1.Content = WinPOP.message1_win_pop;
             label2.Content = WinPOP.message2_win_pop;
             this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
-
-           
         }
 
         public void CreateTimer1(int ms)
@@ -96,7 +94,8 @@ namespace IPTVman.ViewModel
 
             string bitr = "?";
             message2_win_pop = WinPOP._bass.get_tags(data.url, ref bitr);
-            if (bitr != "?") message1_win_pop = mes + "   [" + bitr + " кбит/с ]"; else message1_win_pop = mes;
+            if (bitr == "?" || bitr == "0")  message1_win_pop = mes;
+            else message1_win_pop = mes + "   [" + bitr + " кбит/с ]";
 
             p = new WindowPOP()
             {

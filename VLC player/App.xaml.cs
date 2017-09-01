@@ -21,9 +21,10 @@ namespace VLC_player
                 IPTVman.ViewModel.data.url = e.Args[0];
                 foreach (string arg in e.Args)
                 {
-                    if (i != 0) IPTVman.ViewModel.data.name += arg + " ";
+                    if (i == 1) IPTVman.ViewModel.data.name += arg + " ";
+                    if (arg == "--radio") IPTVman.ViewModel.data.mode_radio = true;
                     i++;
-                    if (i > 90) break;
+                    if (i > 5) break;
                 }
             }
             catch { }
