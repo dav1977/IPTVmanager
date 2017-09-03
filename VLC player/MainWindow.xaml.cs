@@ -13,16 +13,19 @@ using Declarations.Media;
 using Declarations.Players;
 using Implementation;
 using System.Threading.Tasks;
+using System.IO.MemoryMappedFiles;
 
 namespace IPTVman.ViewModel
 {
     static class data
     {
-       public static string url="";
-       public static string name="";
-       public static bool mode_radio = false;
+        public static string url="";
+        public static string name="";
+        public static bool mode_radio = false;
+        public static bool mode_scan = false;
         public static string title = "";
         public static string buff = "";
+
     }
     /// <summary>
     /// nVLC lib  and bass lib   Player
@@ -46,10 +49,15 @@ namespace IPTVman.ViewModel
         {
             header = this;
             InitializeComponent();
-  
+            this.Activate();
+            this.Focus();
+
+            if (data.mode_scan) {   scan(); return; }
+            if (data.mode_radio)data.title = IPTVman.ViewModel.data.name;
             //data.url=  "http://newairhost.com:8034/listen.ram";
             //data.name = "test";
             //data.mode_radio = true;
+
 
             if (data.mode_radio)
             {
@@ -84,6 +92,61 @@ namespace IPTVman.ViewModel
             timer.Start();
 
             slider2.Focus();
+        }
+
+
+        void scan()
+        {
+
+            string rez = "";
+            try
+            {
+                using (var mmF = MemoryMappedFile.OpenExisting("iptv_manager_scanner_radio_list1"))
+                using (var reader = mmF.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read))
+                {
+                    var count = reader.ReadInt32(0);
+                    byte[] bytes = new byte[count];
+                    reader.ReadArray(sizeof(Int32), bytes, 0, count);
+                    var content = System.Text.ASCIIEncoding.Unicode.GetString(bytes);
+
+
+
+
+                    string s = content;
+
+
+                     
+
+
+                    //var bass = new AudioBass();
+                    //bass.init();
+
+                    
+                    //bass.create_stream(s, false, null);
+
+
+
+                    //string bitr = "";
+                    //string playing = bass.get_tags(s, ref bitr);
+
+
+                    //var mms = MemoryMappedFile.CreateOrOpen("iptv_manager_scanner_radio_list", 10000);
+                    //using (var writer = mms.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Write))
+                    //{
+
+                    //       // writeString(s, writer);
+                    //}
+                    rez += s;
+                    
+
+                   
+                }
+
+            }
+            catch(Exception ex) { System.Windows.MessageBox.Show("memorymaps error="+ex.Message); }
+
+
+            System.Windows.Forms.MessageBox.Show(rez);
         }
 
 
@@ -346,7 +409,7 @@ namespace IPTVman.ViewModel
         }
 
 
-        static bool mute = false;
+        bool mute = false;
         private void button5_Click(object sender, RoutedEventArgs e)
         {
             if (!data.mode_radio && m_player != null)
@@ -356,10 +419,10 @@ namespace IPTVman.ViewModel
             }
 
             
-            if (data.mode_radio)
+            if (data.mode_radio && WinPOP._bass != null)
             {
-                if (mute) WinPOP._bass.mute(false);
-                else WinPOP._bass.mute(true);
+                if (mute)  mute = false;  else  mute = true; 
+                WinPOP._bass.mute(mute, (float)slider2.Value);
             }
         }
 

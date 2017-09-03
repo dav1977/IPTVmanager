@@ -27,6 +27,26 @@ git config --local i18n.logoutputencoding cp1251
   git remote add my https://github.com/dav1977/IPTVmanager
 9 git push my master
 
+Подтянуть все изменения с сервера	
+git pull
+
+Удаление всех незапушенных коммитов	
+git reset --hard HEAD~1
+
+Изменить комментарий к последнему коммиту	
+git commit --amend
+
+Список всех локальных веток	
+git branch
+
+Переключиться на ветку	
+git checkout <branchname>
+
+Обновление информации с сервера	
+git fetch
+
+Замержить другую ветку в текущую	
+git merge <otherbranchname> 
 
 
 ВЕТКИ

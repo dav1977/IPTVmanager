@@ -33,6 +33,8 @@ namespace ListViewDragDropManager
         {
             InitializeComponent();
             this.Loaded += WindowMOVE_Loaded;
+
+            //listView.SelectionMode = SelectionMode.Multiple;
         }
 
         #region WindowMOVE_Loaded
@@ -198,6 +200,45 @@ namespace ListViewDragDropManager
 
                     play.playerV = Process.Start(startInfo);
  
+                });
+            }
+            else IPTVman.ViewModel.dialog.Show("Не найден файл nVLC player по пути\n" + play.path);
+
+        }
+
+        private void scan_Click(object sender, RoutedEventArgs e)
+        {
+
+            IPTVman.ViewModel.ScannerRadio scan = new IPTVman.ViewModel.ScannerRadio();
+
+
+            for (var i=0; i<listView.Items.Count;i++)
+            {
+                ListViewDragDropManager.Task a = (ListViewDragDropManager.Task)listView.Items[i];
+                scan.add(a.Http);
+            }
+
+            scan.save();
+
+            play.path = System.Reflection.Assembly.GetExecutingAssembly().Location + "Player/nvlcp.exe";
+            play.path = play.path.Replace(@"\", @"/");
+            play.path = play.path.Replace(@"IPTVmanager.exe", @"");
+
+            if (File.Exists(play.path))
+            {
+                taskRADIO = System.Threading.Tasks.Task.Run(() =>
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.CreateNoWindow = false;
+                    startInfo.UseShellExecute = false;
+                    startInfo.FileName = play.path;
+                    startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    startInfo.Arguments = "null" + " " + "null" + " --scan";
+                    //startInfo.WindowStyle = ProcessWindowStyle.Maximized;
+
+                    play.playerV = Process.Start(startInfo);
+                    
+
                 });
             }
             else IPTVman.ViewModel.dialog.Show("Не найден файл nVLC player по пути\n" + play.path);

@@ -126,12 +126,14 @@ namespace IPTVman.ViewModel
                 if (_Stream != 0) isWMA = true;
                 else
                 {
-                    if (moderad) dialog.Show("bass lib - Поток не распознан", header);
+                    if (moderad) dialog.Show("Поток не поддерживается", header);
                     return;
                 }
             }
 
             init_tag();
+
+            if (header == null) return;
 
             // ok, do some pre-buffering...
             data.buff = "Buffering ...";
@@ -192,7 +194,7 @@ namespace IPTVman.ViewModel
       
         public string get_tags(string nm, ref string bitr)
         {
-            if (_Stream != null) if (_Stream == 0) return "";
+            if (_Stream == 0) return "";
             try
             {
                 
@@ -287,21 +289,24 @@ namespace IPTVman.ViewModel
             //Bass.BASS_ChannelPlay(rechandle, false);
         }
 
-        public void mute(bool m)
+    
+
+        public void mute(bool m, float value)
         {
-             if (_Stream == 0) return;
-            if (m == true) Bass.BASS_ChannelPause(_Stream);
-            else Bass.BASS_ChannelPlay(_Stream, false);
-           
-            Bass.BASS_ChannelUpdate(_Stream, 1000);
-            Thread.Sleep(500);
+            if (_Stream == 0) return;
+            if (m) volume(0);
+            else
+            Bass.BASS_ChannelSetAttribute(_Stream, BASSAttribute.BASS_ATTRIB_VOL, value/100);
+
+            // Bass.BASS_ChannelUpdate(_Stream, 1000);
+            //Thread.Sleep(500);
 
         }
 
         public void volume(float v)
         {
             if (_Stream == 0) return;
-           // Bass.BASS_ChannelUpdate(v);
+            Bass.BASS_ChannelSetAttribute(_Stream, BASSAttribute.BASS_ATTRIB_VOL, v/100);
         }
 
 

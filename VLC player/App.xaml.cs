@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Diagnostics;
 
 namespace VLC_player
 {
@@ -19,17 +20,26 @@ namespace VLC_player
             {
                 byte i = 0;
                 IPTVman.ViewModel.data.url = e.Args[0];
+                IPTVman.ViewModel.data.name = "";
                 foreach (string arg in e.Args)
                 {
-                    if (i == 1) IPTVman.ViewModel.data.name += arg + " ";
-                    if (arg == "--radio") IPTVman.ViewModel.data.mode_radio = true;
+                    if (i != 0)
+                    {
+                        if (arg == "--scan")
+                        { IPTVman.ViewModel.data.mode_scan = true; break;}
+
+                        if (arg != "--radio") IPTVman.ViewModel.data.name += arg + " ";
+                        else IPTVman.ViewModel.data.mode_radio = true;
+                    }
                     i++;
-                    if (i > 5) break;
                 }
+                
             }
             catch { }
            
         }
+
+
     }
 
    

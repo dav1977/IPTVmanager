@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AudioBass.cs" />
+    <Compile Include="MemoryFile.cs" />
     <Compile Include="WindowMessage.xaml.cs">
       <DependentUpon>WindowMessage.xaml</DependentUpon>
     </Compile>
