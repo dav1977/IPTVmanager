@@ -17,35 +17,36 @@ namespace IPTVman.ViewModel
 {
     class ScannerRadio
     {
-
-
         List<string> lst= new List<string>();
+        MemoryFile  m = new MemoryFile();
 
-        public void add(string s)
+
+        public void add_to_save(string s)
         {
             lst.Add(s);
         }
 
-
         public void save()
         {
-            var mmF = MemoryMappedFile.CreateOrOpen("iptv_manager_scanner_radio_list1", 10000);
-            using (var writer = mmF.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Write))
-            {
-                foreach (string s in lst)
-                writeString(s, writer);
-            }
+            m.WriteObjectToMMF("C:\\TEMP\\IPTVMANAGERSAVELINKS", lst);
         }
 
-
-        private static void writeString(string content, MemoryMappedViewAccessor writer)
+        public void read()
         {
-            var contentBytes = System.Text.ASCIIEncoding.Unicode.GetBytes(content);
-            int count = contentBytes.Length;
-            writer.Write<Int32>(0, ref count);
+            return;
+            try
+            {
+                List<string> data = m.ReadObjectFromMMF("C:\\TEMP\\IPTVMANAGERSAVEPLAYERS") as List<string>;
 
-            writer.WriteArray<byte>(sizeof(Int32), contentBytes, 0, contentBytes.Length);
-            writer.Flush();
+                string rez = "";
+                foreach (var s in data)
+                {
+                    rez += s;
+                }
+
+               // MessageBox.Show("sz"+data.Count+"yyy="+rez); 
+            }
+            catch (Exception ex) { System.Windows.MessageBox.Show("memorymaps error=" + ex.Message); }
         }
 
 

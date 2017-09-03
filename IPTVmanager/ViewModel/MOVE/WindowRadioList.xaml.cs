@@ -215,7 +215,7 @@ namespace ListViewDragDropManager
             for (var i=0; i<listView.Items.Count;i++)
             {
                 ListViewDragDropManager.Task a = (ListViewDragDropManager.Task)listView.Items[i];
-                scan.add(a.Http);
+                scan.add_to_save(a.Http);
             }
 
             scan.save();
@@ -243,6 +243,12 @@ namespace ListViewDragDropManager
             }
             else IPTVman.ViewModel.dialog.Show("Не найден файл nVLC player по пути\n" + play.path);
 
+
+
+            Thread.Sleep(5400);
+
+
+           scan.read();
         }
     }
 }

@@ -21,6 +21,9 @@ namespace IPTVman.ViewModel
         MemoryMappedFile mms;
         MemoryMappedFile mmr;
 
+
+
+
         public void WriteObjectToMMF(string mmfFile, object objectData)
         {
             // Convert .NET object to byte array
@@ -39,7 +42,7 @@ namespace IPTVman.ViewModel
             }
         }
 
-        private byte[] ObjectToByteArray(object inputObject)
+        public byte[] ObjectToByteArray(object inputObject)
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();    // Create new BinaryFormatter
             MemoryStream memoryStream = new MemoryStream();             // Create target memory stream
@@ -67,7 +70,7 @@ namespace IPTVman.ViewModel
             }
         }
 
-        private object ByteArrayToObject(byte[] buffer)
+        public object ByteArrayToObject(byte[] buffer)
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter(); // Create new BinaryFormatter
             MemoryStream memoryStream = new MemoryStream(buffer);    // Convert buffer to memorystream
@@ -80,7 +83,7 @@ namespace IPTVman.ViewModel
         /// <param name="name"></param>
         public void LoadCreateStream(string name)
         {
-            mmr = MemoryMappedFile.OpenExisting(name);
+            mmr = MemoryMappedFile.OpenExisting("iptv_manager_scanner_radio_list");
         }
 
         public void Load()

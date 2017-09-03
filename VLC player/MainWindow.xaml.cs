@@ -14,6 +14,7 @@ using Declarations.Players;
 using Implementation;
 using System.Threading.Tasks;
 using System.IO.MemoryMappedFiles;
+using System.Collections.Generic;
 
 namespace IPTVman.ViewModel
 {
@@ -51,6 +52,10 @@ namespace IPTVman.ViewModel
             InitializeComponent();
             this.Activate();
             this.Focus();
+
+            data.mode_scan = true;
+            scan();
+            return;
 
             if (data.mode_scan) {   scan(); return; }
             if (data.mode_radio)data.title = IPTVman.ViewModel.data.name;
@@ -97,56 +102,66 @@ namespace IPTVman.ViewModel
 
         void scan()
         {
-
-            string rez = "";
             try
             {
-                using (var mmF = MemoryMappedFile.OpenExisting("iptv_manager_scanner_radio_list1"))
-                using (var reader = mmF.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read))
+                List<string> data = new List<string>();
+                var m = new MemoryFile();
+               //List<string> data = m.ReadObjectFromMMF("C:\\TEMP\\IPTVMANAGERSAVELINKS") as List<string>;
+
+                List<string> savedata = new List<string>();
+
+
+
+            
+
+                data.Add("http://radio.oldxit.ru:8010/radio");
+                 //data.Add("http://ic2.101.ru:8000/c7_20");
+
+                WinPOP.init_ok = false;
+                header = null;
+
+
+                string playing="";
+
+                var bass = new AudioBass();
+                bass.init();
+
+                foreach (var s in data)
                 {
-                    var count = reader.ReadInt32(0);
-                    byte[] bytes = new byte[count];
-                    reader.ReadArray(sizeof(Int32), bytes, 0, count);
-                    var content = System.Text.ASCIIEncoding.Unicode.GetString(bytes);
 
+                    taskBASS = Task.Factory.StartNew(() =>
+                    {
+                        mode_init_bass = true;
+                        WinPOP._bass = new AudioBass();
+                        WinPOP._bass.init();
+                        WinPOP._bass.create_stream(s,false, null);
+                        mode_init_bass = false;
+                       
 
+                    });
 
-
-                    string s = content;
-
-
-                     
-
-
-                    //var bass = new AudioBass();
-                    //bass.init();
-
-                    
-                    //bass.create_stream(s, false, null);
-
-
+                    // bass.create_stream(s, false, null);
 
                     //string bitr = "";
                     //string playing = bass.get_tags(s, ref bitr);
 
 
-                    //var mms = MemoryMappedFile.CreateOrOpen("iptv_manager_scanner_radio_list", 10000);
-                    //using (var writer = mms.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Write))
-                    //{
+                    //bass.stop();
 
-                    //       // writeString(s, writer);
-                    //}
-                    rez += s;
-                    
+                    //savedata.Add(playing);
 
-                   
+                    System.Windows.MessageBox.Show("send" + playing);
+                    // savedata.Add(bitr.ToString());
                 }
+
+
+               // System.Windows.MessageBox.Show("size="+savedata.Count.ToString());
+                m.WriteObjectToMMF("C:\\TEMP\\IPTVMANAGERSAVEPLAYERS", savedata);
 
             }
             catch(Exception ex) { System.Windows.MessageBox.Show("memorymaps error="+ex.Message); }
 
 
-            System.Windows.Forms.MessageBox.Show(rez);
         }
 
 

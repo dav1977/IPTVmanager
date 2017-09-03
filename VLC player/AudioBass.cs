@@ -239,7 +239,10 @@ namespace IPTVman.ViewModel
                 if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
                 {
                     bitr= _tagInfo.bitrate.ToString();
-                    return (_tagInfo.artist + " - " + _tagInfo.title);
+                    string rez;
+                    if (_tagInfo.artist=="") rez = "no artist - " +_tagInfo.title;
+                    rez = _tagInfo.artist + " - " + _tagInfo.title;
+                    return (rez);
                 }
 
                 
