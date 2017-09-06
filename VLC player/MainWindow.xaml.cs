@@ -28,6 +28,42 @@ namespace IPTVman.ViewModel
         public static string buff = "";
 
     }
+
+    public static class Result
+    {
+        public static bool data_ok = false;
+
+        public static List<string> data = new List<string>();
+
+        public static void Clear()
+        {
+            data_ok = false;
+            data.Clear();
+        }
+
+        public static void RUN_SCAN(List<string> data)
+        {
+            var bass = new AudioBass();
+            bass.init();
+
+            Result.Clear();
+            foreach (var s in data)
+            {
+                bass.create_stream(s, false, null);
+
+                string bitr = "";
+                string play = bass.get_tags(s, ref bitr);
+
+                //Result.data.Add(s);
+                Result.data.Add(play);
+                Result.data.Add(bitr.ToString());
+                Result.data.Add("*");
+            }
+
+            Result.data_ok = true;
+        }
+    }
+
     /// <summary>
     /// nVLC lib  and bass lib   Player
     /// </summary>
@@ -53,11 +89,11 @@ namespace IPTVman.ViewModel
             this.Activate();
             this.Focus();
 
-            data.mode_scan = true;
-            scan();
-            return;
+            //data.mode_scan = true;
+            //scan();
+            //return;
 
-            if (data.mode_scan) {   scan(); return; }
+           
             if (data.mode_radio)data.title = IPTVman.ViewModel.data.name;
             //data.url=  "http://newairhost.com:8034/listen.ram";
             //data.name = "test";
@@ -99,69 +135,46 @@ namespace IPTVman.ViewModel
             slider2.Focus();
         }
 
-
+      
         void scan()
         {
-            try
-            {
                 List<string> data = new List<string>();
-                var m = new MemoryFile();
-               //List<string> data = m.ReadObjectFromMMF("C:\\TEMP\\IPTVMANAGERSAVELINKS") as List<string>;
+                //List<string> data = m.ReadObjectFromMemory("iptvlinks") as List<string>;
 
-                List<string> savedata = new List<string>();
+                //if (data == null) return;
+                //List<string> savedata = new List<string>();
 
+                WCFSERVER _server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
 
-
-            
-
-                data.Add("http://radio.oldxit.ru:8010/radio");
-                 //data.Add("http://ic2.101.ru:8000/c7_20");
-
-                WinPOP.init_ok = false;
-                header = null;
-
-
-                string playing="";
-
-                var bass = new AudioBass();
-                bass.init();
-
-                foreach (var s in data)
+                int ct = 0;
+                while (true)
                 {
+                    ct++;
+                    if (ct > 10 * 30) break; //даем 30 сек на всё
+                    if (Result.data_ok) break;
 
-                    taskBASS = Task.Factory.StartNew(() =>
-                    {
-                        mode_init_bass = true;
-                        WinPOP._bass = new AudioBass();
-                        WinPOP._bass.init();
-                        WinPOP._bass.create_stream(s,false, null);
-                        mode_init_bass = false;
-                       
-
-                    });
-
-                    // bass.create_stream(s, false, null);
-
-                    //string bitr = "";
-                    //string playing = bass.get_tags(s, ref bitr);
-
-
-                    //bass.stop();
-
-                    //savedata.Add(playing);
-
-                    System.Windows.MessageBox.Show("send" + playing);
-                    // savedata.Add(bitr.ToString());
+                    Thread.Sleep(100);  //ждем приема списка и выполнение сканирования
                 }
 
 
-               // System.Windows.MessageBox.Show("size="+savedata.Count.ToString());
-                m.WriteObjectToMMF("C:\\TEMP\\IPTVMANAGERSAVEPLAYERS", savedata);
-
-            }
-            catch(Exception ex) { System.Windows.MessageBox.Show("memorymaps error="+ex.Message); }
+                // data.Add("http://radio.oldxit.ru:8010/radio");
+                // data.Add("http://ic2.101.ru:8000/c7_20");
 
 
+               // WinPOP.init_ok = false;
+               // header = null;
+
+                
+                
+                //System.Windows.MessageBox.Show("saving "+playing);
+                // System.Windows.MessageBox.Show("size="+savedata.Count.ToString());
+               // m.WriteObjectToMemory("iptvplay", savedata);
+
+           // }
+           // catch(Exception ex) { System.Windows.MessageBox.Show("memorymaps error="+ex.Message); }
+
+           
+            //this.Close();
         }
 
 
@@ -243,10 +256,63 @@ namespace IPTVman.ViewModel
         bool loc = false;
         bool mode_init_bass = false;
 
-        private void timer_Tick(object sender, EventArgs e)
+        Task task1;
+        public static CancellationTokenSource cts1;
+        public static CancellationToken cancellationToken;
+        int ctscan=0;
+
+        private async void timer_Tick(object sender, EventArgs e)
         {
+            if (Result.data_ok) this.Close();
+
+            if (data.mode_scan)
+            {
+                ctscan++;
+                l1.Dispatcher.Invoke(new Action(() =>
+                {
+                    l1.Content = "Сканирование " + ctscan.ToString();
+                }));
+            }
+
+            
             if (loc) return;
             loc = true;
+
+            
+            if (data.mode_scan)
+            {
+                cts1 = new CancellationTokenSource();
+                cancellationToken = cts1.Token;//для task1
+                //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                task1 = System.Threading.Tasks.Task.Run(() =>
+                {
+                    var tcs = new TaskCompletionSource<string>();
+                    try
+                    {
+                        scan();
+                        tcs.SetResult("ok");
+                    }
+                    catch (OperationCanceledException ex)
+                    {
+                        tcs.SetException(ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(ex);
+                    }
+                    
+                    return tcs.Task;
+                });
+                //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                //try { await task1; }
+                //catch (Exception ex)
+                //{
+                //    System.Windows.MessageBox.Show("ОШИБКА NVLCP сканнер " + ex.Message.ToString());
+                //}
+                //if (cts1 != null) cts1.Cancel();
+               
+                return;
+            }
 
             if (mode_init_bass)
             {

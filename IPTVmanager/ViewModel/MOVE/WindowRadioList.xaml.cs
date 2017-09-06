@@ -206,19 +206,18 @@ namespace ListViewDragDropManager
 
         }
 
+        IPTVman.ViewModel.ScannerRadio scanner;
         private void scan_Click(object sender, RoutedEventArgs e)
         {
 
-            IPTVman.ViewModel.ScannerRadio scan = new IPTVman.ViewModel.ScannerRadio();
+            scanner = new IPTVman.ViewModel.ScannerRadio();
 
 
-            for (var i=0; i<listView.Items.Count;i++)
+            for (int j=0; j<listView.Items.Count;j++)
             {
-                ListViewDragDropManager.Task a = (ListViewDragDropManager.Task)listView.Items[i];
-                scan.add_to_save(a.Http);
+                ListViewDragDropManager.Task a = (ListViewDragDropManager.Task)listView.Items[j];
+                scanner.add_to_save(a.Http);
             }
-
-            scan.save();
 
             play.path = System.Reflection.Assembly.GetExecutingAssembly().Location + "Player/nvlcp.exe";
             play.path = play.path.Replace(@"\", @"/");
@@ -237,7 +236,7 @@ namespace ListViewDragDropManager
                     //startInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
                     play.playerV = Process.Start(startInfo);
-                    
+
 
                 });
             }
@@ -245,10 +244,26 @@ namespace ListViewDragDropManager
 
 
 
-            Thread.Sleep(5400);
 
+            scanner.getPLAYING();
 
-           scan.read();
+            
+            
+            
+        }
+
+        private void scanresult_Click(object sender, RoutedEventArgs e)
+        {
+            if (scanner == null) return;
+            if (scanner.result.Count == 0) return;
+            string re = "";
+            int i = 0;
+            foreach (var s in scanner.result)
+            {
+
+                re += s + " ;";
+            }
+            MessageBox.Show("rez=" + re);
         }
     }
 }

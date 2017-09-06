@@ -135,6 +135,14 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
+        <Button x:Name="scan_Copy" Content="result" HorizontalAlignment="Right" Margin="0,292,17,0" VerticalAlignment="Top" Width="64" Height="38" RenderTransformOrigin="-0.319,0.627"  FontWeight="Bold" Click="scanresult_Click">
+            <Button.Background>
+                <RadialGradientBrush GradientOrigin="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FF977197" Offset="0.082"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
 
     </Grid>
 </Window>

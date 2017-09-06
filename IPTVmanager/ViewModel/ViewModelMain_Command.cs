@@ -906,8 +906,9 @@ namespace IPTVman.ViewModel
                         }
                         catch { }
 
-                        if (line == null || line == "") continue;
-                       
+                        if (linkIsBad(line)) continue;
+                       // MessageBox.Show(line);
+
                         //*******************************************************//-------------------- закачка Links
                         if (mode_work_with_links)
                         {                            
@@ -918,6 +919,7 @@ namespace IPTVman.ViewModel
                                     !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
+                                    !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
                                       regex_link.Match(line).Success
                                    )
                                 {
@@ -940,77 +942,89 @@ namespace IPTVman.ViewModel
 
                         }
                         //***********************************************************
-
+  
                         match = regex1.Match(line);
                         if (match.Success) yes = true; else yes = false;
 
                         ///========== разбор EXINF
                         if (yes)
+                        {
+
+                            Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
+                            Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
+                            Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
+                            Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
+
+                            string[] split = line.Split(new Char[] { '"' });
+
+
+                            str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
+
+                            if (split.Length <= 1)
                             {
-
-                                Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
-                                Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
-                                Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
-                                Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
-
-                                string[] split = line.Split(new Char[] { '"' });
-
-
-                                str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
-
-                                if (split.Length <= 1)
+                                split = line.Split(new Char[] { ',' });
+                                str_name = split[split.Length - 1];
+                                newname = str_name;
+                            }
+                            else
+                            {
+                                int i = 0;
+                                for (i = 0; i < split.Length; i++)
                                 {
-                                    split = line.Split(new Char[] { ',' });
-                                    str_name = split[split.Length - 1];
-                                    newname = str_name;
-                                }
-                                else
-                                {
-                                    int i = 0;
-                                    for (i = 0; i < split.Length; i++)
+                                    string s = split[i];
+                                    //------------- разбор строки EXINF
+                                    if (str_ex == "!") str_ex = s;
+                                    if (str_gt == "!") str_gt = s;
+                                    if (str_logo == "!") str_logo = s;
+                                    if (str_tvg == "!") str_tvg = s;
+
+
+                                    if (i >= split.Length - 1) { str_name = s; }
+
+                                    match = regex3.Match(s);
+                                    if (match.Success)
                                     {
-                                        string s = split[i];
-                                        //------------- разбор строки EXINF
-                                        if (str_ex == "!") str_ex = s;
-                                        if (str_gt == "!") str_gt = s;
-                                        if (str_logo == "!") str_logo = s;
-                                        if (str_tvg == "!") str_tvg = s;
+                                        str_ex = "!";
+                                    }
 
+                                    match = regex4.Match(s);
+                                    if (match.Success)
+                                    {
+                                        str_gt = "!";
+                                    }
 
-                                        if (i >= split.Length - 1) { str_name = s; }
+                                    match = regex5.Match(s);
+                                    if (match.Success)
+                                    {
+                                        str_logo = "!";
+                                    }
 
-                                        match = regex3.Match(s);
-                                        if (match.Success)
-                                        {
-                                            str_ex = "!";
-                                        }
+                                    match = regex6.Match(s);
+                                    if (match.Success)
+                                    {
+                                        str_tvg = "!";
+                                    }
+                                }//foreach
 
-                                        match = regex4.Match(s);
-                                        if (match.Success)
-                                        {
-                                            str_gt = "!";
-                                        }
-
-                                        match = regex5.Match(s);
-                                        if (match.Success)
-                                        {
-                                            str_logo = "!";
-                                        }
-
-                                        match = regex6.Match(s);
-                                        if (match.Success)
-                                        {
-                                            str_tvg = "!";
-                                        }
-                                    }//foreach
-
-                                    newname = "";
-                                    if (str_name != "") newname = str_name.Remove(0, 1);
-
-                                }
-                                str_http = sr.ReadLine();
+                                newname = "";
+                                if (str_name != "") newname = str_name.Remove(0, 1);
 
                             }
+                            //чтение ссылки
+
+                            while (!sr.EndOfStream)
+                            {
+                                try
+                                {
+                                    str_http = sr.ReadLine();
+                                }
+                                catch { }
+
+                                if (!linkIsBad(str_http)) break;
+                            }
+
+                            //MessageBox.Show(str_http);
+                        }
 
                                 if (chek2)//обрезание скобок
                                 {
@@ -1134,6 +1148,18 @@ namespace IPTVman.ViewModel
             loc.openfile = false;
         }
 
+        bool linkIsBad(string line)
+        {
+            if (line == "" || line == " ") return true;
+            if (new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) return true;
+            return false;
+
+            //!(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
+            //                        !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
+            //                        !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
+            //                        !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
+            //                          regex_link.Match(line).Succe
+        }
 
         bool Comparehttp(string s1, string s2)
         {

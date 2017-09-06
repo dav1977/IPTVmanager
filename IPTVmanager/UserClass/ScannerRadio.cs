@@ -18,36 +18,79 @@ namespace IPTVman.ViewModel
     class ScannerRadio
     {
         List<string> lst= new List<string>();
-        MemoryFile  m = new MemoryFile();
 
+        public List<string> result = new List<string>();
+
+        // MemoryFile  m = new MemoryFile();
+        WCFCLIENT client = new WCFCLIENT("http://localhost:8000/IPTVmanagerSevice");
 
         public void add_to_save(string s)
         {
             lst.Add(s);
         }
 
-        public void save()
-        {
-            m.WriteObjectToMMF("C:\\TEMP\\IPTVMANAGERSAVELINKS", lst);
-        }
+        Task tasksc;
+        public static CancellationTokenSource cts1 = new CancellationTokenSource();
+        public static CancellationToken cancellationToken;
 
-        public void read()
+        public async void getPLAYING()
         {
-            return;
-            try
+            List<string> rez= new List<string>();
+            
+            cancellationToken = cts1.Token;//для task1
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            tasksc = Task.Run(() =>
             {
-                List<string> data = m.ReadObjectFromMMF("C:\\TEMP\\IPTVMANAGERSAVEPLAYERS") as List<string>;
-
-                string rez = "";
-                foreach (var s in data)
+                var tcs = new TaskCompletionSource<string>();
+                try
                 {
-                    rez += s;
+                    result = client.GetPlaying(lst);
+                    tcs.SetResult("ok");
+                }
+                catch (OperationCanceledException ex)
+                {
+                    tcs.SetException(ex);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
                 }
 
-               // MessageBox.Show("sz"+data.Count+"yyy="+rez); 
+                return tcs.Task;
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            try { await tasksc; }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("ОШИБКА NVLCP сканнер " + ex.Message.ToString());
             }
-            catch (Exception ex) { System.Windows.MessageBox.Show("memorymaps error=" + ex.Message); }
+            if (cts1 != null) cts1.Cancel();
+
+            return;
         }
+        //public void save()
+        //{
+        //    //m.WriteObjectToMemory("iptvlinks", lst);
+        //    //Thread.Sleep(300);
+        //}
+
+        //public void read()
+        //{
+        //    try
+        //    {
+        //        List<string> data = m.ReadObjectFromMemory("iptvplay") as List<string>;
+
+        //        if (data == null) return;
+        //        string rez = "";
+        //        foreach (var s in data)
+        //        {
+        //            rez += s+"; ";
+        //        }
+
+        //        MessageBox.Show(rez); 
+        //    }
+        //    catch (Exception ex) { System.Windows.MessageBox.Show("memorymaps error=" + ex.Message); }
+        //}
 
 
     }

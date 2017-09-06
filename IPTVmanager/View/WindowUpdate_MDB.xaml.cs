@@ -111,10 +111,6 @@ namespace IPTVman.ViewModel
             this.Close();
         }
 
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-           
-        }
         private void ButtonUPDATE(object sender, RoutedEventArgs e)
         {
             Model.bd_data.filter1 = ViewModelWindowMDB.sel1;

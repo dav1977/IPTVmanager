@@ -73,7 +73,7 @@ namespace IPTVman.ViewModel
 
 				if ( Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_WMA_PREBUF, 0) == false)
 				{
-					MessageBox.Show( "ERROR: " + Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()) );
+					MessageBox.Show( "Ощибка lib " + Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()) );
 				}
 				// we alraedy create the user callback methods...
 				myStreamCreateURL = new DOWNLOADPROC(MyDownloadProc);
