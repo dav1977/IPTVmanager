@@ -22,7 +22,8 @@ namespace IPTVman.ViewModel
         CancellationTokenSource cts1 = new CancellationTokenSource();
         CancellationToken cancellationToken;
         Task task1;
-
+        bool loc = false;
+        public static event Action<bool> Event_Waiting;
 
         public RelayCommand key_ReplaceCommandSTART { get; set; }
 
@@ -30,20 +31,31 @@ namespace IPTVman.ViewModel
         public ViewModelWindowReplace()
         {
             key_ReplaceCommandSTART = new RelayCommand(key_replace);
-            sel1 = "";
         }
         //======================================================================
         bool find = false;
         
         async void key_replace(object selectedItem)
         {
+            if (loc) return;
+            loc = true;
+            if (Event_Waiting != null) Event_Waiting(true);
             find = false;
 
             if (ViewModelMain.myLISTbase == null) return;
             if (ViewModelMain.myLISTbase.Count == 0) return;
 
             cancellationToken = cts1.Token;//для task1
-            string rez = await Replace(cancellationToken);
+            try
+            {
+                string rez = await Replace(cancellationToken);
+            }
+            catch (Exception e)
+            {
+                dialog.Show("ОШИБКА замены " + e.Message.ToString());
+            }
+            loc = false;
+            if (Event_Waiting != null) Event_Waiting(false);
         }
 
         async Task<string> Replace(CancellationToken Token)
@@ -52,6 +64,7 @@ namespace IPTVman.ViewModel
             var tcs = new TaskCompletionSource<string>();
             task1 = Task.Run(() =>
             {
+                testNULL();
                 try
                 {
                     foreach (var k in ViewModelMain.myLISTbase)
@@ -87,7 +100,7 @@ namespace IPTVman.ViewModel
             try { await task1; }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА replace " + e.Message.ToString());
+                dialog.Show("ОШИБКА замены " + e.Message.ToString());
             }
             task1.Dispose();
             task1 = null;
@@ -98,17 +111,59 @@ namespace IPTVman.ViewModel
         {
             if (s == null) return false;
 
+            if (sel1 == "*")
+            {
+                setregular(kan); return true;
+            }
+
             Regex regex = new Regex(sel1);
             Match match = null;
-
             match = regex.Match(s);
             if (match.Success)
             {
-                set(kan);
-                return true;
+                set(kan); return true;
             }
             return false;
         }
+
+        void testNULL()
+        {
+            int index = 0;
+            foreach (var j in ViewModelMain.myLISTfull)
+            {
+                if (ViewModelMain.myLISTfull[index].name == null) ViewModelMain.myLISTfull[index].name = "";
+                if (ViewModelMain.myLISTfull[index].ping == null) ViewModelMain.myLISTfull[index].ping = "";
+                if (ViewModelMain.myLISTfull[index].ExtFilter == null) ViewModelMain.myLISTfull[index].ExtFilter = "";
+                if (ViewModelMain.myLISTfull[index].group_title == null) ViewModelMain.myLISTfull[index].group_title = "";
+                if (ViewModelMain.myLISTfull[index].http == null) ViewModelMain.myLISTfull[index].http = "";
+                if (ViewModelMain.myLISTfull[index].logo == null) ViewModelMain.myLISTfull[index].logo = "";
+                if (ViewModelMain.myLISTfull[index].tvg_name == null) ViewModelMain.myLISTfull[index].tvg_name = "";
+                index++;
+            }
+        }
+
+
+        void setregular(ParamCanal k)
+        {
+            int index = 0;
+            foreach (var j in ViewModelMain.myLISTfull)
+            {
+                if (k.Compare() == j.Compare())
+                {
+                    if (chek1) ViewModelMain.myLISTfull[index].name = sel2.Trim();
+                    if (chek2) ViewModelMain.myLISTfull[index].ping = sel2.Trim();
+                    if (chek3) ViewModelMain.myLISTfull[index].ExtFilter = sel2.Trim();
+                    if (chek4) ViewModelMain.myLISTfull[index].group_title = sel2.Trim();
+                    if (chek5) ViewModelMain.myLISTfull[index].http = sel2.Trim();
+                    if (chek6) ViewModelMain.myLISTfull[index].logo = sel2.Trim();
+                    if (chek7) ViewModelMain.myLISTfull[index].tvg_name = sel2.Trim();
+                    find = true;
+                    return;
+                }
+                index++;
+            }
+        }
+
         void set(ParamCanal k)
         {
             int index = 0;
@@ -117,12 +172,12 @@ namespace IPTVman.ViewModel
                 if (k.Compare() == j.Compare())
                 {
                     if (chek1) ViewModelMain.myLISTfull[index].name = ViewModelMain.myLISTfull[index].name.Replace(sel1, sel2).Trim();
-                    if (chek2 && ViewModelMain.myLISTfull[index].ping != null) ViewModelMain.myLISTfull[index].ping = ViewModelMain.myLISTfull[index].ping.Replace(sel1, sel2).Trim();
-                    if (chek3 && ViewModelMain.myLISTfull[index].ExtFilter != null) ViewModelMain.myLISTfull[index].ExtFilter = ViewModelMain.myLISTfull[index].ExtFilter.Replace(sel1, sel2).Trim();
-                    if (chek4 && ViewModelMain.myLISTfull[index].group_title != null) ViewModelMain.myLISTfull[index].group_title = ViewModelMain.myLISTfull[index].group_title.Replace(sel1, sel2).Trim();
-                    if (chek5 && ViewModelMain.myLISTfull[index].http != null) ViewModelMain.myLISTfull[index].http = ViewModelMain.myLISTfull[index].http.Replace(sel1, sel2).Trim();
-                    if (chek6 && ViewModelMain.myLISTfull[index].logo != null) ViewModelMain.myLISTfull[index].logo = ViewModelMain.myLISTfull[index].logo.Replace(sel1, sel2).Trim();
-                    if (chek7 && ViewModelMain.myLISTfull[index].tvg_name != null) ViewModelMain.myLISTfull[index].tvg_name = ViewModelMain.myLISTfull[index].tvg_name.Replace(sel1, sel2).Trim();
+                    if (chek2) ViewModelMain.myLISTfull[index].ping = ViewModelMain.myLISTfull[index].ping.Replace(sel1, sel2).Trim();
+                    if (chek3) ViewModelMain.myLISTfull[index].ExtFilter = ViewModelMain.myLISTfull[index].ExtFilter.Replace(sel1, sel2).Trim();
+                    if (chek4) ViewModelMain.myLISTfull[index].group_title = ViewModelMain.myLISTfull[index].group_title.Replace(sel1, sel2).Trim();
+                    if (chek5) ViewModelMain.myLISTfull[index].http = ViewModelMain.myLISTfull[index].http.Replace(sel1, sel2).Trim();
+                    if (chek6) ViewModelMain.myLISTfull[index].logo = ViewModelMain.myLISTfull[index].logo.Replace(sel1, sel2).Trim();
+                    if (chek7) ViewModelMain.myLISTfull[index].tvg_name = ViewModelMain.myLISTfull[index].tvg_name.Replace(sel1, sel2).Trim();
                     find = true;
                     return;
                 }
@@ -131,7 +186,7 @@ namespace IPTVman.ViewModel
         }
 
         //============================== object ==================================
-        string sel1;
+        string sel1="";
         public string Selected1
         {
             get { return sel1; }
@@ -141,7 +196,7 @@ namespace IPTVman.ViewModel
                 RaisePropertyChanged("Selected1");
             }
         }
-        string sel2;
+        string sel2="";
         public string Selected2
         {
             get { return sel2; }

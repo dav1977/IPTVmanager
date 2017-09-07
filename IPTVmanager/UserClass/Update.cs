@@ -300,11 +300,11 @@ namespace IPTVman.ViewModel
             try
             {
                 if (loc.collection) { dialog.Show("Ошибка Коллеция заблокирована"); return; }
-                Wait.Create("Сохранение...", ListViewDragDropManager.Task.list.Count);
+                Wait.Create("Сохранение...", ListViewDragDropManager.data.list.Count);
                 int i = 0;
-                foreach (var s in ListViewDragDropManager.Task.list)
+                foreach (var s in ListViewDragDropManager.data.list)
                 {
-                    if (i < ListViewDragDropManager.Task.list.Count)
+                    if (i < ListViewDragDropManager.data.list.Count)
                     {
                         ViewModelMain.myLISTbase[i].name = s.Name;
                         ViewModelMain.myLISTbase[i].ExtFilter = s.ExtFilter;
@@ -317,7 +317,7 @@ namespace IPTVman.ViewModel
                     i++;
                 }
 
-                foreach (var s in ListViewDragDropManager.Task.list)
+                foreach (var s in ListViewDragDropManager.data.list)
                 {
                     Wait.progressbar++;
                     if (!s.Finished) continue;

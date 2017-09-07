@@ -26,6 +26,7 @@ namespace ListViewDragDropManager
         ListViewDragDropManager<Task> dragMgr;
         ListViewDragDropManager<Task> dragMgr2;
         public static event IPTVman.ViewModel.Delegate_UpdateCollection Event_UpdateCollection;
+
         public WindowMOVE()
         {
             InitializeComponent();
@@ -36,13 +37,20 @@ namespace ListViewDragDropManager
 
         void WindowMOVE_Loaded(object sender, RoutedEventArgs e)
         {
+
+            INIT();
+        }
+
+
+        void INIT()
+        {
             // Give the ListView an ObservableCollection of Task 
             // as a data source.  Note, the ListViewDragManager MUST
             // be bound to an ObservableCollection, where the collection's
             // type parameter matches the ListViewDragManager's type
             // parameter (in this case, both have a type parameter of Task).
             ObservableCollection<Task> tasks = Task.CreateTasks();
-            this.listView.ItemsSource = tasks;
+            this.listView.ItemsSource = tasks;//
 
             this.listView2.ItemsSource = new ObservableCollection<Task>();
 
@@ -58,8 +66,9 @@ namespace ListViewDragDropManager
             this.listView2.DragEnter += OnListViewDragEnter;
             this.listView.Drop += OnListViewDrop;
             this.listView2.Drop += OnListViewDrop;
-        }
 
+
+        }
         #endregion // WindowMOVE_Loaded
 
         #region dragMgr_ProcessDrop

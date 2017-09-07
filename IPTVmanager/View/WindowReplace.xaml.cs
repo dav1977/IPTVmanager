@@ -26,9 +26,29 @@ namespace IPTVman.ViewModel
         public WindowReplace()
         {
             InitializeComponent();
+            bReplace.Content = "ЗАМЕНИТЬ";
+
+            ViewModelWindowReplace.Event_Waiting += wait;
            // DataContext = new ViewModelWindowReplace2(new DialogManager(this, Dispatcher));
         }
-       
+
+        void wait(bool state)
+        {
+            if (state)
+            {
+                bReplace.Dispatcher.Invoke(new Action(() =>
+                {
+                    bReplace.Content = "Выполняется ...";
+                }));
+            } 
+            else 
+            {
+                bReplace.Dispatcher.Invoke(new Action(() =>
+                {
+                    bReplace.Content = "ЗАМЕНИТЬ";
+                }));
+            }
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
           

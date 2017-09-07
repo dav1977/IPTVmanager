@@ -68,7 +68,7 @@
 
 
 
-        <ListView Name="listView"   
+     <ListView Name="listView"   
       ItemContainerStyle="{StaticResource ItemContStyle}"
       Margin="10,12,0,0" 
       Padding="2"

@@ -28,12 +28,14 @@ namespace ListViewDragDropManager
         System.Threading.Tasks.Task taskRADIO;
         ListViewDragDropManager<Task> dragMgr;
         ListViewDragDropManager<Task> dragMgr2;
-        public static event IPTVman.ViewModel.Delegate_UpdateCollection Event_UpdateCollection;
+
         public WindowRadio()
         {
             InitializeComponent();
             this.Loaded += WindowMOVE_Loaded;
 
+            data.clear();
+            IPTVman.ViewModel.ScannerRadio.event_done += scan_done;
             //listView.SelectionMode = SelectionMode.Multiple;
         }
 
@@ -41,13 +43,11 @@ namespace ListViewDragDropManager
 
         void WindowMOVE_Loaded(object sender, RoutedEventArgs e)
         {
-            // Give the ListView an ObservableCollection of Task 
-            // as a data source.  Note, the ListViewDragManager MUST
-            // be bound to an ObservableCollection, where the collection's
-            // type parameter matches the ListViewDragManager's type
-            // parameter (in this case, both have a type parameter of Task).
-            ObservableCollection<Task> tasks = Task.CreateTasks();
-            this.listView.ItemsSource = tasks;
+
+            INIT();
+
+
+            this.listView.ItemsSource = data.tasks;//
 
             this.listView2.ItemsSource = new ObservableCollection<Task>();
 
@@ -55,6 +55,8 @@ namespace ListViewDragDropManager
             this.dragMgr = new ListViewDragDropManager<Task>(this.listView);
             this.dragMgr2 = new ListViewDragDropManager<Task>(this.listView2);
 
+
+            
             // Turn the ListViewDragManager on and off. 
 
             // Hook up events on both ListViews to that we can drag-drop
@@ -63,6 +65,16 @@ namespace ListViewDragDropManager
             this.listView2.DragEnter += OnListViewDragEnter;
             this.listView.Drop += OnListViewDrop;
             this.listView2.Drop += OnListViewDrop;
+        }
+
+        void INIT()
+        {
+            // Give the ListView an ObservableCollection of Task 
+            // as a data source.  Note, the ListViewDragManager MUST
+            // be bound to an ObservableCollection, where the collection's
+            // type parameter matches the ListViewDragManager's type
+            // parameter (in this case, both have a type parameter of Task).
+           data.tasks = Task.CreateTasks();  
         }
 
         #endregion // WindowMOVE_Loaded
@@ -206,12 +218,12 @@ namespace ListViewDragDropManager
 
         }
 
+
+
         IPTVman.ViewModel.ScannerRadio scanner;
         private void scan_Click(object sender, RoutedEventArgs e)
         {
-
             scanner = new IPTVman.ViewModel.ScannerRadio();
-
 
             for (int j=0; j<listView.Items.Count;j++)
             {
@@ -237,33 +249,61 @@ namespace ListViewDragDropManager
 
                     play.playerV = Process.Start(startInfo);
 
-
+                    
                 });
             }
             else IPTVman.ViewModel.dialog.Show("Не найден файл nVLC player по пути\n" + play.path);
 
-
-
-
+            Thread.Sleep(100);
             scanner.getPLAYING();
 
-            
-            
-            
         }
+
+        void scan_done(List<string> list)
+        {
+            play.playerV.Kill();
+           // MessageBox.Show("rez=" + list.Count.ToString());
+
+            ListViewDragDropManager.data.addpl("33333");
+            ListViewDragDropManager.data.addpl("444444");
+
+            data.CREATE_TASKS();
+        }
+
+
 
         private void scanresult_Click(object sender, RoutedEventArgs e)
         {
-            if (scanner == null) return;
-            if (scanner.result.Count == 0) return;
-            string re = "";
-            int i = 0;
-            foreach (var s in scanner.result)
-            {
+            ListViewDragDropManager.data.addpl("33333");
+            ListViewDragDropManager.data.addpl("444444");
 
-                re += s + " ;";
-            }
-            MessageBox.Show("rez=" + re);
+            data.CREATE_TASKS();
+
+            data.tasks.Clear();
+            data.list.Clear();
+
+
+
+
+            listView.Dispatcher.Invoke(new Action(() =>
+            {
+                listView.Items.Refresh();
+           
+
+            }));
+
+            listView2.Dispatcher.Invoke(new Action(() =>
+            {
+                listView2.Items.Refresh();
+
+            }));
+
+            InitializeComponent();
+
+            Title = "fssdfsfsdfsd";
         }
+
+
+
     }
 }

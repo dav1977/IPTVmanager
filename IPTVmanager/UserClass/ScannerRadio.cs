@@ -19,6 +19,7 @@ namespace IPTVman.ViewModel
     {
         List<string> lst= new List<string>();
 
+        public static event Action<List<string>> event_done;
         public List<string> result = new List<string>();
 
         // MemoryFile  m = new MemoryFile();
@@ -46,6 +47,7 @@ namespace IPTVman.ViewModel
                 {
                     result = client.GetPlaying(lst);
                     tcs.SetResult("ok");
+                    if (event_done != null) event_done(result);
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -55,14 +57,13 @@ namespace IPTVman.ViewModel
                 {
                     tcs.SetException(ex);
                 }
-
                 return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             try { await tasksc; }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("ОШИБКА NVLCP сканнер " + ex.Message.ToString());
+                System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  " + ex.Message.ToString());
             }
             if (cts1 != null) cts1.Cancel();
 

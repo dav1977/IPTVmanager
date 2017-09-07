@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace ListViewDragDropManager
 {
@@ -13,24 +14,60 @@ namespace ListViewDragDropManager
 		VeryLong
 	}
 
+    static class data
+    {
+       public static ObservableCollection<Task> list;
+       public static ObservableCollection<Task> tasks;
+
+       public static  List<string> pl = new List<string>();
+
+        public static void CREATE_TASKS()
+        {
+            data.tasks = Task.CreateTasks();
+        }
+
+
+        public static void clear()
+        {
+            pl.Clear();
+        }
+
+        public static void addpl(string s)
+        {
+            pl.Add(s);
+        }
+
+        public static string getpl(int i)
+        {
+            if (pl == null) return "";
+            if (i >= pl.Count) return "";
+            return pl[i];
+        }
+    }
+
 	class Task
 	{
+       
 
-        public static ObservableCollection<Task> list;
+
         public static ObservableCollection<Task> CreateTasks()
         {
-            list = new ObservableCollection<Task>();
+            data.list = new ObservableCollection<Task>();
+            int ct_pl = 0;
+
+            data.addpl("sfd");
+            data.addpl("64564");
 
             foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTbase)
             {
 
-                list.Add(new Task(TaskDuration.VeryShort,  s.name, s.playing, s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
-
+                data.list.Add(new Task(TaskDuration.VeryShort,  s.name, data.getpl(ct_pl), s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
+                ct_pl++;
             }
-            return list;
+            return data.list;
 		}
 
-		TaskDuration duration;
+        TaskDuration duration;
 		string name;
         string playing;
         string extfilter;
@@ -42,10 +79,12 @@ namespace ListViewDragDropManager
 
         bool finished;
 
-		public Task( TaskDuration duration, string name, string playing, string ExtFilter, string group_title, string http, string _ping, string _logo, string _tvg, bool finished )
+
+
+        public Task( TaskDuration duration, string name, string playing, string ExtFilter, string group_title, string http, string _ping, string _logo, string _tvg, bool finished )
 		{
 			this.duration = duration;
-            if (this.playing != null) this.playing= playing;
+            this.playing= playing;
             this.name = name;
             this.extfilter = ExtFilter;
             this.group_title = group_title;
