@@ -268,7 +268,6 @@ namespace IPTVman.ViewModel
                 try
                 {
                     Move_save();
-                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {

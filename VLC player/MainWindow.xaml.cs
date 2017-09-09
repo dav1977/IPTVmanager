@@ -26,6 +26,7 @@ namespace IPTVman.ViewModel
         public static bool mode_scan = false;
         public static string title = "";
         public static string buff = "";
+        public static string scanURL = "init";
 
     }
 
@@ -33,36 +34,55 @@ namespace IPTVman.ViewModel
     {
         public static bool data_ok = false;
 
-        public static List<string> data = new List<string>();
+        public static List<string> listresult = new List<string>();
 
         public static void Clear()
         {
             data_ok = false;
-            data.Clear();
+            listresult.Clear();
         }
 
-        public static void RUN_SCAN(List<string> data)
+
+        /// <summary>
+        /// этот метод вызвыает  WCF служба 
+        /// </summary>
+        /// <param name="data"></param>
+        public static void RUN_SCAN(List<string> datalist)
         {
-            var bass = new AudioBass();
-            bass.init();
-
-            Result.Clear();
-            foreach (var s in data)
+            try
             {
-                bass.create_stream(s, false, null);
+                var bass = new AudioBass();
+                bass.init();
 
-                string bitr = "";
-                string play = bass.get_tags(s, ref bitr);
+                Result.Clear();
+                int i = 1;
+                foreach (var s in datalist)
+                {
+                    bass.init();
+                    Thread.Sleep(50);
+                    bass.create_stream(s, false, null);
+                    Thread.Sleep(50);
 
-                //Result.data.Add(s);
-                Result.data.Add(play);
-                Result.data.Add(bitr.ToString());
-                Result.data.Add("*");
+                    data.scanURL = "[" + i.ToString() + " из " + datalist.Count + "]" + s;
+
+                    string bitr = "";
+                    string play = bass.get_tags(s, ref bitr);
+                    i++;
+
+                    Result.listresult.Add(s);
+                    Result.listresult.Add(play);
+                    Result.listresult.Add(bitr.ToString());
+                }
+
+                Result.data_ok = true;
             }
-
-            Result.data_ok = true;
+            catch (Exception ex) { System.Windows.MessageBox.Show("err scan "+ex.Message); }
         }
+
     }
+
+
+
 
     /// <summary>
     /// nVLC lib  and bass lib   Player
@@ -78,7 +98,7 @@ namespace IPTVman.ViewModel
         public static int timer_off = 0;
         int timer_ct = 0;
         int ct_update_tags = 0;
-        string media_info = "";
+        //string media_info = "";
         string play_link;
         Task taskPLAY, taskBASS;
 
@@ -92,13 +112,13 @@ namespace IPTVman.ViewModel
             //data.mode_scan = true;
             //scan();
             //return;
-
+            
            
             if (data.mode_radio)data.title = IPTVman.ViewModel.data.name;
+            if (data.mode_scan)  this.Title = "СКАННЕР РАДИО ТРЭКОВ"; 
             //data.url=  "http://newairhost.com:8034/listen.ram";
             //data.name = "test";
             //data.mode_radio = true;
-
 
             if (data.mode_radio)
             {
@@ -115,14 +135,17 @@ namespace IPTVman.ViewModel
             }
             else
             {
-                l1.Visibility = Visibility.Hidden;
+                if (!data.mode_scan) l1.Visibility = Visibility.Hidden;
                 l2.Visibility = Visibility.Hidden;
             }
-            this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
 
+            this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
             windowsFormsHost1.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
-            //this.Cursor = System.Windows.Input.Cursors.None;
-            if (data.url != "") init();  else this.Title = "Нечего проигрывать";
+
+                 if (!data.mode_radio && !data.mode_scan)
+                {
+                 if (data.url == "") this.Title = "Нечего проигрывать";
+                }
             slider2.Value = 100;
             reset();
 
@@ -133,66 +156,15 @@ namespace IPTVman.ViewModel
             timer.Start();
 
             slider2.Focus();
-        }
 
-      
-        void scan()
-        {
-                List<string> data = new List<string>();
-                //List<string> data = m.ReadObjectFromMemory("iptvlinks") as List<string>;
-
-                //if (data == null) return;
-                //List<string> savedata = new List<string>();
-
-                WCFSERVER _server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
-
-                int ct = 0;
-                while (true)
-                {
-                    ct++;
-                    if (ct > 10 * 30) break; //даем 30 сек на всё
-                    if (Result.data_ok) break;
-
-                    Thread.Sleep(100);  //ждем приема списка и выполнение сканирования
-                }
-
-
-                // data.Add("http://radio.oldxit.ru:8010/radio");
-                // data.Add("http://ic2.101.ru:8000/c7_20");
-
-
-               // WinPOP.init_ok = false;
-               // header = null;
-
-                
-                
-                //System.Windows.MessageBox.Show("saving "+playing);
-                // System.Windows.MessageBox.Show("size="+savedata.Count.ToString());
-               // m.WriteObjectToMemory("iptvplay", savedata);
-
-           // }
-           // catch(Exception ex) { System.Windows.MessageBox.Show("memorymaps error="+ex.Message); }
-
-           
-            //this.Close();
-        }
-
-
-        void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {    
-           // if (e.Key == System.Windows.Input.Key.Escape)this.Close();
-            if (e.Key == System.Windows.Input.Key.T)
+            if (data.mode_scan)
             {
-                WindowMessage.WindowAutoClose();
-            }
-
-            if (e.Key == System.Windows.Input.Key.Space)
-            {
-                WinPOP.Create(data.name, 0, header);
+                slider2.Visibility = Visibility.Hidden;
+                bMUTE.Visibility = Visibility.Hidden;
             }
         }
 
-        void init()
+        void initVLClib()
         {
             try
             {
@@ -212,10 +184,50 @@ namespace IPTVman.ViewModel
 
                 m_player.WindowHandle = p.Handle;
             }
-            catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка библиотеки vlc "+ex.Message); }
+            catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка библиотеки vlc " + ex.Message); }
         }
 
-        public void Play(string link)
+        void scan()
+        {
+                //List<string> datals = new List<string>();
+                //List<string> data = m.ReadObjectFromMemory("iptvlinks") as List<string>;
+
+                //if (data == null) return;
+                //List<string> savedata = new List<string>();
+
+                WCFSERVER _server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
+
+
+                data.scanURL = "waiting";
+                int ct = 0;
+                while (true)
+                {
+                    ct++;
+                    if (ct > 10 * 30) break; //даем 30 сек на всё
+                    if (Result.data_ok) break;
+
+                    Thread.Sleep(100);  //ждем приема списка и выполнение сканирования
+                }
+        }
+
+
+        void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {    
+           // if (e.Key == System.Windows.Input.Key.Escape)this.Close();
+            if (e.Key == System.Windows.Input.Key.T)
+            {
+                WindowMessage.WindowAutoClose();
+            }
+
+            if (e.Key == System.Windows.Input.Key.Space)
+            {
+                WinPOP.Create(data.name, 0, header);
+            }
+        }
+
+       
+
+        public void PlayVLC(string link)
         {
             taskPLAY = Task.Factory.StartNew(() =>
             {
@@ -223,7 +235,7 @@ namespace IPTVman.ViewModel
                 {
                     if (m_player == null)
                     {
-                        init();
+                        initVLClib();
                     }
                     if (m_player.IsPlaying) m_player.Stop();
                     if (play_link != link) m_player.Stop();
@@ -262,72 +274,71 @@ namespace IPTVman.ViewModel
         int ctscan=0;
 
         private async void timer_Tick(object sender, EventArgs e)
-        {
-            if (Result.data_ok) this.Close();
-
-            if (data.mode_scan)
-            {
-                ctscan++;
-                l1.Dispatcher.Invoke(new Action(() =>
+        {    
+                if (data.mode_scan)
                 {
-                    l1.Content = "Сканирование " + ctscan.ToString();
-                }));
-            }
+                    ctscan++;
+                    string en= "";
+                    if (Result.data_ok) en = "END";
+                    l1.Dispatcher.Invoke(new Action(() =>
+                    {
+                        l1.Content = en+" Скан " + data.scanURL;
+                    }));
 
-            
-            if (loc) return;
-            loc = true;
+                }
 
-            
-            if (data.mode_scan)
-            {
-                cts1 = new CancellationTokenSource();
-                cancellationToken = cts1.Token;//для task1
-                //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                task1 = System.Threading.Tasks.Task.Run(() =>
+                if (loc) return;
+                loc = true;
+
+
+                if (data.mode_scan)
                 {
-                    var tcs = new TaskCompletionSource<string>();
-                    try
+                    cts1 = new CancellationTokenSource();
+                    cancellationToken = cts1.Token;//для task1
+                    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                    task1 = System.Threading.Tasks.Task.Run(() =>
                     {
-                        scan();
-                        tcs.SetResult("ok");
-                    }
-                    catch (OperationCanceledException ex)
-                    {
-                        tcs.SetException(ex);
-                    }
+                        var tcs = new TaskCompletionSource<string>();
+                        try
+                        {
+                            scan();
+                        }
+                        catch (OperationCanceledException ex)
+                        {
+                            tcs.SetException(ex);
+                        }
+                        catch (Exception ex)
+                        {
+                            tcs.SetException(ex);
+                        }
+
+                        return tcs.Task;
+                    });
+                    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                    try { await task1; }
                     catch (Exception ex)
                     {
-                        tcs.SetException(ex);
+                        System.Windows.MessageBox.Show("ОШИБКА NVLCP сканнер " + ex.Message.ToString());
                     }
-                    
-                    return tcs.Task;
-                });
-                //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                //try { await task1; }
-                //catch (Exception ex)
-                //{
-                //    System.Windows.MessageBox.Show("ОШИБКА NVLCP сканнер " + ex.Message.ToString());
-                //}
-                //if (cts1 != null) cts1.Cancel();
-               
-                return;
-            }
+                    if (cts1 != null) cts1.Cancel();
 
-            if (mode_init_bass)
-            {
-                if (data.mode_radio) this.Title = data.title;
-                //this.Title = data.name + " " + data.url;
+                    return;
+                }
 
-            }
-            else
-            {
-                ct_update_tags++;
-                if (ct_update_tags > 30)
+                if (mode_init_bass)
                 {
-                    ct_update_tags = 0;
-                    //taskTAG = Task.Factory.StartNew(() =>
-                    //{
+                    if (data.mode_radio) this.Title = data.title;
+                    //this.Title = data.name + " " + data.url;
+
+                }
+                else
+                {
+                    ct_update_tags++;
+                    if (ct_update_tags > 30)
+                    {
+                        ct_update_tags = 0;
+                        //taskTAG = Task.Factory.StartNew(() =>
+                        //{
                         string bitr = "?";
                         string s1 = WinPOP._bass.get_tags(data.url, ref bitr);
                         string s2 = "";
@@ -344,92 +355,93 @@ namespace IPTVman.ViewModel
                         {
                             l2.Content = s1;
                         }));
-                    //}
+                        //}
+                    }
                 }
-            }
 
-            if (timer_off != 0)
-            {
-                timer_ct++;
-                if (timer_ct > timer_off) this.Close();
-                //18000 - 30min
-            }
-
-            dialog.manager();
-
-            if (ct<10)ct++;
-            if (ct > 8 && ct<11)
-            {
-                ct = 255;
-                try
+                if (timer_off != 0)
                 {
-                    if (!data.mode_radio) if (data.url != "") { init(); Play(data.url); }
+                    timer_ct++;
+                    if (timer_ct > timer_off) this.Close();
+                    //18000 - 30min
                 }
-                catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка библиотеки vlc " + ex.Message); }
 
-                try
+                dialog.manager();
+
+                if (ct < 10) ct++;
+                if (ct > 8 && ct < 11)
                 {
-                    if (!WinPOP.init_ok)
+                    ct = 255;
+                    try
                     {
+                        if (!data.mode_radio) if (data.url != "") { PlayVLC(data.url); }
+                    }
+                    catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка библиотеки vlc " + ex.Message); }
 
-                        taskBASS = Task.Factory.StartNew(() =>
+                    try
+                    {
+                        if (!WinPOP.init_ok)
                         {
-                            mode_init_bass = true;
-                            WinPOP._bass = new AudioBass();
-                            WinPOP._bass.init();
-                            WinPOP._bass.create_stream(data.url, data.mode_radio, this);
-                            mode_init_bass = false;
-                            if (data.mode_radio)
-                            { 
-                                WinPOP._bass.play();
-                            }
 
-                        });
+                            taskBASS = Task.Factory.StartNew(() =>
+                            {
+                                mode_init_bass = true;
+                                WinPOP._bass = new AudioBass();
+                                WinPOP._bass.init();
+                                WinPOP._bass.create_stream(data.url, data.mode_radio, this);
+                                mode_init_bass = false;
+                                if (data.mode_radio)
+                                {
+                                    WinPOP._bass.play();
+                                }
+
+                            });
+                        }
+
                     }
+                    catch (Exception ex) { System.Windows.MessageBox.Show("Ошибка библиотеки bass " + ex.ToString()); }
 
                 }
-                catch (Exception ex) { System.Windows.MessageBox.Show("Ошибка библиотеки bass " +ex.ToString()); }
-          
-            }
 
-            if (data.mode_radio || m_player == null) goto exit;
+                if (data.mode_radio || m_player == null) goto exit;
 
-            try
-            {
-                if (!updatename)
+                try
                 {
-                    
-                    if (m_player.IsPlaying)
+                    if (!updatename)
                     {
-                        this.Title =  data.name +" "+ data.url;
-                        this.Height = 430;
-                        set_volume((int)slider2.Value);
-                        reset();
-                        updatename = true;
+
+                        if (m_player.IsPlaying)
+                        {
+                            this.Title = data.name + " " + data.url;
+                            this.Height = 430;
+                            set_volume((int)slider2.Value);
+                            reset();
+                            updatename = true;
+                        }
+                    }
+                    if (!m_player.IsPlaying)
+                    {
+                        updatename = false;
+                        if (taskPLAY.IsFaulted || taskPLAY.IsCanceled)
+                        { this.Title = "STOPPED!!!"; goto exit; }
+                        string s = "Opening";
+                        if (i == 0)
+                            this.Title = s + " ... ";
+                        if (i < 5) this.Title = s + " .   " + tick.ToString();
+                        if (i > 5 && i < 10) this.Title = s + " . .   " + tick.ToString();
+                        if (i > 10 && i < 15) this.Title = s + " . . .   " + tick.ToString();
+                        if (i > 15 && i < 20) this.Title = s + " . . . . . . .   " + tick.ToString();
+                        i++;
+                        if (i > 20) i = 1;
+                        tick++;
                     }
                 }
-                if (!m_player.IsPlaying)
-                {
-                    updatename = false;
-                    if (taskPLAY.IsFaulted || taskPLAY.IsCanceled)
-                    { this.Title = "STOPPED!!!"; goto exit; }
-                    string s = "Opening";
-                    if (i == 0)
-                        this.Title = s + " ... ";
-                    if (i < 5) this.Title = s + " .   " + tick.ToString();
-                    if (i > 5 && i < 10) this.Title = s + " . .   " + tick.ToString();
-                    if (i > 10 && i < 15) this.Title = s + " . . .   " + tick.ToString();
-                    if (i > 15 && i < 20) this.Title = s + " . . . . . . .   " + tick.ToString();
-                    i++;
-                    if (i > 20) i = 1;
-                    tick++;
-                }
-            }
-            catch { }
-
+                catch { }
+           
             exit:
             loc = false;
         }
+
 
         void Events_PlayerStopped(object sender, EventArgs e)
         {

@@ -18,57 +18,12 @@ namespace ListViewDragDropManager
     {
        public static ObservableCollection<Task> list;
        public static ObservableCollection<Task> tasks;
-
-       public static  List<string> pl = new List<string>();
-
-        public static void CREATE_TASKS()
-        {
-            data.tasks = Task.CreateTasks();
-        }
-
-
-        public static void clear()
-        {
-            pl.Clear();
-        }
-
-        public static void addpl(string s)
-        {
-            pl.Add(s);
-        }
-
-        public static string getpl(int i)
-        {
-            if (pl == null) return "";
-            if (i >= pl.Count) return "";
-            return pl[i];
-        }
     }
 
 	class Task
 	{
-       
-
-
-        public static ObservableCollection<Task> CreateTasks()
-        {
-            data.list = new ObservableCollection<Task>();
-            int ct_pl = 0;
-
-            data.addpl("sfd");
-            data.addpl("64564");
-
-            foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTbase)
-            {
-
-                data.list.Add(new Task(TaskDuration.VeryShort,  s.name, data.getpl(ct_pl), s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
-                ct_pl++;
-            }
-            return data.list;
-		}
-
         TaskDuration duration;
-		string name;
+        string name;
         string playing;
         string extfilter;
         string group_title;
@@ -76,15 +31,12 @@ namespace ListViewDragDropManager
         string ping;
         string logo;
         string tvg;
-
         bool finished;
 
-
-
-        public Task( TaskDuration duration, string name, string playing, string ExtFilter, string group_title, string http, string _ping, string _logo, string _tvg, bool finished )
-		{
-			this.duration = duration;
-            this.playing= playing;
+        public Task(TaskDuration duration, string name, string playing, string ExtFilter, string group_title, string http, string _ping, string _logo, string _tvg, bool finished)
+        {
+            this.duration = duration;
+            this.playing = playing;
             this.name = name;
             this.extfilter = ExtFilter;
             this.group_title = group_title;
@@ -95,6 +47,21 @@ namespace ListViewDragDropManager
             this.tvg = _tvg;
         }
 
+
+        public static ObservableCollection<Task> CreateTasks()
+        {
+            data.list = new ObservableCollection<Task>();
+            int ct_pl = 0;
+
+            foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTbase)
+            {
+                data.list.Add(new Task(TaskDuration.VeryShort,  s.name, "", s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
+                ct_pl++;
+            }
+            return data.list;
+		}
+
+       
 		public bool Finished
 		{
 			get { return this.finished; }
@@ -114,6 +81,7 @@ namespace ListViewDragDropManager
         public string Playing
         {
             get { return this.playing; }
+            set { this.playing = value; }
         }
 
         public string ExtFilter

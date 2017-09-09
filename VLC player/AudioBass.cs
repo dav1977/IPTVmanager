@@ -23,13 +23,13 @@ namespace IPTVman.ViewModel
         private string _myUserAgent = "RADIO42";
         [FixedAddressValueType()]
         public IntPtr _myUserAgentPtr;
-        string tags;
+        //string tags;
         private int _Stream = 0;
         private string _url = String.Empty;
         private DOWNLOADPROC myStreamCreateURL;
         private TAG_INFO _tagInfo;
         private SYNCPROC mySync;
-        private RECORDPROC myRecProc;
+        //private RECORDPROC myRecProc;
         private int _wmaPlugIn = 0;
         bool isWMA = false;
 
@@ -197,8 +197,28 @@ namespace IPTVman.ViewModel
             if (_Stream == 0) return "";
             try
             {
-                
+              
                 init_tag();
+
+                Thread.Sleep(100);
+
+                if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
+                {
+                    bitr = _tagInfo.bitrate.ToString();
+                    string rez;
+
+                    rez = _tagInfo.artist + " - " + _tagInfo.title;
+
+
+                    if (_tagInfo.artist == "" || _tagInfo.artist == " " || _tagInfo.artist == ";") rez = _tagInfo.title;
+                    if (_tagInfo.title == "" || _tagInfo.title == " " || _tagInfo.title == ";") rez = _tagInfo.artist;
+
+
+                    if (_tagInfo.artist == "" && _tagInfo.title == "") rez = "no artist";
+
+                    if (rez == " ") rez = "none";
+                    return (rez);
+                }
 
                 // get the meta tags (manually - will not work for WMA streams here)
                 //string[] icy = Bass.BASS_ChannelGetTagsICY(_Stream);
@@ -236,28 +256,20 @@ namespace IPTVman.ViewModel
                 //    }
                 //}
 
-                if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
-                {
-                    bitr= _tagInfo.bitrate.ToString();
-                    string rez;
-                    if (_tagInfo.artist=="") rez = "no artist - " +_tagInfo.title;
-                    rez = _tagInfo.artist + " - " + _tagInfo.title;
-                    return (rez);
-                }
 
-                
-                    // alternatively to the above, you might use the TAG_INFO (see BassTags add-on)
-                    // This will also work for WMA streams here ;-)
-                    //if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
-                    //{
-                    //    // and display what we get
-                    //    //this.textBoxAlbum.Text = _tagInfo.album;
-                    //    //this.textBoxArtist.Text = _tagInfo.artist;
-                    //    //this.textBoxTitle.Text = _tagInfo.title;
-                    //    //this.textBoxComment.Text = _tagInfo.comment;
-                    //    //this.textBoxGenre.Text = _tagInfo.genre;
-                    //    //this.textBoxYear.Text = _tagInfo.year;
-                    //}
+
+                // alternatively to the above, you might use the TAG_INFO (see BassTags add-on)
+                // This will also work for WMA streams here ;-)
+                //if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
+                //{
+                //    // and display what we get
+                //    //this.textBoxAlbum.Text = _tagInfo.album;
+                //    //this.textBoxArtist.Text = _tagInfo.artist;
+                //    //this.textBoxTitle.Text = _tagInfo.title;
+                //    //this.textBoxComment.Text = _tagInfo.comment;
+                //    //this.textBoxGenre.Text = _tagInfo.genre;
+                //    //this.textBoxYear.Text = _tagInfo.year;
+                //}
 
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
@@ -371,7 +383,7 @@ namespace IPTVman.ViewModel
                     // new UpdateTagDelegate(UpdateTagDisplay);
                 }
             }
-            catch (Exception ex)
+            catch 
             { }// { MessageBox.Show(ex.ToString()); }
         }
 

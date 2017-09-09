@@ -212,7 +212,6 @@ namespace IPTVman.ViewModel
                         UpdateBD(id_best.Trim(), newgroup.Trim(), filterManager.Trim(), mask.Trim());
                         kol += Save_to_base();
                     }
-                    
                     tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)

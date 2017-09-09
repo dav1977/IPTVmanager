@@ -25,9 +25,19 @@ namespace IPTVman.ViewModel
         // MemoryFile  m = new MemoryFile();
         WCFCLIENT client = new WCFCLIENT("http://localhost:8000/IPTVmanagerSevice");
 
-        public void add_to_save(string s)
+        public void clear()
+        {
+            lst.Clear();
+        }
+
+        public void add(string s)
         {
             lst.Add(s);
+        }
+
+        public int get_size()
+        {
+            return lst.Count;
         }
 
         Task tasksc;
@@ -36,7 +46,7 @@ namespace IPTVman.ViewModel
 
         public async void getPLAYING()
         {
-            List<string> rez= new List<string>();
+           // List<string> rez= new List<string>();
             
             cancellationToken = cts1.Token;//для task1
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -46,8 +56,8 @@ namespace IPTVman.ViewModel
                 try
                 {
                     result = client.GetPlaying(lst);
-                    tcs.SetResult("ok");
                     if (event_done != null) event_done(result);
+
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -57,13 +67,14 @@ namespace IPTVman.ViewModel
                 {
                     tcs.SetException(ex);
                 }
+
                 return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             try { await tasksc; }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  " + ex.Message.ToString());
+                System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  getPLAYING " + ex.Message.ToString());
             }
             if (cts1 != null) cts1.Cancel();
 

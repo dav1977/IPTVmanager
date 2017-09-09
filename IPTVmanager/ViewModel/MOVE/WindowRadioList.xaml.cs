@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 using IPTVman.Model;
+using System.Timers;
 
 namespace ListViewDragDropManager
 {
@@ -25,25 +26,72 @@ namespace ListViewDragDropManager
     /// </summary>
     public partial class WindowRadio : Window
     {
+        public Window header;
         System.Threading.Tasks.Task taskRADIO;
         ListViewDragDropManager<Task> dragMgr;
         ListViewDragDropManager<Task> dragMgr2;
+        System.Timers.Timer Timer1;
 
         public WindowRadio()
         {
             InitializeComponent();
             this.Loaded += WindowMOVE_Loaded;
-
-            data.clear();
+            CreateTimer1(300);
             IPTVman.ViewModel.ScannerRadio.event_done += scan_done;
             //listView.SelectionMode = SelectionMode.Multiple;
         }
 
+        public void CreateTimer1(int ms)
+        {
+            if (Timer1 == null)
+            {
+                Timer1 = new System.Timers.Timer();
+                //Timer1.AutoReset = false; //
+                Timer1.Interval = ms;
+                Timer1.Elapsed += Timer1Tick;
+                Timer1.Enabled = true;
+                Timer1.Start();
+            }
+        }
+
+        byte ct_bascn=0;
+        private void Timer1Tick(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                if (waiting_result)
+                {
+                    string mes = "";
+                    if (ct_bascn > 4) ct_bascn = 0;
+                    ct_bascn++;
+                    if (ct_bascn == 1) mes = "СТОП ";
+                    if (ct_bascn == 2) mes = "СТОП . .";
+                    if (ct_bascn == 3) mes = "СТОП . . .";
+                    if (ct_bascn == 4) mes = "СТОП . . . .";
+
+
+                    bSCAN.Dispatcher.Invoke(new Action(() =>
+                    {
+                        bSCAN.Content = mes;
+                    }));
+
+                }
+                else
+                {
+                    bSCAN.Dispatcher.Invoke(new Action(() =>
+                    {
+                        bSCAN.Content = "Сканировать";
+                    }));
+                }
+            }
+            catch { }
+
+        }
         #region WindowMOVE_Loaded
 
         void WindowMOVE_Loaded(object sender, RoutedEventArgs e)
         {
-
+            header = this;
             INIT();
 
 
@@ -161,6 +209,11 @@ namespace ListViewDragDropManager
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            try
+            {
+                if (play.playerV != null) play.playerV.Kill();
+            }
+            catch { }
         }
 
         //save
@@ -219,91 +272,203 @@ namespace ListViewDragDropManager
         }
 
 
-
+        
+        bool waiting_result=false;
+        bool need_stop_scan = false;
         IPTVman.ViewModel.ScannerRadio scanner;
-        private void scan_Click(object sender, RoutedEventArgs e)
+        int[] key;
+        ListViewDragDropManager.Task it;
+        /// <summary>
+        /// SCANER
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void scan_Click(object sender, RoutedEventArgs e)
         {
-            scanner = new IPTVman.ViewModel.ScannerRadio();
+            if (waiting_result) { need_stop_scan = true; return; }
+            Thread.Sleep(200);
+            waiting_result = true;
 
-            for (int j=0; j<listView.Items.Count;j++)
+            key = new int[listView.Items.Count + 1];
+            if (scanner == null)
             {
-                ListViewDragDropManager.Task a = (ListViewDragDropManager.Task)listView.Items[j];
-                scanner.add_to_save(a.Http);
+                scanner = new IPTVman.ViewModel.ScannerRadio();
+                reset_process();
+            }
+            else
+            { //повторный скан
+
+                string prof = "     --- ";
+                int ct = 0;
+                foreach (var line in data.tasks)
+                {
+                    if (data.tasks[ct].Playing!="" && data.tasks[ct].Playing!= prof)  
+                    data.tasks[ct].Playing = prof + data.tasks[ct].Playing;
+                    ct++;
+                }
+                listView.Dispatcher.Invoke(new Action(() =>
+                {
+                    listView.Items.Refresh();
+                }));
             }
 
-            play.path = System.Reflection.Assembly.GetExecutingAssembly().Location + "Player/nvlcp.exe";
-            play.path = play.path.Replace(@"\", @"/");
-            play.path = play.path.Replace(@"IPTVmanager.exe", @"");
+            init_process();
 
-            if (File.Exists(play.path))
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            var task1 = System.Threading.Tasks.Task.Run(() =>
             {
-                taskRADIO = System.Threading.Tasks.Task.Run(() =>
+                var tcs = new TaskCompletionSource<string>();
+                try
+                {
+                    cycscan();
+                }
+                catch (OperationCanceledException ex)
+                {
+                    tcs.SetException(ex);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+                loc.collection = false;
+                return tcs.Task;
+            });
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            try { await task1; }
+            catch (Exception ex)
+            {
+               IPTVman.ViewModel.dialog.Show("ОШИБКА-СКАНЕРА " + ex.Message.ToString());
+               waiting_result = false;
+            }         
+        }
+  
+        int current = 1;
+        void cycscan()
+        {
+           while (true)
+           {
+                byte max = 0;
+                scanner.clear();
+                int j = 0;
+                foreach (var item in listView.Items)
+                {
+                    it = (ListViewDragDropManager.Task)item;
+
+                    if (key[j] < current)
+                    {
+                        key[j] += 1;
+                        scanner.add(it.Http);
+                        max++;
+                        if (max > 1) break;
+                    }
+
+                    j++;
+                }
+
+                if (max == 0) { break; }
+
+                waiting_result = true;
+                scanner.getPLAYING();
+
+                while (waiting_result)
+                {
+                    if (need_stop_scan) { break; }
+                    Thread.Sleep(100);
+                }
+                if (need_stop_scan) { break; }
+                waiting_result = true;
+            }
+
+            waiting_result = false; need_stop_scan = false;
+        }
+
+        string NAMEPLAYER = "nvlcp";
+        string NAMEPLAYERexe = "nvlcp.exe";
+        Process[] myProcesses;
+        void reset_process()
+        {
+           myProcesses = Process.GetProcessesByName(NAMEPLAYER);
+
+            if (myProcesses.Length > 1)
+            {
+                foreach (var proc in myProcesses)
+                {
+                    proc.Kill();
+                }
+            }
+        }
+
+        void init_process()
+        {
+            IPTVman.ViewModel.WinPOP.Create("Старт сканирования...", 255, header);
+            myProcesses = Process.GetProcessesByName(NAMEPLAYER);
+
+            if (myProcesses.Length == 0)
+            {               
+                play.path = System.Reflection.Assembly.GetExecutingAssembly().Location + "Player/" + NAMEPLAYERexe;
+                play.path = play.path.Replace(@"\", @"/");
+                play.path = play.path.Replace(@"IPTVmanager.exe", @"");
+
+                if (File.Exists(play.path))
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo();
                     startInfo.CreateNoWindow = false;
                     startInfo.UseShellExecute = false;
                     startInfo.FileName = play.path;
-                    startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                    startInfo.WindowStyle = ProcessWindowStyle.Minimized;
                     startInfo.Arguments = "null" + " " + "null" + " --scan";
-                    //startInfo.WindowStyle = ProcessWindowStyle.Maximized;
-
+                   
                     play.playerV = Process.Start(startInfo);
+                    play.playerV.Exited += exitPROCESS;
 
-                    
-                });
+                }
+                else IPTVman.ViewModel.dialog.Show("Не найден " + NAMEPLAYERexe + " по пути\n" + play.path);
+
+
+                while (myProcesses.Length == 0)
+                {
+                    myProcesses = Process.GetProcessesByName(NAMEPLAYER);
+                    if (myProcesses.Length != 0) break;
+                    Thread.Sleep(100);
+                }
             }
-            else IPTVman.ViewModel.dialog.Show("Не найден файл nVLC player по пути\n" + play.path);
+            else { if (myProcesses.Length > 1) { reset_process();  return; } }//kill не закрыл лишние
 
-            Thread.Sleep(100);
-            scanner.getPLAYING();
+        }
 
+        private void exitPROCESS(object sender, EventArgs e)
+        {
+            play.playerV = null;
         }
 
         void scan_done(List<string> list)
         {
-            play.playerV.Kill();
-           // MessageBox.Show("rez=" + list.Count.ToString());
-
-            ListViewDragDropManager.data.addpl("33333");
-            ListViewDragDropManager.data.addpl("444444");
-
-            data.CREATE_TASKS();
-        }
-
-
-
-        private void scanresult_Click(object sender, RoutedEventArgs e)
-        {
-            ListViewDragDropManager.data.addpl("33333");
-            ListViewDragDropManager.data.addpl("444444");
-
-            data.CREATE_TASKS();
-
-            data.tasks.Clear();
-            data.list.Clear();
-
-
-
-
+            int ct = 0;
+            foreach (var line in data.tasks)
+            {
+                for (int i = 0; i < scanner.result.Count-1; i++)
+                {
+                    if (line.Http == scanner.result[i])
+                    {
+                        string btr= "   [" + scanner.result[i + 2].ToString() + " kbs]";
+                        if (scanner.result[i + 2].ToString() == "") btr = "";
+                        if (scanner.result[i + 2].ToString() == "0") btr = "";
+                        if (scanner.result[i + 2].ToString() == "?") btr = "";
+                        data.tasks[ct].Playing = scanner.result[i + 1] + btr; 
+                    } 
+                }
+                ct++;
+    
+            }
+            
             listView.Dispatcher.Invoke(new Action(() =>
             {
                 listView.Items.Refresh();
-           
-
             }));
-
-            listView2.Dispatcher.Invoke(new Action(() =>
-            {
-                listView2.Items.Refresh();
-
-            }));
-
-            InitializeComponent();
-
-            Title = "fssdfsfsdfsd";
+            waiting_result = false;
         }
 
+     
 
-
-    }
+ }
 }

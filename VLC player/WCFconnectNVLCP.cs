@@ -16,6 +16,7 @@ namespace IPTVman.ViewModel
            
             List<string> IWCFmyService.Get_Playing(List<string> s)
             {
+                Result.data_ok = false;
                 Result.RUN_SCAN(s);
                 List<string> rez = new List<string>();
 
@@ -23,18 +24,12 @@ namespace IPTVman.ViewModel
                 {
                     if (Result.data_ok)
                     {
-                        //отправляем резултьтаты сканирования
-                        foreach (var r in Result.data)
-                        {
-                            rez.Add(r);
-                        }
-                        Result.data_ok = false;
                         break;
                     }
                     else Thread.Sleep(100);
 
                 }
-                return rez;
+                return Result.listresult;
             }
         }
 

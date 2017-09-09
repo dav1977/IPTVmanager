@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:jas="clr-namespace:WPF.JoshSmith.ServiceProviders.UI" 
-    Title="Move" Height="804.938" Width="805.279"
+    Title="Move" Height="771.938" Width="997.279"
     FontSize="12"
     WindowStartupLocation="CenterScreen" Closed="Window_Closed"
     >
@@ -68,11 +68,11 @@
 
 
 
-     <ListView Name="listView"   
+        <ListView Name="listView"   
       ItemContainerStyle="{StaticResource ItemContStyle}"
       Margin="10,12,0,0" 
       Padding="2"
-      SelectionMode="Single" Foreground="#FF2DA067" MouseDoubleClick="listView_MouseDoubleClick" FontSize="14" FontFamily="Century" BorderBrush="#FFFFD92E" OpacityMask="#FF911A1A" HorizontalAlignment="Left" VerticalAlignment="Top" ClipToBounds="True" Height="742" Width="678" >
+      SelectionMode="Single" Foreground="#FF2DA067" MouseDoubleClick="listView_MouseDoubleClick" FontSize="14" FontFamily="Century" BorderBrush="#FFFFD92E" OpacityMask="#FF911A1A" HorizontalAlignment="Left" VerticalAlignment="Top" ClipToBounds="True" Height="692" Width="857" Grid.RowSpan="2" >
             <ListView.Effect>
                 <DropShadowEffect/>
             </ListView.Effect>
@@ -86,8 +86,8 @@
             <ListView.View>
 
                 <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="300" />
-                    <GridViewColumn Header="Playing" DisplayMemberBinding="{Binding Playing}" Width="175" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="350" />
+                    <GridViewColumn Header="Playing" DisplayMemberBinding="{Binding Playing}" Width="500" />
                     <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="10" />
                     <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="10" />
                     <GridViewColumn Header="url" DisplayMemberBinding="{Binding Http}" Width="10" />
@@ -108,12 +108,7 @@
       >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="175" />
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Playing}" Width="175" />
-                    <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="175" />
-                    <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="340" />
-                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Http}" Width="340" />
-                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Ping}" Width="180" />
+
                 </GridView>
             </ListView.View>
         </ListView>
@@ -127,15 +122,7 @@
         </Button>
         <Button x:Name="inc" Content="+" HorizontalAlignment="Right" Margin="0,104,29,0" VerticalAlignment="Top" Width="36" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click" FontWeight="Bold"/>
         <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,157,29,0" VerticalAlignment="Top" Width="36" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click" FontWeight="Bold"/>
-        <Button x:Name="scan" Content="СКАН" HorizontalAlignment="Right" Margin="0,230,17,0" VerticalAlignment="Top" Width="64" Height="38" RenderTransformOrigin="-0.319,0.627"  FontWeight="Bold" Click="scan_Click">
-            <Button.Background>
-                <RadialGradientBrush GradientOrigin="0.5,0">
-                    <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF977197" Offset="0.082"/>
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button x:Name="scan_Copy" Content="result" HorizontalAlignment="Right" Margin="0,292,17,0" VerticalAlignment="Top" Width="64" Height="38" RenderTransformOrigin="-0.319,0.627"  FontWeight="Bold" Click="scanresult_Click">
+        <Button x:Name="bSCAN" Content="Сканировать" HorizontalAlignment="Right" Margin="0,39,7,467" Width="91" Height="Auto" RenderTransformOrigin="-0.319,0.627"  FontWeight="Bold" Click="scan_Click" FontSize="10" Grid.Row="1">
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>

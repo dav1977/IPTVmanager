@@ -104,7 +104,6 @@ namespace IPTVman.ViewModel
                 try
                 {
                     result = _ping.GETnoas(cancellationToken, url);
-                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {
