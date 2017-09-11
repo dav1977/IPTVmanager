@@ -129,6 +129,7 @@
     <Compile Include="UserClass\AutoPING.cs" />
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
+    <Compile Include="UserClass\FileWork.cs" />
     <Compile Include="UserClass\MemoryFile.cs" />
     <Compile Include="UserClass\Registy_Find.cs" />
     <Compile Include="UserClass\BaseAccess.cs" />
@@ -139,6 +140,9 @@
     <Compile Include="ViewModel\MOVE\ListViewDragDropManager.cs" />
     <Compile Include="ViewModel\MOVE\MouseUtilities.cs" />
     <Compile Include="ViewModel\MOVE\Task.cs" />
+    <Compile Include="ViewModel\MOVE\WindowSelection.xaml.cs">
+      <DependentUpon>WindowSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MOVE\WindowRadioList.xaml.cs">
       <DependentUpon>WindowRadioList.xaml</DependentUpon>
     </Compile>
@@ -192,6 +196,10 @@
     <Compile Include="View\WindowWAIT.xaml.cs">
       <DependentUpon>WindowWAIT.xaml</DependentUpon>
     </Compile>
+    <Page Include="ViewModel\MOVE\WindowSelection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ViewModel\MOVE\WindowRadioList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

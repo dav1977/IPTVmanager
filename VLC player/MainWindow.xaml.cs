@@ -106,16 +106,23 @@ namespace IPTVman.ViewModel
         {
             header = this;
             InitializeComponent();
-            this.Activate();
-            this.Focus();
+            if (!data.mode_scan)
+            {
+                this.Activate();
+                this.Focus();
+
+            }
+            else
+            {
+             //   this.Hide();
+                this.Title = "СКАННЕР РАДИО ТРЭКОВ";
+            }
+            if (data.mode_radio) data.title = IPTVman.ViewModel.data.name;
 
             //data.mode_scan = true;
             //scan();
             //return;
-            
-           
-            if (data.mode_radio)data.title = IPTVman.ViewModel.data.name;
-            if (data.mode_scan)  this.Title = "СКАННЕР РАДИО ТРЭКОВ"; 
+
             //data.url=  "http://newairhost.com:8034/listen.ram";
             //data.name = "test";
             //data.mode_radio = true;
@@ -302,6 +309,7 @@ namespace IPTVman.ViewModel
                         try
                         {
                             scan();
+                            tcs.SetResult("ok");
                         }
                         catch (OperationCanceledException ex)
                         {

@@ -105,6 +105,7 @@ namespace IPTVman.ViewModel
                     {
                         result = ping_all(cancellationToken, myLIST);
                     }
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {

@@ -24,13 +24,15 @@ namespace IPTVman.ViewModel
         System.Timers.Timer Timer1;
         byte ct = 0;
         Window handle;
+        int needsec;
 
         public WindowPOP()
         {
             handle = this;
             InitializeComponent();
             ct = 0;
-            if (WinPOP.sec != 0) CreateTimer1(WinPOP.sec); CreateTimer1(WinPOP.sec);
+
+            if (WinPOP.sec != 0) { needsec = WinPOP.sec; CreateTimer1(1000); }
             label.Content = WinPOP.message_win_pop;
             this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
         }
@@ -50,7 +52,7 @@ namespace IPTVman.ViewModel
 
         private void Timer1Tick(object source, System.Timers.ElapsedEventArgs e)
         {
-            ct++; if (ct > 3) WinPOP.need_to_close = true;
+            ct++; if (ct > needsec) WinPOP.need_to_close = true;
         }
 
         void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

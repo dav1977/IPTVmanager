@@ -18,6 +18,7 @@ using System.Threading;
 using System.IO;
 using IPTVman.Model;
 using System.Timers;
+using System.Text.RegularExpressions;
 
 namespace ListViewDragDropManager
 {
@@ -39,6 +40,7 @@ namespace ListViewDragDropManager
             CreateTimer1(300);
             IPTVman.ViewModel.ScannerRadio.event_done += scan_done;
             //listView.SelectionMode = SelectionMode.Multiple;
+            init_scan_process();
         }
 
         public void CreateTimer1(int ms)
@@ -59,7 +61,7 @@ namespace ListViewDragDropManager
         {
             try
             {
-                if (waiting_result)
+                if (lock_scan)
                 {
                     string mes = "";
                     if (ct_bascn > 4) ct_bascn = 0;
@@ -94,19 +96,14 @@ namespace ListViewDragDropManager
             header = this;
             INIT();
 
-
             this.listView.ItemsSource = data.tasks;//
-
             this.listView2.ItemsSource = new ObservableCollection<Task>();
 
             // This is all that you need to do, in order to use the ListViewDragManager.
             this.dragMgr = new ListViewDragDropManager<Task>(this.listView);
             this.dragMgr2 = new ListViewDragDropManager<Task>(this.listView2);
-
-
-            
+          
             // Turn the ListViewDragManager on and off. 
-
             // Hook up events on both ListViews to that we can drag-drop
             // items between them.
             this.listView.DragEnter += OnListViewDragEnter;
@@ -207,14 +204,7 @@ namespace ListViewDragDropManager
 
         #endregion // OnListViewDrop
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            try
-            {
-                if (play.playerV != null) play.playerV.Kill();
-            }
-            catch { }
-        }
+        
 
         //save
         private void button_Click(object sender, RoutedEventArgs e)
@@ -277,7 +267,9 @@ namespace ListViewDragDropManager
         bool need_stop_scan = false;
         IPTVman.ViewModel.ScannerRadio scanner;
         int[] key;
+        bool[] prefix;
         ListViewDragDropManager.Task it;
+        bool lock_scan = false;
         /// <summary>
         /// SCANER
         /// </summary>
@@ -286,24 +278,29 @@ namespace ListViewDragDropManager
         private async void scan_Click(object sender, RoutedEventArgs e)
         {
             if (waiting_result) { need_stop_scan = true; return; }
-            Thread.Sleep(200);
             waiting_result = true;
+            Thread.Sleep(200);
+            int num = listView.SelectedIndex;
 
+           
             key = new int[listView.Items.Count + 1];
             if (scanner == null)
             {
                 scanner = new IPTVman.ViewModel.ScannerRadio();
-                reset_process();
+                if (prefix == null) prefix = new bool[listView.Items.Count + 1];
             }
             else
             { //повторный скан
-
-                string prof = "     --- ";
+                if (lock_scan) return;
+                string prof = "  ---";
                 int ct = 0;
                 foreach (var line in data.tasks)
                 {
-                    if (data.tasks[ct].Playing!="" && data.tasks[ct].Playing!= prof)  
-                    data.tasks[ct].Playing = prof + data.tasks[ct].Playing;
+                    if (!prefix[ct])
+                    {
+                        prefix[ct] = true;
+                        if (line.Playing!="")  data.tasks[ct].Playing = prof + line.Playing;
+                    }
                     ct++;
                 }
                 listView.Dispatcher.Invoke(new Action(() =>
@@ -312,15 +309,17 @@ namespace ListViewDragDropManager
                 }));
             }
 
-            init_process();
-
+            if (lock_scan) return;
+            lock_scan = true;
+            IPTVman.ViewModel.WinPOP.Create("Старт сканирования...", 1, header);
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             var task1 = System.Threading.Tasks.Task.Run(() =>
             {
                 var tcs = new TaskCompletionSource<string>();
                 try
                 {
-                    cycscan();
+                    cycscan(num);
+                    lock_scan = false;
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -330,7 +329,6 @@ namespace ListViewDragDropManager
                 {
                     tcs.SetException(ex);
                 }
-                loc.collection = false;
                 return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -343,7 +341,7 @@ namespace ListViewDragDropManager
         }
   
         int current = 1;
-        void cycscan()
+        void cycscan(int num)
         {
            while (true)
            {
@@ -352,6 +350,7 @@ namespace ListViewDragDropManager
                 int j = 0;
                 foreach (var item in listView.Items)
                 {
+                    if (j < num) { j++; continue; }
                     it = (ListViewDragDropManager.Task)item;
 
                     if (key[j] < current)
@@ -385,7 +384,8 @@ namespace ListViewDragDropManager
         string NAMEPLAYER = "nvlcp";
         string NAMEPLAYERexe = "nvlcp.exe";
         Process[] myProcesses;
-        void reset_process()
+
+        void kill_process()
         {
            myProcesses = Process.GetProcessesByName(NAMEPLAYER);
 
@@ -394,17 +394,16 @@ namespace ListViewDragDropManager
                 foreach (var proc in myProcesses)
                 {
                     proc.Kill();
+                    proc.WaitForExit();
                 }
             }
         }
 
-        void init_process()
+        void init_scan_process()
         {
-            IPTVman.ViewModel.WinPOP.Create("Старт сканирования...", 255, header);
+           
             myProcesses = Process.GetProcessesByName(NAMEPLAYER);
-
-            if (myProcesses.Length == 0)
-            {               
+          
                 play.path = System.Reflection.Assembly.GetExecutingAssembly().Location + "Player/" + NAMEPLAYERexe;
                 play.path = play.path.Replace(@"\", @"/");
                 play.path = play.path.Replace(@"IPTVmanager.exe", @"");
@@ -415,7 +414,7 @@ namespace ListViewDragDropManager
                     startInfo.CreateNoWindow = false;
                     startInfo.UseShellExecute = false;
                     startInfo.FileName = play.path;
-                    startInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     startInfo.Arguments = "null" + " " + "null" + " --scan";
                    
                     play.playerV = Process.Start(startInfo);
@@ -431,9 +430,7 @@ namespace ListViewDragDropManager
                     if (myProcesses.Length != 0) break;
                     Thread.Sleep(100);
                 }
-            }
-            else { if (myProcesses.Length > 1) { reset_process();  return; } }//kill не закрыл лишние
-
+      
         }
 
         private void exitPROCESS(object sender, EventArgs e)
@@ -450,6 +447,7 @@ namespace ListViewDragDropManager
                 {
                     if (line.Http == scanner.result[i])
                     {
+                        prefix[ct] = false;
                         string btr= "   [" + scanner.result[i + 2].ToString() + " kbs]";
                         if (scanner.result[i + 2].ToString() == "") btr = "";
                         if (scanner.result[i + 2].ToString() == "0") btr = "";
@@ -468,7 +466,33 @@ namespace ListViewDragDropManager
             waiting_result = false;
         }
 
-     
 
- }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            exit();
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            exit();
+        }
+
+        void exit()
+        {
+            try
+            {
+                if (play.playerV != null) play.playerV.Kill();
+            }
+            catch { }
+            need_stop_scan = true;
+
+            while (waiting_result) Thread.Sleep(100);
+            while (lock_scan) Thread.Sleep(100);
+
+            kill_process();
+
+        }
+       
+
+
+    }
 }

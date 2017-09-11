@@ -21,7 +21,6 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-        readonly string tempname= "temp_m3u_IPTVmanager";
         public RelayCommand key_UpdateMDBCommand { get; set; }
         public RelayCommand key_DelDUBLICATCommand { get; set; }
         public RelayCommand key_ReplaceCommand { get; set; }
@@ -474,32 +473,9 @@ namespace IPTVman.ViewModel
             if (myLISTfull == null) return;
             if (myLISTfull.Count == 0) return;
 
-            SaveFileDialog openFileDialog = new SaveFileDialog();
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                using (StreamWriter sr = new StreamWriter(openFileDialog.FileName))
-                {
-                    sr.Write(text_title +'\n');
-
-                    string n = "";
-                    foreach (var obj in myLISTfull)
-                    {
-                        n = "";
-                       if (text_title == @"#EXTM3U $BorpasFileFormat="+'"'+'1'+'"') n += "#EXTINF:-1";
-                       else n += "#EXTINF:0";
-
-                        if (obj.ExtFilter != "") n += " $ExtFilter=" + '"' + obj.ExtFilter + '"';
-                        if (obj.group_title != "") n += " group-title=" + '"' + obj.group_title + '"';
-                        if (obj.logo != "") n+= " tvg-logo=" + '"' + obj.logo + '"';
-                        if (obj.tvg_name != "") n += " tvg-name=" + '"' + obj.tvg_name + '"';
-
-                        n += "," +obj.name + '\n';
-                        sr.Write(n+ obj.http + '\n');
-                    } 
-                }
-
-            }
+            FileWork _file = new FileWork();
+            _file.SAVE(myLISTfull, text_title);
+            _file = null;
         }
 
         /// <summary>
@@ -524,250 +500,249 @@ namespace IPTVman.ViewModel
         {
             if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
-          
+
             CollectionisCreate();
-            string[] str=null;
-            string get=Clipboard.GetText();
-           
+            string[] str = null;
+            string get = Clipboard.GetText();
+
             try
             {
-                 str = get.Split(new Char[] { '\n' });
+                str = get.Split(new Char[] { '\n' });
             }
             catch (Exception ex)
             {
-                dialog.Show("ОШИБКА clb "+ex.Message.ToString());
+                dialog.Show("ОШИБКА clb " + ex.Message.ToString());
             }
 
-            Regex regex1 = new Regex("#EXTINF");
-            Regex regex2 = new Regex("#EXTM3U");
-            Match match = null;
+            if (str == null) return;
+            FileWork _file = new FileWork();
+            _file.OPEN_FROM_CLIPBOARD( ViewModelMain.myLISTfull,  str);
+            _file = null;
 
-            if (str == null) { dialog.Show("Буфер пустой"); return; }
-            if (str.Length == 1)
-            {
-                Regex regex3 = new Regex("http:");
-                Regex regex4 = new Regex(".m3u");
-                match = regex3.Match(str[0]);
+        }
+
+        //    Regex regex1 = new Regex("#EXTINF");
+        //    Regex regex2 = new Regex("#EXTM3U");
+        //    Match match = null;
+
+        //    if (str == null) { dialog.Show("Буфер пустой"); return; }
+        //    if (str.Length == 1)
+        //    {
+        //        Regex regex3 = new Regex("http:");
+        //        Regex regex4 = new Regex(".m3u");
+        //        match = regex3.Match(str[0]);
      
-                if (match.Success)
-                {     
-                    match = regex4.Match(str[0]);
-                    if (match.Success)
-                    {
-                        try
-                        {
-                            string path = System.IO.Path.GetTempPath() + tempname;
-                            WebClient webClient = new WebClient();
-                            Wait.Create("Загружается\n"+ (str[0].ToString()), false);
-                            webClient.DownloadFileCompleted += WebClient_DownloadFileCompletedClipb;
-                            webClient.DownloadFileAsync(new Uri (str[0].ToString()), path);
-                            return;
-                        }
-                        catch (Exception ex)
-                        {
-                            dialog.Show("Ошибка parsclb "+ex.Message.ToString());
-                            Wait.Close();
-                        }
-                    }
-                }
-            }
+        //        if (match.Success)
+        //        {     
+        //            match = regex4.Match(str[0]);
+        //            if (match.Success)
+        //            {
+        //                try
+        //                {
+        //                    string path = System.IO.Path.GetTempPath() + tempname;
+        //                    WebClient webClient = new WebClient();
+        //                    Wait.Create("Загружается\n"+ (str[0].ToString()), false);
+        //                    webClient.DownloadFileCompleted += WebClient_DownloadFileCompletedClipb;
+        //                    webClient.DownloadFileAsync(new Uri (str[0].ToString()), path);
+        //                    return;
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    dialog.Show("Ошибка parsclb "+ex.Message.ToString());
+        //                    Wait.Close();
+        //                }
+        //            }
+        //        }
+        //    }
 
-            if (chek1) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ"); return; }
-            //ПОИСК заголовка
-            foreach (var s in str)
-            {       
-                 match = regex2.Match(s);
-                if (match.Success) { text_title = s; break; }
-            }
+        //    if (chek1) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ"); return; }
+        //    //ПОИСК заголовка
+        //    foreach (var s in str)
+        //    {       
+        //         match = regex2.Match(s);
+        //        if (match.Success) { text_title = s; break; }
+        //    }
 
-            // dialog.Show(str.Length.ToString());
-            int ct_dublicat = 0;
-            int index = 0;
-            bool flag_adding = false;
-            //ПОИСК каналов
-            foreach (var line in str)
-            {
-                index++;
+        //    // dialog.Show(str.Length.ToString());
+        //    int ct_dublicat = 0;
+        //    int index = 0;
+        //    bool flag_adding = false;
+        //    //ПОИСК каналов
+        //    foreach (var line in str)
+        //    {
+        //        index++;
 
-                string newname = "";
-                string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
+        //        string newname = "";
+        //        string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
                 
-                    if (line == null || line == "") continue;
+        //            if (line == null || line == "") continue;
 
-                    match = regex1.Match(line);
-                    ///========== разбор EXINF
-                    if (match.Success)
-                    {
-                        Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
-                        Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
-                        Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
-                        Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
+        //            match = regex1.Match(line);
+        //            ///========== разбор EXINF
+        //            if (match.Success)
+        //            {
+        //                Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
+        //                Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
+        //                Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
+        //                Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
 
-                        string[] split = line.Split(new Char[] { '"' });
+        //                string[] split = line.Split(new Char[] { '"' });
 
-                        str_name = "";
-                        str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
+        //                str_name = "";
+        //                str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
 
-                        if (split.Length == 0)
-                        {
-                            newname = line;
-                        }
-                        else
-                        {
+        //                if (split.Length == 0)
+        //                {
+        //                    newname = line;
+        //                }
+        //                else
+        //                {
 
-                        split = line.Split(new Char[] { ',' });
+        //                split = line.Split(new Char[] { ',' });
 
-                        if (split.Length < 1) { dialog.Show("Буфер пустой"); return; }
+        //                if (split.Length < 1) { dialog.Show("Буфер пустой"); return; }
 
-                        if (split.Length <=2) str_name = split[split.Length - 1];
+        //                if (split.Length <=2) str_name = split[split.Length - 1];
 
-                            //int i = 0;
-                            //for (i = 0; i < split.Length; i++)
-                            //{
-                            //    string s = split[i];
-                            //    //------------- разбор строки EXINF
-                            //    if (str_ex == "!") str_ex = s;
-                            //    if (str_gt == "!") str_gt = s;
-                            //    if (str_logo == "!") str_logo = s;
-                            //    if (str_tvg == "!") str_tvg = s;
+        //                //int i = 0;
+        //                //for (i = 0; i < split.Length; i++)
+        //                //{
+        //                //    string s = split[i];
+        //                //    //------------- разбор строки EXINF
+        //                //    if (str_ex == "!") str_ex = s;
+        //                //    if (str_gt == "!") str_gt = s;
+        //                //    if (str_logo == "!") str_logo = s;
+        //                //    if (str_tvg == "!") str_tvg = s;
 
 
-                            //    if (i >= split.Length - 1) { str_name = s; }
+        //                //    if (i >= split.Length - 1) { str_name = s; }
 
-                            //    match = regex3.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_ex = "!";
-                            //    }
+        //                //    match = regex3.Match(s);
+        //                //    if (match.Success)
+        //                //    {
+        //                //        str_ex = "!";
+        //                //    }
 
-                            //    match = regex4.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_gt = "!";
-                            //    }
+        //                //    match = regex4.Match(s);
+        //                //    if (match.Success)
+        //                //    {
+        //                //        str_gt = "!";
+        //                //    }
 
-                            //    match = regex5.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_logo = "!";
-                            //    }
+        //                //    match = regex5.Match(s);
+        //                //    if (match.Success)
+        //                //    {
+        //                //        str_logo = "!";
+        //                //    }
 
-                            //    match = regex6.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_tvg = "!";
-                            //    }
-                       
+        //                //    match = regex6.Match(s);
+        //                //    if (match.Success)
+        //                //    {
+        //                //        str_tvg = "!";
+        //                //    }
 
-                            //}//for
 
-                            if (str_name != "")
-                            if (str_name.IndexOf('\r') != -1)
-                                newname = str_name.Substring(0, str_name.Length - 1);//remove перевода строки
-                            else newname = str_name;
-                        }
-                        try
-                        {
-                            str_http = str[index].Substring(0, str[index].Length - 1);//remove перевода строки
-                        }
-                        catch { dialog.Show("в буфере данных не найдено"); }
-                       
+        //                //}//for
 
-                    }
+        //                if (str_name != "")
+        //                    if (str_name.IndexOf('\r') != -1)
+        //                        newname = str_name.Substring(0, str_name.Length - 1);//remove перевода строки
+        //                    else newname = str_name;
+        //            }
+        //            try
+        //            {
+        //                str_http = str[index].Substring(0, str[index].Length - 1);//remove перевода строки
+        //            }
+        //            catch { dialog.Show("в буфере данных не найдено"); }
 
-                ParamCanal item=null;
-                if (newname == "") continue;
-              
-                   item = ViewModelMain.myLISTfull.Find(x =>
-                    (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
 
-              // dialog.Show(str_http);
+        //        }
 
-                if (newname.Trim() != "" && str_http.Trim() != "")
-                {
-                        if (item == null)
-                        {
-                             flag_adding = true;
-                            ViewModelMain.myLISTfull.Add(new ParamCanal
-                            {
-                                name = newname.Trim(),
-                                ExtFilter = str_ex.Trim(),
-                                http = str_http.Trim(),
-                                group_title = str_gt.Trim(),
-                                logo = str_logo.Trim(),
-                                tvg_name = str_tvg.Trim()
+        //        ParamCanal item = null;
+        //        if (newname == "") continue;
 
-                            });
-                        }
-                        else ct_dublicat++;
-                }
-            }
+        //        item = ViewModelMain.myLISTfull.Find(x =>
+        //         (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
 
-            if (flag_adding)
-            {
-                if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
-                else dialog.Show("Каналы добавлены успешно!");
-            }
-            else dialog.Show("Ссылки не распознаны");
+        //        // dialog.Show(str_http);
 
-            Update_collection(typefilter.last);
-            Wait.Close();
-            loc.openfile = false;
-        }
+        //        if (newname.Trim() != "" && str_http.Trim() != "")
+        //        {
+        //            if (item == null)
+        //            {
+        //                flag_adding = true;
+        //                ViewModelMain.myLISTfull.Add(new ParamCanal
+        //                {
+        //                    name = newname.Trim(),
+        //                    ExtFilter = str_ex.Trim(),
+        //                    http = str_http.Trim(),
+        //                    group_title = str_gt.Trim(),
+        //                    logo = str_logo.Trim(),
+        //                    tvg_name = str_tvg.Trim()
 
-        private void WebClient_DownloadFileCompletedClipb(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            string path = System.IO.Path.GetTempPath() + tempname;
-            add_file_to_memory(path);
-            parse_temp_file();
-        }
+        //                });
+        //            }
+        //            else ct_dublicat++;
+        //        }
+        //    }
 
-        private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            //копия
-            string path = System.IO.Path.GetTempPath() + tempname;
-            add_file_to_memory(path);
-            wait_download = false;
-        }
+        //    if (flag_adding)
+        //    {
+        //        if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
+        //        else dialog.Show("Каналы добавлены успешно!");
+        //    }
+        //    else dialog.Show("Ссылки не распознаны");
 
-        private void parse_temp_file()
-        {
-            string path = System.IO.Path.GetTempPath() + tempname;
-            add_memoty_to_file(path);
-            PARSING_FILE(path);
-            try
-            {
-                System.IO.File.Delete(path);
-            }
-            catch(Exception ex) { dialog.Show("ошибка удаления "+ex.Message.ToString()); }
-            Update_collection(typefilter.last);
-            Wait.Close();
-        }
+        //    Update_collection(typefilter.last);
+        //    Wait.Close();
+        //    loc.openfile = false;
+        //}
 
-        async void Open_arguments()
+        //private void WebClient_DownloadFileCompletedClipb(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        //{
+        //    string path = System.IO.Path.GetTempPath() + tempname;
+        //    add_file_to_memory(path);
+        //    parse_temp_file();
+        //}
+
+        //private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        //{
+        //    //копия
+        //    string path = System.IO.Path.GetTempPath() + tempname;
+        //    add_file_to_memory(path);
+        //    wait_download = false;
+        //}
+
+        //private void parse_temp_file()
+        //{
+        //    string path = System.IO.Path.GetTempPath() + tempname;
+        //    add_memoty_to_file(path);
+        //    PARSING_FILE(path);
+        //    try
+        //    {
+        //        System.IO.File.Delete(path);
+        //    }
+        //    catch (Exception ex) { dialog.Show("ошибка удаления " + ex.Message.ToString()); }
+        //    Update_collection(typefilter.last);
+        //    Wait.Close();
+        //}
+
+         void Open_arguments()
         {
             loc.openfile = true;
             CollectionisCreate();
             string name = data.arguments_startup[0];
-            Wait.Create("Идет анализ файла", true);
             loc.block_dialog_window = true;
-            try { await AsyncOPEN(name); }
-            catch (Exception e)
-            {
-                dialog.Show("ОШИБКА анализа файла " + e.Message.ToString());
-            }
-            Thread.Sleep(300);
-            Wait.Close();
-            Update_collection(typefilter.normal);
-            Wait.Close();
-            loc.openfile = false;
 
-            dialog.dialog_enable = false;
+            FileWork _file = new FileWork();
+            _file.LOAD(ViewModelMain.myLISTfull, name);
+
+            _file = null;
             loc.block_dialog_window = false;
-            bufferstring.Clear();
+            loc.openfile = false;
         }
 
-        async void key_OPEN(object parameter)
+        void key_OPEN(object parameter)
         {
             if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
@@ -775,429 +750,414 @@ namespace IPTVman.ViewModel
             loc.openfile = true;
             CollectionisCreate();
 
-            string name = "";
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            FileWork _file = new FileWork();
+            _file.LOAD(ViewModelMain.myLISTfull, text_title,  chek1, chek2);
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                name = openFileDialog.FileName;
-            }
-
-            Wait.Create("Идет анализ файла", true);
-            try { await AsyncOPEN(name); }
-            catch (Exception e)
-            {
-                dialog.Show("ОШИБКА analiz " + e.Message.ToString());
-            }
-            Thread.Sleep(300);
-            Wait.Close();
-            Update_collection(typefilter.normal);
-            Wait.Close();
+            text_title = _file.text_title;
+            _file = null;
             loc.openfile = false;
-            bufferstring.Clear();
         }
 
-        public Task<string> AsyncOPEN(string name)
-        {
+        //public Task<string> AsyncOPEN(string name)
+        //{
             
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            return Task.Run(() =>
-            {
-                var tcs = new TaskCompletionSource<string>();
-                try
-                {
-                   mode_work_with_links = true;
-                   bufferstring.Clear();
-                   if (name!="") PARSING_FILE(name);
-                   else loc.openfile = false;
-                   tcs.SetResult("ok");
-                }
-                catch (OperationCanceledException e)
-                {
-                    tcs.SetException(e);
-                }
-                catch (Exception e)
-                {
-                    tcs.SetException(e);
-                }
-                return tcs.Task;
-            });
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-        }
+        //    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        //    return Task.Run(() =>
+        //    {
+        //        var tcs = new TaskCompletionSource<string>();
+        //        try
+        //        {
+        //           mode_work_with_links = true;
+        //           bufferstring.Clear();
+        //           if (name!="") PARSING_FILE(name);
+        //           else loc.openfile = false;
+        //           tcs.SetResult("ok");
+        //        }
+        //        catch (OperationCanceledException e)
+        //        {
+        //            tcs.SetException(e);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            tcs.SetException(e);
+        //        }
+        //        return tcs.Task;
+        //    });
+        //    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        //}
 
-        void Parsing_link(string s)
-        {
-            string ss = s;
-            //try { ss = HttpUtility.UrlEncode(s); } catch { ss = s; } 
-            try
-            {
-                string path = System.IO.Path.GetTempPath() + tempname;
-                WebClient webClient = new WebClient();
-                Wait.Create("Загружается\n" + ss, false);
-                webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-                webClient.DownloadFileAsync(new Uri(ss), path);
-                return;
-            }
-            catch
-            {
-                dialog.Show("Ошибка parsing "+s);
-                Wait.Close();
-                wait_download = false;
-                loc.openfile = false;
-            }
-        }
+        //void Parsing_link(string s)
+        //{
+        //    string ss = s;
+        //    //try { ss = HttpUtility.UrlEncode(s); } catch { ss = s; } 
+        //    try
+        //    {
+        //        string path = System.IO.Path.GetTempPath() + tempname;
+        //        WebClient webClient = new WebClient();
+        //        Wait.Create("Загружается\n" + ss, false);
+        //        webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
+        //        webClient.DownloadFileAsync(new Uri(ss), path);
+        //        return;
+        //    }
+        //    catch
+        //    {
+        //        dialog.Show("Ошибка parsing "+s);
+        //        Wait.Close();
+        //        wait_download = false;
+        //        loc.openfile = false;
+        //    }
+        //}
 
 
-        bool wait_download = false;
-        bool mode_work_with_links = false;
-        void PARSING_FILE(string name)
-        {
-            bool flag_adding_ok = false;
-            uint ct_dublicat = 0;
-            uint ct_update=0;
-            uint ct_ignore_update = 0;
-            string line = null;
-            string newname = "";
-            List<int> list_update_channels= new List<int>();
+        //bool wait_download = false;
+        //bool mode_work_with_links = false;
+        //void PARSING_FILE(string name)
+        //{
+        //    bool flag_adding_ok = false;
+        //    uint ct_dublicat = 0;
+        //    uint ct_update=0;
+        //    uint ct_ignore_update = 0;
+        //    string line = null;
+        //    string newname = "";
+        //    List<int> list_update_channels= new List<int>();
 
-            try
-            {
-                Regex regex_link = new Regex("http://");
-                Regex regex1 = new Regex("#EXTINF");
-                Regex regex2 = new Regex("#EXTM3U");
-                Match match = null;
+        //    try
+        //    {
+        //        Regex regex_link = new Regex("http://");
+        //        Regex regex1 = new Regex("#EXTINF");
+        //        Regex regex2 = new Regex("#EXTM3U");
+        //        Match match = null;
 
-                int all_str = 0;
-                byte null_str = 0;
+        //        int all_str = 0;
+        //        byte null_str = 0;
             
-                try
-                {
-                    //определение макс строк СКАНЕР ФАЙЛА
-                    using (StreamReader sr = new StreamReader(name))
-                    {
-                        while (!sr.EndOfStream)
-                        {
-                            string rez = sr.ReadLine();
-                            if (rez != "" && rez != null)
-                                if (new Regex("#EXTINF").Match(rez).Success) { all_str++; null_str = 0; }
-                                else null_str++; if (null_str > 100) goto exit_open;
-                            match = regex2.Match(rez);
-                            if (match.Success) text_title = rez;
-                        }
-                    }
+        //        try
+        //        {
+        //            //определение макс строк СКАНЕР ФАЙЛА
+        //            using (StreamReader sr = new StreamReader(name))
+        //            {
+        //                while (!sr.EndOfStream)
+        //                {
+        //                    string rez = sr.ReadLine();
+        //                    if (rez != "" && rez != null)
+        //                        if (new Regex("#EXTINF").Match(rez).Success) { all_str++; null_str = 0; }
+        //                        else null_str++; if (null_str > 100) goto exit_open;
+        //                    match = regex2.Match(rez);
+        //                    if (match.Success) text_title = rez;
+        //                }
+        //            }
 
-                }
-                catch(Exception ex) { MessageBox.Show("ошибка сканирования "+ex.Message.ToString()); goto exit_open; }
+        //        }
+        //        catch(Exception ex) { MessageBox.Show("ошибка сканирования "+ex.Message.ToString()); goto exit_open; }
                 
-                Wait.set_ProgressBar(all_str);
-                //=========================================================
-                //ПОИСК каналов
-                using (StreamReader sr = new StreamReader(name))
-                {
-                    string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
-                    bool yes = false;
+        //        Wait.set_ProgressBar(all_str);
+        //        //=========================================================
+        //        //ПОИСК каналов
+        //        using (StreamReader sr = new StreamReader(name))
+        //        {
+        //            string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
+        //            bool yes = false;
 
-                    while (!sr.EndOfStream)
-                    {
-                        try
-                        {
-                            line = sr.ReadLine();
-                            Wait.progressbar++;
-                        }
-                        catch { }
+        //            while (!sr.EndOfStream)
+        //            {
+        //                try
+        //                {
+        //                    line = sr.ReadLine();
+        //                    Wait.progressbar++;
+        //                }
+        //                catch { }
 
-                        if (linkIsBad(line)) continue;
-                       // MessageBox.Show(line);
+        //                if (linkIsBad(line)) continue;
+        //               // MessageBox.Show(line);
 
-                        //*******************************************************//-------------------- закачка Links
-                        if (mode_work_with_links)
-                        {                            
-                           while (wait_download) Thread.Sleep(100);  
+        //                //*******************************************************//-------------------- закачка Links
+        //                if (mode_work_with_links)
+        //                {                            
+        //                   while (wait_download) Thread.Sleep(100);  
 
-                            if (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                      regex_link.Match(line).Success
-                                   )
-                                {
-                                    mode_work_with_links = true;
-                                    Parsing_link(line);
-                                    wait_download = true;
-                                    flag_adding_ok = true;
-                                    continue;
-                                }
-                            //--------------------------
+        //                    if (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //                            !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //                            !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //                            !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //                            !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //                            !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //                              regex_link.Match(line).Success
+        //                           )
+        //                        {
+        //                            mode_work_with_links = true;
+        //                            Parsing_link(line);
+        //                            wait_download = true;
+        //                            flag_adding_ok = true;
+        //                            continue;
+        //                        }
+        //                    //--------------------------
 
-                            if (mode_work_with_links)
-                            {
-                                mode_work_with_links = false;
-                                if (flag_adding_ok)
-                                {
-                                    parse_temp_file(); return;
-                                }
-                            }//рекурсия
+        //                    if (mode_work_with_links)
+        //                    {
+        //                        mode_work_with_links = false;
+        //                        if (flag_adding_ok)
+        //                        {
+        //                            parse_temp_file(); return;
+        //                        }
+        //                    }//рекурсия
 
-                        }
-                        //***********************************************************
+        //                }
+        //                //***********************************************************
   
-                        match = regex1.Match(line);
-                        if (match.Success) yes = true; else yes = false;
+        //                match = regex1.Match(line);
+        //                if (match.Success) yes = true; else yes = false;
 
-                        ///========== разбор EXINF
-                        if (yes)
-                        {
+        //                ///========== разбор EXINF
+        //                if (yes)
+        //                {
 
-                            Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
-                            Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
-                            Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
-                            Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
+        //                    Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
+        //                    Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
+        //                    Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
+        //                    Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
 
-                            string[] split = line.Split(new Char[] { '"' });
-
-
-                            str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
-
-                            if (split.Length <= 1)
-                            {
-                                split = line.Split(new Char[] { ',' });
-                                str_name = split[split.Length - 1];
-                                newname = str_name;
-                            }
-                            else
-                            {
-                                int i = 0;
-                                for (i = 0; i < split.Length; i++)
-                                {
-                                    string s = split[i];
-                                    //------------- разбор строки EXINF
-                                    if (str_ex == "!") str_ex = s;
-                                    if (str_gt == "!") str_gt = s;
-                                    if (str_logo == "!") str_logo = s;
-                                    if (str_tvg == "!") str_tvg = s;
+        //                    string[] split = line.Split(new Char[] { '"' });
 
 
-                                    if (i >= split.Length - 1) { str_name = s; }
+        //                    str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
 
-                                    match = regex3.Match(s);
-                                    if (match.Success)
-                                    {
-                                        str_ex = "!";
-                                    }
-
-                                    match = regex4.Match(s);
-                                    if (match.Success)
-                                    {
-                                        str_gt = "!";
-                                    }
-
-                                    match = regex5.Match(s);
-                                    if (match.Success)
-                                    {
-                                        str_logo = "!";
-                                    }
-
-                                    match = regex6.Match(s);
-                                    if (match.Success)
-                                    {
-                                        str_tvg = "!";
-                                    }
-                                }//foreach
-
-                                newname = "";
-                                if (str_name != "") newname = str_name.Remove(0, 1);
-
-                            }
-                            //чтение ссылки
-
-                            while (!sr.EndOfStream)
-                            {
-                                try
-                                {
-                                    str_http = sr.ReadLine();
-                                }
-                                catch { }
-
-                                if (!linkIsBad(str_http)) break;
-                            }
-
-                            //MessageBox.Show(str_http);
-                        }
-
-                                if (chek2)//обрезание скобок
-                                {
-                                    //string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
-                                    var ind = newname.LastIndexOf('(');
-                                    if (ind>0) newname= newname.Substring(0, ind);
-                                    newname = newname.Trim();
-                                }
+        //                    if (split.Length <= 1)
+        //                    {
+        //                        split = line.Split(new Char[] { ',' });
+        //                        str_name = split[split.Length - 1];
+        //                        newname = str_name;
+        //                    }
+        //                    else
+        //                    {
+        //                        int i = 0;
+        //                        for (i = 0; i < split.Length; i++)
+        //                        {
+        //                            string s = split[i];
+        //                            //------------- разбор строки EXINF
+        //                            if (str_ex == "!") str_ex = s;
+        //                            if (str_gt == "!") str_gt = s;
+        //                            if (str_logo == "!") str_logo = s;
+        //                            if (str_tvg == "!") str_tvg = s;
 
 
-                            if (!chek1)//Добавление
-                            {
-                                var item = ViewModelMain.myLISTfull.Find(x =>
-                                (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
+        //                            if (i >= split.Length - 1) { str_name = s; }
 
-                                if (newname.Trim() != "" && str_http.Trim() != "")
-                                {
+        //                            match = regex3.Match(s);
+        //                            if (match.Success)
+        //                            {
+        //                                str_ex = "!";
+        //                            }
 
-                                    if (item == null)
-                                    {
-                                        ViewModelMain.myLISTfull.Add(new ParamCanal
-                                        {
-                                            name = newname.Trim(),
-                                            ExtFilter = str_ex.Trim(),
-                                            http = str_http.Trim(),
-                                            group_title = str_gt.Trim(),
-                                            logo = str_logo.Trim(),
-                                            tvg_name = str_tvg.Trim()
+        //                            match = regex4.Match(s);
+        //                            if (match.Success)
+        //                            {
+        //                                str_gt = "!";
+        //                            }
 
-                                        });
-                                        flag_adding_ok = true;
-                                    }
-                                    else ct_dublicat++;
-                                }
-                            }
-                            else//ОБНОВЛЕНИЕ
-                            {
-                                flag_adding_ok = true;
-                                bool fl = false;
-                                newname = newname.Trim();
+        //                            match = regex5.Match(s);
+        //                            if (match.Success)
+        //                            {
+        //                                str_logo = "!";
+        //                            }
+
+        //                            match = regex6.Match(s);
+        //                            if (match.Success)
+        //                            {
+        //                                str_tvg = "!";
+        //                            }
+        //                        }//foreach
+
+        //                        newname = "";
+        //                        if (str_name != "") newname = str_name.Remove(0, 1);
+
+        //                    }
+        //                    //чтение ссылки
+
+        //                    while (!sr.EndOfStream)
+        //                    {
+        //                        try
+        //                        {
+        //                            str_http = sr.ReadLine();
+        //                        }
+        //                        catch { }
+
+        //                        if (!linkIsBad(str_http)) break;
+        //                    }
+
+        //                    //MessageBox.Show(str_http);
+        //                }
+
+        //                        if (chek2)//обрезание скобок
+        //                        {
+        //                            //string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
+        //                            var ind = newname.LastIndexOf('(');
+        //                            if (ind>0) newname= newname.Substring(0, ind);
+        //                            newname = newname.Trim();
+        //                        }
+
+
+        //                    if (!chek1)//Добавление
+        //                    {
+        //                        var item = lst.Find(x =>
+        //                        (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
+
+        //                        if (newname.Trim() != "" && str_http.Trim() != "")
+        //                        {
+
+        //                            if (item == null)
+        //                            {
+        //                                lst.Add(new ParamCanal
+        //                                {
+        //                                    name = newname.Trim(),
+        //                                    ExtFilter = str_ex.Trim(),
+        //                                    http = str_http.Trim(),
+        //                                    group_title = str_gt.Trim(),
+        //                                    logo = str_logo.Trim(),
+        //                                    tvg_name = str_tvg.Trim()
+
+        //                                });
+        //                                flag_adding_ok = true;
+        //                            }
+        //                            else ct_dublicat++;
+        //                        }
+        //                    }
+        //                    else//ОБНОВЛЕНИЕ
+        //                    {
+        //                        flag_adding_ok = true;
+        //                        bool fl = false;
+        //                        newname = newname.Trim();
                               
-                                if (newname != "")
-                                {
-                                    int index = 0;
-                                    bool replace_ok;
-                                    bool ingore = false;
-                                    replace_ok = false;
+        //                        if (newname != "")
+        //                        {
+        //                            int index = 0;
+        //                            bool replace_ok;
+        //                            bool ingore = false;
+        //                            replace_ok = false;
 
-                                      foreach (var k in ViewModelMain.myLISTbase)//обновление только отфильтрофанных
-                                      {
-                                        if (newname == k.name)
-                                        {
-                                            int ind = 0;
-                                            foreach (var j in ViewModelMain.myLISTfull)
-                                            {
-                                                if (j.Compare() == k.Compare() && Comparehttp(ViewModelMain.myLISTfull[ind].http, str_http))//находим в полном списке
-                                                {
-                                                    ViewModelMain.myLISTfull[ind].http = str_http;
-                                                    //if (list_update_channels.Exist(x => x.Equals(ind))) 
-                                                    if (ct_update!=0 && (list_update_channels.Find(x => x.Equals(ind)) == ind))
-                                                    {
-                                                        ingore = true;   //этот канал уже был обновлен             
-                                                    }
-                                                    else
-                                                    {
-                                                        list_update_channels.Add(ind);
-                                                        ct_update++;
-                                                    }
+        //                              foreach (var k in ViewModelMain.myLISTbase)//обновление только отфильтрофанных
+        //                              {
+        //                                if (newname == k.name)
+        //                                {
+        //                                    int ind = 0;
+        //                                    foreach (var j in lst)
+        //                                    {
+        //                                        if (j.Compare() == k.Compare() && Comparehttp(lst[ind].http, str_http))//находим в полном списке
+        //                                        {
+        //                                            lst[ind].http = str_http;
+        //                                            //if (list_update_channels.Exist(x => x.Equals(ind))) 
+        //                                            if (ct_update!=0 && (list_update_channels.Find(x => x.Equals(ind)) == ind))
+        //                                            {
+        //                                                ingore = true;   //этот канал уже был обновлен             
+        //                                            }
+        //                                            else
+        //                                            {
+        //                                                list_update_channels.Add(ind);
+        //                                                ct_update++;
+        //                                            }
 
-                                                    fl = true;
-                                                    replace_ok = true;
-                                                    break;
+        //                                            fl = true;
+        //                                            replace_ok = true;
+        //                                            break;
 
-                                                }
-                                                ind++;
+        //                                        }
+        //                                        ind++;
 
-                                            }
+        //                                    }
 
-                                            if (replace_ok) { break; }
-                                            break;
-                                        }
-                                        else
-                                        {
+        //                                    if (replace_ok) { break; }
+        //                                    break;
+        //                                }
+        //                                else
+        //                                {
                                         
-                                        }
-                                        index++;
+        //                                }
+        //                                index++;
 
-                                      }
-                                      if (ingore) ct_ignore_update++;
-                                      if (!fl) { }// MessageBox.Show("не обновленно " + newname);
-                                }
+        //                              }
+        //                              if (ingore) ct_ignore_update++;
+        //                              if (!fl) { }// MessageBox.Show("не обновленно " + newname);
+        //                        }
                             
 
-                            }
+        //                    }
 
-                        }///чтение фала
-
-
-                    }
-
-            }
-            catch { }
-
-            if (mode_work_with_links)
-            {
-                while (wait_download) Thread.Sleep(100);
-                mode_work_with_links = false;
-                if (flag_adding_ok)
-                {
-                    parse_temp_file(); return;
-                }
-            }//рекурсия
+        //                }///чтение фала
 
 
-        exit_open:
-            string addstr = "";
-            if (!flag_adding_ok) dialog.Show("Каналы не обнаружены");
-            if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
-            if (ct_ignore_update != 0) addstr= "\nПропущено дублирование " + ct_ignore_update.ToString();
-            if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов"+ addstr);
-            loc.openfile = false;
-        }
+        //            }
 
-        bool linkIsBad(string line)
-        {
-            if (line == "" || line == " ") return true;
-            if (new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) return true;
-            return false;
+        //    }
+        //    catch { }
 
-            //!(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
-            //                        !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
-            //                        !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
-            //                        !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
-            //                          regex_link.Match(line).Succe
-        }
-
-        bool Comparehttp(string s1, string s2)
-        {
-            string[] split1 = s1.Split(new Char[] { ':' });
-            string[] split2 = s2.Split(new Char[] { ':' });
-            if (split1[0] == split2[0]) return true;
-            return false;
-        }
+        //    if (mode_work_with_links)
+        //    {
+        //        while (wait_download) Thread.Sleep(100);
+        //        mode_work_with_links = false;
+        //        if (flag_adding_ok)
+        //        {
+        //            parse_temp_file(); return;
+        //        }
+        //    }//рекурсия
 
 
+        //exit_open:
+        //    string addstr = "";
+        //    if (!flag_adding_ok) dialog.Show("Каналы не обнаружены");
+        //    if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
+        //    if (ct_ignore_update != 0) addstr= "\nПропущено дублирование " + ct_ignore_update.ToString();
+        //    if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов"+ addstr);
+        //    loc.openfile = false;
+        //}
 
-        List<string> bufferstring = new List<string>();
-        void add_file_to_memory(string name)
-        {
-            using (StreamReader sr = new StreamReader(name))
-            {
-                while (!sr.EndOfStream)
-                {
-                    try
-                    {
-                        bufferstring.Add(sr.ReadLine());
-                    }
-                    catch(Exception ex) { MessageBox.Show(ex.ToString()); }
-                }
-            }
-        }
+        //bool linkIsBad(string line)
+        //{
+        //    if (line == "" || line == " ") return true;
+        //    if (new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) return true;
+        //    return false;
 
-        void add_memoty_to_file(string name)
-        {
-            using (StreamWriter sr = new StreamWriter(name))
-            {
-                foreach (string s in bufferstring)
-                {
-                    sr.Write(s);
-                    sr.WriteLine();
-                }
-            }
-        }
+        //    //!(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //    //                        !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //    //                        !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //    //                        !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
+        //    //                          regex_link.Match(line).Succe
+        //}
+
+        //bool Comparehttp(string s1, string s2)
+        //{
+        //    string[] split1 = s1.Split(new Char[] { ':' });
+        //    string[] split2 = s2.Split(new Char[] { ':' });
+        //    if (split1[0] == split2[0]) return true;
+        //    return false;
+        //}
+
+
+        //List<string> bufferstring = new List<string>();
+        //void add_file_to_memory(string name)
+        //{
+        //    using (StreamReader sr = new StreamReader(name))
+        //    {
+        //        while (!sr.EndOfStream)
+        //        {
+        //            try
+        //            {
+        //                bufferstring.Add(sr.ReadLine());
+        //            }
+        //            catch(Exception ex) { MessageBox.Show(ex.ToString()); }
+        //        }
+        //    }
+        //}
+
+        //void add_memoty_to_file(string name)
+        //{
+        //    using (StreamWriter sr = new StreamWriter(name))
+        //    {
+        //        foreach (string s in bufferstring)
+        //        {
+        //            sr.Write(s);
+        //            sr.WriteLine();
+        //        }
+        //    }
+        //}
 
 
     }//class

@@ -51,12 +51,21 @@ namespace ListViewDragDropManager
         public static ObservableCollection<Task> CreateTasks()
         {
             data.list = new ObservableCollection<Task>();
-            int ct_pl = 0;
+            //int ct_pl = 0;
 
+            if (IPTVman.Model.data.mode_radio_from_select)
+            {
+                foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTselect)
+                {
+                    data.list.Add(new Task(TaskDuration.VeryShort, s.name, "", s.ExtFilter, s.group_title, s.http, s.ping, s.logo, s.tvg_name, false));
+                   // ct_pl++;
+                }
+            }
+            else
             foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTbase)
             {
                 data.list.Add(new Task(TaskDuration.VeryShort,  s.name, "", s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
-                ct_pl++;
+                //ct_pl++;
             }
             return data.list;
 		}

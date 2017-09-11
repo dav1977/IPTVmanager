@@ -28,8 +28,8 @@ namespace IPTVman.ViewModel
             SETTING.ReadFromXML();
 
             ViewModelMain.Event_UpdateLIST += new Action<int>(updateLIST);
-  
-           // use a timer to periodically update the memory usage
+
+            // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += timer_Tick;
@@ -55,7 +55,7 @@ namespace IPTVman.ViewModel
         //    }
         //}
         private object threadLock = new object();
-        void updateLIST(int size)
+        void updateLIST(int type)
         {
             start_update = true;    
         }
@@ -161,8 +161,8 @@ namespace IPTVman.ViewModel
         private void Button_ClickMOVE(object sender, RoutedEventArgs e)
         {
 
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+            if (ViewModelMain.myLISTbase == null) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
             if (win2 != null) return;
 
             win2 = new Window2
@@ -184,8 +184,8 @@ namespace IPTVman.ViewModel
 
         private void Button_ClickMOVEDrag(object sender, RoutedEventArgs e)
         {
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+            if (ViewModelMain.myLISTbase == null) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
 
             foreach (Window win in Application.Current.Windows)
             {
@@ -207,8 +207,8 @@ namespace IPTVman.ViewModel
         }
         private void Button_ClickRadio(object sender, RoutedEventArgs e)
         {
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+            if (ViewModelMain.myLISTbase == null) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
 
             foreach (Window win in Application.Current.Windows)
             {
@@ -217,6 +217,7 @@ namespace IPTVman.ViewModel
                     return;
                 }
             }
+            IPTVman.Model.data.mode_radio_from_select = false;
             new ListViewDragDropManager.WindowRadio
             {
                 //DataContext = new ViewModelWindow2(tb1.Text),
@@ -401,6 +402,11 @@ namespace IPTVman.ViewModel
             ListViewItem item = MYLIST.ItemContainerGenerator.ContainerFromItem(MYLIST.SelectedItem) as ListViewItem;
 
             item.Focus();
+        }
+
+        private void text_title_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

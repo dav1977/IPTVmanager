@@ -57,7 +57,7 @@ namespace IPTVman.ViewModel
                 {
                     result = client.GetPlaying(lst);
                     if (event_done != null) event_done(result);
-
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException ex)
                 {

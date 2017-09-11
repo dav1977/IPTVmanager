@@ -126,7 +126,7 @@ namespace IPTVman.ViewModel
         {
             myLISTbase.Clear();
 
-            foreach (var c in IPTVman.ViewModel.ViewModelMain.myLISTdub)
+            foreach (var c in ViewModelMain.myLISTdub)
             {
                     myLISTbase.Add((ParamCanal)c.Clone());
             }
@@ -268,6 +268,7 @@ namespace IPTVman.ViewModel
                 try
                 {
                     Move_save();
+                    tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException e)
                 {

@@ -92,10 +92,15 @@ namespace IPTVman.ViewModel
             loc = true;
             sec = s;
 
-            string bitr = "?";
-            message2_win_pop = WinPOP._bass.get_tags(data.url, ref bitr);
-            if (bitr == "?" || bitr == "0")  message1_win_pop = mes;
-            else message1_win_pop = mes + "   [" + bitr + " кбит/с ]";
+            try
+            {
+                string bitr = "?";
+                message2_win_pop = WinPOP._bass.get_tags(data.url, ref bitr);
+                if (bitr == "?" || bitr == "0") message1_win_pop = mes;
+                else message1_win_pop = mes + "   [" + bitr + " кбит/с ]";
+
+            }
+            catch { }
 
             p = new WindowPOP()
             {

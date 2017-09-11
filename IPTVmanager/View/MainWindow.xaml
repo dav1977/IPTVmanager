@@ -151,7 +151,7 @@
 
                 <!-- </ScrollViewer>-->
                 <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,111,-42" TextChanged="tb1_TextChanged" Width="102" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="21" Grid.Column="2" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="213,-104,0,0"  Width="519" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="231,-101,0,0"  Width="519" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3" TextChanged="text_title_TextChanged"/>
                 <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-114,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best1_TextChanged"/>
                 <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-87,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best2_TextChanged"/>
 
@@ -435,7 +435,7 @@
         </Button>
         <Button x:Name="sizeinc" Content="+" HorizontalAlignment="Left" Margin="11,119,0,0" VerticalAlignment="Top" Width="20" Click="sizeinc_Click" Height="18" RenderTransformOrigin="4.062,3"/>
         <Button x:Name="sizedec" Content="-" Grid.Column="1" HorizontalAlignment="Left" Margin="6,119,0,0" VerticalAlignment="Top" Width="20" Click="sizedec_Click" Height="18"/>
-        <Button Content="R" Command="{Binding key_radio}"  CommandParameter=""  Margin="562,51,0,0" Focusable="False" Width="29" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="3" Click="Button_ClickRadio">
+        <Button Content="R" Command="{Binding key_radio}"  CommandParameter=""  Margin="160,49,0,0" Focusable="False" Width="29" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Grid.Column="1" Click="Button_ClickRadio" Grid.ColumnSpan="2">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>

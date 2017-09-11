@@ -17,7 +17,7 @@ namespace IPTVman.Model
         
                 
         }
-
+  
         string _name;
         public string name
         {

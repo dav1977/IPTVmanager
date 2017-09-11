@@ -57,6 +57,7 @@ namespace IPTVman.ViewModel
 
         public static List<ParamCanal> myLISTfull;//ДО ФИЛЬТРА
 
+        public static List<ParamCanal> myLISTselect;//ОКНО ВЫБОРКИ
 
         public static List<ParamCanal> myLISTdub;//ДО ФИЛЬТРА
 
@@ -95,7 +96,8 @@ namespace IPTVman.ViewModel
             Update_Collection.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
-           
+            FileWork.Event_UpdateLIST += new Action<typefilter>(Update_collection);
+
             ini_command();
             CreateTimer1(500);//500 мс
             CreateTMR(1);// 1sec

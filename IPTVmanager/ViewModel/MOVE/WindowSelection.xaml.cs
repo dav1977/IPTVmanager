@@ -15,19 +15,21 @@ using WPF.JoshSmith.ServiceProviders.UI;
 using System.Windows.Diagnostics;
 using System.Threading.Tasks;
 using System.Threading;
+using IPTVman.Model;
+using IPTVman.ViewModel;
 
 namespace ListViewDragDropManager
 {
     /// <summary>
     /// Demonstrates how to use the ListViewDragManager class.
     /// </summary>
-    public partial class WindowMOVE : Window
+    public partial class WindowSELECT : Window
     {
         ListViewDragDropManager<Task> dragMgr;
         ListViewDragDropManager<Task> dragMgr2;
-        public static event IPTVman.ViewModel.Delegate_UpdateCollection Event_UpdateCollection;
+        public static event Delegate_UpdateCollection Event_UpdateCollection;
 
-        public WindowMOVE()
+        public WindowSELECT()
         {
             InitializeComponent();
             this.Loaded += WindowMOVE_Loaded;
@@ -155,11 +157,14 @@ namespace ListViewDragDropManager
         {
         }
 
+        string title = "selected";
         //save
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            IPTVman.ViewModel.Update_Collection.SAVE_MOVE();
-            this.Close();
+            FileWork _file = new FileWork();
+            CONVERT();
+            _file.SAVE(ViewModelMain.myLISTselect, "selected");
+            _file = null;
         }
 
         private void button_ClickCANCEL(object sender, RoutedEventArgs e)
@@ -172,36 +177,125 @@ namespace ListViewDragDropManager
         {
             listView.FontSize += 1;
             if (listView.FontSize > 56) listView.FontSize = 56;
+
+            listView2.FontSize += 1;
+            if (listView2.FontSize > 56) listView2.FontSize = 56;
         }
 
         private void dec_Click(object sender, RoutedEventArgs e)
         {
             listView.FontSize -= 1;
             if (listView.FontSize < 8) listView.FontSize = 8;
+            listView2.FontSize -= 1;
+            if (listView2.FontSize < 8) listView2.FontSize = 8;
         }
 
-        private void buttonSEL_Click(object sender, RoutedEventArgs e)
+        private void button_ADD(object sender, RoutedEventArgs e)
         {
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase == null) return;
-            if (IPTVman.ViewModel.ViewModelMain.myLISTbase.Count == 0) return;
+
+            if (Wait.IsOpen) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
+            if (IPTVman.Model.loc.openfile) return;
+            IPTVman.Model.loc.openfile = true;
+            //IPTVman.Model.CollectionisCreate();
+            if (ViewModelMain.myLISTselect == null)
+                ViewModelMain.myLISTselect = new List<ParamCanal>();
+
+            FileWork _file = new FileWork();
+            _file.LOAD(ViewModelMain.myLISTselect, title, false, false);
+
+            BACK();
+
+            title = _file.text_title;
+            _file = null;
+            IPTVman.Model.loc.openfile = false;
+
+        }
+
+        void CONVERT()
+        {
+            if (ViewModelMain.myLISTselect == null)
+                ViewModelMain.myLISTselect = new List<IPTVman.Model.ParamCanal>();
+            ViewModelMain.myLISTselect.Clear();
+
+            int size = listView2.Items.Count;
+            for (int i = 0; i < size; i++)
+            {
+                ListViewDragDropManager.Task p = (ListViewDragDropManager.Task)listView2.Items[i];
+                IPTVman.Model.ParamCanal canal = new IPTVman.Model.ParamCanal
+                {
+                    name = p.Name,
+                    ExtFilter = "",
+                    group_title = "",
+                    logo = "",
+                    http = p.Http,
+                    tvg_name = "",
+                    ping = "",
+                };
+
+                ViewModelMain.myLISTselect.Add(canal);
+            }
+        }
+
+
+        void BACK()
+        {
+         
+                if (ViewModelMain.myLISTselect == null) return;
+
+            try
+            {
+                foreach (var can in ViewModelMain.myLISTselect)
+                {
+                    listView2.Dispatcher.Invoke(new Action(() =>
+                    {
+                        //listView2.ItemsSource  
+                        //(new Task(TaskDuration.VeryShort, can.name, "", "",
+                         //               "", can.http, "", "", "", false));
+
+
+                    }));
+
+                }
+                listView2.Dispatcher.Invoke(new Action(() =>
+                {
+                    listView2.Items.Refresh();
+                }));
+            }
+            catch (Exception ex)
+            {
+               dialog.Show("Ошибка открытия " + ex.Message.ToString());
+            }
+
+        }
+
+
+        private void Button_ClickRadio(object sender, RoutedEventArgs e)
+        {
+            if (ViewModelMain.myLISTbase == null) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
+            int size = listView2.Items.Count;
+            if (size == 0) return;
 
             foreach (Window win in Application.Current.Windows)
             {
-                if (win.Name == "win2iptvMANAGER4")
+                if (win.Name == "win7radio")
                 {
                     return;
                 }
             }
-            new ListViewDragDropManager.WindowSELECT
+          
+            CONVERT();
+
+            IPTVman.Model.data.mode_radio_from_select = true;
+            new ListViewDragDropManager.WindowRadio
             {
                 //DataContext = new ViewModelWindow2(tb1.Text),
-                Title = "ВЫБОРКА",
+                Title = "Интернет РАДИО",
                 Topmost = true,
                 //WindowStyle = WindowStyle.ToolWindow,
-                Name = "win2iptvMANAGER4"
+                Name = "win7radio"
             }.Show(); ;
-
-            this.Close();
         }
     }
 }
