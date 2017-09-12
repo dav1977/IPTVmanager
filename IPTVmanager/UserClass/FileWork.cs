@@ -548,7 +548,11 @@ namespace IPTVman.ViewModel
 
 
 
-
+        /// <summary>
+        /// from clipboard
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <param name="str"></param>
         public void OPEN_FROM_CLIPBOARD(List<IPTVman.Model.ParamCanal> lst, string[] str)
         {
 
@@ -595,108 +599,123 @@ namespace IPTVman.ViewModel
                 if (match.Success) { text_title = s; break; }
             }
 
+            bool need_link = false;
             // dialog.Show(str.Length.ToString());
             int ct_dublicat = 0;
             int index = 0;
             bool flag_adding = false;
+
+            string newname = "";
+            string str_ex = "", str_name="", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
             //ПОИСК каналов
             foreach (var line in str)
             {
                 index++;
 
-                string newname = "";
-                string str_ex = "", str_name = "", str_http = "", str_gt = "", str_logo = "", str_tvg = "";
-
-                if (line == null || line == "") continue;
-
-                match = regex1.Match(line);
-                ///========== разбор EXINF
-                if (match.Success)
+                //поиск ссылки
+                if (need_link)
                 {
-                    Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
-                    Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
-                    Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
-                    Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
-
-                    string[] split = line.Split(new Char[] { '"' });
-
-                    str_name = "";
-                    str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
-
-                    if (split.Length == 0)
-                    {
-                        newname = line;
-                    }
-                    else
-                    {
-
-                        split = line.Split(new Char[] { ',' });
-
-                        if (split.Length < 1) { dialog.Show("Буфер пустой"); return; }
-
-                        if (split.Length <= 2) str_name = split[split.Length - 1];
-
-                        //int i = 0;
-                        //for (i = 0; i < split.Length; i++)
-                        //{
-                        //    string s = split[i];
-                        //    //------------- разбор строки EXINF
-                        //    if (str_ex == "!") str_ex = s;
-                        //    if (str_gt == "!") str_gt = s;
-                        //    if (str_logo == "!") str_logo = s;
-                        //    if (str_tvg == "!") str_tvg = s;
-
-
-                        //    if (i >= split.Length - 1) { str_name = s; }
-
-                        //    match = regex3.Match(s);
-                        //    if (match.Success)
-                        //    {
-                        //        str_ex = "!";
-                        //    }
-
-                        //    match = regex4.Match(s);
-                        //    if (match.Success)
-                        //    {
-                        //        str_gt = "!";
-                        //    }
-
-                        //    match = regex5.Match(s);
-                        //    if (match.Success)
-                        //    {
-                        //        str_logo = "!";
-                        //    }
-
-                        //    match = regex6.Match(s);
-                        //    if (match.Success)
-                        //    {
-                        //        str_tvg = "!";
-                        //    }
-
-
-                        //}//for
-
-                        if (str_name != "")
-                            if (str_name.IndexOf('\r') != -1)
-                                newname = str_name.Substring(0, str_name.Length - 1);//remove перевода строки
-                            else newname = str_name;
-                    }
                     try
                     {
-                        str_http = str[index].Substring(0, str[index].Length - 1);//remove перевода строки
+                        str_http = line.Trim();// str[index].Substring(0, str[index].Length - 1);//remove перевода строки
+                        if (str_http == "") { continue; }
                     }
-                    catch { dialog.Show("в буфере данных не найдено"); }
-
-
+                    catch { }
                 }
+                else { str_name = ""; newname = ""; }
 
+                if (!need_link)
+                {
+
+                    if (line == null || line == "" || line == "\r" || line == "\n") continue;
+                    string lineNEW = line.Replace("\r", "");
+                    lineNEW = lineNEW.Replace("\n", "");
+
+
+                    match = regex1.Match(lineNEW);
+                    ///========== разбор EXINF
+                    if (match.Success)
+                    {
+                        Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
+                        Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
+                        Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);
+                        Regex regex6 = new Regex("tvg-name=", RegexOptions.IgnoreCase);
+
+                        string[] split = lineNEW.Split(new Char[] { '"' });
+
+                        str_name = "";
+                        str_ex = ""; str_name = ""; str_http = ""; str_gt = ""; str_logo = ""; str_tvg = "";
+
+                        if (split.Length == 0)
+                        {
+                            newname = lineNEW;
+                        }
+                        else
+                        {
+
+                            split = lineNEW.Split(new Char[] { ',' });
+
+                            if (split.Length < 1) { dialog.Show("Буфер пустой"); return; }
+
+                            if (split.Length <= 2) str_name = split[split.Length - 1];
+
+
+                            if (str_name != "") newname = str_name;
+                            need_link = true; continue;
+
+
+                            //int i = 0;
+                            //for (i = 0; i < split.Length; i++)
+                            //{
+                            //    string s = split[i];
+                            //    //------------- разбор строки EXINF
+                            //    if (str_ex == "!") str_ex = s;
+                            //    if (str_gt == "!") str_gt = s;
+                            //    if (str_logo == "!") str_logo = s;
+                            //    if (str_tvg == "!") str_tvg = s;
+
+
+                            //    if (i >= split.Length - 1) { str_name = s; }
+
+                            //    match = regex3.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_ex = "!";
+                            //    }
+
+                            //    match = regex4.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_gt = "!";
+                            //    }
+
+                            //    match = regex5.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_logo = "!";
+                            //    }
+
+                            //    match = regex6.Match(s);
+                            //    if (match.Success)
+                            //    {
+                            //        str_tvg = "!";
+                            //    }
+
+
+                            //}//for
+                        }
+
+
+                    }
+                    else continue;
+                }
+                need_link = false;
+  
                 ParamCanal item = null;
                 if (newname == "") continue;
 
                 item = lst.Find(x =>
                  (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
-
-                // dialog.Show(str_http);
 
                 if (newname.Trim() != "" && str_http.Trim() != "")
                 {
