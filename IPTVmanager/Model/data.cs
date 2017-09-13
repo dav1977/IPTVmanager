@@ -13,6 +13,7 @@ namespace IPTVman.Model
     /// </summary>
     public static class loc
     {
+        public static bool autoping = false;
         public static bool collection = false;
         public static bool openfile = false;
         public static bool finddublic = false;

@@ -116,6 +116,7 @@ namespace IPTVman.ViewModel
             {
              //   this.Hide();
                 this.Title = "СКАННЕР РАДИО ТРЭКОВ";
+                if (!initWCF()) this.Close();
             }
             if (data.mode_radio) data.title = IPTVman.ViewModel.data.name;
 
@@ -194,6 +195,16 @@ namespace IPTVman.ViewModel
             catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка библиотеки vlc " + ex.Message); }
         }
 
+        bool initWCF()
+        {
+            try
+            {
+                WCFSERVER _server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
+            }
+            catch { return false;  }
+            return true;
+        }
+
         void scan()
         {
                 //List<string> datals = new List<string>();
@@ -202,10 +213,7 @@ namespace IPTVman.ViewModel
                 //if (data == null) return;
                 //List<string> savedata = new List<string>();
 
-                WCFSERVER _server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
-
-
-                data.scanURL = "waiting";
+                data.scanURL = "ready to scan...";
                 int ct = 0;
                 while (true)
                 {
@@ -236,8 +244,7 @@ namespace IPTVman.ViewModel
 
         public void PlayVLC(string link)
         {
-            taskPLAY = Task.Factory.StartNew(() =>
-            {
+           
                 try
                 {
                     if (m_player == null)
@@ -257,10 +264,13 @@ namespace IPTVman.ViewModel
                     m_player.Open(m_media);
                     m_media.Parse(true);
                     reset();
+                taskPLAY = Task.Factory.StartNew(() =>
+                {
                     m_player.Play();
-                }
+                });
+        }
                 catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка vlc " + ex.Message); }
-            });
+            
         }
 
         void reset()
@@ -303,7 +313,7 @@ namespace IPTVman.ViewModel
                     cts1 = new CancellationTokenSource();
                     cancellationToken = cts1.Token;//для task1
                     //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                    task1 = System.Threading.Tasks.Task.Run(() =>
+                    task1 = Task.Run(() =>
                     {
                         var tcs = new TaskCompletionSource<string>();
                         try

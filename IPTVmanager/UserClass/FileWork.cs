@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Collections.ObjectModel;
-using IPTVman.Model;
-using IPTVman.Helpers;
-using System.IO;
-using System.Windows;
-using Microsoft.Win32;
-using System.Threading;
-using System.Text.RegularExpressions;
 using System.Diagnostics;
-using System.Net;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using WPF.JoshSmith.ServiceProviders.UI;
+using System.Windows.Diagnostics;
 using System.Threading.Tasks;
-using System.Net.Sockets;
-using System.Web;
-//using System.Diagnostics;
+using System.Threading;
+using System.IO;
+using IPTVman.Model;
+using System.Timers;
+using System.Text.RegularExpressions;
+using Microsoft.Win32;
+using System.Net;
 
 namespace IPTVman.ViewModel
 {
@@ -58,10 +63,15 @@ namespace IPTVman.ViewModel
 
         }
 
-
         bool chek1=false, chek2=false;
         public string text_title = "";
-
+        /// <summary>
+        /// куда, заголовок,  флаг только обновлять, флаг обрезать скобки
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <param name="_text_title"></param>
+        /// <param name="_chek1"></param>
+        /// <param name="_chek2"></param>
         public async void LOAD(List<IPTVman.Model.ParamCanal> lst, string _text_title, bool _chek1, bool _chek2)
         {
             text_title = _text_title;
@@ -76,58 +86,42 @@ namespace IPTVman.ViewModel
             {
                 name = openFileDialog.FileName;
             }
-            else return;
+            else { loc.openfile = false; return; }
 
-            try {
-                await AsyncOPEN(lst, name);
-            }
-            catch (Exception e)
-            {
-                dialog.Show("ОШИБКА парсинга файла " + e.Message.ToString());
-            }
-
+            await AsyncOPEN(lst, name);
         }
 
         public async void LOAD(List<IPTVman.Model.ParamCanal> lst, string namefile)
         {
-            try {
-                await AsyncOPEN(lst, namefile);
-               
-                dialog.dialog_enable = false;
-            }
-            catch (Exception e)
-            {
-                dialog.Show("ОШИБКА парсинга файла " + e.Message.ToString());
-            }
+            await AsyncOPEN(lst, namefile);
         }
 
 
 
-        public Task<string> AsyncOPEN(List<IPTVman.Model.ParamCanal> lst, string name)
+        /// <summary>
+        /// событие после выполнения задачи
+        /// </summary>
+        public event Action Task_Completed;
+        public async Task<string> AsyncOPEN(List<IPTVman.Model.ParamCanal> lst, string name)
         {
-
+            var tcs = new TaskCompletionSource<string>();
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            return Task.Run(() =>
-            {
-                var tcs = new TaskCompletionSource<string>();
+            var taskload = Task.Run(() =>
+            {               
                 try
                 {
                     Wait.Create("Идет анализ файла", true);
-
                     mode_work_with_links = true;
                     bufferstring.Clear();
-                    if (name != "") PARSING_FILE(lst, name);
+                    if (name != "")  PARSING_FILE(lst, name);
                     else loc.openfile = false;
-
+                  
                     Thread.Sleep(300);
-
                     Wait.Close();
                     if (Event_UpdateLIST != null) Event_UpdateLIST(typefilter.normal);
                     Wait.Close();
-
                     bufferstring.Clear();
-
-                    tcs.SetResult("ok");
+                    tcs.SetResult("ok");                 
                 }
                 catch (OperationCanceledException e)
                 {
@@ -139,8 +133,21 @@ namespace IPTVman.ViewModel
                 }
                 return tcs.Task;
             });
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            try
+            {
+                var result = await taskload;      
+                if (Task_Completed != null) Task_Completed();            
+            }
+            catch (Exception ex)
+            {
+                dialog.Show("ОШИБКА-ПАРСИНГА ФАйЛА " + ex.Message.ToString());
+            }         
+            return tcs.ToString();
         }
+
+
+
 
         void Parsing_link(string s)
         {
@@ -149,7 +156,7 @@ namespace IPTVman.ViewModel
             try
             {
                 string path = System.IO.Path.GetTempPath() + tempname;
-                WebClient webClient = new WebClient();
+                System.Net.WebClient webClient = new WebClient();
                 Wait.Create("Загружается\n" + ss, false);
                 webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
                 webClient.DownloadFileAsync(new Uri(ss), path);

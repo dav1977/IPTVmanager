@@ -40,7 +40,8 @@ namespace ListViewDragDropManager
             CreateTimer1(300);
             IPTVman.ViewModel.ScannerRadio.event_done += scan_done;
             //listView.SelectionMode = SelectionMode.Multiple;
-            init_scan_process();
+
+            if (num_open_process()==0)  init_scan_process();
         }
 
         public void CreateTimer1(int ms)
@@ -96,7 +97,7 @@ namespace ListViewDragDropManager
             header = this;
             INIT();
 
-            this.listView.ItemsSource = data.tasks;//
+            this.listView.ItemsSource = dataDD.tasks;//
             this.listView2.ItemsSource = new ObservableCollection<Task>();
 
             // This is all that you need to do, in order to use the ListViewDragManager.
@@ -119,7 +120,7 @@ namespace ListViewDragDropManager
             // be bound to an ObservableCollection, where the collection's
             // type parameter matches the ListViewDragManager's type
             // parameter (in this case, both have a type parameter of Task).
-           data.tasks = Task.CreateTasks();  
+            dataDD.tasks = Task.CreateTasks();  
         }
 
         #endregion // WindowMOVE_Loaded
@@ -204,8 +205,6 @@ namespace ListViewDragDropManager
 
         #endregion // OnListViewDrop
 
-        
-
         //save
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -261,7 +260,25 @@ namespace ListViewDragDropManager
 
         }
 
+        void zap()
+        {
+            string prof = "  --- ";
+            int ct = 0;
+            foreach (var line in dataDD.tasks)
+            {
+                if (!prefix[ct])
+                {
+                    prefix[ct] = true;
+                    if (line.Playing != "") dataDD.tasks[ct].Playing = prof + line.Playing;
+                }
+                ct++;
+            }
+            listView.Dispatcher.Invoke(new Action(() =>
+            {
+                listView.Items.Refresh();
+            }));
 
+        }
         
         bool waiting_result=false;
         bool need_stop_scan = false;
@@ -281,7 +298,7 @@ namespace ListViewDragDropManager
             waiting_result = true;
             Thread.Sleep(200);
             int num = listView.SelectedIndex;
-
+            bool cycen = (bool)cyc.IsChecked;
            
             key = new int[listView.Items.Count + 1];
             if (scanner == null)
@@ -292,21 +309,7 @@ namespace ListViewDragDropManager
             else
             { //повторный скан
                 if (lock_scan) return;
-                string prof = "  ---";
-                int ct = 0;
-                foreach (var line in data.tasks)
-                {
-                    if (!prefix[ct])
-                    {
-                        prefix[ct] = true;
-                        if (line.Playing!="")  data.tasks[ct].Playing = prof + line.Playing;
-                    }
-                    ct++;
-                }
-                listView.Dispatcher.Invoke(new Action(() =>
-                {
-                    listView.Items.Refresh();
-                }));
+                zap();
             }
 
             if (lock_scan) return;
@@ -318,7 +321,7 @@ namespace ListViewDragDropManager
                 var tcs = new TaskCompletionSource<string>();
                 try
                 {
-                    cycscan(num);
+                    cycscan(num, cycen);
                     lock_scan = false;
                 }
                 catch (OperationCanceledException ex)
@@ -341,10 +344,17 @@ namespace ListViewDragDropManager
         }
   
         int current = 1;
-        void cycscan(int num)
+        /// <summary>
+        /// Cтарт сканирования num - с какой позиции  enabled_cyc - циклически
+        /// </summary>
+        /// <param name="num"></param>
+        void cycscan(int num, bool enabled_cyc)
         {
+            if (num_open_process() == 0) init_scan_process();
+            if (!enabled_cyc) current = 1;
            while (true)
            {
+                if (need_stop_scan) { break; }
                 byte max = 0;
                 scanner.clear();
                 int j = 0;
@@ -364,7 +374,7 @@ namespace ListViewDragDropManager
                     j++;
                 }
 
-                if (max == 0) { break; }
+                if (max == 0) { if (!enabled_cyc) break; else { Thread.Sleep(3000); zap();  current++; } }//циклически
 
                 waiting_result = true;
                 scanner.getPLAYING();
@@ -397,6 +407,14 @@ namespace ListViewDragDropManager
                     proc.WaitForExit();
                 }
             }
+        }
+
+        int num_open_process()
+        {
+            myProcesses = Process.GetProcessesByName(NAMEPLAYER);
+
+            return (myProcesses.Length);
+           
         }
 
         void init_scan_process()
@@ -438,10 +456,11 @@ namespace ListViewDragDropManager
             play.playerV = null;
         }
 
-        void scan_done(List<string> list)
+        void scan_done()
         {
+            if (scanner.result == null) return;
             int ct = 0;
-            foreach (var line in data.tasks)
+            foreach (var line in dataDD.tasks)
             {
                 for (int i = 0; i < scanner.result.Count-1; i++)
                 {
@@ -452,7 +471,7 @@ namespace ListViewDragDropManager
                         if (scanner.result[i + 2].ToString() == "") btr = "";
                         if (scanner.result[i + 2].ToString() == "0") btr = "";
                         if (scanner.result[i + 2].ToString() == "?") btr = "";
-                        data.tasks[ct].Playing = scanner.result[i + 1] + btr; 
+                        dataDD.tasks[ct].Playing = scanner.result[i + 1] + btr; 
                     } 
                 }
                 ct++;
@@ -478,16 +497,15 @@ namespace ListViewDragDropManager
 
         void exit()
         {
+            need_stop_scan = true;
+            Thread.Sleep(200);
+            if (scanner != null) scanner.CLOSE_SCANNER();
             try
             {
                 if (play.playerV != null) play.playerV.Kill();
             }
-            catch { }
-            need_stop_scan = true;
-
-            while (waiting_result) Thread.Sleep(100);
-            while (lock_scan) Thread.Sleep(100);
-
+            catch { }                
+            
             kill_process();
 
         }

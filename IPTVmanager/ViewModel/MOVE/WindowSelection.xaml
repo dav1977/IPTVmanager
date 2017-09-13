@@ -65,16 +65,16 @@
       ItemContainerStyle="{StaticResource ItemContStyle}"
       Margin="10,8,580,12" 
       Padding="2"
-      SelectionMode="Single" Grid.Row="1" Background="#FF787474" Foreground="#FF05050A"
+      SelectionMode="Single" Grid.Row="1" Background="#FF6C676E" Foreground="#FF05050A"
       
 >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="175" />
-                    <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="175" />
-                    <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="175" />
-                    <GridViewColumn Header="url" DisplayMemberBinding="{Binding Http}" Width="140" />
-                    <GridViewColumn Header="ping" DisplayMemberBinding="{Binding Ping}" Width="140" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="300" />
+                    <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="30" />
+                    <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="30" />
+                    <GridViewColumn Header="url" DisplayMemberBinding="{Binding Http}" Width="30" />
+                    <GridViewColumn Header="ping" DisplayMemberBinding="{Binding Ping}" Width="30" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -85,15 +85,15 @@
       ItemContainerStyle="{StaticResource ItemContStyle}"
       Margin="431,10,138,13" 
       Padding="2"
-      SelectionMode="Single" Background="#FF787474" Foreground="#FF05050A"
+      SelectionMode="Single" Background="#FF9C7C7C" Foreground="#FF05050A"
       >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="175" />
-                    <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="175" />
-                    <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="340" />
-                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Http}" Width="340" />
-                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Ping}" Width="180" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="300" />
+                    <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="30" />
+                    <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="30" />
+                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Http}" Width="30" />
+                    <GridViewColumn Header="ping" DisplayMemberBinding="{Binding Ping}" Width="30" />
                 </GridView>
             </ListView.View>
         </ListView>

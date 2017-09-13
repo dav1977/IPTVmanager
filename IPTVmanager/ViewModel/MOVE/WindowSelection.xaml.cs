@@ -28,6 +28,8 @@ namespace ListViewDragDropManager
         ListViewDragDropManager<Task> dragMgr;
         ListViewDragDropManager<Task> dragMgr2;
         public static event Delegate_UpdateCollection Event_UpdateCollection;
+        ObservableCollection<Task> tasks2;
+
 
         public WindowSELECT()
         {
@@ -54,7 +56,9 @@ namespace ListViewDragDropManager
             ObservableCollection<Task> tasks = Task.CreateTasks();
             this.listView.ItemsSource = tasks;//
 
-            this.listView2.ItemsSource = new ObservableCollection<Task>();
+
+            tasks2 = Task.CreateTasks2(null);
+            this.listView2.ItemsSource = tasks2;
 
             // This is all that you need to do, in order to use the ListViewDragManager.
             this.dragMgr = new ListViewDragDropManager<Task>(this.listView);
@@ -190,28 +194,33 @@ namespace ListViewDragDropManager
             if (listView2.FontSize < 8) listView2.FontSize = 8;
         }
 
+
+        FileWork _file;
         private void button_ADD(object sender, RoutedEventArgs e)
         {
-
             if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (IPTVman.Model.loc.openfile) return;
-            IPTVman.Model.loc.openfile = true;
-            //IPTVman.Model.CollectionisCreate();
+            loc.openfile = true;
             if (ViewModelMain.myLISTselect == null)
                 ViewModelMain.myLISTselect = new List<ParamCanal>();
 
-            FileWork _file = new FileWork();
-            _file.LOAD(ViewModelMain.myLISTselect, title, false, false);
-
-            BACK();
-
-            title = _file.text_title;
-            _file = null;
-            IPTVman.Model.loc.openfile = false;
-
+            _file = new FileWork();
+            _file.Task_Completed += _file_Task_Completed;
+            _file.LOAD(ViewModelMain.myLISTselect, title, false, false);           
         }
 
+        private void _file_Task_Completed()
+        {
+            BACK();
+            title = _file.text_title;
+            _file = null;
+            loc.openfile = false;
+        }
+
+        /// <summary>
+        /// заполнение list данными из listView
+        /// </summary>
         void CONVERT()
         {
             if (ViewModelMain.myLISTselect == null)
@@ -237,36 +246,21 @@ namespace ListViewDragDropManager
             }
         }
 
-
+        /// <summary>
+        /// заполнение listView из list
+        /// </summary>
         void BACK()
-        {
-         
-                if (ViewModelMain.myLISTselect == null) return;
+        {      
+            if (ViewModelMain.myLISTselect == null) return;
 
-            try
-            {
-                foreach (var can in ViewModelMain.myLISTselect)
-                {
-                    listView2.Dispatcher.Invoke(new Action(() =>
-                    {
-                        //listView2.ItemsSource  
-                        //(new Task(TaskDuration.VeryShort, can.name, "", "",
-                         //               "", can.http, "", "", "", false));
-
-
-                    }));
-
-                }
+                tasks2= Task.CreateTasks2(ViewModelMain.myLISTselect);
+                listView2.ItemsSource = tasks2;
+              
                 listView2.Dispatcher.Invoke(new Action(() =>
                 {
+                    
                     listView2.Items.Refresh();
                 }));
-            }
-            catch (Exception ex)
-            {
-               dialog.Show("Ошибка открытия " + ex.Message.ToString());
-            }
-
         }
 
 

@@ -48,14 +48,13 @@ namespace IPTVman.ViewModel
             cancellationToken = cts1.Token;//для task1
             try
             {
-                string rez = await Replace(cancellationToken);
+                string rez = await Replace(cancellationToken);               
             }
             catch (Exception e)
             {
                 dialog.Show("ОШИБКА замены " + e.Message.ToString());
             }
-            loc = false;
-            if (Event_Waiting != null) Event_Waiting(false);
+            
         }
 
         async Task<string> Replace(CancellationToken Token)
@@ -96,14 +95,18 @@ namespace IPTVman.ViewModel
 
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-            try { await task1; }
+            try
+            {
+                await task1;
+                task1.Dispose();
+                task1 = null;
+                loc = false;
+                if (Event_Waiting != null) Event_Waiting(false);
+            }
             catch (Exception e)
             {
                 dialog.Show("ОШИБКА замены " + e.Message.ToString());
-            }
-            task1.Dispose();
-            task1 = null;
+            }          
             return "";
         }
 

@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Windows;
 using System.Threading;
 using System.Windows.Threading;
-
+using IPTVman.Model;
 
 namespace IPTVman.ViewModel
 {
@@ -19,7 +19,7 @@ namespace IPTVman.ViewModel
     {
         List<string> lst= new List<string>();
 
-        public static event Action<List<string>> event_done;
+        public static event Action event_done;
         public List<string> result = new List<string>();
 
         // MemoryFile  m = new MemoryFile();
@@ -40,14 +40,17 @@ namespace IPTVman.ViewModel
             return lst.Count;
         }
 
+        public void CLOSE_SCANNER()
+        {
+            //Thread.Sleep(200);   
+        }
+
         Task tasksc;
         public static CancellationTokenSource cts1 = new CancellationTokenSource();
         public static CancellationToken cancellationToken;
 
         public async void getPLAYING()
-        {
-           // List<string> rez= new List<string>();
-            
+        {          
             cancellationToken = cts1.Token;//для task1
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             tasksc = Task.Run(() =>
@@ -56,7 +59,7 @@ namespace IPTVman.ViewModel
                 try
                 {
                     result = client.GetPlaying(lst);
-                    if (event_done != null) event_done(result);
+                    if (event_done != null) event_done();
                     tcs.SetResult("ok");
                 }
                 catch (OperationCanceledException ex)
@@ -72,12 +75,10 @@ namespace IPTVman.ViewModel
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             try { await tasksc; }
-            catch (Exception ex)
+            catch { }// (Exception ex)
             {
-                System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  getPLAYING " + ex.Message.ToString());
+                //System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  getPLAYING " + ex.Message.ToString());
             }
-            if (cts1 != null) cts1.Cancel();
-
             return;
         }
         //public void save()

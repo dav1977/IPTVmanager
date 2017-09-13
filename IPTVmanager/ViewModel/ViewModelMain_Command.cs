@@ -129,14 +129,16 @@ namespace IPTVman.ViewModel
             Wait.Create("Идет заполнение ... ", true);
 
             cancellationToken = cts1.Token;//для task1
-            try { await AsyncSetBest(cancellationToken); }
+            try
+            {
+                await AsyncSetBest(cancellationToken);
+                Wait.Close();
+                Update_collection(typefilter.last);
+            }
             catch (Exception e)
             {
                 dialog.Show("ОШИБКА SetBest " + e.Message.ToString());
             }
-            Wait.Close();
-            Update_collection(typefilter.last);
-
         }
 
         public Task<string> AsyncSetBest(CancellationToken cts)
@@ -205,7 +207,7 @@ namespace IPTVman.ViewModel
         /// AUTO PING
         /// </summary>
         /// <param name="parameter"></param>
-        void key_AUTOPING(object parameter)
+        async void key_AUTOPING(object parameter)
         {
             if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
@@ -217,9 +219,7 @@ namespace IPTVman.ViewModel
             _pingPREPARE = new PING_prepare(_ping);
 
             ap = new AUTOPING(_ping, _pingPREPARE);
-            ap.start();
-
-
+          
             winap = new WindowPING
             {
                 Title = "АВТО ПИНГ",
@@ -230,11 +230,15 @@ namespace IPTVman.ViewModel
 
             winap.Closing += Ap_Closing;
             winap.Show();
+
+            await ap.start();
             //winap.Owner = MainWindow.header;
         }
 
         private void Ap_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Trace.WriteLine("CLOSE WIN AUTOPING");
+
             LongtaskPingCANCELING.analiz_closing_thread(_ping, _pingPREPARE);
             winap = null;
             ap.stop();
@@ -365,13 +369,14 @@ namespace IPTVman.ViewModel
 
             Wait.Create("Идет поиск дубликатов ...", true);
             Wait.set_ProgressBar(myLISTbase.Count);
-            try
-            {
-                rez = await find_dublicate_task();
-            }
-            catch(Exception e) { dialog.Show("ошибка fdub "+e.Message); goto exit; }
 
-            if (rez == null) { goto exit; }
+            rez = await find_dublicate_task();
+        }
+
+
+        void end_task(List<ParamCanal> rez)
+        {
+            if (rez == null) { exit(); return; }
             if (rez.Count == 0) dialog.Show("Дубликатов не найдено");
             else
             {
@@ -380,19 +385,20 @@ namespace IPTVman.ViewModel
                 {
                     ViewModelMain.myLISTdub.Add((ParamCanal)c.Clone());
                 }
-               
-                 Update_collection(typefilter.dublicate);
+                Update_collection(typefilter.dublicate);
             }
+            exit();
+        }
 
-            exit:
+        void exit()
+        {
             Wait.Close();
             loc.finddublic = false;
         }
 
         List<ParamCanal> result = null;
         async Task<List<ParamCanal>> find_dublicate_task()
-        {
-            
+        {           
             Task task1 = Task.Run(() =>
             {
                 var tcs = new TaskCompletionSource<string>();
@@ -404,17 +410,24 @@ namespace IPTVman.ViewModel
                 catch (OperationCanceledException e)
                 {
                     tcs.SetException(e);
+                    exit();
                 }
                 catch (Exception e)
                 {
                     tcs.SetException(e);
+                    exit();
                 }
                 return tcs.Task;
             });
-            try { await task1; }
+            try
+            {
+                await task1;
+                end_task(result);
+            }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА fdtsk " + e.Message.ToString());
+                dialog.Show("ОШИБКА find_dublicate " + e.Message.ToString());
+                exit();
             }
 
             return result;

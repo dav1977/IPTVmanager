@@ -9,7 +9,7 @@
         xmlns:local="clr-namespace:IPTVman.ViewModel"
     
         WindowStartupLocation="CenterScreen"
-        Height="224.381" Width="584.913" 
+        Height="241.4" Width="608.478" 
         Closing="Window_Closing">
 
     <Window.DataContext>
@@ -25,10 +25,14 @@
         </LinearGradientBrush>
     </Window.Background>
 
-    <Grid HorizontalAlignment="Left" Height="379" Margin="10,10,-131,-195" VerticalAlignment="Top" Width="698">
+    <Grid HorizontalAlignment="Left" Height="221" Margin="10,10,-17,-37" VerticalAlignment="Top" Width="584">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="447*"/>
+            <ColumnDefinition Width="137*"/>
+        </Grid.ColumnDefinitions>
 
-        <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="443,16,0,0" VerticalAlignment="Top" Width="93" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" />
-        <Button x:Name="bReplace" Content="" Command="{Binding key_ReplaceCommandSTART}" Margin="88,132,0,0" Width="145" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" >
+        <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="10,16,0,0" VerticalAlignment="Top" Width="93" Height="38" RenderTransformOrigin="-0.028,1.5" Click="exit_Copy_Click" Grid.Column="1" />
+        <Button x:Name="bReplace" Content="" Command="{Binding key_ReplaceCommandSTART}" Margin="83,136,0,0" Width="145" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -36,13 +40,13 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <CheckBox x:Name="checkBox" IsChecked="{Binding Path=CH1,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Content="Name" HorizontalAlignment="Left" Margin="324,1,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="21"/>
-        <CheckBox x:Name="checkBox_Copy" IsChecked="{Binding Path=CH2,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Content="Ping" HorizontalAlignment="Left" Margin="324,26,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="20"/>
-        <CheckBox x:Name="checkBox_Copy1" IsChecked="{Binding Path=CH3,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="ExtFilter" HorizontalAlignment="Left" Margin="324,51,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="20"/>
-        <CheckBox x:Name="checkBox_Copy2" IsChecked="{Binding Path=CH4,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="groupfilter" HorizontalAlignment="Left" Margin="324,76,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="20"/>
-        <CheckBox x:Name="checkBox_Copy3" IsChecked="{Binding Path=CH5,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="url" HorizontalAlignment="Left" Margin="324,102,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="130" FontSize="16" Height="20"/>
-        <CheckBox x:Name="checkBox_Copy4" IsChecked="{Binding Path=CH6,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="logo" HorizontalAlignment="Left" Margin="324,127,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="192" FontSize="16" Height="30"/>
-        <CheckBox x:Name="checkBox_Copy5" IsChecked="{Binding Path=CH7,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="tvg" HorizontalAlignment="Left" Margin="324,152,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="144" FontSize="16" Height="30"/>
+        <CheckBox x:Name="checkBox" IsChecked="{Binding Path=CH1,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Content="Name" HorizontalAlignment="Left" Margin="324,1,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="21" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="checkBox_Copy" IsChecked="{Binding Path=CH2,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Content="Ping" HorizontalAlignment="Left" Margin="324,26,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="20" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="checkBox_Copy1" IsChecked="{Binding Path=CH3,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="ExtFilter" HorizontalAlignment="Left" Margin="324,51,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="20" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="checkBox_Copy2" IsChecked="{Binding Path=CH4,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="groupfilter" HorizontalAlignment="Left" Margin="324,76,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="128" FontSize="16" Height="20" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="checkBox_Copy3" IsChecked="{Binding Path=CH5,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="url" HorizontalAlignment="Left" Margin="324,102,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="130" FontSize="16" Height="20" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="checkBox_Copy4" IsChecked="{Binding Path=CH6,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="logo" HorizontalAlignment="Left" Margin="324,127,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="192" FontSize="16" Height="30" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="checkBox_Copy5" IsChecked="{Binding Path=CH7,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="tvg" HorizontalAlignment="Left" Margin="324,152,0,0" VerticalAlignment="Top" Foreground="#FFD2F920" Width="144" FontSize="16" Height="30" Grid.ColumnSpan="2"/>
         <TextBox x:Name="textBox" Text="{Binding Selected1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="39" Margin="10,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
         <TextBox x:Name="urlTEXT" Text="{Binding Selected2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="39" Margin="10,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294"/>
         <Label x:Name="label" Content="Что  (* любая строка)" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="12" Width="116"/>

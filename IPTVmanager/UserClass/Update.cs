@@ -283,14 +283,17 @@ namespace IPTVman.ViewModel
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-            try { await task1; }
+            try
+            {
+                await task1;
+                task1.Dispose();
+                task1 = null;
+                Wait.Close();
+            }
             catch (Exception e)
             {
                 dialog.Show("ОШИБКА Применения " + e.Message.ToString());
-            }
-            task1.Dispose();
-            task1 = null;
-            Wait.Close();
+            }          
             return "";
         }
 
@@ -300,11 +303,11 @@ namespace IPTVman.ViewModel
             try
             {
                 if (loc.collection) { dialog.Show("Ошибка Коллеция заблокирована"); return; }
-                Wait.Create("Сохранение...", ListViewDragDropManager.data.list.Count);
+                Wait.Create("Сохранение...", ListViewDragDropManager.dataDD.list.Count);
                 int i = 0;
-                foreach (var s in ListViewDragDropManager.data.list)
+                foreach (var s in ListViewDragDropManager.dataDD.list)
                 {
-                    if (i < ListViewDragDropManager.data.list.Count)
+                    if (i < ListViewDragDropManager.dataDD.list.Count)
                     {
                         ViewModelMain.myLISTbase[i].name = s.Name;
                         ViewModelMain.myLISTbase[i].ExtFilter = s.ExtFilter;
@@ -317,7 +320,7 @@ namespace IPTVman.ViewModel
                     i++;
                 }
 
-                foreach (var s in ListViewDragDropManager.data.list)
+                foreach (var s in ListViewDragDropManager.dataDD.list)
                 {
                     Wait.progressbar++;
                     if (!s.Finished) continue;

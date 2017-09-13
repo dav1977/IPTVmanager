@@ -60,47 +60,26 @@ namespace IPTVman.ViewModel
         /// </summary>
         /// <param name="u"></param>
         /// <returns></returns>
-        public string GET(string u)
+        public void asyncGET(string u)
         {
-            _ping.result = "";
-            Regex regex1 = new Regex("http:");
-            Regex regex2 = new Regex("https:");
-            Regex regex3 = new Regex("udp:");
-            Regex regex4 = new Regex("rtmp:"); 
-
-            var match1 = regex1.Match(u);
-            var match2 = regex2.Match(u);
-            var match3 = regex3.Match(u);
-            var match4 = regex4.Match(u);
-
-            if (match1.Success || match2.Success || match3.Success || match4.Success)
-            {
-                 GETasyn(u);//асинхр
-            }
-            else
-            {
-                return "НЕ ПОДДЕРЖИВАЕТСЯ";
-            }
-            return "  Cтарт...";//ip + ViewModelBase._ping.result;
+           var rez = AsyncTaskGet(cancellationToken, u);    
         }
 
 
-        void GETasyn(string url)
-        {
-            Thread.Sleep(100);//чтобы старт успела появиться
-            string rez = AsyncTaskGet(cancellationToken, url).ToString();
-        }
-
-
-        public async Task<string> AsyncTaskGet(CancellationToken cancellationToken, string url)
+        /// <summary>
+        /// событие после выполнения задачи
+        /// </summary>
+        public event Action<string> Task_Completed;
+        async Task<string> AsyncTaskGet(CancellationToken cancellationToken, string url)
         {
             _ping.iswork = true;
-
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             string result = "";
+            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             task1 = Task.Run(() => 
-            { 
+            {
                 var tcs = new TaskCompletionSource<string>();
+                _ping.result = "";
+                               
                 try
                 {
                     result = _ping.GETnoas(cancellationToken, url);
@@ -108,33 +87,33 @@ namespace IPTVman.ViewModel
                 }
                 catch (OperationCanceledException e)
                 {
-                    _ping.stop();
-                    _ping.exit("");
                     tcs.SetException(e);
                 }
                 catch (Exception e)
                 {
-                    _ping.stop();
-                    _ping.exit("");
                     tcs.SetException(e);
                 }
                 return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            try { await task1; }
+            try
+            {
+                await task1;
+                _ping.iswork = false;
+                if (Task_Completed != null) Task_Completed(result);
+                Wait.Close();
+                task1.Dispose();
+                task1 = null;
+            }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА ping pingPrepare " + e.Message.ToString());
+                _ping.stop();
+                _ping.exit("");
+                dialog.Show("ОШИБКА pingPrepare " + e.Message.ToString());
                 _ping.stop();//без ошибки должна выполниться шататно
             }
-            if (_ping.iswork) { _ping.iswork = false; }
 
-            //  ViewModelWindow1._ping = null;//уничтожаем первую ссылку на экземпляр
-            // _ping = null;//уничтожаем вторую ссылку на экземпляр
-            Wait.Close();
-            task1.Dispose();
-            task1 = null;
-            return result;
+            return "";
         }
 
      

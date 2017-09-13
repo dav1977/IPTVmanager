@@ -125,6 +125,7 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
+        <CheckBox x:Name="cyc" Content="циклически" HorizontalAlignment="Left" Margin="790,407,0,0" Grid.Row="1" VerticalAlignment="Top" Foreground="#FFB5D425" Width="94"/>
 
     </Grid>
 </Window>

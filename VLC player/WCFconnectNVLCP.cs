@@ -16,19 +16,24 @@ namespace IPTVman.ViewModel
            
             List<string> IWCFmyService.Get_Playing(List<string> s)
             {
-                Result.data_ok = false;
-                Result.RUN_SCAN(s);
-                List<string> rez = new List<string>();
-
-                while (true)
+                try
                 {
-                    if (Result.data_ok)
-                    {
-                        break;
-                    }
-                    else Thread.Sleep(100);
+                    Result.data_ok = false;
+                    Result.RUN_SCAN(s);
+                    List<string> rez = new List<string>();
 
+                    while (true)
+                    {
+                        if (Result.data_ok)
+                        {
+                            break;
+                        }
+                        else Thread.Sleep(100);
+
+                    }
                 }
+                catch { }
+
                 return Result.listresult;
             }
         }
@@ -101,6 +106,7 @@ namespace IPTVman.ViewModel
 
         public List<string> GetPlaying(List<string> s)
         {
+            if (service == null) return null;
             return (service.Get_Playing(s));
         }
   

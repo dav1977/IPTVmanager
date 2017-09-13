@@ -14,7 +14,7 @@ namespace ListViewDragDropManager
 		VeryLong
 	}
 
-    static class data
+    static class dataDD
     {
        public static ObservableCollection<Task> list;
        public static ObservableCollection<Task> tasks;
@@ -50,28 +50,38 @@ namespace ListViewDragDropManager
 
         public static ObservableCollection<Task> CreateTasks()
         {
-            data.list = new ObservableCollection<Task>();
-            //int ct_pl = 0;
+            dataDD.list = new ObservableCollection<Task>();
 
             if (IPTVman.Model.data.mode_radio_from_select)
             {
                 foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTselect)
                 {
-                    data.list.Add(new Task(TaskDuration.VeryShort, s.name, "", s.ExtFilter, s.group_title, s.http, s.ping, s.logo, s.tvg_name, false));
-                   // ct_pl++;
+                    dataDD.list.Add(new Task(TaskDuration.VeryShort, s.name, "", s.ExtFilter, s.group_title, s.http, s.ping, s.logo, s.tvg_name, false));
                 }
             }
             else
             foreach (var s in IPTVman.ViewModel.ViewModelMain.myLISTbase)
             {
-                data.list.Add(new Task(TaskDuration.VeryShort,  s.name, "", s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
-                //ct_pl++;
+                dataDD.list.Add(new Task(TaskDuration.VeryShort,  s.name, "", s.ExtFilter,s.group_title,s.http , s.ping, s.logo, s.tvg_name , false));
             }
-            return data.list;
+            return dataDD.list;
 		}
 
-       
-		public bool Finished
+
+        public static ObservableCollection<Task> CreateTasks2(List<IPTVman.Model.ParamCanal> LST)
+        {;
+
+            dataDD.list = new ObservableCollection<Task>();
+
+            if (LST == null) return dataDD.list;
+                foreach (var s in LST)
+                {
+                    dataDD.list.Add(new Task(TaskDuration.VeryShort, s.name, "", s.ExtFilter, s.group_title, s.http, s.ping, s.logo, s.tvg_name, false));
+                }
+            return dataDD.list;
+        }
+
+        public bool Finished
 		{
 			get { return this.finished; }
 			set { this.finished = value; }

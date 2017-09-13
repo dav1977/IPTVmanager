@@ -214,11 +214,16 @@ namespace IPTVman.ViewModel
             _pingPREPARE = new PING_prepare(_ping);
             edit.ping = "";
             if (edit.http == null) return;
-            strPING = _pingPREPARE.GET(edit.http);
+            _pingPREPARE.Task_Completed += _pingPREPARE_Task_Completed;
+            _pingPREPARE.asyncGET(edit.http);
         }
 
+        private void _pingPREPARE_Task_Completed(string obj)
+        {
+            strPING = obj;
+        }
 
-       public  void convPING(string strPING)
+        public  void convPING(string strPING)
         {
             edit.ping = "";
             if (strPING.Length > 5000) { edit.ping = "большой размер данных "+ strPING.Length.ToString();return; }
