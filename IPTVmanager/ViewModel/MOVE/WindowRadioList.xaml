@@ -107,7 +107,7 @@
             </ListView.View>
         </ListView>
 
-        <Button x:Name="bSCAN" Content="Сканировать" HorizontalAlignment="Right" Width="98" Height="42" RenderTransformOrigin="-0.319,0.627" Click="scan_Click" FontSize="10" Grid.Row="1" FontWeight="Bold" VerticalAlignment="Top" Margin="0,345,18,0">
+        <Button x:Name="bSCAN" Content="Сканировать" HorizontalAlignment="Right" Width="98" Height="42" RenderTransformOrigin="-0.319,0.627" Click="scan_Click" FontSize="10" Grid.Row="1" FontWeight="Bold" VerticalAlignment="Top" Margin="0,13,12,0">
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -117,7 +117,7 @@
         </Button>
         <Button x:Name="inc" Content="+" HorizontalAlignment="Right" VerticalAlignment="Top" Width="47" Height="47" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click" FontWeight="Bold" Margin="0,158,40,0" Grid.Row="1" FontSize="22"/>
         <Button x:Name="dec" Content="-" HorizontalAlignment="Right" VerticalAlignment="Top" Width="47" Height="47" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click" FontWeight="Bold" Margin="0,222,40,0" Grid.Row="1" FontSize="22"/>
-        <Button x:Name="button_Copy" Content="Закрыть" HorizontalAlignment="Right" VerticalAlignment="Top" Width="91" Height="38" RenderTransformOrigin="-0.319,0.627" Click="button_ClickCANCEL" FontWeight="Bold" Margin="0,13,12,0" Grid.Row="1">
+        <Button x:Name="button_Copy" Content="Закрыть" HorizontalAlignment="Right" VerticalAlignment="Top" Width="92" Height="38" RenderTransformOrigin="-0.319,0.627" Click="button_ClickCANCEL" FontWeight="Bold" Margin="0,364,19,0" Grid.Row="1">
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -125,7 +125,7 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <CheckBox x:Name="cyc" Content="циклически" HorizontalAlignment="Left" Margin="790,407,0,0" Grid.Row="1" VerticalAlignment="Top" Foreground="#FFB5D425" Width="94"/>
+        <CheckBox x:Name="cyc" Content="циклически" HorizontalAlignment="Right" Margin="0,62,13,0" Grid.Row="1" VerticalAlignment="Top" Foreground="#FFB5D425" Width="94"/>
 
     </Grid>
 </Window>

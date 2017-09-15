@@ -20,6 +20,7 @@ namespace IPTVman.ViewModel
 {
     static class data
     {
+        public static WCFSERVER _server;
         public static string url="";
         public static string name="";
         public static bool mode_radio = false;
@@ -114,11 +115,11 @@ namespace IPTVman.ViewModel
             }
             else
             {
-             //   this.Hide();
+                //   this.Hide();
                 this.Title = "СКАННЕР РАДИО ТРЭКОВ";
                 if (!initWCF()) this.Close();
             }
-            if (data.mode_radio) data.title = IPTVman.ViewModel.data.name;
+            if (data.mode_radio) data.title = data.name;
 
             //data.mode_scan = true;
             //scan();
@@ -199,7 +200,7 @@ namespace IPTVman.ViewModel
         {
             try
             {
-                WCFSERVER _server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
+                data._server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
             }
             catch { return false;  }
             return true;
@@ -299,7 +300,7 @@ namespace IPTVman.ViewModel
                     if (Result.data_ok) en = "END";
                     l1.Dispatcher.Invoke(new Action(() =>
                     {
-                        l1.Content = en+" Скан " + data.scanURL;
+                        l1.Content = en+ data.scanURL;
                     }));
 
                 }
@@ -338,8 +339,6 @@ namespace IPTVman.ViewModel
                     {
                         System.Windows.MessageBox.Show("ОШИБКА NVLCP сканнер " + ex.Message.ToString());
                     }
-                    if (cts1 != null) cts1.Cancel();
-
                     return;
                 }
 

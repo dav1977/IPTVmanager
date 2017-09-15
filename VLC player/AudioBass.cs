@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Wma;
 using Un4seen.Bass.AddOn.Tags;
+using System.Text;
 
 namespace IPTVman.ViewModel
 {
@@ -191,30 +192,90 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
+
+
+        string StrEncod(string str)
+        {
+            bool need_coding = false;
+            //string tt = "";
+            //кодировка
+            var fromEncodind = Encoding.UTF8;
+            var bytes = fromEncodind.GetBytes(str);
+
+            int l = 0;
+            byte[] bt = new byte[bytes.Length];
+
+            foreach (var b in bytes)
+            {
+                bt[l] = 32;
+                l++;
+            }
+
+            byte[] test = new byte[1];
+
+            int k = 0;
+            foreach (var b in bytes)
+            {
+                bt[k] = b;
+
+                if (b > 127 && b < 200) need_coding = true;
+
+                if (b >= 176 && b <= 193) bt[k] = (byte)(b + 48);
+
+                if (b != 195) k++;
+
+            }
+
+
+            string ans = "";
+            if (need_coding)
+            {
+                var toEncoding = Encoding.GetEncoding(866);//в какую кодировку
+                ans = toEncoding.GetString(bt);
+            }
+            else ans = str;
+
+
+            //Поcт анализ
+            fromEncodind = Encoding.UTF8;//из какой кодировки
+            bytes = fromEncodind.GetBytes(ans);
+            foreach (var b in bytes)
+            {
+                //test[0] = b;
+                //var toEncoding = Encoding.GetEncoding(866);
+                //tt += toEncoding.GetString(test) + ":" + b.ToString() + "; ";
+                if (b == 226) { ans = str; break; }
+
+            }
+
+            //Trace.WriteLine(str + "&&" + ans + "=>" + tt);
+            return ans.Trim();
+        }
+
+
       
         public string get_tags(string nm, ref string bitr)
         {
             if (_Stream == 0) return "";
             try
-            {
-              
+            {              
                 init_tag();
 
-                Thread.Sleep(100);
+                Thread.Sleep(500);
 
                 if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
                 {
                     bitr = _tagInfo.bitrate.ToString();
-                    string rez;
 
-                    rez = _tagInfo.artist + " - " + _tagInfo.title;
+                    string artist = StrEncod(_tagInfo.artist);
+                    string title = StrEncod(_tagInfo.title);
+                    title = title.Replace("- 0:00","");
+                    string rez = artist + " - " + title;
 
+                    if (artist == "" || artist == " " || artist == ";") rez = title;
+                    if (title == "" || title == " " || title == ";" || title == "0:00" || title == "0") rez = artist;
 
-                    if (_tagInfo.artist == "" || _tagInfo.artist == " " || _tagInfo.artist == ";") rez = _tagInfo.title;
-                    if (_tagInfo.title == "" || _tagInfo.title == " " || _tagInfo.title == ";") rez = _tagInfo.artist;
-
-
-                    if (_tagInfo.artist == "" && _tagInfo.title == "") rez = "no artist";
+                    if (artist == "" && title == "") rez = "no artist";
 
                     if (rez == " ") rez = "none";
                     return (rez);

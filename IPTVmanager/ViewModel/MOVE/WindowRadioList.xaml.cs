@@ -391,30 +391,51 @@ namespace ListViewDragDropManager
             waiting_result = false; need_stop_scan = false;
         }
 
+
         string NAMEPLAYER = "nvlcp";
         string NAMEPLAYERexe = "nvlcp.exe";
         Process[] myProcesses;
 
-        void kill_process()
+
+        void kill_process(string titleNAME)
         {
-           myProcesses = Process.GetProcessesByName(NAMEPLAYER);
+            bool killok = false;
+            if (myProcesses.Length > 1)
+            {
+                killok = IPTVman.ViewModel.FileWork.KILL_PROCESS(titleNAME);
+            }
+
+            if (killok) return;
+
+            myProcesses = Process.GetProcessesByName(NAMEPLAYER);
 
             if (myProcesses.Length > 1)
             {
                 foreach (var proc in myProcesses)
                 {
-                    proc.Kill();
-                    proc.WaitForExit();
+                    if (titleNAME == "") proc.Kill();
+                    else
+                    if (proc.MainWindowTitle == titleNAME) proc.Kill();
+                    proc.WaitForExit(7000);
                 }
             }
         }
 
+
         int num_open_process()
         {
+            byte size = 0;
             myProcesses = Process.GetProcessesByName(NAMEPLAYER);
 
-            return (myProcesses.Length);
-           
+            if (myProcesses.Length > 1)
+            {
+                foreach (var proc in myProcesses)
+                {
+                    if (proc.MainWindowTitle == data.NAME_SCANER_SERVER) size++;
+                }
+            }
+            return size;
+
         }
 
         void init_scan_process()
@@ -500,16 +521,15 @@ namespace ListViewDragDropManager
             need_stop_scan = true;
             Thread.Sleep(200);
             if (scanner != null) scanner.CLOSE_SCANNER();
-            try
-            {
-                if (play.playerV != null) play.playerV.Kill();
-            }
-            catch { }                
-            
-            kill_process();
+            //try
+            //{
+            //    if (play.playerV != null) play.playerV.Kill();
+            //}
+            //catch { }                
 
+            kill_process(data.NAME_SCANER_SERVER);
         }
-       
+
 
 
     }

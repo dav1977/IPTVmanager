@@ -30,6 +30,63 @@ namespace IPTVman.ViewModel
 
         readonly string tempname = "temp_m3u_IPTVmanager";
 
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, IntPtr dwProcessId);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        static extern bool CloseHandle(IntPtr hObject);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        static extern bool TerminateProcess(int hProcess, uint uExitCode);
+
+        const uint PROCESS_TERMINATE = 0x1;
+
+        private static void TerminateProcess(IntPtr PID)
+        {
+            IntPtr hProcess = OpenProcess(PROCESS_TERMINATE, false, PID);
+
+            if (hProcess == IntPtr.Zero)
+                throw new System.ComponentModel.Win32Exception(
+                    System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+
+            if (!TerminateProcess((int)hProcess, 0))
+                throw new System.ComponentModel.Win32Exception(
+                    System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+
+            CloseHandle(hProcess);
+        }
+
+        /// <summary>
+        /// Удаление по TITLE
+        /// </summary>
+        /// <param name="nameTITLE"></param>
+        /// <returns></returns>
+        public static bool KILL_PROCESS(string nameTITLE)
+        {
+            //Проходимся по всем процессам локального компьютера.
+            foreach (System.Diagnostics.Process clsProcess in
+                               System.Diagnostics.Process.GetProcesses())
+            {
+                //Определяем, совпадает ли начало имени процесса с указанным.
+                //Если да, то метод "StartsWith" возвращает значение true
+                //и вызывается метод удаления процесса,
+                //в противном случае — значение false и происходит
+                //переход к следующему процессу.
+                if (/*clsProcess.ProcessName.StartsWith(name) &&*/ clsProcess.MainWindowTitle == nameTITLE)
+                {
+                    TerminateProcess((IntPtr)clsProcess.Id);
+
+                    if (clsProcess.HasExited) { return true; }//"Процесс успешно завершён!"
+
+                    return false;
+
+                }
+            }
+            return true;
+        }
+
 
         public void SAVE(List<IPTVman.Model.ParamCanal> lst, string title)
         {

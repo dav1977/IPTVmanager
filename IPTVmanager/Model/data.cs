@@ -44,6 +44,7 @@ namespace IPTVman.Model
 
     public static class data
     {
+        public static string NAME_SCANER_SERVER = "СКАННЕР РАДИО ТРЭКОВ";
         public static bool mode_radio_from_select = false;
         public static string[] arguments_startup;
         public static byte type_player = 0;
