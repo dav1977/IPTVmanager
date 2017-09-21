@@ -383,7 +383,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1m,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,39,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Grid.ColumnSpan="2" Height="19" Width="132"/>
+        <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1m,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,39,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Height="19" Width="148"/>
         <Button Content="дубликаты" Command="{Binding key_DelDUBLICATCommand}"   CommandParameter=""  Margin="540,0,0,15" Focusable="False" Height="19" VerticalAlignment="Bottom" BorderBrush="#FF092047" OpacityMask="#FFB4EC20" HorizontalAlignment="Left" Width="126" Grid.Row="1" Click="Button_Click_1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -418,7 +418,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <CheckBox Content="обрезать скобки" IsChecked="{Binding CH2m, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,62,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Height="19" Width="124" Grid.ColumnSpan="2"/>
+        <CheckBox Content="обрезать скобки" IsChecked="{Binding CH2m, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,62,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Height="19" Width="148"/>
         <Button Content="DONATE"   CommandParameter=""  Margin="0,0,234,10" Focusable="False" Height="16" VerticalAlignment="Bottom" BorderBrush="#FF63115B" OpacityMask="#FF990E0E" Grid.Column="3" HorizontalAlignment="Right" Width="66" RenderTransformOrigin="2.992,1.2" Grid.Row="1" Click="Button_Click_2">
             <Button.Background>
                 <RadialGradientBrush>

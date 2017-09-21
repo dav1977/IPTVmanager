@@ -42,7 +42,11 @@ namespace IPTVman.ViewModel
 
         public void CLOSE_SCANNER()
         {
-            //Thread.Sleep(200);   
+            clear();
+            add("*");
+            add("*");
+            getPLAYING();
+            Thread.Sleep(200);
         }
 
         Task tasksc;

@@ -29,6 +29,7 @@ namespace IPTVman.ViewModel
         public static string buff = "";
         public static string scanURL = "init";
 
+        public static bool exit_programm = false;
     }
 
     public static class Result
@@ -206,7 +207,7 @@ namespace IPTVman.ViewModel
             return true;
         }
 
-        void scan()
+        void scan(CancellationToken cts)
         {
                 //List<string> datals = new List<string>();
                 //List<string> data = m.ReadObjectFromMemory("iptvlinks") as List<string>;
@@ -218,6 +219,7 @@ namespace IPTVman.ViewModel
                 int ct = 0;
                 while (true)
                 {
+                  if (cts.IsCancellationRequested) return;
                     ct++;
                     if (ct > 10 * 30) break; //даем 30 сек на всё
                     if (Result.data_ok) break;
@@ -290,20 +292,37 @@ namespace IPTVman.ViewModel
         public static CancellationTokenSource cts1;
         public static CancellationToken cancellationToken;
         int ctscan=0;
+        bool loktimer = false;
 
         private async void timer_Tick(object sender, EventArgs e)
-        {    
-                if (data.mode_scan)
+        {
+            if (loktimer) return;
+              if (data.mode_scan)
+              {
+
+                if (data.exit_programm)
                 {
-                    ctscan++;
-                    string en= "";
-                    if (Result.data_ok) en = "END";
+                    cts1.Cancel();
+                    loktimer = true;
                     l1.Dispatcher.Invoke(new Action(() =>
                     {
-                        l1.Content = en+ data.scanURL;
+                        l1.Content = "closing....";
                     }));
 
+                    task1.Wait(5000);
+                    this.Close();
                 }
+                else
+                {
+                    ctscan++;
+                    string en = "";
+                    if (Result.data_ok) en = "ENDscan  ";
+                    l1.Dispatcher.Invoke(new Action(() =>
+                    {
+                        l1.Content = en + data.scanURL;
+                    }));
+                }
+              }
 
                 if (loc) return;
                 loc = true;
@@ -319,7 +338,7 @@ namespace IPTVman.ViewModel
                         var tcs = new TaskCompletionSource<string>();
                         try
                         {
-                            scan();
+                            scan(cancellationToken);
                             tcs.SetResult("ok");
                         }
                         catch (OperationCanceledException ex)

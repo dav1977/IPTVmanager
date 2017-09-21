@@ -246,8 +246,9 @@ namespace IPTVman.ViewModel
             List<int> list_update_channels = new List<int>();
 
             try
-            {
+            {              
                 Regex regex_link = new Regex("http://");
+                Regex regex_link2 = new Regex("https://");
                 Regex regex1 = new Regex("#EXTINF");
                 Regex regex2 = new Regex("#EXTM3U");
                 Match match = null;
@@ -292,23 +293,24 @@ namespace IPTVman.ViewModel
                         catch { }
 
                         if (linkIsBad(line)) continue;
-                        // MessageBox.Show(line);
+                        //MessageBox.Show(line);
 
                         //*******************************************************//-------------------- закачка Links
                         if (mode_work_with_links)
                         {
+                   
                             while (wait_download) Thread.Sleep(100);
 
-                            if (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
+                            if     (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                      regex_link.Match(line).Success
+                                      (regex_link.Match(line).Success|| regex_link2.Match(line).Success)
                                    )
                             {
-                                mode_work_with_links = true;
+                                mode_work_with_links = true;                              
                                 Parsing_link(line);
                                 wait_download = true;
                                 flag_adding_ok = true;
@@ -334,7 +336,6 @@ namespace IPTVman.ViewModel
                         ///========== разбор EXINF
                         if (yes)
                         {
-
                             Regex regex3 = new Regex("ExtFilter=", RegexOptions.IgnoreCase);
                             Regex regex4 = new Regex("group-title=", RegexOptions.IgnoreCase);
                             Regex regex5 = new Regex("logo=", RegexOptions.IgnoreCase);

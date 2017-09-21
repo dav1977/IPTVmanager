@@ -16,8 +16,10 @@ namespace IPTVman.ViewModel
            
             List<string> IWCFmyService.Get_Playing(List<string> s)
             {
+                
                 try
                 {
+                    if (s[0] == "*") {  data.exit_programm = true;  return Result.listresult; }
                     Result.data_ok = false;
                     Result.RUN_SCAN(s);
                     List<string> rez = new List<string>();
