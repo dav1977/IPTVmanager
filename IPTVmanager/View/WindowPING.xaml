@@ -4,25 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IPTVman.ViewModel"
-        mc:Ignorable="d"
-        SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterOwner"
-    ShowInTaskbar="false"
     Title=""
-    ResizeMode="NoResize" Height="252.386" Width="332.55" Closing="Window_Closing">
-    <StackPanel x:Uid="StackPanel_1" RenderTransformOrigin="0.508,0.567" Margin="0,0,4,4" Background="#FF0092A0"
+    Height="293.386" Width="332.7" Closing="Window_Closing">
+    <StackPanel x:Uid="StackPanel_1" RenderTransformOrigin="0.508,0.567" Background="#FF0092A0"
                 >
         <StackPanel x:Uid="StackPanel_2"
           Orientation="Horizontal"
           HorizontalAlignment="Center"
           Margin="10 10 10 10">
             <StackPanel x:Uid="StackPanel_2_1" Orientation="Horizontal" Height="20" Width="150">
-                
+
                 <TextBlock x:Uid="TextBlock_2_1" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14" VerticalAlignment="Center" Width="200" Height="20"><Run x:Name="tb1" Text="Идет выполнение..."/></TextBlock>
-           
+
             </StackPanel>
         </StackPanel>
-        <TextBlock x:Uid="ct" FontWeight="Bold" Height="22" Width="282" HorizontalAlignment="Center" Margin="24,0,17,0" FontSize="16"><Run x:Name="textct" Text="..........."/></TextBlock>
+        <TextBlock x:Uid="ct" FontWeight="Bold" Height="29" Margin="35,0,24,0" FontSize="16"><Run x:Name="textct" Text="..."/></TextBlock>
         <Button x:Name="button" Height="22" Click="button_Click">
             ЗАВЕРШЕНО
         </Button>

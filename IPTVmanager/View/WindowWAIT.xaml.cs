@@ -219,16 +219,12 @@ namespace IPTVman.ViewModel
 
         public static void enable(PING p, PING_prepare pp)
         {
+            en = true;
             _ping = p;
             _ping_prepare = pp;
-            en = true;
+           
         }
-
-        public static void enable()
-        {
-            en = true;
-        }
-
+   
         public static void stop()
         {
             _ping = null;
@@ -251,7 +247,6 @@ namespace IPTVman.ViewModel
                     ct++;
                     if (ct == 5)
                     {
-                        LongtaskPingCANCELING.enable(); 
                         Wait.Create("Ждите идет прерывание пинга", false);
                         LongtaskPingCANCELING.enable(p, prep);
                         break;
@@ -261,12 +256,11 @@ namespace IPTVman.ViewModel
 
             }
 
-            prep = null;
-            p = null;
-
+            stop();
         }
 
 
-    }
 
+
+    }
 }

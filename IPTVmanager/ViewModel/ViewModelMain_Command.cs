@@ -209,8 +209,8 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         async void key_AUTOPING(object parameter)
         {
-            if (Wait.IsOpen) return;
-            if (LongtaskPingCANCELING.isENABLE()) return;
+            if (Wait.IsOpen)  return; 
+            if (LongtaskPingCANCELING.isENABLE())    return; 
             if (myLISTbase==null) return;
             if (myLISTbase.Count == 0) return;
             if (winap!=null) return;
@@ -224,7 +224,7 @@ namespace IPTVman.ViewModel
             {
                 Title = "АВТО ПИНГ",
                 Topmost = true,
-                WindowStyle = WindowStyle.ToolWindow,
+                WindowStyle = WindowStyle.ThreeDBorderWindow,//WindowStyle.ToolWindow,
                 Name = "winPING"
             };
 

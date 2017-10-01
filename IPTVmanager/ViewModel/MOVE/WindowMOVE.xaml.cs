@@ -31,6 +31,8 @@ namespace ListViewDragDropManager
         {
             InitializeComponent();
             this.Loaded += WindowMOVE_Loaded;
+            //listView.SelectionMode = SelectionMode.Multiple;
+            //listView2.SelectionMode = SelectionMode.Multiple;
         }
 
         #region WindowMOVE_Loaded
@@ -158,6 +160,7 @@ namespace ListViewDragDropManager
         //save
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            if (listView2.Items.Count != 0) { IPTVman.ViewModel.dialog.Show("Буфер не пустой");return;  }
             IPTVman.ViewModel.Update_Collection.SAVE_MOVE();
             this.Close();
         }

@@ -63,7 +63,7 @@
 
         <ListView Name="listView"   
       ItemContainerStyle="{StaticResource ItemContStyle}"
-      Margin="10,12,131,7" 
+      Margin="10,12,130,9" 
       Padding="2"
       SelectionMode="Single" Grid.Row="1" Background="#FF787474" Foreground="#FF05050A"
       
@@ -87,29 +87,17 @@
         </ListView>
 
 
-        <ListView Name="listView2"
-      Grid.Row="2"  
-      Height="185" 
+        <ListView Name="listView2" 
+      Grid.Row="1" 
       ItemContainerStyle="{StaticResource ItemContStyle}"
-      Margin="4" 
+      Margin="0,222,8,7" 
       Padding="2"
-      SelectionMode="Single"
-      Visibility="Collapsed"
+      SelectionMode="Single" FontSize="9" HorizontalAlignment="Right" Width="111"
       >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="УДАЛИТЬ">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Finished}" HorizontalAlignment="Center" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="175" />
-                    <GridViewColumn Header="ExtFilter" DisplayMemberBinding="{Binding ExtFilter}" Width="175" />
-                    <GridViewColumn Header="group_title" DisplayMemberBinding="{Binding Group_title}" Width="340" />
-                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Http}" Width="340" />
-                    <GridViewColumn Header="http" DisplayMemberBinding="{Binding Ping}" Width="180" />
+                    <GridViewColumn Header="Буфер" DisplayMemberBinding="{Binding Name}" Width="109"  />
+
                 </GridView>
             </ListView.View>
         </ListView>
@@ -121,7 +109,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="button_Copy" Content="Отмена" HorizontalAlignment="Right" Margin="0,0,26,25" Grid.Row="1" VerticalAlignment="Bottom" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Click="button_ClickCANCEL">
+        <Button x:Name="button_Copy" Content="Отмена" HorizontalAlignment="Right" Margin="0,64,33,0" Grid.Row="1" VerticalAlignment="Top" Width="56" Height="24" RenderTransformOrigin="-0.319,0.627" Click="button_ClickCANCEL">
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -129,10 +117,10 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="inc" Content="+" HorizontalAlignment="Right" Margin="0,116,61,0" Grid.Row="1" VerticalAlignment="Top" Width="35" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click">
+        <Button x:Name="inc" Content="+" HorizontalAlignment="Right" Margin="0,165,61,0" Grid.Row="1" VerticalAlignment="Top" Width="34" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click">
 
         </Button>
-        <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,116,21,0" Grid.Row="1" VerticalAlignment="Top" Width="35" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click"/>
+        <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,165,21,0" Grid.Row="1" VerticalAlignment="Top" Width="34" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click"/>
         <Button x:Name="button_Copy1" Content="Применить" HorizontalAlignment="Right" Margin="0,12,26,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Click="button_Click" Foreground="#FF89AC2D">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -141,12 +129,12 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="buttonSEL" Content="Выборка" HorizontalAlignment="Right" Margin="0,192,24,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="buttonSEL_Click">
+        <Button x:Name="buttonSEL" Content="Выборка" HorizontalAlignment="Right" Margin="0,100,25,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF305A83" Click="buttonSEL_Click">
             <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <RadialGradientBrush>
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF1333FF" Offset="0.082"/>
-                </LinearGradientBrush>
+                    <GradientStop Color="#FF0E236A" Offset="0.082"/>
+                </RadialGradientBrush>
             </Button.Background>
         </Button>
 

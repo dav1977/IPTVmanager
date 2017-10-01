@@ -163,7 +163,10 @@ namespace IPTVman.ViewModel
                     {
                         Thread.Sleep(200);
                         ct++;
-                        data.ping_waiting = ct;                     
+                        data.ping_waiting = ct;
+                        if (ct > 100)
+                        { result_task = "тайм аут"; break;
+                        }
                         if (token.IsCancellationRequested) { break; };
                     }
                 }
@@ -181,8 +184,12 @@ namespace IPTVman.ViewModel
                         tmp = tmp.Replace("#EXTM3U", "");
 
                         item.ping = tmp.Replace('\n', ';');
-                        if (result_task == "НЕ ПОДДЕРЖИВАЕТСЯ")
-                        { item.ping = "НЕ ПОДДЕРЖИВАЕТСЯ"; if (Event_Print != null) Event_Print("НЕ ПОДДЕРЖИВАЕТСЯ " + i.name); }
+
+                        if (result_task == "НЕ ПОДДЕРЖИВАЕТСЯ" || result_task == "тайм аут")
+                        {
+                            item.ping = result_task;
+                            if (Event_Print != null) Event_Print(result_task+" " + i.name);
+                        }
                     }
                     else item.ping = "большой размер ответа " + _ping.result.Length.ToString();
                 }

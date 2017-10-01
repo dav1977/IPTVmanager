@@ -28,7 +28,9 @@ namespace IPTVman.ViewModel
         public WindowPING()
         {
             InitializeComponent();
-            button.Visibility = Visibility.Hidden;          
+            button.Visibility = Visibility.Hidden;
+            this.MaxHeight = 270;
+            this.MaxWidth = 332;
             CreateTimer1(200);
             AUTOPING.Event_Print += new Action<string>(add);
             id = this.Name;
