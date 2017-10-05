@@ -111,7 +111,7 @@ namespace IPTVman.ViewModel
                         startInfo.CreateNoWindow = false;
                         startInfo.UseShellExecute = false;
                         startInfo.FileName = play.path;
-                        //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        startInfo.WindowStyle = ProcessWindowStyle.Minimized;
                         startInfo.Arguments = play.URLPLAY+" "+play.name;
 
                         play.playerV = Process.Start(startInfo);
@@ -208,8 +208,11 @@ namespace IPTVman.ViewModel
 
         }
 
+        bool lokpp=false;
         void PING(object selectedItem)
         {
+            if (lokpp) return;
+            lokpp = true;
             _ping = new ViewModel.PING();
             _pingPREPARE = new PING_prepare(_ping);
             edit.ping = "";
@@ -221,6 +224,7 @@ namespace IPTVman.ViewModel
         private void _pingPREPARE_Task_Completed(string obj)
         {
             strPING = obj;
+            lokpp = false;
         }
 
         public  void convPING(string strPING)

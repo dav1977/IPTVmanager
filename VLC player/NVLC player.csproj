@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FE3DBBE4-58F7-4C91-B22A-CF35499B6052}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>VLC_player</RootNamespace>
+    <RootNamespace>IPTVman.ViewModel</RootNamespace>
     <AssemblyName>nvlcp</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -69,8 +69,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AudioBass.cs" />
-    <Compile Include="WCFconnectNVLCP.cs" />
+    <Compile Include="ViewModel\AudioBass.cs" />
+    <Compile Include="ViewModel\data.cs" />
+    <Compile Include="ViewModel\Player.cs" />
+    <Compile Include="ViewModel\Scanner.cs" />
+    <Compile Include="ViewModel\WCFconnectNVLCP.cs" />
     <Compile Include="WindowMessage.xaml.cs">
       <DependentUpon>WindowMessage.xaml</DependentUpon>
     </Compile>
@@ -128,5 +131,6 @@
   <ItemGroup>
     <Resource Include="logo.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

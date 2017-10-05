@@ -18,74 +18,7 @@ using System.Collections.Generic;
 
 namespace IPTVman.ViewModel
 {
-    static class data
-    {
-        public static WCFSERVER _server;
-        public static string url="";
-        public static string name="";
-        public static bool mode_radio = false;
-        public static bool mode_scan = false;
-        public static string title = "";
-        public static string buff = "";
-        public static string scanURL = "init";
-
-        public static bool exit_programm = false;
-    }
-
-    public static class Result
-    {
-        public static bool data_ok = false;
-
-        public static List<string> listresult = new List<string>();
-
-        public static void Clear()
-        {
-            data_ok = false;
-            listresult.Clear();
-        }
-
-
-        /// <summary>
-        /// этот метод вызвыает  WCF служба 
-        /// </summary>
-        /// <param name="data"></param>
-        public static void RUN_SCAN(List<string> datalist)
-        {
-            try
-            {
-                var bass = new AudioBass();
-                bass.init();
-
-                Result.Clear();
-                int i = 1;
-                foreach (var s in datalist)
-                {
-                    bass.init();
-                    Thread.Sleep(50);
-                    bass.create_stream(s, false, null);
-                    Thread.Sleep(50);
-
-                    data.scanURL = "[" + i.ToString() + " из " + datalist.Count + "]" + s;
-
-                    string bitr = "";
-                    string play = bass.get_tags(s, ref bitr);
-                    i++;
-
-                    Result.listresult.Add(s);
-                    Result.listresult.Add(play);
-                    Result.listresult.Add(bitr.ToString());
-                }
-
-                Result.data_ok = true;
-            }
-            catch (Exception ex) { System.Windows.MessageBox.Show("err scan "+ex.Message); }
-        }
-
-    }
-
-
-
-
+  
     /// <summary>
     /// nVLC lib  and bass lib   Player
     /// </summary>
@@ -126,7 +59,7 @@ namespace IPTVman.ViewModel
             //scan();
             //return;
 
-            //data.url=  "http://newairhost.com:8034/listen.ram";
+            //data.url = "http://newairhost.com:8034/listen.ram";
             //data.name = "test";
             //data.mode_radio = true;
 
@@ -174,60 +107,7 @@ namespace IPTVman.ViewModel
             }
         }
 
-        void initVLClib()
-        {
-            try
-            {
-                p = new System.Windows.Forms.Panel();
-                p.BackColor = System.Drawing.Color.Black;
-                windowsFormsHost1.Child = p;
-
-                m_factory = new MediaPlayerFactory(true);
-                m_player = m_factory.CreatePlayer<IVideoPlayer>();
-
-                this.DataContext = m_player;
-
-                //m_player.Events.PlayerPositionChanged += new EventHandler<MediaPlayerPositionChanged>(Events_PlayerPositionChanged);
-                //m_player.Events.TimeChanged += new EventHandler<MediaPlayerTimeChanged>(Events_TimeChanged);
-                //m_player.Events.MediaEnded += new EventHandler(Events_MediaEnded);
-                //m_player.Events.PlayerStopped += new EventHandler(Events_PlayerStopped);
-
-                m_player.WindowHandle = p.Handle;
-            }
-            catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка библиотеки vlc " + ex.Message); }
-        }
-
-        bool initWCF()
-        {
-            try
-            {
-                data._server = new WCFSERVER("http://localhost:8000/IPTVmanagerSevice");
-            }
-            catch { return false;  }
-            return true;
-        }
-
-        void scan(CancellationToken cts)
-        {
-                //List<string> datals = new List<string>();
-                //List<string> data = m.ReadObjectFromMemory("iptvlinks") as List<string>;
-
-                //if (data == null) return;
-                //List<string> savedata = new List<string>();
-
-                data.scanURL = "ready to scan...";
-                int ct = 0;
-                while (true)
-                {
-                  if (cts.IsCancellationRequested) return;
-                    ct++;
-                    if (ct > 10 * 30) break; //даем 30 сек на всё
-                    if (Result.data_ok) break;
-
-                    Thread.Sleep(100);  //ждем приема списка и выполнение сканирования
-                }
-        }
-
+       
 
         void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {    
@@ -245,36 +125,7 @@ namespace IPTVman.ViewModel
 
        
 
-        public void PlayVLC(string link)
-        {
-           
-                try
-                {
-                    if (m_player == null)
-                    {
-                        initVLClib();
-                    }
-                    if (m_player.IsPlaying) m_player.Stop();
-                    if (play_link != link) m_player.Stop();
-                    while (m_player.IsPlaying) Thread.Sleep(1000);
-
-                    play_link = link;
-                    m_media = m_factory.CreateMedia<IMedia>(link);
-
-                    // m_media.Events.DurationChanged += new EventHandler<MediaDurationChange>(Events_DurationChanged);
-                    // m_media.Events.StateChanged += new EventHandler<MediaStateChange>(Events_StateChanged);
-
-                    m_player.Open(m_media);
-                    m_media.Parse(true);
-                    reset();
-                taskPLAY = Task.Factory.StartNew(() =>
-                {
-                    m_player.Play();
-                });
-        }
-                catch (Exception ex) { System.Windows.Forms.MessageBox.Show("Ошибка vlc " + ex.Message); }
-            
-        }
+       
 
         void reset()
         {

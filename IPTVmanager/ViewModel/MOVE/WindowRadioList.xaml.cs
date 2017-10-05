@@ -41,6 +41,7 @@ namespace ListViewDragDropManager
             IPTVman.ViewModel.ScannerRadio.event_done += scan_done;
             //listView.SelectionMode = SelectionMode.Multiple;
 
+            kill_process(data.NAME_SCANER_SERVER);             
             if (num_open_process()==0)  init_scan_process();  
         }
 
@@ -399,6 +400,8 @@ namespace ListViewDragDropManager
 
         void kill_process(string titleNAME)
         {
+            myProcesses = Process.GetProcessesByName(NAMEPLAYER);
+
             bool killok = false;
             if (myProcesses.Length > 1)
             {
@@ -479,7 +482,8 @@ namespace ListViewDragDropManager
 
         void scan_done()
         {
-            if (scanner.result == null) return;
+            if (scanner.result == null) goto exit;
+            if (scanner.result.Count == 0) goto exit;
             int ct = 0;
             foreach (var line in dataDD.tasks)
             {
@@ -503,6 +507,7 @@ namespace ListViewDragDropManager
             {
                 listView.Items.Refresh();
             }));
+            exit:
             waiting_result = false;
         }
 
@@ -526,16 +531,16 @@ namespace ListViewDragDropManager
             need_stop_scan = true;
             scanner.CLOSE_SCANNER();
 
-          
-            //try
-            //{
-            //    if (play.playerV != null) play.playerV.Kill();
-            //}
-            //catch { }                
+
+            try
+            {
+                if (play.playerV != null) play.playerV.Kill();
+            }
+            catch { }
 
             // kill_process(data.NAME_SCANER_SERVER);
 
-           
+
         }
 
 
