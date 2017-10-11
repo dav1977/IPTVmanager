@@ -76,7 +76,6 @@ namespace IPTVman.ViewModel
 
     public static class WinPOP
     {
-        public static AudioBass _bass;
         public static bool init_ok = false;
         static Window p;
         public static bool need_to_close = false;
@@ -95,7 +94,7 @@ namespace IPTVman.ViewModel
             try
             {
                 string bitr = "?";
-                message2_win_pop = WinPOP._bass.get_tags(data.url, ref bitr);
+                message2_win_pop = data._bass.get_tags(data.url, ref bitr);
                 if (bitr == "?" || bitr == "0") message1_win_pop = mes;
                 else message1_win_pop = mes + "   [" + bitr + " кбит/с ]";
 

@@ -41,6 +41,7 @@ namespace IPTVman.ViewModel
         {
             header = this;
             InitializeComponent();
+            datafile.ReadFromXML();
             if (!data.mode_scan)
             {
                 this.Activate();
@@ -49,7 +50,7 @@ namespace IPTVman.ViewModel
             }
             else
             {
-                //   this.Hide();
+                //  this.Hide();
                 this.Title = "СКАННЕР РАДИО ТРЭКОВ";
                 if (!initWCF()) this.Close();
             }
@@ -227,7 +228,7 @@ namespace IPTVman.ViewModel
                         //taskTAG = Task.Factory.StartNew(() =>
                         //{
                         string bitr = "?";
-                        string s1 = WinPOP._bass.get_tags(data.url, ref bitr);
+                        string s1 = data._bass.get_tags(data.url, ref bitr);
                         string s2 = "";
 
                         if (bitr == "?" || bitr == "0") s2 = data.name;
@@ -273,13 +274,13 @@ namespace IPTVman.ViewModel
                             taskBASS = Task.Factory.StartNew(() =>
                             {
                                 mode_init_bass = true;
-                                WinPOP._bass = new AudioBass();
-                                WinPOP._bass.init();
-                                WinPOP._bass.create_stream(data.url, data.mode_radio, this);
+                                data._bass = new AudioBass();
+                                data._bass.init();
+                                data._bass.create_stream(data.url, data.mode_radio, this);
                                 mode_init_bass = false;
                                 if (data.mode_radio)
                                 {
-                                    WinPOP._bass.play();
+                                    data._bass.play();
                                 }
 
                             });
@@ -399,10 +400,10 @@ namespace IPTVman.ViewModel
             }
 
             
-            if (data.mode_radio && WinPOP._bass != null)
+            if (data.mode_radio && data._bass != null)
             {
                 if (mute)  mute = false;  else  mute = true; 
-                WinPOP._bass.mute(mute, (float)slider2.Value);
+                data._bass.mute(mute, (float)slider2.Value);
             }
         }
 
@@ -411,9 +412,9 @@ namespace IPTVman.ViewModel
         {
             if(!data.mode_radio && m_player != null) m_player.Volume = v;
 
-            if (data.mode_radio && WinPOP._bass != null)
+            if (data.mode_radio && data._bass != null)
             {
-                WinPOP._bass.volume(v);
+                data._bass.volume(v);
             }
         }
         private void slider2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -436,7 +437,7 @@ namespace IPTVman.ViewModel
         private void Window_Closed(object sender, EventArgs e)
         {
             if (!data.mode_radio && m_player != null) m_player.Stop();
-            if (data.mode_radio && WinPOP._bass != null) WinPOP._bass.stop();
+            if (data.mode_radio && data._bass != null) data._bass.stop();
         }
 
         private void Window_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
@@ -493,6 +494,29 @@ namespace IPTVman.ViewModel
         private void win_TouchEnter(object sender, System.Windows.Input.TouchEventArgs e)
         {
            
+        }
+
+        bool locksetting;
+        private void bnSETTING_Click(object sender, RoutedEventArgs e)
+        {
+            if (locksetting) return;
+            locksetting = true;
+            Window winSETTING = new WindowSettings()
+            {
+                Title = "Настройка",
+                Topmost = true,
+                WindowStyle = WindowStyle.SingleBorderWindow,
+                Name = "setting"
+            };
+
+
+            winSETTING.Closing += winSETTING_Closing;
+            winSETTING.Show();
+        }
+
+        private void winSETTING_Closing(object sender, CancelEventArgs e)
+        {
+            locksetting = false;
         }
 
         private void win_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

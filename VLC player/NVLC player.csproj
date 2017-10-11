@@ -69,8 +69,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataModel\Serializable.cs" />
+    <Compile Include="ManagementObjectSearcher.cs" />
     <Compile Include="ViewModel\AudioBass.cs" />
-    <Compile Include="ViewModel\data.cs" />
+    <Compile Include="DataModel\data.cs" />
+    <Compile Include="DataModel\ImageData.cs" />
     <Compile Include="ViewModel\Player.cs" />
     <Compile Include="ViewModel\Scanner.cs" />
     <Compile Include="ViewModel\WCFconnectNVLCP.cs" />
@@ -79,6 +82,9 @@
     </Compile>
     <Compile Include="WindowPopUp.xaml.cs">
       <DependentUpon>WindowPopUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowSettings.xaml.cs">
+      <DependentUpon>WindowSettings.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -97,6 +103,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WindowPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

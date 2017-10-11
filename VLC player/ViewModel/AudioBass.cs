@@ -12,12 +12,31 @@ using System.Runtime.CompilerServices;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Wma;
 using Un4seen.Bass.AddOn.Tags;
+using Un4seen.Bass.AddOn.Vst;
 using System.Text;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace IPTVman.ViewModel
 {
+    public class WORKVST
+    {
+        public int handle;
+        public string path;
+        public Form wnd = null;
+
+        public WORKVST(int handle, string path)
+        {
+            this.handle = handle;
+            this.path = path;
+        }
+    }
     // NOTE: Needs 'bass.dll' - copy it to your output directory first!
- //       needs 'basswma.dll' - copy it to your output directory first!
+    //       needs 'basswma.dll' - copy it to your output directory first!
     public class AudioBass
     {
         // PINNED
@@ -33,7 +52,8 @@ namespace IPTVman.ViewModel
         //private RECORDPROC myRecProc;
         private int _wmaPlugIn = 0;
         bool isWMA = false;
-
+        public List<WORKVST> work_list_vst = new List<WORKVST>();
+       
         public void init()
 		{
             if (WinPOP.init_ok) return;
@@ -44,7 +64,7 @@ namespace IPTVman.ViewModel
             // check the version..
             if (Utils.HighWord(Bass.BASS_GetVersion()) != Bass.BASSVERSION)
             {
-                MessageBox.Show( "Wrong Bass Version!");
+                System.Windows.MessageBox.Show( "Wrong Bass Version!");
             }
 
             // stupid thing here as well, just to demo...
@@ -74,43 +94,255 @@ namespace IPTVman.ViewModel
 
 				if ( Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_WMA_PREBUF, 0) == false)
 				{
-					MessageBox.Show( "Ощибка lib " + Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()) );
+                    System.Windows.MessageBox.Show("Ошибка Bass_Init " + Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()) );
 				}
 				// we alraedy create the user callback methods...
 				myStreamCreateURL = new DOWNLOADPROC(MyDownloadProc);
                 WinPOP.init_ok = true;
-
-
             }
 			else
-				MessageBox.Show( "Bass_Init error!" );
+                System.Windows.MessageBox.Show( "Bass_Init error!" );
 		}
 
-        void init_device()
+
+        //void init_device()
+        //{
+        //    // init the two output devices
+        //    Bass.BASS_Init(1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+        //    Bass.BASS_Init(2, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+
+        //    // set the device context to the first device
+        //    Bass.BASS_SetDevice(1);
+
+        //    // create a first stream in this context
+        //    //int stream1 = Bass.BASS_StreamCreateFile("test1.mp3", 0L, 0L, BASSFlag.BASS_DEFAULT);
+        //    //Bass.BASS_ChannelPlay(stream1, false);
+
+        //    // set the device context to the second device
+        //    Bass.BASS_SetDevice(2);
+        //    // create a second stream using this context
+        //    //int stream2 = Bass.BASS_StreamCreateFile("test2.mp3", 0L, 0L, BASSFlag.BASS_DEFAULT);
+        //    //Bass.BASS_ChannelPlay(stream2, false);
+
+        //}
+
+        public string getNameDevice(byte num)
         {
-            // init the two output devices
-            Bass.BASS_Init(1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
-            Bass.BASS_Init(2, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
-          
-            // set the device context to the first device
-            Bass.BASS_SetDevice(1);
+            BASS_DEVICEINFO info = new BASS_DEVICEINFO();
+            info.name = string.Empty;
+            Bass.BASS_GetDeviceInfo(num, info);
+            return info.name;
+        }
 
-            // create a first stream in this context
-            //int stream1 = Bass.BASS_StreamCreateFile("test1.mp3", 0L, 0L, BASSFlag.BASS_DEFAULT);
-            //Bass.BASS_ChannelPlay(stream1, false);
+        public void ChannelSetDevice(byte device, string _name)
+        {
+            try
+            {
+                // if you want to change the output of the first stream to the second output
+                // you might call this (even during playback)      
+                bool rez = Bass.BASS_ChannelSetDevice(_Stream, device);
+                int dev = Bass.BASS_GetDevice();
+                int num = Bass.BASS_GetDeviceCount();
 
-            // set the device context to the second device
-            Bass.BASS_SetDevice(2);
-            // create a second stream using this context
-            //int stream2 = Bass.BASS_StreamCreateFile("test2.mp3", 0L, 0L, BASSFlag.BASS_DEFAULT);
-            //Bass.BASS_ChannelPlay(stream2, false);
-           
-            // if you want to change the output of the first stream to the second output
-            // you might call this (even during playback)
-            //Bass.BASS_ChannelSetDevice(stream1, 2);
+                BASS_DEVICEINFO info = new BASS_DEVICEINFO();
+                info.name = string.Empty;
+                info.driver = string.Empty;
+                info.flags = 0;
+                Bass.BASS_GetDeviceInfo(num, info);
+
+                if (!rez) System.Windows.MessageBox.Show(
+                    "Ошибка устройства вывода " + device.ToString() +
+                    "\nИмя " + _name+"/"+ info.name
+                    + "\ndriver= " + info.driver
+                    + "\nflags= " + info.flags
+                    + "\nТекущее " + dev.ToString()
+                    + "\nВсего устр. " + num.ToString()
+
+                    );
+            }
+            catch (Exception ex) { System.Windows.MessageBox.Show("ошибка "+ex.Message); }
+        }
+
+
+        public string get_path_VST(string s)
+        {
+            foreach (var p in work_list_vst)
+            {
+                if (new Regex(s).Match(p.path).Success) { return p.path.Trim(); }
+            }
+            return "";
+        }
+
+        public bool VSTisENABLED(string s)
+        {
+            if (work_list_vst.Count == 0) return false;
+            foreach (var p in work_list_vst)
+                      if (get_nameVTS(p.path) == s) { return true; }
+            return false;
+        }
+
+        public bool VST_ENABLE(string path)
+        {
+            var handle = BassVst.BASS_VST_ChannelSetDSP(_Stream, path,
+                                BASSVSTDsp.BASS_VST_DEFAULT, 1);
+            if (handle < 1)
+            { System.Windows.MessageBox.Show("Ошибка подключения "+get_nameVTS(path));
+                return false; }
+            work_list_vst.Add(new WORKVST(handle, path));
+            Trace.WriteLine("add hd="+handle.ToString());
+            return true;
+        }
+
+
+        int getHAndle(string s)
+        {
+            foreach (var v in work_list_vst)
+            {
+                Trace.WriteLine("listwork = "+v.handle.ToString());
+                if (get_nameVTS(v.path.ToString()) == s) { return v.handle; }
+            }
+            return -1;
+        }
+        
+        /// <summary>
+        /// возврат индекса по handler
+        /// </summary>
+        /// <param name="h"></param>
+        /// <returns></returns>
+        int getID(int h)
+        {
+            int i = 0;
+            foreach (var v in work_list_vst)
+            {
+                if (v.handle == h) { return i; }
+                i++;
+            }
+            return -1;
+        }
+
+        public void VST_DISABLE(string del)
+        {
+            BassVst.BASS_VST_ChannelRemoveDSP(_Stream, getHAndle(del));
+
+            remove_workLIST(del, ref work_list_vst);
+            remove_VST(del, ref data.workVST);
+            data.UpdateLIST();
+        }
+
+        void remove_workLIST(string s, ref List<WORKVST> col)
+        {
+            WORKVST findobj= null;
+            s = s.Trim();
+
+            foreach (var obj in col)
+            {
+                if (new Regex(s).Match(obj.path.ToString().Trim()).Success)
+                {
+                    findobj = obj;
+                }
+            }
+            if (findobj != null) { Trace.WriteLine("remove hd=" + findobj.handle.ToString()); col.Remove(findobj); }
+        }
+
+        public void OPEN_VST(string s)
+        {
+            foreach (var w in work_list_vst)
+            {
+                if (w.wnd != null)
+                    if (w.wnd.IsDisposed)
+                    { 
+                        BassVst.BASS_VST_EmbedEditor(w.handle, IntPtr.Zero);
+                    }
+            }
+            string path = get_path_VST(s);
+            int _hdl = getHAndle(get_nameVTS(path));
+            if (_hdl < 0) { System.Windows.MessageBox.Show("Ошибка открытия "+s); return; }
+
+            // show the embedded editor
+            BASS_VST_INFO vstInfo = new BASS_VST_INFO();
+            if (BassVst.BASS_VST_GetInfo(_hdl, vstInfo) && vstInfo.hasEditor)
+            {
+                int id=getID(_hdl);
+                if (work_list_vst[id].wnd != null)
+                    if(!work_list_vst[id].wnd.IsDisposed)
+                                                       return;
+
+                work_list_vst[id].wnd = new Form();
+                work_list_vst[id].wnd.Width = vstInfo.editorWidth + 4;
+                work_list_vst[id].wnd.Height = vstInfo.editorHeight + 34;
+                work_list_vst[id].wnd.Closing += new CancelEventHandler(windsp_Closing);
+                work_list_vst[id].wnd.Text = data.name+" "+vstInfo.effectName;
+                work_list_vst[id].wnd.Show();
+                BassVst.BASS_VST_EmbedEditor(_hdl, work_list_vst[id].wnd.Handle);
+
+            }
+        }
+
+        private void windsp_Closing(object sender, CancelEventArgs e)
+        {
+            
+        }
+
+        string _current_pathVST = "no select";
+        public string current_pathVST
+        {
+            get { return _current_pathVST; }
+            set
+            {
+                _current_pathVST = value;
+                data.UpdateSettings();
+            }
+        }
+
+
+        public void addVST(string s)
+        {
+            data.pathVST.Add(s);
+            current_pathVST = s;
+            data.UpdateLIST();
 
         }
 
+        public  bool path_is_ok(string s)
+        {
+            foreach (var obj in data.pathVST)
+            {
+                if (s.Trim() == obj)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //public void remove_dataPATH(string s)
+        //{
+        //    remove_VST(s, ref data.pathVST);
+        //}
+        public void remove_VST(string s, ref ObservableCollection<string> col)
+        {
+            string findobj = "";
+            s = s.Trim();
+
+            foreach (var obj in col)
+            {
+                if (new Regex(s).Match(obj.ToString().Trim()).Success)
+                {
+                    findobj = obj.ToString();
+                }
+            }
+            if (findobj == "") return;
+
+            var v = col.FirstOrDefault(p => p == findobj);
+            if (v != null) col.Remove(v);
+
+        }
+
+        public string get_nameVTS(string text)
+        {
+            string[] words = text.Split(new char[] { '\\' });
+            return words[words.Length - 1];
+        }
 
         public void create_stream(string nm, bool moderad, Window header)
         {
@@ -190,10 +422,14 @@ namespace IPTVman.ViewModel
                 BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(_Stream);
                 if (info.ctype == BASSChannelType.BASS_CTYPE_STREAM_WMA) isWMA = true;
             }
-            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            catch (Exception ex) { System.Windows.MessageBox.Show(ex.ToString()); }
         }
 
-
+        /// <summary>
+        /// декодирование тэга
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         string StrEncod(string str)
         {
             bool need_coding = false;
@@ -333,7 +569,7 @@ namespace IPTVman.ViewModel
                 //}
 
             }
-            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            catch (Exception ex) { System.Windows.MessageBox.Show(ex.ToString()); }
             return "null";
         }
 
@@ -359,8 +595,15 @@ namespace IPTVman.ViewModel
             try
             {
                 Bass.BASS_ChannelPlay(_Stream, false);
+
+                //запуск предустановленных VST
+                foreach (var dsp in data.workVST)
+                {
+                    if (!VST_ENABLE(dsp)) System.Windows.MessageBox.Show("Ошибка запуска VST " +
+                                                                                get_nameVTS(dsp));
+                }
             }
-            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            catch (Exception ex) { System.Windows.MessageBox.Show(ex.ToString()); }
             // record the stream
             //Bass.BASS_ChannelPlay(rechandle, false);
         }
@@ -422,14 +665,15 @@ namespace IPTVman.ViewModel
             return true;
         }
 
-        private void MyDownloadProc(IntPtr buffer, int length, IntPtr user)
+        private void MyDownloadProc(IntPtr buffer, int length, IntPtr user2)
         {
+
             if (buffer != IntPtr.Zero && length == 0)
             {
-                // the buffer contains HTTP or ICY tags.
+                ///the buffer contains HTTP or ICY tags.
                 //string txt = Marshal.PtrToStringAnsi(buffer);
                 //this.Invoke(new UpdateMessageDelegate(UpdateMessageDisplay), new object[] { txt });
-                // you might instead also use "this.BeginInvoke(...)", which would call the delegate asynchron!
+               // you might instead also use "this.BeginInvoke(...)", which would call the delegate asynchron!
             }
         }
 

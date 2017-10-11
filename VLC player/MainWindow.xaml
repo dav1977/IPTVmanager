@@ -2,14 +2,21 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:vm="clr-namespace:IPTVman.ViewModel" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:IPTVman.ViewModel"
     Title="nvlc player " Height="208.657" Width="647.703" Closing="Window_Closing" Closed="Window_Closed" TouchEnter="win_TouchEnter" MouseEnter="win_MouseEnter">
 
-    <Window.Resources>
-        <!-- <vm:ViewModelMain x:Key="ViewModelMain"/> -->
-    </Window.Resources>
+    <Window.DataContext>
+        <!-- Declaratively create an instance of our  ИСТОЧНИК ДАННЫХ -->
+        <local:ImageViewModel />
+    </Window.DataContext>
+
     <Window.InputBindings>
         <KeyBinding Command="{Binding key_kt}" Key="T"/>
     </Window.InputBindings>
+
+
+
+
 
     <Grid Margin="1,3,3,2">
         <Grid.ColumnDefinitions>
@@ -25,7 +32,7 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Button Height="15" Name="bMUTE" Width="92" Click="button5_Click" FontSize="8" Foreground="#FFABB82A" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,1" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
+        <Button Height="14" Name="bMUTE" Width="92" Click="button5_Click" FontSize="8" Foreground="#FFABB82A" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -42,7 +49,7 @@
             </Button.Background> Mute
         </Button>
 
-        <my:WindowsFormsHost Name="windowsFormsHost1" xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" Margin="7,6,6,17" TouchEnter="windowsFormsHost1_TouchEnter" Grid.Column="3" />
+        <my:WindowsFormsHost Name="windowsFormsHost1" xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" Margin="1,1,0,14" TouchEnter="windowsFormsHost1_TouchEnter" Grid.Column="3" />
 
         <Slider Height="13" Margin="125,0,15,1" Name="slider2" ValueChanged="slider2_ValueChanged" Maximum="100" RenderTransformOrigin="0.497,-0.458" BorderBrush="#FF1A8D44" Foreground="#FF682B2B" OpacityMask="#FF0D6E58" FontSize="9" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" Grid.Column="3" >
             <Slider.Background>
@@ -54,7 +61,25 @@
         </Slider>
         <Label Name="l1" Content="Label" HorizontalAlignment="Center" Margin="9,31,8,0" VerticalAlignment="Top" Grid.Column="3" HorizontalContentAlignment="Center" FontFamily="Century" FontSize="20" FontWeight="Bold" Foreground="#FF1CE8CC" Height="Auto" RenderTransformOrigin="-0.226,0.958" Width="622"/>
         <Label Name="l2" Content="Label" HorizontalAlignment="Center" Margin="11,92,10,0" VerticalAlignment="Top" Grid.Column="3" HorizontalContentAlignment="Center" FontFamily="Century" FontStyle="Italic" FontSize="22" Foreground="#FFC146C1" Height="Auto" Width="618"/>
+        <Button
 
+            x:Name="bnSETTING" Grid.Column="3" HorizontalAlignment="Left" Margin="591,3,0,0" VerticalAlignment="Top" Width="41" Height="35" RenderTransformOrigin="0.5,0.5" Click="bnSETTING_Click">
+            <Button.Background>
+                <ImageBrush Stretch="None"/>
+            </Button.Background>
+
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.167"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Image x:Name="image" Source="{Binding ImageSource, UpdateSourceTrigger=PropertyChanged}"  Margin="594,6,16,145" Grid.Column="3"/>
 
     </Grid>
+
+
 </Window>
