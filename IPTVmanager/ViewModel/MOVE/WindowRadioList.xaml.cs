@@ -42,7 +42,8 @@ namespace ListViewDragDropManager
             //listView.SelectionMode = SelectionMode.Multiple;
 
             kill_process(data.NAME_SCANER_SERVER);             
-            if (num_open_process()==0)  init_scan_process();  
+            if (num_open_process()==0)  init_scan_process();
+            Thread.Sleep(1000);
         }
 
         public void CreateTimer1(int ms)
@@ -379,7 +380,7 @@ namespace ListViewDragDropManager
 
                 waiting_result = true;
                 scanner.getPLAYING();
-
+               
                 while (waiting_result)
                 {
                     if (need_stop_scan) { break; }
@@ -523,20 +524,24 @@ namespace ListViewDragDropManager
 
         void exit()
         {
-            if (scanner == null)
-            {
-                scanner = new IPTVman.ViewModel.ScannerRadio();
-                if (prefix == null) prefix = new bool[listView.Items.Count + 1];
-            }
+            //if (scanner == null)
+            //{
+            //    scanner = new IPTVman.ViewModel.ScannerRadio();
+            //    if (prefix == null) prefix = new bool[listView.Items.Count + 1];
+            //}
             need_stop_scan = true;
+            while (waiting_result) Thread.Sleep(100);
+
+            waiting_result = true;
             scanner.CLOSE_SCANNER();
+            while (waiting_result) Thread.Sleep(100);
+            MessageBox.Show("servak closed");
 
-
-            try
-            {
-                if (play.playerV != null) play.playerV.Kill();
-            }
-            catch { }
+            //try
+            //{
+            //    if (play.playerV != null) play.playerV.Kill();
+            //}
+            //catch { }
 
             // kill_process(data.NAME_SCANER_SERVER);
 

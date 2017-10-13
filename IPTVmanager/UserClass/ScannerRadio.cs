@@ -46,7 +46,6 @@ namespace IPTVman.ViewModel
             add("*");
             add("*");
             getPLAYING();
-            Thread.Sleep(200);
         }
 
         Task tasksc;
@@ -79,9 +78,9 @@ namespace IPTVman.ViewModel
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             try { await tasksc; }
-            catch { }// (Exception ex)
+            catch (Exception ex)
             {
-                //System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  getPLAYING " + ex.Message.ToString());
+                System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  getPLAYING " + ex.Message.ToString());
             }
             return;
         }

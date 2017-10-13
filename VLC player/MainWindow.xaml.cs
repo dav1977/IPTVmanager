@@ -41,17 +41,30 @@ namespace IPTVman.ViewModel
         {
             header = this;
             InitializeComponent();
-            datafile.ReadFromXML();
             if (!data.mode_scan)
             {
                 this.Activate();
                 this.Focus();
-
+                datafile.ReadFromXML(data.DefaultPath);
             }
             else
             {
-                //  this.Hide();
-                this.Title = "СКАННЕР РАДИО ТРЭКОВ";
+                Result.print += Result_print;
+                //System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+
+                    Result.bass = new AudioBass();
+                    Result.bass.init();
+                    this.Title = "СКАННЕР РАДИО ТРЭКОВ";
+
+                //ni.Icon = new System.Drawing.Icon("blur.ico");
+                //ni.Visible = true;
+                //ni.DoubleClick += (sndr, args) =>
+                //{
+                //    this.Show();
+                //    this.WindowState = WindowState.Normal;
+                //};
+                //this.Hide();
+
                 if (!initWCF()) this.Close();
             }
             if (data.mode_radio) data.title = data.name;
@@ -82,33 +95,47 @@ namespace IPTVman.ViewModel
                 if (!data.mode_scan) l1.Visibility = Visibility.Hidden;
                 l2.Visibility = Visibility.Hidden;
             }
-
-            this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
-            windowsFormsHost1.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
-
+           
                  if (!data.mode_radio && !data.mode_scan)
                 {
                  if (data.url == "") this.Title = "Нечего проигрывать";
                 }
+
             slider2.Value = 100;
             reset();
 
-            //use a timer to periodically update the memory usage
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            timer.Tick += timer_Tick;
-            timer.Start();
-
-            slider2.Focus();
-
-            if (data.mode_scan)
+            if (!data.mode_scan)
             {
+                this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
+                windowsFormsHost1.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
+                //use a timer to periodically update the memory usage
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+                timer.Tick += timer_Tick;
+                timer.Start();
+
+                slider2.Focus();
+            }
+            else
+            {
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+                timer.Tick += timer_Tick;
+                timer.Start();
+
+                bnSETTING.Visibility = Visibility.Hidden;
                 slider2.Visibility = Visibility.Hidden;
                 bMUTE.Visibility = Visibility.Hidden;
             }
         }
 
-       
+        private void Result_print(string str)
+        {
+            l1.Dispatcher.Invoke(new Action(() =>
+            {
+                l1.Content = str;
+            }));
+        }
 
         void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {    
@@ -143,8 +170,9 @@ namespace IPTVman.ViewModel
         Task task1;
         public static CancellationTokenSource cts1;
         public static CancellationToken cancellationToken;
-        int ctscan=0;
         bool loktimer = false;
+        string en = "";
+        string lastPRINT = "";
 
         private async void timer_Tick(object sender, EventArgs e)
         {
@@ -166,53 +194,24 @@ namespace IPTVman.ViewModel
                 }
                 else
                 {
-                    ctscan++;
-                    string en = "";
+                    en = "";
                     if (Result.data_ok) en = "ENDscan  ";
-                    l1.Dispatcher.Invoke(new Action(() =>
+                    if (lastPRINT != en + data.scanURL)
                     {
-                        l1.Content = en + data.scanURL;
-                    }));
+                        l1.Dispatcher.Invoke(new Action(() =>
+                        {
+                            l1.Content = en + data.scanURL;
+                            lastPRINT = en + data.scanURL;
+                        }));
+                    }
                 }
               }
 
                 if (loc) return;
                 loc = true;
 
-
-                if (data.mode_scan)
-                {
-                    cts1 = new CancellationTokenSource();
-                    cancellationToken = cts1.Token;//для task1
-                    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                    task1 = Task.Run(() =>
-                    {
-                        var tcs = new TaskCompletionSource<string>();
-                        try
-                        {
-                            scan(cancellationToken);
-                            tcs.SetResult("ok");
-                        }
-                        catch (OperationCanceledException ex)
-                        {
-                            tcs.SetException(ex);
-                        }
-                        catch (Exception ex)
-                        {
-                            tcs.SetException(ex);
-                        }
-
-                        return tcs.Task;
-                    });
-                    //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                    try { await task1; }
-                    catch (Exception ex)
-                    {
-                        System.Windows.MessageBox.Show("ОШИБКА NVLCP сканнер " + ex.Message.ToString());
-                    }
-                    return;
-                }
-
+                if (data.mode_scan) return;
+          
                 if (mode_init_bass)
                 {
                     if (data.mode_radio) this.Title = data.title;
@@ -499,11 +498,12 @@ namespace IPTVman.ViewModel
         bool locksetting;
         private void bnSETTING_Click(object sender, RoutedEventArgs e)
         {
+            if (!WinPOP.init_ok) return;
             if (locksetting) return;
             locksetting = true;
             Window winSETTING = new WindowSettings()
             {
-                Title = "Настройка",
+                Title = "Настройка "+data.name,
                 Topmost = true,
                 WindowStyle = WindowStyle.SingleBorderWindow,
                 Name = "setting"

@@ -62,9 +62,18 @@ namespace IPTVman.ViewModel
             //BassNet.Registration("your email", "your regkey");
 
             // check the version..
-            if (Utils.HighWord(Bass.BASS_GetVersion()) != Bass.BASSVERSION)
+            try
             {
-                System.Windows.MessageBox.Show( "Wrong Bass Version!");
+                if (Utils.HighWord(Bass.BASS_GetVersion()) != Bass.BASSVERSION)
+                {
+                    System.Windows.MessageBox.Show("Ошибка bass.dll");
+                    while (true) Thread.Sleep(5000);
+                }
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Ошибка bass.dll");
+                while (true) Thread.Sleep(5000);
             }
 
             // stupid thing here as well, just to demo...
@@ -75,7 +84,7 @@ namespace IPTVman.ViewModel
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_PREBUF, 0); // so that we can display the buffering%
             Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_NET_PLAYLIST, 1);
 
-			if ( Bass.BASS_Init(1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero) )
+			if ( Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero) )
 			{
 				// Some words about loading add-ons:
 				// In order to set an add-on option with BASS_SetConfig, we need to make sure, that the
@@ -408,11 +417,114 @@ namespace IPTVman.ViewModel
                     data.buff = String.Format("Buffering... {0}%", len);
                 }
             }
+        }
 
+        /// <summary>
+        /// ЗАбирает все параметры из активных VST
+        /// </summary>
+        public void Get_All_Param_VST()
+        {
+            Trace.WriteLine("size vst " + work_list_vst.Count.ToString());
+            data.listPARAM.Clear();
+            foreach (var s in work_list_vst)
+            {
+                if (s.handle > 0)
+                {
+                   var rez= VST_GET_PARAM(s.handle);
+                    data.listPARAM.Add(rez);
+                }
+            }
+            Trace.WriteLine("size listPARAM " + data.listPARAM.Count.ToString());
+        }
+
+        /// <summary>
+        /// Пишет параметры во все активные VST
+        /// </summary>
+        public void SET_All_Param_VST()
+        {
+            try
+            {
+            int index = 0;
+            foreach (var mylist in data.listPARAM)
+            {
+                Trace.WriteLine("size vst " + work_list_vst.Count.ToString()+" sizeLIST="+data.listPARAM.Count.ToString());
+                if (VST_SET_PARAM(work_list_vst[index].handle, mylist))
+                    System.Windows.MessageBox.Show("Ошибка установки параметров");
+
+               index++;
+            }
+            }
+            catch (Exception ex) { System.Windows.MessageBox.Show("setall error "+ex.Message); }
+        }
+
+
+        List<float> VST_GET_PARAM(int vstHandle)
+        {
+            List<float> rez = new List<float>();
+            try
+            {
+                int vstParams = BassVst.BASS_VST_GetParamCount(vstHandle);
+                Trace.WriteLine(vstHandle.ToString()+ " vstParams= " + vstParams.ToString());
+                // create a paramInfo object
+                BASS_VST_PARAM_INFO paramInfo = new BASS_VST_PARAM_INFO();
+                for (int i = 0; i < vstParams; i++)
+                {
+                    // get the info about the parameter
+                    float paramValue = BassVst.BASS_VST_GetParam(vstHandle, i);
+                    // and get further info about the parameter
+                    BassVst.BASS_VST_GetParamInfo(vstHandle, i, paramInfo);
+                    rez.Add(paramValue);
+                    Trace.WriteLine(paramInfo.ToString()+" = "+paramValue.ToString() );
+                }
+            }
+            catch (Exception ex) { System.Windows.MessageBox.Show(ex.Message); }
+            return rez;
+        }
+
+        bool VST_SET_PARAM(int vstHandle,List<float> data)
+        {
+            bool error = false;
+            try
+            {
+                for (int i = 0; i < data.Count; i++)
+                {
+                    Trace.WriteLine(i.ToString() + " set ");
+                    var s = BassVst.BASS_VST_SetParam(vstHandle, i, data[i]);
+                    if (!s) error = true;
+                }
+            }
+            catch (Exception ex) { System.Windows.MessageBox.Show(ex.Message); }
+            return error;
+        }
+
+        void VST_GET_PARAM_count()
+        {
 
 
         }
 
+        /// <summary>
+        /// Retrieving a program name other than the current one enforces to change the current program inernally
+        /// </summary>
+        /// <param name="vstHandle"></param>
+        /// <returns></returns>
+        List<string> VST_GET_AFFECT(int vstHandle)
+        {
+            List<string> spis = null;
+            BASS_VST_INFO vstInfo = new BASS_VST_INFO();
+            if (BassVst.BASS_VST_GetInfo(vstHandle, vstInfo))
+            {
+                if (vstInfo.aeffect != IntPtr.Zero)
+                {
+                    BASS_VST_AEFFECT aeffect = BASS_VST_AEFFECT.FromIntPtr(vstInfo.aeffect);
+                    // list all available programs
+                    for (int i = 0; i < aeffect.numPrograms; i++)
+                        spis.Add(aeffect.GetProgramName(i));
+                }
+
+            }
+            return spis;
+        }
 
         void init_tag()
         {
@@ -496,8 +608,6 @@ namespace IPTVman.ViewModel
             try
             {              
                 init_tag();
-
-                Thread.Sleep(500);
 
                 if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
                 {

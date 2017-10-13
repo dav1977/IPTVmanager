@@ -20,15 +20,13 @@ namespace IPTVman.ViewModel
         public ObservableCollection<string> workVST
         { get { return data.workVST; } set { data.workVST = workVST; } }
 
-
+        public ObservableCollection<List<float>> Params
+        { get { return data.listPARAM ; } set { data.listPARAM = Params; } }
     }
 
     public class datafile
     {
-
-        static string path = AppDomain.CurrentDomain.BaseDirectory + "playersettings.xml";
-
-        public static void SAVEtoXML()
+        public static void SAVEtoXML(string path)
         {
             try
             {
@@ -43,7 +41,7 @@ namespace IPTVman.ViewModel
             catch (Exception ex) { System.Windows.MessageBox.Show("Ошибка " + ex.Message); }
         }
 
-        public static void ReadFromXML()
+        public static void ReadFromXML(string path)
         {
             try
             {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace IPTVman.ViewModel
 {
@@ -23,37 +24,13 @@ namespace IPTVman.ViewModel
             catch { return false; }
             return true;
         }
-
-        /// <summary>
-        /// scan
-        /// </summary>
-        /// <param name="cts"></param>
-        void scan(CancellationToken cts)
-        {
-            //List<string> datals = new List<string>();
-            //List<string> data = m.ReadObjectFromMemory("iptvlinks") as List<string>;
-
-            //if (data == null) return;
-            //List<string> savedata = new List<string>();
-
-            data.scanURL = "ready to scan...";
-            int ct = 0;
-            while (true)
-            {
-                if (cts.IsCancellationRequested) return;
-                ct++;
-                if (ct > 10 * 30) break; //даем 30 сек на всё
-                if (Result.data_ok) break;
-
-                Thread.Sleep(100);  //ждем приема списка и выполнение сканирования
-            }
-        }
-
     }
 
 
     public static class Result
     {
+        public static event Action<string> print;
+
         public static bool data_ok = false;
 
         public static List<string> listresult = new List<string>();
@@ -64,7 +41,7 @@ namespace IPTVman.ViewModel
             listresult.Clear();
         }
 
-
+        public static AudioBass bass;
         /// <summary>
         /// этот метод вызвыает  WCF служба 
         /// </summary>
@@ -73,19 +50,15 @@ namespace IPTVman.ViewModel
         {
             try
             {
-                var bass = new AudioBass();
-                bass.init();
-
                 Result.Clear();
                 int i = 1;
                 foreach (var s in datalist)
                 {
-                    bass.init();
-                    Thread.Sleep(50);
                     bass.create_stream(s, false, null);
-                    Thread.Sleep(50);
+                    Thread.Sleep(500);
 
                     data.scanURL = "[" + i.ToString() + " из " + datalist.Count + "]" + s;
+            
 
                     string bitr = "";
                     string play = bass.get_tags(s, ref bitr);
@@ -94,6 +67,7 @@ namespace IPTVman.ViewModel
                     Result.listresult.Add(s);
                     Result.listresult.Add(play);
                     Result.listresult.Add(bitr.ToString());
+                    //if (print != null) print(s+" "+play);
                 }
 
                 Result.data_ok = true;

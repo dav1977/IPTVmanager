@@ -102,7 +102,7 @@ namespace IPTVman.ViewModel
 
         public List<string> GetPlaying(List<string> s)
         {
-            return service.Get_Playing(s);
+             return service.Get_Playing(s);
         }
   
 

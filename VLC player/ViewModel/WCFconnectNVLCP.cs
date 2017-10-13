@@ -6,41 +6,38 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using System.Threading;
 using System.Windows;
+using System.Diagnostics;
 
 namespace IPTVman.ViewModel
-{ 
-    
-        // Реализация методов, которые описаны в интерфейсе
-        public class MyService : IWCFmyService
+{
+    public class MyService : IWCFmyService
+    {
+        static object lk = new object();
+        List<string> IWCFmyService.Get_Playing(List<string> s)
         {
-           
-            List<string> IWCFmyService.Get_Playing(List<string> s)
+            Task.Factory.StartNew(() =>
             {
-                
-                try
+                lock (lk)
                 {
-                    if (s[0] == "*") {  data.exit_programm = true;  return Result.listresult; }
+                    if (s[0] == "*") { data.exit_programm = true; return Result.listresult; }
                     Result.data_ok = false;
+                        
                     Result.RUN_SCAN(s);
-                    List<string> rez = new List<string>();
+                    Thread.Sleep(100);
 
                     while (true)
                     {
-                        if (Result.data_ok)
-                        {
-                            break;
-                        }
-                        else Thread.Sleep(100);
-
+                        if (Result.data_ok) break;
+                        Thread.Sleep(100);
                     }
                 }
-                catch { }
+                return null;
+            }).Wait();
 
-                return Result.listresult;
-            }
+            return Result.listresult;
         }
 
-
+    }
         class WCFSERVER
         {
             ServiceHost host;
@@ -108,8 +105,14 @@ namespace IPTVman.ViewModel
 
         public List<string> GetPlaying(List<string> s)
         {
-            if (service == null) return null;
-            return (service.Get_Playing(s));
+            List<string> ret = null;
+            try
+            {
+                if (service == null) return null;
+                ret= service.Get_Playing(s);
+            }
+            catch { }
+            return ret;
         }
   
 

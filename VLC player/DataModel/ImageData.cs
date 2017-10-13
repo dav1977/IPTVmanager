@@ -61,26 +61,35 @@ namespace IPTVman.ViewModel
 
         private void LoadImageAsync()//КАЖДАЯ КАРТИНКА В СВОЕМ ПОТОКЕ ЗАГРУЖАЕТСЯ
         {
-            Trace.WriteLine("load");
             IsLoading = true;
 
             var UIScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
             Task.Factory.StartNew(() =>
             {
-                var bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.UriSource = new Uri(Path, UriKind.Relative);
-                bmp.CacheOption = BitmapCacheOption.OnLoad;
-                bmp.EndInit();
-                bmp.Freeze();
-                return bmp;
+                return getscr(Path);
             }).ContinueWith(x =>
             {
                 ImageSource = x.Result;
                 IsLoading = false;
             }, UIScheduler);
         }
+
+        static BitmapImage getscr(string s)
+        {
+            var bmp = new BitmapImage();
+            try
+            {  
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(s, UriKind.Relative);
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.EndInit();
+                bmp.Freeze();
+            }
+            catch { bmp = null; }
+            return bmp;
+        }
+
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -92,18 +101,6 @@ namespace IPTVman.ViewModel
         }
         #endregion
 
-        static BitmapImage getscr(string s)
-        {
-            var bmp = new BitmapImage();
-            bmp.BeginInit();
-            bmp.UriSource = new Uri(s, UriKind.Relative);
-            bmp.CacheOption = BitmapCacheOption.OnLoad;
-            bmp.EndInit();
-            bmp.Freeze();
-            return bmp;
-        }
+
     }
-
-   
-
 }

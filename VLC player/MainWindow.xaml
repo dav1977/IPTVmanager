@@ -49,7 +49,7 @@
             </Button.Background> Mute
         </Button>
 
-        <my:WindowsFormsHost Name="windowsFormsHost1" xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" Margin="1,1,0,14" TouchEnter="windowsFormsHost1_TouchEnter" Grid.Column="3" />
+        <my:WindowsFormsHost Name="windowsFormsHost1" xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" Margin="0,0,0,14" TouchEnter="windowsFormsHost1_TouchEnter" Grid.Column="2" Grid.ColumnSpan="2" />
 
         <Slider Height="13" Margin="125,0,15,1" Name="slider2" ValueChanged="slider2_ValueChanged" Maximum="100" RenderTransformOrigin="0.497,-0.458" BorderBrush="#FF1A8D44" Foreground="#FF682B2B" OpacityMask="#FF0D6E58" FontSize="9" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" Grid.Column="3" >
             <Slider.Background>
@@ -61,11 +61,11 @@
         </Slider>
         <Label Name="l1" Content="Label" HorizontalAlignment="Center" Margin="9,31,8,0" VerticalAlignment="Top" Grid.Column="3" HorizontalContentAlignment="Center" FontFamily="Century" FontSize="20" FontWeight="Bold" Foreground="#FF1CE8CC" Height="Auto" RenderTransformOrigin="-0.226,0.958" Width="622"/>
         <Label Name="l2" Content="Label" HorizontalAlignment="Center" Margin="11,92,10,0" VerticalAlignment="Top" Grid.Column="3" HorizontalContentAlignment="Center" FontFamily="Century" FontStyle="Italic" FontSize="22" Foreground="#FFC146C1" Height="Auto" Width="618"/>
+      
         <Button
-
-            x:Name="bnSETTING" Grid.Column="3" HorizontalAlignment="Left" Margin="591,3,0,0" VerticalAlignment="Top" Width="41" Height="35" RenderTransformOrigin="0.5,0.5" Click="bnSETTING_Click">
+            x:Name="bnSETTING" Grid.Column="3" HorizontalAlignment="Right" Margin="0,1,2,0" VerticalAlignment="Top" Width="25" Height="25" RenderTransformOrigin="0.5,0.5" Click="bnSETTING_Click">
             <Button.Background>
-                <ImageBrush Stretch="None"/>
+                <ImageBrush ImageSource="{Binding ImageSource, UpdateSourceTrigger=PropertyChanged}"/>
             </Button.Background>
 
             <Button.RenderTransform>
@@ -77,7 +77,6 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <Image x:Name="image" Source="{Binding ImageSource, UpdateSourceTrigger=PropertyChanged}"  Margin="594,6,16,145" Grid.Column="3"/>
 
     </Grid>
 

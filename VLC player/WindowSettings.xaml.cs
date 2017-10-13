@@ -30,6 +30,7 @@ namespace IPTVman.ViewModel
             lw2.ItemsSource = vst2;
             comboBox.ItemsSource = devices;
 
+            if (!WinPOP.init_ok) this.Close();
             string def= "0";
             for (byte i = 0; i < 10; i++)
             {
@@ -222,11 +223,7 @@ namespace IPTVman.ViewModel
             data.UpdateLIST();
         }
 
-        private void bSAVExml_Click(object sender, RoutedEventArgs e)
-        {
-            datafile.SAVEtoXML();
-        }
-
+       
 
         bool lok_combo=true;
         //select device output
@@ -236,6 +233,36 @@ namespace IPTVman.ViewModel
             var name = comboBox.SelectedItem;
             byte ind = (byte)comboBox.SelectedIndex;
             data._bass.ChannelSetDevice( ind , name.ToString());
+        }
+
+        private void bSAVExmlDefault_Click(object sender, RoutedEventArgs e)
+        {
+            datafile.SAVEtoXML(data.DefaultPath);
+        }
+
+        private void bSAVExml_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog FileDialog = new SaveFileDialog();
+            FileDialog.Filter = "params (*.xml)|*.xml";
+            if (FileDialog.ShowDialog() == true)
+            {
+
+                data._bass.Get_All_Param_VST();
+                datafile.SAVEtoXML(FileDialog.FileName);
+            }
+        }
+
+        private void bLOADxml_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "params (*.xml)|*.xml";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                data.listPARAM.Clear();
+                datafile.ReadFromXML(openFileDialog.FileName);
+                data._bass.SET_All_Param_VST();
+            }
+
         }
     }
 }
