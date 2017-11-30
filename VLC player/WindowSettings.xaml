@@ -26,7 +26,7 @@
     <Grid DataContext="{StaticResource exemplar1}" HorizontalAlignment="Left" Height="441" Margin="10,10,0,0" VerticalAlignment="Top" Width="613">
 
         <Button x:Name="exit_Copy" Content="ЗАКРЫТЬ" Command="" HorizontalAlignment="Left" Margin="505,14,0,0" VerticalAlignment="Top" Width="93" Height="38" RenderTransformOrigin="1.543,2.303" Click="exit_Copy_Click" />
-        <Button x:Name="bReplace" Content="Открыть VST settings"  Margin="456,398,0,0" Width="145" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bOpen_Click" >
+        <Button x:Name="bReplace" Content="Открыть VST settings"  Margin="456,388,0,0" Width="143" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bOpen_Click" >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -34,8 +34,8 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Label  x:Name="current"  Content="" HorizontalAlignment="Left" Margin="23,367,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="16" Width="294" FontWeight="Bold" Height="29"/>
-        <Button x:Name="bVSTon" Content="Включить VST"  Margin="21,396,0,0" Width="100" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bVSTon_Click" >
+        <Label  x:Name="current"  Content="" HorizontalAlignment="Left" Margin="23,355,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="16" Width="294" FontWeight="Bold" Height="29"/>
+        <Button x:Name="bVSTon" Content="Включить VST"  Margin="21,386,0,0" Width="100" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bVSTon_Click" >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -43,7 +43,7 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="bVSToff" Content="Отключить VST"  Margin="326,398,0,0" Width="100" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bVSToff_Click"  >
+        <Button x:Name="bVSToff" Content="Отключить VST"  Margin="326,388,0,0" Width="100" RenderTransformOrigin="-0.038,-1.709" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bVSToff_Click"  >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -60,7 +60,7 @@
             </Button.Background>
         </Button>
 
-        <Label  x:Name="currentWORK"  Content="" HorizontalAlignment="Left" Margin="329,368,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="16" Width="277" FontWeight="Bold"/>
+        <Label  x:Name="currentWORK"  Content="" HorizontalAlignment="Left" Margin="329,356,0,0" VerticalAlignment="Top" Foreground="#FF48FF12" FontSize="16" Width="277" FontWeight="Bold"/>
         <Button x:Name="bVSTremove" Content="X"  Margin="203,46,0,0" Width="36" RenderTransformOrigin="-0.038,-1.709" Height="27" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bVSTremove_Click"  >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
@@ -92,7 +92,7 @@
 
 
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="282,18,0,0" VerticalAlignment="Top" Width="215" Height="26" SelectionChanged="comboBox_SelectionChanged" Foreground="#FFF7D812" FontSize="10"/>
-        <Button x:Name="bSAVExmlDefault" Content="по умолч."  Margin="278,187,0,0" Width="70" RenderTransformOrigin="-0.038,-1.709" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bSAVExmlDefault_Click" >
+        <Button x:Name="bSAVExmlDefault" Content="Сохр.по умолч."  Margin="264,185,0,0" Width="94" RenderTransformOrigin="-0.038,-1.709" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Click="bSAVExmlDefault_Click" >
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -117,6 +117,7 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
+        <Label x:Name="label_Copy" Content="АКТИВНЫЕ VST" HorizontalAlignment="Left" Margin="444,54,0,0" VerticalAlignment="Top" Height="16" Width="98" Foreground="#FFF412FF"/>
     </Grid>
 
 </Window>

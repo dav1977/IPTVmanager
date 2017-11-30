@@ -56,9 +56,9 @@ namespace IPTVman.ViewModel
                     dt = (ser_data)formatter.Deserialize(fs);
                 }
             }
-            catch { }// (Exception ex)
+            catch (Exception ex)
             {
-                //System.Windows.Forms.MessageBox.Show(ex.Message, "Ошибка в файле настроек ");
+                System.Windows.Forms.MessageBox.Show(ex.Message, "Ошибка в файле настроек ");
             }
         }
 

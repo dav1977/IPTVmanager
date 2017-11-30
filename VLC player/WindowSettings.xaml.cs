@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +20,7 @@ using System.Windows.Threading;
 
 namespace IPTVman.ViewModel
 {
-    public partial class WindowSettings : Window 
+    public partial class WindowSettings : Window
     { 
         public WindowSettings()
         {
@@ -223,8 +224,6 @@ namespace IPTVman.ViewModel
             data.UpdateLIST();
         }
 
-       
-
         bool lok_combo=true;
         //select device output
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -246,23 +245,26 @@ namespace IPTVman.ViewModel
             FileDialog.Filter = "params (*.xml)|*.xml";
             if (FileDialog.ShowDialog() == true)
             {
-
                 data._bass.Get_All_Param_VST();
                 datafile.SAVEtoXML(FileDialog.FileName);
             }
         }
 
         private void bLOADxml_Click(object sender, RoutedEventArgs e)
-        {
+        {    
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             openFileDialog.Filter = "params (*.xml)|*.xml";
             if (openFileDialog.ShowDialog() == true)
             {
+                data._bass.DISABLE_ALL_VST();
                 data.listPARAM.Clear();
                 datafile.ReadFromXML(openFileDialog.FileName);
                 data._bass.SET_All_Param_VST();
             }
-
+            vst1.Clear();
+            vst2.Clear();
+            data.UpdateLIST();
         }
     }
 }

@@ -269,7 +269,6 @@ namespace IPTVman.ViewModel
                     {
                         if (!WinPOP.init_ok)
                         {
-
                             taskBASS = Task.Factory.StartNew(() =>
                             {
                                 mode_init_bass = true;
@@ -279,14 +278,15 @@ namespace IPTVman.ViewModel
                                 mode_init_bass = false;
                                 if (data.mode_radio)
                                 {
-                                    data._bass.play();
+                                    data._bass.playStream();
                                 }
 
                             });
                         }
 
                     }
-                    catch (Exception ex) { System.Windows.MessageBox.Show("Ошибка библиотеки bass " + ex.ToString()); }
+                    catch (Exception ex)
+                   { System.Windows.MessageBox.Show("Ошибка библиотеки bass " + ex.ToString()); }
 
                 }
 

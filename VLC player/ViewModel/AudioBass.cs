@@ -196,12 +196,12 @@ namespace IPTVman.ViewModel
                                 BASSVSTDsp.BASS_VST_DEFAULT, 1);
             if (handle < 1)
             { System.Windows.MessageBox.Show("Ошибка подключения "+get_nameVTS(path));
-                return false; }
+                return false;
+            }
             work_list_vst.Add(new WORKVST(handle, path));
             Trace.WriteLine("add hd="+handle.ToString());
             return true;
         }
-
 
         int getHAndle(string s)
         {
@@ -238,20 +238,42 @@ namespace IPTVman.ViewModel
             data.UpdateLIST();
         }
 
+        public void DISABLE_ALL_VST()
+        {
+            List<string> lstVST = new List<string>();
+
+            foreach (var dsp in data.workVST)
+            {
+                lstVST.Add(dsp);
+            }
+
+            foreach (var dsp in lstVST)
+            {
+                Trace.WriteLine("disable vst: " + get_nameVTS(dsp));
+                VST_DISABLE(get_nameVTS(dsp));
+            }
+            lstVST.Clear();
+            data.pathVST.Clear();
+        }
+
         void remove_workLIST(string s, ref List<WORKVST> col)
         {
-            WORKVST findobj= null;
-            s = s.Trim();
-
-            foreach (var obj in col)
+            try
             {
-                if (new Regex(s).Match(obj.path.ToString().Trim()).Success)
+                WORKVST findobj = null;
+                s = s.Trim();
+
+                foreach (var obj in col)
                 {
-                    findobj = obj;
+                    if (new Regex(s).Match(obj.path.ToString().Trim()).Success)
+                    {
+                        findobj = obj;
+                    }
                 }
+                if (findobj != null) { Trace.WriteLine("remove hd=" + findobj.handle.ToString()); col.Remove(findobj); }
             }
-            if (findobj != null) { Trace.WriteLine("remove hd=" + findobj.handle.ToString()); col.Remove(findobj); }
-        }
+            catch (Exception ex) { System.Windows.MessageBox.Show("Ошибка удаления "+ex.Message); }
+            }
 
         public void OPEN_VST(string s)
         {
@@ -324,10 +346,6 @@ namespace IPTVman.ViewModel
             return false;
         }
 
-        //public void remove_dataPATH(string s)
-        //{
-        //    remove_VST(s, ref data.pathVST);
-        //}
         public void remove_VST(string s, ref ObservableCollection<string> col)
         {
             string findobj = "";
@@ -430,7 +448,8 @@ namespace IPTVman.ViewModel
             {
                 if (s.handle > 0)
                 {
-                   var rez= VST_GET_PARAM(s.handle);
+                    Trace.WriteLine("getparam handle= " + s.handle.ToString());
+                    var rez= VST_GET_PARAM(s.handle);
                     data.listPARAM.Add(rez);
                 }
             }
@@ -442,19 +461,30 @@ namespace IPTVman.ViewModel
         /// </summary>
         public void SET_All_Param_VST()
         {
+            enableVST();
+            if (data.listPARAM.Count==0) Trace.WriteLine("размер параметров = 0");
+            if (work_list_vst.Count == 0) { Trace.WriteLine("error work_list_vst = 0"); return; }
+            int index = 0;
             try
             {
-            int index = 0;
-            foreach (var mylist in data.listPARAM)
-            {
-                Trace.WriteLine("size vst " + work_list_vst.Count.ToString()+" sizeLIST="+data.listPARAM.Count.ToString());
-                if (VST_SET_PARAM(work_list_vst[index].handle, mylist))
-                    System.Windows.MessageBox.Show("Ошибка установки параметров");
+            
+                foreach (var mylist in data.listPARAM)
+                {
+                    Trace.WriteLine("size vst " + work_list_vst.Count.ToString()+" sizeLIST="+data.listPARAM.Count.ToString());
 
-               index++;
+                    if (VST_SET_PARAM(work_list_vst[index].handle, mylist))
+                        System.Windows.MessageBox.Show("Ошибка установки параметров");
+
+                   index++;
+                }
             }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("MAX work_list_vst=" + work_list_vst.Count + 
+                    " indezx=" + index.ToString() );
+
+                //System.Windows.MessageBox.Show("setall error "+ex.Message);
             }
-            catch (Exception ex) { System.Windows.MessageBox.Show("setall error "+ex.Message); }
         }
 
 
@@ -483,6 +513,7 @@ namespace IPTVman.ViewModel
 
         bool VST_SET_PARAM(int vstHandle,List<float> data)
         {
+            Trace.WriteLine("set param "+vstHandle.ToString() + " параметры1="+data[0].ToString() );
             bool error = false;
             try
             {
@@ -683,7 +714,7 @@ namespace IPTVman.ViewModel
             return "null";
         }
 
-        public void play()
+        public void playStream()
         {
             // set a sync to get the title updates out of the meta data...
             mySync = new SYNCPROC(MetaSync);
@@ -704,21 +735,23 @@ namespace IPTVman.ViewModel
 
             try
             {
-                Bass.BASS_ChannelPlay(_Stream, false);
-
-                //запуск предустановленных VST
-                foreach (var dsp in data.workVST)
-                {
-                    if (!VST_ENABLE(dsp)) System.Windows.MessageBox.Show("Ошибка запуска VST " +
-                                                                                get_nameVTS(dsp));
-                }
+                enableVST();
+                Bass.BASS_ChannelPlay(_Stream, false);    
             }
             catch (Exception ex) { System.Windows.MessageBox.Show(ex.ToString()); }
             // record the stream
             //Bass.BASS_ChannelPlay(rechandle, false);
         }
 
-    
+        void enableVST()
+        {
+            //запуск предустановленных VST
+            foreach (var dsp in data.workVST)
+            {
+                if (!VST_ENABLE(dsp)) System.Windows.MessageBox.Show("Ошибка запуска VST " +
+                                                                            get_nameVTS(dsp));
+            }
+        }
 
         public void mute(bool m, float value)
         {
@@ -729,7 +762,6 @@ namespace IPTVman.ViewModel
 
             // Bass.BASS_ChannelUpdate(_Stream, 1000);
             //Thread.Sleep(500);
-
         }
 
         public void volume(float v)
@@ -737,7 +769,6 @@ namespace IPTVman.ViewModel
             if (_Stream == 0) return;
             Bass.BASS_ChannelSetAttribute(_Stream, BASSAttribute.BASS_ATTRIB_VOL, v/100);
         }
-
 
         public void stop()
         {
@@ -749,7 +780,6 @@ namespace IPTVman.ViewModel
 
             Bass.BASS_PluginFree(_wmaPlugIn);
         }
-
 
         private int _byteswritten = 0;
         private byte[] _recbuffer = new byte[1048510]; // 1MB buffer
