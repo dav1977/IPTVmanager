@@ -42,10 +42,15 @@ namespace IPTVman.ViewModel
 
         public void CLOSE_SCANNER()
         {
-            clear();
-            add("*");
-            add("*");
-            getPLAYING();
+            try
+            {
+                clear();
+                //STOPSCANNER
+                add("*");
+                getPLAYING();
+                //client.stop();
+            }
+            catch (Exception ex) { MessageBox.Show("error closescanner "+ex); }
         }
 
         Task tasksc;

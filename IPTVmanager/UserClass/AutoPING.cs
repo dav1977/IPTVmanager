@@ -85,7 +85,6 @@ namespace IPTVman.ViewModel
             {
                 try
                 {
-                    Trace.WriteLine("task ping all");
                     result = ping_all(cancellationToken, myLIST);
                     tcs.SetResult("ok");
                 }

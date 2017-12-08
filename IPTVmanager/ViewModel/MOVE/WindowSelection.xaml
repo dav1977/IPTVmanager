@@ -65,7 +65,7 @@
       ItemContainerStyle="{StaticResource ItemContStyle}"
       Margin="10,8,580,12" 
       Padding="2"
-      SelectionMode="Single" Grid.Row="1" Background="#FF6C676E" Foreground="#FF05050A"
+      SelectionMode="Single" Grid.Row="1" Foreground="#FF05050A" Background="#FF67696E" FontWeight="Bold"
       
 >
             <ListView.View>
@@ -85,7 +85,7 @@
       ItemContainerStyle="{StaticResource ItemContStyle}"
       Margin="431,10,138,13" 
       Padding="2"
-      SelectionMode="Single" Background="#FF9C7C7C" Foreground="#FF05050A"
+      SelectionMode="Single" Foreground="#FF05050A" Background="#FF6A6F76" FontWeight="Bold"
       >
             <ListView.View>
                 <GridView>

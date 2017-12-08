@@ -28,6 +28,7 @@ namespace IPTVman.ViewModel
                     while (true)
                     {
                         if (Result.data_ok) break;
+                        if (data.exit_programm) break;
                         Thread.Sleep(100);
                     }
                 }
@@ -36,6 +37,19 @@ namespace IPTVman.ViewModel
 
             return Result.listresult;
         }
+
+        void IWCFmyService.stop()
+        {
+            data.exit_programm = true;
+            Thread.Sleep(300);
+           
+        }
+
+        void stop()
+        {
+
+        }
+
 
     }
         class WCFSERVER
@@ -59,13 +73,12 @@ namespace IPTVman.ViewModel
                
             }
 
-
             public void stop()
             {
-                if (host == null) return;
-                // Закрываем службу
-                host.Close();
-            }
+            if (host == null) return;
+            // Закрываем службу
+            host.Close();
+        }
         }
 
     }
@@ -76,8 +89,10 @@ namespace IPTVman.ViewModel
     {
         [OperationContract]
         List<string> Get_Playing(List<string> s);
+        [OperationContract]
+        void stop();
 
-    }
+}
 
 
     class WCFCLIENT

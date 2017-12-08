@@ -10,9 +10,7 @@
         <local:ImageViewModel />
     </Window.DataContext>
 
-    <Window.InputBindings>
-        <KeyBinding Command="{Binding key_kt}" Key="T"/>
-    </Window.InputBindings>
+   
 
 
 

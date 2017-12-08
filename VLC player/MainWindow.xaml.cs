@@ -18,7 +18,6 @@ using System.Collections.Generic;
 
 namespace IPTVman.ViewModel
 {
-  
     /// <summary>
     /// nVLC lib  and bass lib   Player
     /// </summary>
@@ -55,7 +54,7 @@ namespace IPTVman.ViewModel
                     Result.bass = new AudioBass();
                     Result.bass.init();
                     this.Title = "СКАННЕР РАДИО ТРЭКОВ";
-
+                    //this.Hide();
                 //ni.Icon = new System.Drawing.Icon("blur.ico");
                 //ni.Visible = true;
                 //ni.DoubleClick += (sndr, args) =>
@@ -168,14 +167,20 @@ namespace IPTVman.ViewModel
         bool mode_init_bass = false;
 
         Task task1;
-        public static CancellationTokenSource cts1;
+        public static CancellationTokenSource cts1 = new CancellationTokenSource();
         public static CancellationToken cancellationToken;
         bool loktimer = false;
         string en = "";
         string lastPRINT = "";
+        bool CLOSE_PROGRAMM = false;
 
         private async void timer_Tick(object sender, EventArgs e)
         {
+            if (CLOSE_PROGRAMM)
+            {
+                Thread.Sleep(1000);
+                this.Close();
+            }
             if (loktimer) return;
               if (data.mode_scan)
               {
@@ -188,9 +193,7 @@ namespace IPTVman.ViewModel
                     {
                         l1.Content = "closing....";
                     }));
-
-                    task1.Wait(5000);
-                    this.Close();
+                    CLOSE_PROGRAMM = true;
                 }
                 else
                 {
@@ -276,6 +279,9 @@ namespace IPTVman.ViewModel
                                 data._bass.init();
                                 data._bass.create_stream(data.url, data.mode_radio, this);
                                 mode_init_bass = false;
+
+                                data._bass.SET_All_Param_VST();
+
                                 if (data.mode_radio)
                                 {
                                     data._bass.playStream();

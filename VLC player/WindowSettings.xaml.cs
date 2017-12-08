@@ -236,6 +236,7 @@ namespace IPTVman.ViewModel
 
         private void bSAVExmlDefault_Click(object sender, RoutedEventArgs e)
         {
+            data._bass.Get_All_Param_VST();
             datafile.SAVEtoXML(data.DefaultPath);
         }
 

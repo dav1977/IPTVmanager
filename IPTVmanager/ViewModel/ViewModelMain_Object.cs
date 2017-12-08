@@ -55,7 +55,7 @@ namespace IPTVman.ViewModel
         /// <summary>
         /// обрезать скобки
         /// </summary>
-        bool chek2;
+        bool chek2=true;
         public bool CH2m
         {
             get { return chek2; }

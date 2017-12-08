@@ -140,7 +140,7 @@
                 </Grid.RowDefinitions>
 
 
-                <ListView x:Name="MYLIST" Margin="10,0,0,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="3" Width="Auto" Height="Auto" Grid.ColumnSpan="4" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_EDIT" LostTouchCapture="MYLIST_LostTouchCapture" SelectionChanged="MYLIST_SelectionChanged" IsManipulationEnabled="True" Background="#FF90958E" Foreground="#FF07090E" FontSize="14"/>
+                <ListView x:Name="MYLIST" Margin="10,0,0,0" Style="{DynamicResource MYStyle}" RenderTransformOrigin="0.0,0.0" Grid.RowSpan="3" Width="Auto" Height="Auto" Grid.ColumnSpan="4" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="MYLIST_MouseDoubleClick_EDIT" LostTouchCapture="MYLIST_LostTouchCapture" SelectionChanged="MYLIST_SelectionChanged" IsManipulationEnabled="True" Background="#FF90958E" Foreground="#FF07090E" FontSize="14" FontWeight="Bold"/>
 
                 <!--   <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" Margin="10,0,0,21">
                 -->

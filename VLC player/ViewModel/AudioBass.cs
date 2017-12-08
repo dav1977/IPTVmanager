@@ -195,11 +195,12 @@ namespace IPTVman.ViewModel
             var handle = BassVst.BASS_VST_ChannelSetDSP(_Stream, path,
                                 BASSVSTDsp.BASS_VST_DEFAULT, 1);
             if (handle < 1)
-            { System.Windows.MessageBox.Show("Ошибка подключения "+get_nameVTS(path));
+            {
+                System.Windows.MessageBox.Show("Ошибка подключения "+get_nameVTS(path));
                 return false;
             }
             work_list_vst.Add(new WORKVST(handle, path));
-            Trace.WriteLine("add hd="+handle.ToString());
+            Trace.WriteLine("ENABLE header="+handle.ToString()+" "+ path);
             return true;
         }
 
@@ -207,7 +208,7 @@ namespace IPTVman.ViewModel
         {
             foreach (var v in work_list_vst)
             {
-                Trace.WriteLine("listwork = "+v.handle.ToString());
+                Trace.WriteLine("work-header = " + v.handle.ToString());
                 if (get_nameVTS(v.path.ToString()) == s) { return v.handle; }
             }
             return -1;
@@ -249,7 +250,6 @@ namespace IPTVman.ViewModel
 
             foreach (var dsp in lstVST)
             {
-                Trace.WriteLine("disable vst: " + get_nameVTS(dsp));
                 VST_DISABLE(get_nameVTS(dsp));
             }
             lstVST.Clear();
@@ -270,7 +270,7 @@ namespace IPTVman.ViewModel
                         findobj = obj;
                     }
                 }
-                if (findobj != null) { Trace.WriteLine("remove hd=" + findobj.handle.ToString()); col.Remove(findobj); }
+                if (findobj != null) {  col.Remove(findobj); }
             }
             catch (Exception ex) { System.Windows.MessageBox.Show("Ошибка удаления "+ex.Message); }
             }
@@ -442,18 +442,15 @@ namespace IPTVman.ViewModel
         /// </summary>
         public void Get_All_Param_VST()
         {
-            Trace.WriteLine("size vst " + work_list_vst.Count.ToString());
             data.listPARAM.Clear();
             foreach (var s in work_list_vst)
             {
                 if (s.handle > 0)
                 {
-                    Trace.WriteLine("getparam handle= " + s.handle.ToString());
                     var rez= VST_GET_PARAM(s.handle);
                     data.listPARAM.Add(rez);
                 }
             }
-            Trace.WriteLine("size listPARAM " + data.listPARAM.Count.ToString());
         }
 
         /// <summary>
@@ -462,28 +459,21 @@ namespace IPTVman.ViewModel
         public void SET_All_Param_VST()
         {
             enableVST();
-            if (data.listPARAM.Count==0) Trace.WriteLine("размер параметров = 0");
-            if (work_list_vst.Count == 0) { Trace.WriteLine("error work_list_vst = 0"); return; }
+            if (work_list_vst.Count == 0) {  return; }
             int index = 0;
             try
             {
-            
                 foreach (var mylist in data.listPARAM)
                 {
-                    Trace.WriteLine("size vst " + work_list_vst.Count.ToString()+" sizeLIST="+data.listPARAM.Count.ToString());
-
                     if (VST_SET_PARAM(work_list_vst[index].handle, mylist))
                         System.Windows.MessageBox.Show("Ошибка установки параметров");
 
                    index++;
                 }
             }
-            catch (Exception ex)
+            catch 
             {
-                Trace.WriteLine("MAX work_list_vst=" + work_list_vst.Count + 
-                    " indezx=" + index.ToString() );
-
-                //System.Windows.MessageBox.Show("setall error "+ex.Message);
+               
             }
         }
 
@@ -494,7 +484,6 @@ namespace IPTVman.ViewModel
             try
             {
                 int vstParams = BassVst.BASS_VST_GetParamCount(vstHandle);
-                Trace.WriteLine(vstHandle.ToString()+ " vstParams= " + vstParams.ToString());
                 // create a paramInfo object
                 BASS_VST_PARAM_INFO paramInfo = new BASS_VST_PARAM_INFO();
                 for (int i = 0; i < vstParams; i++)
@@ -504,7 +493,7 @@ namespace IPTVman.ViewModel
                     // and get further info about the parameter
                     BassVst.BASS_VST_GetParamInfo(vstHandle, i, paramInfo);
                     rez.Add(paramValue);
-                    Trace.WriteLine(paramInfo.ToString()+" = "+paramValue.ToString() );
+                    Trace.WriteLine("GETparam: "+paramInfo.ToString()+" = "+paramValue.ToString() );
                 }
             }
             catch (Exception ex) { System.Windows.MessageBox.Show(ex.Message); }
@@ -513,13 +502,14 @@ namespace IPTVman.ViewModel
 
         bool VST_SET_PARAM(int vstHandle,List<float> data)
         {
-            Trace.WriteLine("set param "+vstHandle.ToString() + " параметры1="+data[0].ToString() );
             bool error = false;
             try
             {
                 for (int i = 0; i < data.Count; i++)
                 {
-                    Trace.WriteLine(i.ToString() + " set ");
+                    Trace.WriteLine("handle="+ vstHandle.ToString()+"  "+
+                        i.ToString() + " SETparam "+ data[i].ToString());
+
                     var s = BassVst.BASS_VST_SetParam(vstHandle, i, data[i]);
                     if (!s) error = true;
                 }
@@ -626,8 +616,6 @@ namespace IPTVman.ViewModel
                 if (b == 226) { ans = str; break; }
 
             }
-
-            //Trace.WriteLine(str + "&&" + ans + "=>" + tt);
             return ans.Trim();
         }
 
@@ -735,7 +723,6 @@ namespace IPTVman.ViewModel
 
             try
             {
-                enableVST();
                 Bass.BASS_ChannelPlay(_Stream, false);    
             }
             catch (Exception ex) { System.Windows.MessageBox.Show(ex.ToString()); }
@@ -748,6 +735,7 @@ namespace IPTVman.ViewModel
             //запуск предустановленных VST
             foreach (var dsp in data.workVST)
             {
+                Trace.WriteLine("START VST "+dsp);
                 if (!VST_ENABLE(dsp)) System.Windows.MessageBox.Show("Ошибка запуска VST " +
                                                                             get_nameVTS(dsp));
             }

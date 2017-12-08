@@ -65,7 +65,7 @@
       ItemContainerStyle="{StaticResource ItemContStyle}"
       Margin="10,12,130,9" 
       Padding="2"
-      SelectionMode="Single" Grid.Row="1" Background="#FF787474" Foreground="#FF05050A"
+      SelectionMode="Single" Grid.Row="1" Background="#FF787474" Foreground="#FF05050A" FontWeight="Bold"
       
 >
             <ListView.View>

@@ -70,7 +70,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataModel\Serializable.cs" />
-    <Compile Include="ManagementObjectSearcher.cs" />
     <Compile Include="ViewModel\AudioBass.cs" />
     <Compile Include="DataModel\data.cs" />
     <Compile Include="DataModel\ImageData.cs" />

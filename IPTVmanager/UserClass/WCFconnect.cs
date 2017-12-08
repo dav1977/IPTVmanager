@@ -102,8 +102,17 @@ namespace IPTVman.ViewModel
 
         public List<string> GetPlaying(List<string> s)
         {
-             return service.Get_Playing(s);
+            List<string> ret = null;
+            try
+            {
+                ret = service.Get_Playing(s);
+            }
+            catch { }
+            return ret;
         }
-  
 
+        public void stop()
+        {
+           
+        }
 }

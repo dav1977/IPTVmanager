@@ -43,7 +43,8 @@ namespace ListViewDragDropManager
 
             kill_process(data.NAME_SCANER_SERVER);             
             if (num_open_process()==0)  init_scan_process();
-            Thread.Sleep(1000);
+
+            Thread.Sleep(200);
         }
 
         public void CreateTimer1(int ms)
@@ -281,7 +282,19 @@ namespace ListViewDragDropManager
             }));
 
         }
-        
+
+
+        bool scanner_is_null()
+        {
+            if (scanner == null)
+            {
+                scanner = new IPTVman.ViewModel.ScannerRadio();
+                if (prefix == null) prefix = new bool[listView.Items.Count + 1];
+                return true;
+            }
+            else return false;
+        }
+
         bool waiting_result=false;
         bool need_stop_scan = false;
         IPTVman.ViewModel.ScannerRadio scanner;
@@ -303,11 +316,7 @@ namespace ListViewDragDropManager
             bool cycen = (bool)cyc.IsChecked;
            
             key = new int[listView.Items.Count + 1];
-            if (scanner == null)
-            {
-                scanner = new IPTVman.ViewModel.ScannerRadio();
-                if (prefix == null) prefix = new bool[listView.Items.Count + 1];
-            }
+            if (scanner_is_null()) { }
             else
             { //повторный скан
                 if (lock_scan) return;
@@ -529,22 +538,31 @@ namespace ListViewDragDropManager
             //    scanner = new IPTVman.ViewModel.ScannerRadio();
             //    if (prefix == null) prefix = new bool[listView.Items.Count + 1];
             //}
-            need_stop_scan = true;
-            while (waiting_result) Thread.Sleep(100);
 
-            waiting_result = true;
-            scanner.CLOSE_SCANNER();
-            while (waiting_result) Thread.Sleep(100);
-            MessageBox.Show("servak closed");
 
-            //try
-            //{
-            //    if (play.playerV != null) play.playerV.Kill();
-            //}
-            //catch { }
+            try
+            {
+                scanner_is_null();//создание если null
+                scanner.CLOSE_SCANNER();//команда на закрытие окна сканнера
+                need_stop_scan = true;
+               while (waiting_result) Thread.Sleep(100);
 
-            // kill_process(data.NAME_SCANER_SERVER);
+               //waiting_result = true;
+               //while (waiting_result) Thread.Sleep(100);
 
+                //try
+                //{
+                //    if (play.playerV != null) play.playerV.Kill();
+                //}
+                //catch { }
+
+            //kill_process(data.NAME_SCANER_SERVER);
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("error close radio "+ex);
+            }
 
         }
 
