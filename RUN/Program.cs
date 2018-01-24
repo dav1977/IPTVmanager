@@ -7,7 +7,7 @@ using System.Threading;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace run_connector
+namespace runIPTVMANAGER
 {
     class Program
     {
@@ -19,27 +19,27 @@ namespace run_connector
 
         static void Main(string[] args)
         {
-            //А через Assembly.GetEntryAssembly() или Process.GetCurrentProcess() не комильфо?
-            string p = AppDomain.CurrentDomain.BaseDirectory;//System.IO.Directory.GetCurrentDirectory();
-           //  string s2 = s1.Remove(s1.LastIndexOf("\\"));
-           // string pathcatalog = s2.Remove(s2.LastIndexOf("\\")) + "\\";
 
-           
+            string p = System.IO.Directory.GetCurrentDirectory();// Assembly.GetExecutingAssembly().Location;// Process.GetCurrentProcess();
+            //System.IO.Directory.GetCurrentDirectory();
+                                                                //  string s2 = s1.Remove(s1.LastIndexOf("\\"));
+                                                                // string pathcatalog = s2.Remove(s2.LastIndexOf("\\")) + "\\";
+
+          
             /// System.Diagnostics.Process.Start("cmd", @"cd..");
-
-       
 
             try {
 
                 Process myProcess = new Process();
                 myProcess.StartInfo.UseShellExecute = false;
                 // You can start any process, HelloWorld is a do-nothing example.
-                myProcess.StartInfo.FileName = "IPTVmanager.exe";
+                myProcess.StartInfo.FileName = p+"\\IPTVmanager.exe";
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-                //myProcess.StartInfo.Arguments = @"radio.m3u";
+                myProcess.StartInfo.Arguments = @"radio.m3u";
                 //myProcess.StartInfo.Arguments = @"script1.m3u";
                 //myProcess.StartInfo.Arguments = @"script2.m3u";
-                myProcess.StartInfo.Arguments = @"script3.m3u";
+                //myProcess.StartInfo.Arguments = @"script3.m3u";
+
 
                 myProcess.StartInfo.RedirectStandardOutput = true;
                 myProcess.StartInfo.RedirectStandardError = true;
@@ -49,7 +49,11 @@ namespace run_connector
 
  
 
-            } catch { }
+            } catch(Exception ex)
+            {
+                Console.WriteLine("error "+ex.ToString());
+                Console.ReadKey();
+            }
 
 
 
