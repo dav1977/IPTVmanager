@@ -21,6 +21,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
+        
         public RelayCommand key_UpdateMDBCommand { get; set; }
         public RelayCommand key_DelDUBLICATCommand { get; set; }
         public RelayCommand key_ReplaceCommand { get; set; }
@@ -58,6 +59,25 @@ namespace IPTVman.ViewModel
             key_FILTERCommand = new RelayCommand(key_FILTER);
             key_FilterOnlyBESTCommand = new RelayCommand(key_FILTERbest);
             key_DelALLkromeBESTCommand = new RelayCommand(key_delALLkromeBEST);
+
+            IPTVman.ViewModel.ViewModelMain.EVENT_OPENWIN_UpdateDB += ViewModelMain_EVENT_OPENWIN_UpdateDB;
+            IPTVman.ViewModel.ViewModelMain.EVENT_OPENWIN_Radio += ViewModelMain_EVENT_OPENWIN_Radio;
+
+        }
+
+        private void ViewModelMain_EVENT_OPENWIN_Radio()
+        {
+            Key_radio(new object());
+        }
+
+        private void ViewModelMain_EVENT_OPENWIN_UpdateDB()
+        {
+            Update_MDB(new object());
+        }
+
+        private void FileWork_Event_OpenWINupdateDB()
+        {
+            Update_MDB(new object());
         }
 
         void key_dragdrop(object parameter)
@@ -67,7 +87,25 @@ namespace IPTVman.ViewModel
         }
         void Key_radio(object parameter)
         {
+            if (ViewModelMain.myLISTbase == null) return;
+            if (ViewModelMain.myLISTbase.Count == 0) return;
 
+            foreach (Window win in Application.Current.Windows)
+            {
+                if (win.Name == "win2radio")
+                {
+                    return;
+                }
+            }
+            IPTVman.Model.data.mode_radio_from_select = false;
+            new ListViewDragDropManager.WindowRadio
+            {
+                //DataContext = new ViewModelWindow2(tb1.Text),
+                Title = "Интернет РАДИО",
+                Topmost = true,
+                //WindowStyle = WindowStyle.ToolWindow,
+                Name = "win2radio"
+            }.Show(); ;
 
         }
         void key_move(object parameter)
@@ -254,7 +292,7 @@ namespace IPTVman.ViewModel
         /// UPDATE MDB
         /// </summary>
         /// <param name="parameter"></param>
-        void Update_MDB(object parameter)
+        public void Update_MDB(object parameter)
         {
             if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;

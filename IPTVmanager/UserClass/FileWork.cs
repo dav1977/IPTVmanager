@@ -120,7 +120,7 @@ namespace IPTVman.ViewModel
 
         }
 
-        bool chek1=false, chek2=false;
+        bool chek1=false, chek2=true;
         public string text_title = "";
         /// <summary>
         /// куда, заголовок,  флаг только обновлять, флаг обрезать скобки
@@ -154,7 +154,6 @@ namespace IPTVman.ViewModel
         }
 
 
-
         /// <summary>
         /// событие после выполнения задачи
         /// </summary>
@@ -172,12 +171,16 @@ namespace IPTVman.ViewModel
                     bufferstring.Clear();
                     if (name != "")  PARSING_FILE(lst, name);
                     else loc.openfile = false;
-                  
+                   
                     Thread.Sleep(300);
                     Wait.Close();
                     if (Event_UpdateLIST != null) Event_UpdateLIST(typefilter.normal);
                     Wait.Close();
                     bufferstring.Clear();
+
+                    ModeWork.ResetMODEApplication();
+                    if (ModeWork.OpenWindow_db_update) ModeWork.OpenWindow_db_updateREADY = true;
+                    if (ModeWork.OpenWindow_radio)ModeWork.OpenWindow_radioREADY = true;
                     tcs.SetResult("ok");                 
                 }
                 catch (OperationCanceledException e)
@@ -228,6 +231,14 @@ namespace IPTVman.ViewModel
             }
         }
 
+        string READLINE(StreamReader sr)
+        {
+            string line = sr.ReadLine();
+            if (line!="") Wait.progressbar++;
+            //Debug.WriteLine(">" + line);
+            line = IPTVman.ViewModel.scripts.FIND_SCRIPT(line);
+            return line;
+        }
 
         bool wait_download = false;
         bool mode_work_with_links = false;
@@ -263,7 +274,7 @@ namespace IPTVman.ViewModel
                     {
                         while (!sr.EndOfStream)
                         {
-                            string rez = sr.ReadLine();
+                            string rez = READLINE(sr);
                             if (rez != "" && rez != null)
                                 if (new Regex("#EXTINF").Match(rez).Success) { all_str++; null_str = 0; }
                                 else null_str++; if (null_str > 100) goto exit_open;
@@ -285,12 +296,7 @@ namespace IPTVman.ViewModel
 
                     while (!sr.EndOfStream)
                     {
-                        try
-                        {
-                            line = sr.ReadLine();
-                            Wait.progressbar++;
-                        }
-                        catch { }
+                        line = READLINE(sr);
 
                         if (linkIsBad(line)) continue;
                         //MessageBox.Show(line);
@@ -307,10 +313,13 @@ namespace IPTVman.ViewModel
                                     !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
                                     !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
+                                    !(new Regex("#EXTGRP", RegexOptions.IgnoreCase).Match(line).Success) &&    
                                       (regex_link.Match(line).Success|| regex_link2.Match(line).Success)
                                    )
-                            {
-                                mode_work_with_links = true;                              
+                            {  
+                                //в файле находится ссылка на m3u
+
+                                mode_work_with_links = true;
                                 Parsing_link(line);
                                 wait_download = true;
                                 flag_adding_ok = true;
@@ -402,7 +411,8 @@ namespace IPTVman.ViewModel
                             {
                                 try
                                 {
-                                    str_http = sr.ReadLine();
+                                    str_http = READLINE(sr);
+
                                 }
                                 catch { }
 
@@ -414,10 +424,13 @@ namespace IPTVman.ViewModel
 
                         if (chek2)//обрезание скобок
                         {
-                            //string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
-                            var ind = newname.LastIndexOf('(');
-                            if (ind > 0) newname = newname.Substring(0, ind);
-                            newname = newname.Trim();
+                            if (!ModeWork.skip_obrez_skobki)
+                            {
+                                //string[] words = newname.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
+                                var ind = newname.LastIndexOf('(');
+                                if (ind > 0) newname = newname.Substring(0, ind);
+                                newname = newname.Trim();
+                            }
                         }
 
 
@@ -525,12 +538,17 @@ namespace IPTVman.ViewModel
             }//рекурсия
 
 
-        exit_open:
+            exit_open:
             string addstr = "";
+            if (!ModeWork.skip_message_skiplinks)
+            {
+               
+                if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
+                if (ct_ignore_update != 0) addstr = "\nПропущено дублирование " + ct_ignore_update.ToString();
+            }
             if (!flag_adding_ok) dialog.Show("Каналы не обнаружены");
-            if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
-            if (ct_ignore_update != 0) addstr = "\nПропущено дублирование " + ct_ignore_update.ToString();
-            if (ct_update != 0) dialog.Show("ОБНОВЛЕННО " + ct_update.ToString() + " каналов" + addstr);
+            if (ct_update != 0) dialog.Show("ОБНОВЛЕНО " + ct_update.ToString() + " каналов" + addstr);
+
             loc.openfile = false;
         }
 
@@ -540,6 +558,7 @@ namespace IPTVman.ViewModel
         {
             if (line == "" || line == " ") return true;
             if (new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) return true;
+            if (new Regex("#EXTGRP", RegexOptions.IgnoreCase).Match(line).Success) return true;
             return false;
 
             //!(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&

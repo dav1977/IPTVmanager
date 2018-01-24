@@ -445,7 +445,7 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Button Content="R" Command="{Binding key_radio}"  CommandParameter=""  Margin="179,47,0,0" Focusable="False" Width="29" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Click="Button_ClickRadio">
+        <Button Content="R" Command="{Binding key_radio}"  CommandParameter=""  Margin="179,47,0,0" Focusable="False" Width="29" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>

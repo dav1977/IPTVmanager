@@ -125,7 +125,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button Content="R" Command="{Binding key_radio}"  CommandParameter=""  Margin="0,191,44,0" Focusable="False" Width="41" Height="38" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Click="Button_ClickRadio" Grid.Row="1">
+        <Button Content="R"  CommandParameter=""  Margin="0,191,44,0" Focusable="False" Width="41" Height="38" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E" Click="Button_ClickRadio" Grid.Row="1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>

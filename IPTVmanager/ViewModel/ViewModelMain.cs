@@ -111,14 +111,34 @@ namespace IPTVman.ViewModel
             tmr.Start();
         }
 
+        public static event Action EVENT_CLOSE_ALL;
+        public static event Action EVENT_OPENWIN_UpdateDB;
+        public static event Action EVENT_OPENWIN_Radio;
         private void timerTick(object sender, EventArgs e)
         {
             if (loc.timer_tmr) return;
             loc.timer_tmr = true;
             if (Model.data.arguments_startup != null)
-                if (Model.data.arguments_startup[0] != "") Open_arguments();   
-            tmr.Stop();
-            tmr = null;
+                if (Model.data.arguments_startup[0] != "")
+                { Open_arguments(); data.arguments_startup = null; }
+
+            if (ModeWork.OpenWindow_db_update && ModeWork.OpenWindow_db_updateREADY)
+            {
+                if (EVENT_OPENWIN_UpdateDB != null) EVENT_OPENWIN_UpdateDB();
+                tmr.Stop();
+                tmr = null;
+            }
+
+            if (ModeWork.OpenWindow_radio && ModeWork.OpenWindow_radioREADY)
+            {
+                if (EVENT_OPENWIN_Radio != null) EVENT_OPENWIN_Radio();
+                if (ModeWork.CLOSE_ALL) if (EVENT_CLOSE_ALL != null) EVENT_CLOSE_ALL();
+                tmr.Stop();
+                tmr = null;
+            }
+
+            loc.timer_tmr = false;
+
         }
       
         private void Create_Virtual_Collection()

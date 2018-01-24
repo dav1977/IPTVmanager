@@ -28,6 +28,7 @@ namespace IPTVman.ViewModel
             SETTING.ReadFromXML();
 
             ViewModelMain.Event_UpdateLIST += new Action<int>(updateLIST);
+            ViewModelMain.EVENT_CLOSE_ALL += new Action(CLOSE_ALL);
 
             // use a timer to periodically update the memory usage
             DispatcherTimer timer = new DispatcherTimer();
@@ -47,11 +48,17 @@ namespace IPTVman.ViewModel
             //this.KeyDown += new System.Windows.Input.KeyEventHandler(Window1_KeyDown);
 
         }
+
+        private void CLOSE_ALL()
+        {
+            this.Close();
+        }
+
         //public void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         //{
         //    if (e.Key == System.Windows.Input.Key.Delete)
         //    {
-                
+
         //    }
         //}
         private object threadLock = new object();
@@ -207,27 +214,7 @@ namespace IPTVman.ViewModel
         }
         private void Button_ClickRadio(object sender, RoutedEventArgs e)
         {
-            if (ViewModelMain.myLISTbase == null) return;
-            if (ViewModelMain.myLISTbase.Count == 0) return;
-
-            foreach (Window win in Application.Current.Windows)
-            {
-                if (win.Name == "win2radio")
-                {
-                    return;
-                }
-            }
-            IPTVman.Model.data.mode_radio_from_select = false;
-            new ListViewDragDropManager.WindowRadio
-            {
-                //DataContext = new ViewModelWindow2(tb1.Text),
-                Title = "Интернет РАДИО",
-                Topmost = true,
-                //WindowStyle = WindowStyle.ToolWindow,
-                Name = "win2radio"
-            }.Show(); ;
-
-
+  
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
