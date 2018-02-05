@@ -121,19 +121,19 @@
 
         </Button>
         <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,165,21,0" Grid.Row="1" VerticalAlignment="Top" Width="34" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click"/>
-        <Button x:Name="button_Copy1" Content="Применить" HorizontalAlignment="Right" Margin="0,12,26,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Click="button_Click" Foreground="#FF89AC2D">
+        <Button x:Name="button_Copy1" Content="Применить" HorizontalAlignment="Right" Margin="0,12,26,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Click="button_Click" Foreground="#FFDCD9EA">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF1333FF" Offset="0.082"/>
+                    <GradientStop Color="#FF2E3C93" Offset="0.082"/>
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="buttonSEL" Content="Выборка" HorizontalAlignment="Right" Margin="0,100,25,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF305A83" Click="buttonSEL_Click">
+        <Button x:Name="buttonSEL" Content="Выборка" HorizontalAlignment="Right" Margin="0,100,25,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF308352" Click="buttonSEL_Click" FontWeight="Bold">
             <Button.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF0E236A" Offset="0.082"/>
+                    <GradientStop Color="#FF0E166A" Offset="0.1"/>
                 </RadialGradientBrush>
             </Button.Background>
         </Button>

@@ -83,18 +83,21 @@ namespace IPTVman
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             if (Model.loc.start_one) return;
+            if (Model.data.arguments_startup == null) Model.data.arguments_startup = new string[100];
+
             try
             {
                 byte i = 0;
                 foreach (string arg in e.Args)
                 {
-                    if (Model.data.arguments_startup == null) Model.data.arguments_startup = new string[100];
                     Model.data.arguments_startup[i] = arg;
                     if (i > 90) break;
                 }
             }
             catch { }
 
+            //test
+            //Model.data.arguments_startup[0] = "radio.m3u";
         }
     }
 

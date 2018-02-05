@@ -44,6 +44,10 @@ namespace IPTVman.ViewModel
 
     partial class ViewModelMain : ViewModelBase
     {
+        public static event Action<string> EVENT_ADD;
+        public static event Action EVENT_CLOSE_ALL;
+        public static event Action EVENT_OPENWIN_UpdateDB;
+        public static event Action EVENT_OPENWIN_Radio;
         public static event Action<int> Event_UpdateLIST;
 
         Update_Collection _update = new Update_Collection();
@@ -111,9 +115,7 @@ namespace IPTVman.ViewModel
             tmr.Start();
         }
 
-        public static event Action EVENT_CLOSE_ALL;
-        public static event Action EVENT_OPENWIN_UpdateDB;
-        public static event Action EVENT_OPENWIN_Radio;
+       
         private void timerTick(object sender, EventArgs e)
         {
             if (loc.timer_tmr) return;
@@ -137,6 +139,17 @@ namespace IPTVman.ViewModel
                 tmr = null;
             }
 
+            if (ModeWork.add )
+            {
+                ModeWork.skip_message_skiplinks = true;
+                if (EVENT_ADD != null)
+                {
+                    ModeWork.add = false;
+                    EVENT_ADD(FileWork.Get_ApplPath() + IPTVman.Model.ModeWork.addpath);
+                }
+            }
+
+            Trace.WriteLine("tik timer");
             loc.timer_tmr = false;
 
         }

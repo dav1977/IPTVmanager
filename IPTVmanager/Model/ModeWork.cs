@@ -21,7 +21,21 @@ namespace IPTVman.Model
         /// </summary>
         public static bool skip_obrez_skobki = false;
 
+        /// <summary>
+        /// Добавить файл
+        /// </summary>
+        public static bool add = false;
+        public static string addpath = "";
+        /// <summary>
+        /// Добавить файл ИДЕТ ПРОЦЕСС ДОБАВЛЕНИЯ
+        /// </summary>
+        public static bool process_adding = false;
+        /// <summary>
+        /// флаг события добавления
+        /// </summary>
+        public static bool flag_add = false;
 
+        //---------------------------------------------
         public static bool OpenWindow_db_update = false;
         public static bool OpenWindow_radio = false;
         public static bool OpenWindow_db_updateREADY = false;

@@ -294,7 +294,7 @@ namespace IPTVman.ViewModel
         private void MYLIST_MouseDoubleClick_EDIT(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (LongtaskPingCANCELING.isENABLE()) return;
-            if (win1 != null) return;
+            if (win1 != null) win1.Close();
             int si = MYLIST.SelectedIndex;
             if (si < 0) { return; }
             var p = MYLIST.SelectedItem as ParamCanal;

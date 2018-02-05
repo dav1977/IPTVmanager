@@ -53,7 +53,7 @@ namespace IPTVman.ViewModel
 
                 txtMessage.Dispatcher.Invoke(new Action(() =>
                 {
-                    if (!Wait.dynamic_progressbar)
+                    if (!Wait.dynamic_progressbar && proc>0 && proc<100)
                     {
                         txtMessage.Text = Wait.message + " " +
                         String.Format("{0:f1}%", proc);

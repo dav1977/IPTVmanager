@@ -454,7 +454,7 @@ namespace ListViewDragDropManager
         void init_scan_process()
         {
            
-            myProcesses = Process.GetProcessesByName(NAMEPLAYER);
+                myProcesses = Process.GetProcessesByName(NAMEPLAYER);
           
                 play.path = System.Reflection.Assembly.GetExecutingAssembly().Location + "Player/" + NAMEPLAYERexe;
                 play.path = play.path.Replace(@"\", @"/");

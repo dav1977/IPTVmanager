@@ -12,6 +12,7 @@ namespace IPTVman.ViewModel
     {
         public static string FIND_SCRIPT(string line)
         {
+            int ct = 0;
             //наличие скрипта
             if (new Regex("%").Match(line).Success)
             {
@@ -19,6 +20,7 @@ namespace IPTVman.ViewModel
 
                 foreach (var str in split)
                 {
+                    ct++;
                     //Debug.WriteLine("--- "+str);
                     if (str == null || str == "") continue;
                     if (new Regex("http://").Match(str).Success) line = str.Trim();
@@ -42,9 +44,20 @@ namespace IPTVman.ViewModel
                         IPTVman.Model.ModeWork.OpenWindow_radio = true;
                     }
 
-                    if (new Regex("CLOSE").Match(str).Success)
+                    if (new Regex("CLOSEIPTVMANAGER").Match(str).Success)
                     {
                         IPTVman.Model.ModeWork.CLOSE_ALL = true;
+                    }
+
+                    if (new Regex("ADDFILE").Match(str).Success)
+                    {
+                        Debug.WriteLine("find script addfile "+line);
+                        if (split[ct] != null)
+                        {
+                            IPTVman.Model.ModeWork.add = true;
+                            IPTVman.Model.ModeWork.addpath = split[ct];
+                            IPTVman.Model.ModeWork.process_adding = true;
+                        }
                     }
                 }
 

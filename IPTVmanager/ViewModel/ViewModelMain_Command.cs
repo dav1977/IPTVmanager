@@ -62,7 +62,12 @@ namespace IPTVman.ViewModel
 
             IPTVman.ViewModel.ViewModelMain.EVENT_OPENWIN_UpdateDB += ViewModelMain_EVENT_OPENWIN_UpdateDB;
             IPTVman.ViewModel.ViewModelMain.EVENT_OPENWIN_Radio += ViewModelMain_EVENT_OPENWIN_Radio;
+            IPTVman.ViewModel.ViewModelMain.EVENT_ADD += ViewModelMain_EVENT_ADD;
+        }
 
+        private void ViewModelMain_EVENT_ADD(string obj)
+        {
+            key_OPENEVENT(obj);
         }
 
         private void ViewModelMain_EVENT_OPENWIN_Radio()
@@ -597,15 +602,28 @@ namespace IPTVman.ViewModel
             CollectionisCreate();
 
             FileWork _file = new FileWork();
-            _file.LOAD(ViewModelMain.myLISTfull, text_title,  chek1, chek2);
+            _file.LOAD("", ViewModelMain.myLISTfull, text_title,  chek1, chek2);
 
             text_title = _file.text_title;
             _file = null;
             loc.openfile = false;
         }
 
+        void key_OPENEVENT(string path)
+        {        
+            CollectionisCreate();
+            Trace.WriteLine("open event");
+            ModeWork.flag_add = true;
 
+            FileWork _file = new FileWork();
+             _file.LOAD(path, ViewModelMain.myLISTfull, text_title, chek1, chek2);
 
+            text_title = _file.text_title;
+            _file = null;
+
+            ModeWork.skip_message_skiplinks = true;
+            ModeWork.process_adding = false;
+        }
 
     }//class
 }//namespace

@@ -21,11 +21,14 @@ using System.Timers;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using System.Net;
+using System.Reflection;
 
 namespace IPTVman.ViewModel
 {
     class FileWork
     {
+        //public static string pathAppication = Environment.ExpandEnvironmentVariables(@"%APPDATA%\IPTVmanager");
+       
         public static event Action<typefilter> Event_UpdateLIST;
 
         readonly string tempname = "temp_m3u_IPTVmanager";
@@ -42,6 +45,16 @@ namespace IPTVman.ViewModel
         static extern bool TerminateProcess(int hProcess, uint uExitCode);
 
         const uint PROCESS_TERMINATE = 0x1;
+
+        public static string Get_ApplPath()
+        {
+            string path = "";
+            path = System.Reflection.Assembly.GetExecutingAssembly().Location ;
+            path = path.Replace(@"\", @"/");
+            path = path.Replace(@"IPTVmanager.exe", @"");
+            return path;
+        }
+
 
         private static void TerminateProcess(IntPtr PID)
         {
@@ -129,7 +142,7 @@ namespace IPTVman.ViewModel
         /// <param name="_text_title"></param>
         /// <param name="_chek1"></param>
         /// <param name="_chek2"></param>
-        public async void LOAD(List<IPTVman.Model.ParamCanal> lst, string _text_title, bool _chek1, bool _chek2)
+        public async void LOAD(string path, List<IPTVman.Model.ParamCanal> lst, string _text_title, bool _chek1, bool _chek2)
         {
             text_title = _text_title;
             chek1 = _chek1;
@@ -137,13 +150,17 @@ namespace IPTVman.ViewModel
 
             string name = "";
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            if (openFileDialog.ShowDialog() == true)
+            if (path == "")
             {
-                name = openFileDialog.FileName;
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    name = openFileDialog.FileName;
+                }
+                else { loc.openfile = false; return; }
             }
-            else { loc.openfile = false; return; }
+            else name = path;
 
             await AsyncOPEN(lst, name);
         }
@@ -166,12 +183,13 @@ namespace IPTVman.ViewModel
             {               
                 try
                 {
-                    Wait.Create("Идет анализ файла", true);
+                    Wait.Create("Идет анализ файла ", true);
                     mode_work_with_links = true;
                     bufferstring.Clear();
-                    if (name != "")  PARSING_FILE(lst, name);
+                    if (name != "") { Trace.WriteLine("start parsing " +name); PARSING_FILE(lst, name); }
                     else loc.openfile = false;
-                   
+                    
+
                     Thread.Sleep(300);
                     Wait.Close();
                     if (Event_UpdateLIST != null) Event_UpdateLIST(typefilter.normal);
@@ -231,14 +249,29 @@ namespace IPTVman.ViewModel
             }
         }
 
-        string READLINE(StreamReader sr)
+        /// <summary>
+        /// Чтение строки
+        /// </summary>
+        /// <param name="sr">указатель</param>
+        /// <param name="noFINDscr">true - только чтение без анализа</param>
+        /// <returns></returns>
+        string READLINE(StreamReader sr, bool noFINDscr)
         {
             string line = sr.ReadLine();
+            if (noFINDscr) return line;
             if (line!="") Wait.progressbar++;
-            //Debug.WriteLine(">" + line);
+
+            //Trace.WriteLine(">" + line);
             line = IPTVman.ViewModel.scripts.FIND_SCRIPT(line);
+
+            while (IPTVman.Model.ModeWork.process_adding)
+            {
+                Thread.Sleep(100);
+            }
             return line;
         }
+
+       
 
         bool wait_download = false;
         bool mode_work_with_links = false;
@@ -274,7 +307,7 @@ namespace IPTVman.ViewModel
                     {
                         while (!sr.EndOfStream)
                         {
-                            string rez = READLINE(sr);
+                            string rez = READLINE(sr, true);
                             if (rez != "" && rez != null)
                                 if (new Regex("#EXTINF").Match(rez).Success) { all_str++; null_str = 0; }
                                 else null_str++; if (null_str > 100) goto exit_open;
@@ -296,7 +329,7 @@ namespace IPTVman.ViewModel
 
                     while (!sr.EndOfStream)
                     {
-                        line = READLINE(sr);
+                        line = READLINE(sr, false);
 
                         if (linkIsBad(line)) continue;
                         //MessageBox.Show(line);
@@ -411,7 +444,7 @@ namespace IPTVman.ViewModel
                             {
                                 try
                                 {
-                                    str_http = READLINE(sr);
+                                    str_http = READLINE(sr, true);
 
                                 }
                                 catch { }
@@ -546,7 +579,7 @@ namespace IPTVman.ViewModel
                 if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
                 if (ct_ignore_update != 0) addstr = "\nПропущено дублирование " + ct_ignore_update.ToString();
             }
-            if (!flag_adding_ok) dialog.Show("Каналы не обнаружены");
+            if (!flag_adding_ok && !ModeWork.flag_add) dialog.Show("Каналы не обнаружены");
             if (ct_update != 0) dialog.Show("ОБНОВЛЕНО " + ct_update.ToString() + " каналов" + addstr);
 
             loc.openfile = false;
