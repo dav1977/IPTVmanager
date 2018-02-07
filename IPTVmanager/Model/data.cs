@@ -24,6 +24,7 @@ namespace IPTVman.Model
         public static bool block_dialog_window = false;
         public static bool start_one = false;
         public static bool timer_tmr = false;
+        public static bool asyncOPEN = false;
     }
     
     public static class bd_data
@@ -47,6 +48,7 @@ namespace IPTVman.Model
         public static string NAME_SCANER_SERVER = "СКАННЕР РАДИО ТРЭКОВ";
         public static bool mode_radio_from_select = false;
         public static string[] arguments_startup;
+        public static bool arguments_start;
         public static byte type_player = 0;
         public static string NOT_URL = "НЕ СУЩЕСТВУЕТ";
         public static byte current_favorites =1;

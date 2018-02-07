@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace IPTVman.ViewModel
 {
@@ -18,7 +19,7 @@ namespace IPTVman.ViewModel
     {
         public static Window header;
         bool start_update = false;
-
+        bool close_all = false;
         public MainWindow()
         {
             header = this;
@@ -51,7 +52,10 @@ namespace IPTVman.ViewModel
 
         private void CLOSE_ALL()
         {
-            this.Close();
+            close_all = true;
+            delay_close = 0;
+            Trace.WriteLine("event close");
+
         }
 
         //public void Window1_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -77,8 +81,11 @@ namespace IPTVman.ViewModel
         //     }
         //}
 
+        byte delay_close = 0;
         private void timer_Tick(object sender, EventArgs e)
         {
+            delay_close++;
+            if (close_all && delay_close > 5) this.Close();
             try
             { 
                 if (start_update)

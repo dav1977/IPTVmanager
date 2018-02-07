@@ -33,6 +33,7 @@ namespace IPTVman.ViewModel
                
                 if (Event_UpdateLIST != null && myLISTbase!=null) Event_UpdateLIST(myLISTbase.Count);
                 RaisePropertyChanged("numberCANALS");
+                RaisePropertyChanged("CH1m");
                 return ACOLL;
             }
         }
@@ -42,26 +43,27 @@ namespace IPTVman.ViewModel
         /// <summary>
         /// только обновлять
         /// </summary>
-        bool chek1;
+        public static bool chek_upd;
         public bool CH1m
         {
-            get { return chek1; }
+            get { return chek_upd; }
             set
             {
-                if (chek1) chek1 = false; else chek1 = true;
+                if (chek_upd) chek_upd = false;  else chek_upd = true;
+                Model.ModeWork.enable_update = chek_upd;
                 RaisePropertyChanged("CH1m");
             }
         }
         /// <summary>
         /// обрезать скобки
         /// </summary>
-        bool chek2=true;
+        bool chek__hoop=true;
         public bool CH2m
         {
-            get { return chek2; }
+            get { return chek__hoop; }
             set
             {
-                if (chek2) chek2 = false; else chek2 = true;
+                if (chek__hoop) chek__hoop = false; else chek__hoop = true;
                 RaisePropertyChanged("CH2m");
             }
         }

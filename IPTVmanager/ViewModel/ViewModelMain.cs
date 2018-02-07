@@ -101,10 +101,17 @@ namespace IPTVman.ViewModel
             ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             FileWork.Event_UpdateLIST += new Action<typefilter>(Update_collection);
+            scripts.Event_Update_GUI += Scripts_Event_Update_GUI;
 
             ini_command();
             CreateTimer1(500);//500 мс
             CreateTMR(1);// 1sec
+        }
+
+        private void Scripts_Event_Update_GUI()
+        {
+            //Update_collection(typefilter.last);
+            RaisePropertyChanged("CH1m");
         }
 
         void CreateTMR(int s)
@@ -115,43 +122,51 @@ namespace IPTVman.ViewModel
             tmr.Start();
         }
 
-       
         private void timerTick(object sender, EventArgs e)
         {
             if (loc.timer_tmr) return;
             loc.timer_tmr = true;
-            if (Model.data.arguments_startup != null)
-                if (Model.data.arguments_startup[0] != "")
-                { Open_arguments(); data.arguments_startup = null; }
+
+            if (data.arguments_start)
+            {
+                Debug.WriteLine("arguments >"+ data.arguments_startup[0]+"<");
+                Open_arguments();
+                data.arguments_start = false;
+            }
 
             if (ModeWork.OpenWindow_db_update && ModeWork.OpenWindow_db_updateREADY)
             {
                 if (EVENT_OPENWIN_UpdateDB != null) EVENT_OPENWIN_UpdateDB();
-                tmr.Stop();
-                tmr = null;
+                ModeWork.OpenWindow_db_update = false;
+            }
+
+            if (ModeWork.CLOSE_ALL)
+            {
+                if (ModeWork.CLOSE_ALL) if (EVENT_CLOSE_ALL != null)
+                    {
+                        ModeWork.CLOSE_ALL = false;
+                        EVENT_CLOSE_ALL();
+                    }
             }
 
             if (ModeWork.OpenWindow_radio && ModeWork.OpenWindow_radioREADY)
             {
+                ModeWork.OpenWindow_radio = false;
+                ModeWork.process_script = true;
                 if (EVENT_OPENWIN_Radio != null) EVENT_OPENWIN_Radio();
-                if (ModeWork.CLOSE_ALL) if (EVENT_CLOSE_ALL != null) EVENT_CLOSE_ALL();
-                tmr.Stop();
-                tmr = null;
+                ModeWork.process_script = false;
             }
 
             if (ModeWork.add )
             {
-                ModeWork.skip_message_skiplinks = true;
                 if (EVENT_ADD != null)
                 {
                     ModeWork.add = false;
-                    EVENT_ADD(FileWork.Get_ApplPath() + IPTVman.Model.ModeWork.addpath);
+                    EVENT_ADD( IPTVman.Model.ModeWork.addpath);
                 }
             }
 
-            Trace.WriteLine("tik timer");
             loc.timer_tmr = false;
-
         }
       
         private void Create_Virtual_Collection()
@@ -220,11 +235,11 @@ namespace IPTVman.ViewModel
                 Thread.Sleep(300);
                 RaisePropertyChanged("mycol");///update LIST!!
                 RaisePropertyChanged("numberCANALS");
+                RaisePropertyChanged("CH1m");
             }
         }
 
 
-      
 
     }//class
 }//namespace

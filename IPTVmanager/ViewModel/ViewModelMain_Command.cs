@@ -21,7 +21,7 @@ namespace IPTVman.ViewModel
 {
     partial class ViewModelMain : ViewModelBase
     {
-        
+        FileWork _file;
         public RelayCommand key_UpdateMDBCommand { get; set; }
         public RelayCommand key_DelDUBLICATCommand { get; set; }
         public RelayCommand key_ReplaceCommand { get; set; }
@@ -36,7 +36,7 @@ namespace IPTVman.ViewModel
         public RelayCommand key_delCommand { get; set; }
         public RelayCommand key_DelFILTERCommand { get; set; }
         public RelayCommand key_radio { get; set; }
-        public RelayCommand key_DelALLkromeBESTCommand{ get; set; }
+        public RelayCommand key_DelALLkromeBESTCommand { get; set; }
         public RelayCommand key_FILTERCommand { get; set; }
         public RelayCommand key_FilterOnlyBESTCommand { get; set; }
 
@@ -44,7 +44,7 @@ namespace IPTVman.ViewModel
         {
             key_UpdateMDBCommand = new RelayCommand(Update_MDB);
             key_DelDUBLICATCommand = new RelayCommand(DelDUBLICAT);
-            key_ReplaceCommand =  new RelayCommand(key_Replace);
+            key_ReplaceCommand = new RelayCommand(key_Replace);
             key_OPENclipboarCommand = new RelayCommand(key_OPEN_clipboard);
             key_SetAllBestCommand = new RelayCommand(key_set_all_best);
             key_FILTERmoveDragCommand = new RelayCommand(key_dragdrop);
@@ -60,10 +60,13 @@ namespace IPTVman.ViewModel
             key_FilterOnlyBESTCommand = new RelayCommand(key_FILTERbest);
             key_DelALLkromeBESTCommand = new RelayCommand(key_delALLkromeBEST);
 
-            IPTVman.ViewModel.ViewModelMain.EVENT_OPENWIN_UpdateDB += ViewModelMain_EVENT_OPENWIN_UpdateDB;
-            IPTVman.ViewModel.ViewModelMain.EVENT_OPENWIN_Radio += ViewModelMain_EVENT_OPENWIN_Radio;
-            IPTVman.ViewModel.ViewModelMain.EVENT_ADD += ViewModelMain_EVENT_ADD;
+            ViewModelMain.EVENT_OPENWIN_UpdateDB += ViewModelMain_EVENT_OPENWIN_UpdateDB;
+            ViewModelMain.EVENT_OPENWIN_Radio += ViewModelMain_EVENT_OPENWIN_Radio;
+            ViewModelMain.EVENT_ADD += ViewModelMain_EVENT_ADD;
+            
         }
+
+      
 
         private void ViewModelMain_EVENT_ADD(string obj)
         {
@@ -252,17 +255,17 @@ namespace IPTVman.ViewModel
         /// <param name="parameter"></param>
         async void key_AUTOPING(object parameter)
         {
-            if (Wait.IsOpen)  return; 
-            if (LongtaskPingCANCELING.isENABLE())    return; 
-            if (myLISTbase==null) return;
+            if (Wait.IsOpen) return;
+            if (LongtaskPingCANCELING.isENABLE()) return;
+            if (myLISTbase == null) return;
             if (myLISTbase.Count == 0) return;
-            if (winap!=null) return;
+            if (winap != null) return;
 
             _ping = new PING();
             _pingPREPARE = new PING_prepare(_ping);
 
             ap = new AUTOPING(_ping, _pingPREPARE);
-          
+
             winap = new WindowPING
             {
                 Title = "АВТО ПИНГ",
@@ -336,7 +339,7 @@ namespace IPTVman.ViewModel
             { name = parameter.ToString(), ExtFilter = parameter.ToString(), group_title = "" });
             Update_collection(typefilter.last);
         }
-        
+
         /// <summary>
         /// DEL
         /// </summary>
@@ -387,13 +390,13 @@ namespace IPTVman.ViewModel
                 var item = ViewModelMain.myLISTfull.Find(x =>
                  (x.http == obj.http && x.ExtFilter == obj.ExtFilter && x.group_title == obj.group_title));
 
-                if (item != null) { myLISTfull.Remove(item);  ct++; }
+                if (item != null) { myLISTfull.Remove(item); ct++; }
 
             }
 
             if (_update.lastfilter() == typefilter.dublicate) Update_collection(typefilter.normal);
             else
-            Update_collection(typefilter.last);
+                Update_collection(typefilter.last);
             //dialog.Show("  УДАЛЕНО "+ct.ToString()+ " Каналов", " ",
             //                   MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -408,7 +411,7 @@ namespace IPTVman.ViewModel
             if (loc.finddublic) return;
 
             loc.finddublic = true;
-            List<ParamCanal> rez =null;
+            List<ParamCanal> rez = null;
 
             Wait.Create("Идет поиск дубликатов ...", true);
             Wait.set_ProgressBar(myLISTbase.Count);
@@ -441,7 +444,7 @@ namespace IPTVman.ViewModel
 
         List<ParamCanal> result = null;
         async Task<List<ParamCanal>> find_dublicate_task()
-        {           
+        {
             Task task1 = Task.Run(() =>
             {
                 var tcs = new TaskCompletionSource<string>();
@@ -476,9 +479,9 @@ namespace IPTVman.ViewModel
             return result;
         }
 
-       
 
-           
+
+
 
         /// <summary>
         /// del krome best
@@ -503,7 +506,7 @@ namespace IPTVman.ViewModel
                         myLISTfull[i].ExtFilter != data.favorite2_1 &&
                         myLISTfull[i].ExtFilter != data.favorite3_1
                         /*|| myLISTfull[i].group_title != data.best2*/)
-                    {  myLISTfull.RemoveAt(i); ct++; i--; }
+                    { myLISTfull.RemoveAt(i); ct++; i--; }
 
                 }
             }
@@ -517,7 +520,7 @@ namespace IPTVman.ViewModel
 
         }
 
-        
+
         /// <summary>
         ///  save
         /// </summary>
@@ -528,10 +531,8 @@ namespace IPTVman.ViewModel
             if (LongtaskPingCANCELING.isENABLE()) return;
             if (myLISTfull == null) return;
             if (myLISTfull.Count == 0) return;
-
-            FileWork _file = new FileWork();
+            _file = new FileWork(); 
             _file.SAVE(myLISTfull, text_title);
-            _file = null;
         }
 
         /// <summary>
@@ -542,10 +543,10 @@ namespace IPTVman.ViewModel
         {
             Update_collection(typefilter.normal);
         }
-     
+
         void key_FILTERbest(object parameter)
         {
-            Update_collection(typefilter.best); 
+            Update_collection(typefilter.best);
         }
 
         /// <summary>
@@ -571,24 +572,22 @@ namespace IPTVman.ViewModel
             }
 
             if (str == null) return;
-            FileWork _file = new FileWork();
-            _file.OPEN_FROM_CLIPBOARD( ViewModelMain.myLISTfull,  str);
-            _file = null;
+            if (_file==null) _file = new FileWork();
+            _file.OPEN_FROM_CLIPBOARD(ViewModelMain.myLISTfull, str);
 
         }
 
-        
-         void Open_arguments()
+
+        void Open_arguments()
         {
             loc.openfile = true;
             CollectionisCreate();
             string name = data.arguments_startup[0];
             loc.block_dialog_window = true;
 
-            FileWork _file = new FileWork();
+            if (_file == null) _file = new FileWork();
             _file.LOAD(ViewModelMain.myLISTfull, name);
 
-            _file = null;
             loc.block_dialog_window = false;
             loc.openfile = false;
         }
@@ -601,28 +600,42 @@ namespace IPTVman.ViewModel
             loc.openfile = true;
             CollectionisCreate();
 
-            FileWork _file = new FileWork();
-            _file.LOAD("", ViewModelMain.myLISTfull, text_title,  chek1, chek2);
+            ModeWork.ResetMODEApplication();
+            _file = new FileWork();
+            _file.LOAD("", ViewModelMain.myLISTfull, text_title, chek_upd, chek__hoop);
 
             text_title = _file.text_title;
-            _file = null;
             loc.openfile = false;
         }
 
+
         void key_OPENEVENT(string path)
-        {        
+        { 
             CollectionisCreate();
-            Trace.WriteLine("open event");
+            
             ModeWork.flag_add = true;
 
-            FileWork _file = new FileWork();
-             _file.LOAD(path, ViewModelMain.myLISTfull, text_title, chek1, chek2);
+            if (_file==null) _file = new FileWork();
 
+            _file.Event_DownloadLinkCompleted += EVENT_OPENfinalize;
+            Trace.WriteLine("podpiska =" + path);
+
+            string fullpath = _file.ANALIZ_LINE(path, out bool type);
+
+            if (type) EVENT_OPENfinalize(fullpath);
+
+
+        }
+
+        public void EVENT_OPENfinalize(string path)
+        {
+            Trace.WriteLine("EVENTOPENfinalize =" + path);
+            if (_file == null) _file = new FileWork();
+            _file.LOAD(path, ViewModelMain.myLISTfull, text_title, chek_upd, chek__hoop);
             text_title = _file.text_title;
-            _file = null;
 
-            ModeWork.skip_message_skiplinks = true;
-            ModeWork.process_adding = false;
+            //ModeWork.en_skip_message_skiplinks = false; 
+            ModeWork.process_script = false;  
         }
 
     }//class

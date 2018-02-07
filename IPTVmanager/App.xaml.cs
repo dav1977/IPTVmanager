@@ -92,12 +92,15 @@ namespace IPTVman
                 {
                     Model.data.arguments_startup[i] = arg;
                     if (i > 90) break;
+                    i++;
                 }
+                if (i > 0) Model.data.arguments_start = true;
             }
             catch { }
 
             //test
-            //Model.data.arguments_startup[0] = "radio.m3u";
+           // Model.data.arguments_startup[0] = "radio.m3u"; Model.data.arguments_start = true;
+
         }
     }
 

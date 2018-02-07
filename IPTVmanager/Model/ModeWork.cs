@@ -6,15 +6,22 @@ using System.Threading.Tasks;
 
 namespace IPTVman.Model
 {
+
     /// <summary>
     /// Режим работы приложения
     /// </summary>
     public static class ModeWork
     {
+    
+        /// <summary>
+        ///  ИДЕТ ПРОЦЕСС скрипта (длительная операция)
+        /// </summary>
+        public static bool process_script = false;
+
         /// <summary>
         /// не выводить сообщения о пропущеных ссылках
         /// </summary>
-        public static bool skip_message_skiplinks = false;
+        public static bool en_skip_message_skiplinks = false;
 
         /// <summary>
         /// Отключить обрезание скобок
@@ -22,14 +29,14 @@ namespace IPTVman.Model
         public static bool skip_obrez_skobki = false;
 
         /// <summary>
+        /// Включить обновление
+        /// </summary>
+        public static bool enable_update = false;
+        /// <summary>
         /// Добавить файл
         /// </summary>
         public static bool add = false;
         public static string addpath = "";
-        /// <summary>
-        /// Добавить файл ИДЕТ ПРОЦЕСС ДОБАВЛЕНИЯ
-        /// </summary>
-        public static bool process_adding = false;
         /// <summary>
         /// флаг события добавления
         /// </summary>
@@ -45,9 +52,8 @@ namespace IPTVman.Model
 
         public static void ResetMODEApplication()
         {
-            skip_message_skiplinks = false;
+            en_skip_message_skiplinks = false;
             skip_obrez_skobki = false;
-
         }
     }
 }

@@ -27,11 +27,11 @@ namespace IPTVman.ViewModel
 {
     class FileWork
     {
+        public string temppath = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
         //public static string pathAppication = Environment.ExpandEnvironmentVariables(@"%APPDATA%\IPTVmanager");
-       
-        public static event Action<typefilter> Event_UpdateLIST;
 
-        readonly string tempname = "temp_m3u_IPTVmanager";
+        public static event Action<typefilter> Event_UpdateLIST;
+        public event Action<string> Event_DownloadLinkCompleted;
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
         static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, IntPtr dwProcessId);
@@ -55,6 +55,28 @@ namespace IPTVman.ViewModel
             return path;
         }
 
+        static string pathM3u="";
+        public static string Get_m3uPath()
+        {
+            Debug.WriteLine("PATHm3u="+ pathM3u);
+            if (pathM3u == "")
+            {
+                pathM3u = Get_ApplPath();
+            }
+            else
+            {
+                string[] words = pathM3u.Split(new char[] { '\\' });
+                pathM3u = "";
+
+                for (byte i = 0; i < words.Length-1; i++)
+                {
+                    
+                    pathM3u += words[i]+"/";
+                }
+            }
+            Debug.WriteLine("PATHm3u X=" + pathM3u);
+            return pathM3u;
+        }
 
         private static void TerminateProcess(IntPtr PID)
         {
@@ -133,7 +155,7 @@ namespace IPTVman.ViewModel
 
         }
 
-        bool chek1=false, chek2=true;
+        bool chek_update=false, chek_hoop=true;
         public string text_title = "";
         /// <summary>
         /// куда, заголовок,  флаг только обновлять, флаг обрезать скобки
@@ -145,8 +167,8 @@ namespace IPTVman.ViewModel
         public async void LOAD(string path, List<IPTVman.Model.ParamCanal> lst, string _text_title, bool _chek1, bool _chek2)
         {
             text_title = _text_title;
-            chek1 = _chek1;
-            chek2 = _chek2;
+            chek_update = _chek1;
+            chek_hoop = _chek2;
 
             string name = "";
 
@@ -162,15 +184,20 @@ namespace IPTVman.ViewModel
             }
             else name = path;
 
-            await AsyncOPEN(lst, name);
+            pathM3u = name;
+
+
+            //while (loc.asyncOPEN) Thread.Sleep(100);
+             await AsyncOPEN(lst, name);
         }
 
         public async void LOAD(List<IPTVman.Model.ParamCanal> lst, string namefile)
         {
+            //while (loc.asyncOPEN) Thread.Sleep(100);
             await AsyncOPEN(lst, namefile);
         }
 
-
+       
         /// <summary>
         /// событие после выполнения задачи
         /// </summary>
@@ -183,10 +210,15 @@ namespace IPTVman.ViewModel
             {               
                 try
                 {
+                    loc.asyncOPEN = true;
                     Wait.Create("Идет анализ файла ", true);
                     mode_work_with_links = true;
                     bufferstring.Clear();
-                    if (name != "") { Trace.WriteLine("start parsing " +name); PARSING_FILE(lst, name); }
+                    if (name != null)
+                    {
+                        Trace.WriteLine("start parsing >" +name+"<" );
+                        PARSING_FILE(lst, name);
+                    }
                     else loc.openfile = false;
                     
 
@@ -209,6 +241,7 @@ namespace IPTVman.ViewModel
                 {
                     tcs.SetException(e);
                 }
+                loc.asyncOPEN = false;
                 return tcs.Task;
             });
             //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -226,18 +259,22 @@ namespace IPTVman.ViewModel
 
 
 
-
+        /// <summary>
+        /// Закачка ссылки в temp файл
+        /// </summary>
+        /// <param name="s"></param>
         void Parsing_link(string s)
         {
-            string ss = s;
-            //try { ss = HttpUtility.UrlEncode(s); } catch { ss = s; } 
             try
             {
-                string path = System.IO.Path.GetTempPath() + tempname;
+
+                Debug.WriteLine("start download to "+ temppath + " from "+ new Uri(s));
                 System.Net.WebClient webClient = new WebClient();
-                Wait.Create("Загружается\n" + ss, false);
+                //Wait.Create("Загружается\n" + s, false);
                 webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-                webClient.DownloadFileAsync(new Uri(ss), path);
+                webClient.DownloadFileAsync(new Uri(s), temppath);
+
+                Debug.WriteLine("start download exit");
                 return;
             }
             catch
@@ -248,7 +285,18 @@ namespace IPTVman.ViewModel
                 loc.openfile = false;
             }
         }
-
+        private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            Debug.WriteLine("start download COMPLETED!!");
+            //копия
+            add_file_to_memory(temppath);
+            wait_download = false;
+            if (Event_DownloadLinkCompleted != null)
+            { 
+                Event_DownloadLinkCompleted(temppath);
+            }
+          
+        }
         /// <summary>
         /// Чтение строки
         /// </summary>
@@ -258,22 +306,67 @@ namespace IPTVman.ViewModel
         string READLINE(StreamReader sr, bool noFINDscr)
         {
             string line = sr.ReadLine();
-            if (noFINDscr) return line;
             if (line!="") Wait.progressbar++;
+            if (noFINDscr) return line;
 
             //Trace.WriteLine(">" + line);
-            line = IPTVman.ViewModel.scripts.FIND_SCRIPT(line);
-
-            while (IPTVman.Model.ModeWork.process_adding)
-            {
-                Thread.Sleep(100);
-            }
+            line = scripts.FIND_SCRIPT(line);
+            while (ModeWork.process_script) Thread.Sleep(100);
+            
             return line;
         }
 
-       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="line">return true==link;  false=file</param>
+        /// <returns></returns>
+        bool AnalizTYPElink(string line)
+        {
+            Regex regex_link = new Regex("http://");
+            Regex regex_link2 = new Regex("https://");
 
-        bool wait_download = false;
+            if (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
+                      !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
+                      !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
+                      !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
+                      !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
+                      !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
+                      !(new Regex("#EXTGRP", RegexOptions.IgnoreCase).Match(line).Success) &&
+                        (regex_link.Match(line).Success || regex_link2.Match(line).Success)
+                     ) return true;
+            return false;
+        }
+
+        public string ANALIZ_LINE(string line, out bool typelink)
+        {
+            string rezult = line;
+            Regex regex_link = new Regex("http://");
+            Regex regex_link2 = new Regex("https://");
+            typelink = true;
+
+            if (linkIsBad(line)) return FileWork.Get_m3uPath() + rezult;
+ 
+                if (AnalizTYPElink(line))
+                {
+                    Debug.WriteLine("find link >>>"+line);
+                    //в файле находится ссылка на m3u
+                    mode_work_with_links = true;
+                    wait_download = true;
+                    Parsing_link(line);
+                    rezult = temppath;
+                    Debug.WriteLine("find link rezult download OK");
+                }
+                else return FileWork.Get_m3uPath() + rezult;
+            //--------------------------
+
+            typelink = false;
+            return  rezult;
+        }
+
+
+
+        public bool wait_download = false;
         bool mode_work_with_links = false;
         /// <summary>
         /// ПАРСИНГ
@@ -318,7 +411,7 @@ namespace IPTVman.ViewModel
 
                 }
                 catch (Exception ex) { MessageBox.Show("ошибка сканирования " + ex.Message.ToString()); goto exit_open; }
-
+                Debug.WriteLine("size="+ all_str);
                 Wait.set_ProgressBar(all_str);
                 //=========================================================
                 //ПОИСК каналов
@@ -340,15 +433,7 @@ namespace IPTVman.ViewModel
                    
                             while (wait_download) Thread.Sleep(100);
 
-                            if     (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
-                                    !(new Regex("#EXTGRP", RegexOptions.IgnoreCase).Match(line).Success) &&    
-                                      (regex_link.Match(line).Success|| regex_link2.Match(line).Success)
-                                   )
+                            if (AnalizTYPElink(line))
                             {  
                                 //в файле находится ссылка на m3u
 
@@ -455,7 +540,7 @@ namespace IPTVman.ViewModel
                             //MessageBox.Show(str_http);
                         }
 
-                        if (chek2)//обрезание скобок
+                        if (chek_hoop)//обрезание скобок
                         {
                             if (!ModeWork.skip_obrez_skobki)
                             {
@@ -467,14 +552,14 @@ namespace IPTVman.ViewModel
                         }
 
 
-                        if (!chek1)//Добавление
+                        if (!chek_update && !ModeWork.enable_update)//Добавление
                         {
                             var item = lst.Find(x =>
                             (x.http == str_http && x.ExtFilter == str_ex && x.group_title == str_gt));
-
+                       
                             if (newname.Trim() != "" && str_http.Trim() != "")
                             {
-
+                               
                                 if (item == null)
                                 {
                                     lst.Add(new ParamCanal
@@ -500,6 +585,7 @@ namespace IPTVman.ViewModel
 
                             if (newname != "")
                             {
+
                                 int index = 0;
                                 bool replace_ok;
                                 bool ingore = false;
@@ -507,8 +593,10 @@ namespace IPTVman.ViewModel
 
                                 foreach (var k in ViewModelMain.myLISTbase)//обновление только отфильтрофанных
                                 {
+                                    //Debug.WriteLine("           " + k.name);
                                     if (newname == k.name)
                                     {
+                                        Debug.WriteLine("find "+ newname+ k.http);
                                         int ind = 0;
                                         foreach (var j in lst)
                                         {
@@ -536,12 +624,8 @@ namespace IPTVman.ViewModel
                                         }
 
                                         if (replace_ok) { break; }
-                                        break;
                                     }
-                                    else
-                                    {
-
-                                    }
+                                    
                                     index++;
 
                                 }
@@ -573,14 +657,15 @@ namespace IPTVman.ViewModel
 
             exit_open:
             string addstr = "";
-            if (!ModeWork.skip_message_skiplinks)
+            Debug.WriteLine("end parsing");
+
+            if (ModeWork.en_skip_message_skiplinks)
             {
-               
+                if (ct_update != 0) dialog.Show("ОБНОВЛЕНО " + ct_update.ToString() + " каналов" + addstr);
                 if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
                 if (ct_ignore_update != 0) addstr = "\nПропущено дублирование " + ct_ignore_update.ToString();
             }
             if (!flag_adding_ok && !ModeWork.flag_add) dialog.Show("Каналы не обнаружены");
-            if (ct_update != 0) dialog.Show("ОБНОВЛЕНО " + ct_update.ToString() + " каналов" + addstr);
 
             loc.openfile = false;
         }
@@ -640,25 +725,18 @@ namespace IPTVman.ViewModel
 
         private void parse_temp_file(List<IPTVman.Model.ParamCanal> lst)
         {
-            string path = System.IO.Path.GetTempPath() + tempname;
-            add_memoty_to_file(path);
-            PARSING_FILE(lst, path);
+            add_memoty_to_file(temppath);
+            PARSING_FILE(lst, temppath);
             try
             {
-                System.IO.File.Delete(path);
+                System.IO.File.Delete(temppath);
             }
             catch (Exception ex) { dialog.Show("ошибка удаления " + ex.Message.ToString()); }
             if (Event_UpdateLIST!=null) Event_UpdateLIST(typefilter.last);
             Wait.Close();
         }
 
-        private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            //копия
-            string path = System.IO.Path.GetTempPath() + tempname;
-            add_file_to_memory(path);
-            wait_download = false;
-        }
+      
 
 
 
@@ -691,12 +769,11 @@ namespace IPTVman.ViewModel
                     {
                         try
                         {
-                            string path = System.IO.Path.GetTempPath() + tempname;
                             WebClient webClient = new WebClient();
                             Wait.Create("Загружается\n" + (str[0].ToString()), false);
                             wblst = lst;
                             webClient.DownloadFileCompleted += WebClient_DownloadFileCompletedClipb;
-                            webClient.DownloadFileAsync(new Uri(str[0].ToString()), path);
+                            webClient.DownloadFileAsync(new Uri(str[0].ToString()), temppath);
                             return;
                         }
                         catch (Exception ex)
@@ -708,7 +785,7 @@ namespace IPTVman.ViewModel
                 }
             }
 
-            if (chek1) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ"); return; }
+            if (chek_update) { dialog.Show("ОБНОВЛЕНИЕ ТОЛЬКО ЧЕРЕЗ ФАЙЛ"); return; }
             //ПОИСК заголовка
             foreach (var s in str)
             {
@@ -780,48 +857,7 @@ namespace IPTVman.ViewModel
                             if (str_name != "") newname = str_name;
                             need_link = true; continue;
 
-
-                            //int i = 0;
-                            //for (i = 0; i < split.Length; i++)
-                            //{
-                            //    string s = split[i];
-                            //    //------------- разбор строки EXINF
-                            //    if (str_ex == "!") str_ex = s;
-                            //    if (str_gt == "!") str_gt = s;
-                            //    if (str_logo == "!") str_logo = s;
-                            //    if (str_tvg == "!") str_tvg = s;
-
-
-                            //    if (i >= split.Length - 1) { str_name = s; }
-
-                            //    match = regex3.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_ex = "!";
-                            //    }
-
-                            //    match = regex4.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_gt = "!";
-                            //    }
-
-                            //    match = regex5.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_logo = "!";
-                            //    }
-
-                            //    match = regex6.Match(s);
-                            //    if (match.Success)
-                            //    {
-                            //        str_tvg = "!";
-                            //    }
-
-
-                            //}//for
                         }
-
 
                     }
                     else continue;
@@ -872,8 +908,7 @@ namespace IPTVman.ViewModel
         List<ParamCanal> wblst;
         private void WebClient_DownloadFileCompletedClipb(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            string path = System.IO.Path.GetTempPath() + tempname;
-            add_file_to_memory(path);
+            add_file_to_memory(temppath);
             parse_temp_file(wblst);
         }
 
