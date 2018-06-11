@@ -63,9 +63,9 @@
 
         <ListView Name="listView"   
       ItemContainerStyle="{StaticResource ItemContStyle}"
-      Margin="10,12,130,9" 
+      Margin="116,12,39,9" 
       Padding="2"
-      SelectionMode="Single" Grid.Row="1" Background="#FF787474" Foreground="#FF05050A" FontWeight="Bold"
+      SelectionMode="Single" Grid.Row="1" Background="#FF787474" Foreground="#FF05050A" FontWeight="Bold" FontSize="18"
       
 >
             <ListView.View>
@@ -90,9 +90,9 @@
         <ListView Name="listView2" 
       Grid.Row="1" 
       ItemContainerStyle="{StaticResource ItemContStyle}"
-      Margin="0,222,8,7" 
+      Margin="0,198,0,10" 
       Padding="2"
-      SelectionMode="Single" FontSize="9" HorizontalAlignment="Right" Width="111"
+      SelectionMode="Single" FontSize="9" HorizontalAlignment="Left" Width="111"
       >
             <ListView.View>
                 <GridView>
@@ -101,15 +101,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="button" Content="Применить" HorizontalAlignment="Right" Margin="0,12,26,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Click="button_Click" Foreground="#FF89AC2D">
+        <Button x:Name="buttonP" Content="Применить" HorizontalAlignment="Left"
+                Margin="20,25,0,0" Grid.Row="1" VerticalAlignment="Top" Width="77" 
+                Height="34" RenderTransformOrigin="-0.319,0.627" Click="button_Click" Foreground="#FF89AC2D">
+
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF1333FF" Offset="0.082"/>
+                    <GradientStop Color="#FFFF1313" Offset="0.082"/>
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="button_Copy" Content="Отмена" HorizontalAlignment="Right" Margin="0,64,33,0" Grid.Row="1" VerticalAlignment="Top" Width="56" Height="24" RenderTransformOrigin="-0.319,0.627" Click="button_ClickCANCEL">
+        <Button x:Name="button_Copy" Content="Отмена" HorizontalAlignment="Left" Margin="30,84,0,0" Grid.Row="1" VerticalAlignment="Top" Width="56" Height="24" RenderTransformOrigin="-0.319,0.627" Click="button_ClickCANCEL">
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -117,23 +120,15 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="inc" Content="+" HorizontalAlignment="Right" Margin="0,165,61,0" Grid.Row="1" VerticalAlignment="Top" Width="34" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click">
+        <Button x:Name="inc" Content="+" HorizontalAlignment="Right" Margin="0,112,0,0" Grid.Row="1" VerticalAlignment="Top" Width="34" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF89AC2D" Click="inc_Click">
 
         </Button>
-        <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,165,21,0" Grid.Row="1" VerticalAlignment="Top" Width="34" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click"/>
-        <Button x:Name="button_Copy1" Content="Применить" HorizontalAlignment="Right" Margin="0,12,26,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Click="button_Click" Foreground="#FFDCD9EA">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF2E3C93" Offset="0.082"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button x:Name="buttonSEL" Content="Выборка" HorizontalAlignment="Right" Margin="0,100,25,0" Grid.Row="1" VerticalAlignment="Top" Width="70" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FF308352" Click="buttonSEL_Click" FontWeight="Bold">
+        <Button x:Name="dec" Content="-" HorizontalAlignment="Right" Margin="0,186,0,0" Grid.Row="1" VerticalAlignment="Top" Width="34" Height="34" RenderTransformOrigin="-0.319,0.627"  Foreground="#FF89AC2D" Click="dec_Click"/>
+        <Button x:Name="buttonSEL" Content="Выборка" HorizontalAlignment="Left" Margin="17,150,0,0" Grid.Row="1" VerticalAlignment="Top" Width="83" Height="34" RenderTransformOrigin="-0.319,0.627" Foreground="#FFFDFDFD" Click="buttonSEL_Click" FontWeight="Bold" FontSize="16">
             <Button.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF0E166A" Offset="0.1"/>
+                    <GradientStop Color="#FF131A68" Offset="0.1"/>
                 </RadialGradientBrush>
             </Button.Background>
         </Button>

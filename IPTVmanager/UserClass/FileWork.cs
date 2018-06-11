@@ -306,7 +306,7 @@ namespace IPTVman.ViewModel
         string READLINE(StreamReader sr, bool noFINDscr)
         {
             string line = sr.ReadLine();
-            if (line!="") Wait.progressbar++;
+            if (line != "") { Wait.progressbar++; Wait.viewstring = line; }
             if (noFINDscr) return line;
 
             //Trace.WriteLine(">" + line);
@@ -379,6 +379,7 @@ namespace IPTVman.ViewModel
             uint ct_update = 0;
             uint ct_ignore_update = 0;
             string line = null;
+            bool skip_mes = false;
             string newname = "";
             List<int> list_update_channels = new List<int>();
 
@@ -423,6 +424,8 @@ namespace IPTVman.ViewModel
                     while (!sr.EndOfStream)
                     {
                         line = READLINE(sr, false);
+                        skip_mes = ModeWork.en_skip_message_skiplinks;
+
 
                         if (linkIsBad(line)) continue;
                         //MessageBox.Show(line);
@@ -659,12 +662,15 @@ namespace IPTVman.ViewModel
             string addstr = "";
             Debug.WriteLine("end parsing");
 
-            if (ModeWork.en_skip_message_skiplinks)
+            if (!skip_mes)
             {
+                //обновление в списке
                 if (ct_update != 0) dialog.Show("ОБНОВЛЕНО " + ct_update.ToString() + " каналов" + addstr);
                 if (ct_dublicat != 0) dialog.Show("Пропущенно дублированных ссылок " + ct_dublicat.ToString());
                 if (ct_ignore_update != 0) addstr = "\nПропущено дублирование " + ct_ignore_update.ToString();
             }
+            else skip_mes = false;
+
             if (!flag_adding_ok && !ModeWork.flag_add) dialog.Show("Каналы не обнаружены");
 
             loc.openfile = false;
@@ -890,7 +896,8 @@ namespace IPTVman.ViewModel
                 }
             }
 
-            if (flag_adding)
+
+            if (flag_adding && !Model.ModeWork.en_skip_message_skiplinks)
             {
                 if (ct_dublicat != 0) dialog.Show("ПРОПУЩЕНО ДУБЛИРОВАННЫХ ССЫЛОК " + ct_dublicat.ToString());
                 else dialog.Show("Каналы добавлены успешно!");

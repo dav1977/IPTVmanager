@@ -98,6 +98,7 @@ namespace IPTVman.ViewModel
     {
         public static string message = "";
         public static double progressbar = 0;
+        public static string viewstring = "";
         public static double progressbar_max = 0;
         public static bool dynamic_progressbar = false;
 
@@ -173,11 +174,13 @@ namespace IPTVman.ViewModel
         }
         public static void Close()
         {
+            viewstring = "";
             need_close = true; 
         }
 
         public static void manager()//работа из UI потока
         {
+           if (viewstring!="") message = viewstring;
             if (open)
             {
                 if (create) create = false;

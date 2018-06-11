@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Diagnostics;
-
+using System.Windows;
 
 namespace IPTVman.Model
 {
@@ -73,26 +73,41 @@ namespace IPTVman.Model
         public static int ping_waiting = 0;
 
         public static  void set_best()
-    {
-        if (data.current_favorites == 1)
         {
-                best1 = favorite1_1;
-                best2 = favorite1_2;
+            if (data.current_favorites == 1)
+            {
+                    best1 = favorite1_1;
+                    best2 = favorite1_2;
+            }
+            if (data.current_favorites == 2)
+            {
+                    best1 = favorite2_1;
+                    best2 = favorite2_2;
+                }
+            if (data.current_favorites == 3)
+            {
+                    best1 = favorite3_1;
+                    best2 = favorite3_2;
+                }
         }
-        if (data.current_favorites == 2)
+
+        public static class Utils
         {
-                best1 = favorite2_1;
-                best2 = favorite2_2;
+
+            public static void Find_and_Close_Window(string name)
+            {
+                foreach (Window win in Application.Current.Windows)
+                {
+                    if (win.Name == name)
+                    {
+                        win.Close();
+                    }
+                }
             }
-        if (data.current_favorites == 3)
-        {
-                best1 = favorite3_1;
-                best2 = favorite3_2;
-            }
+
+
+        }
     }
 
 
-    }
-
-   
 }

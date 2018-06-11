@@ -14,12 +14,16 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Data.SQLite;
+
 
 namespace IPTVman.ViewModel
 {
     partial class ViewModelWindowMDB : ViewModelMain
     {
-        public static Access _bd;
+        public static DataBaseWork _bd;
+        
+
         public RelayCommand key_UPDATECommand { get; set; }
         public RelayCommand key_bastUPDATECommand { get; set; }
 
@@ -30,7 +34,7 @@ namespace IPTVman.ViewModel
             key_bastUPDATECommand = new RelayCommand(key_FASTupdateBD);
             //sel1 = "что";
             //sel2 = "чем";
-            _bd = new Access();
+            _bd = new DataBaseWork();
         }
         //======================================================================
 
@@ -41,7 +45,7 @@ namespace IPTVman.ViewModel
         {
             if (loc.updateMDB) return;
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "access files(*.mdb)|*.mdb";
+                openFileDialog.Filter = "Symple v2|TvData.mdb| Symple v3|playlist.db";
 
                 if (openFileDialog.ShowDialog() == true)
                 {
@@ -52,8 +56,16 @@ namespace IPTVman.ViewModel
                     if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n" + _bd.error); return; }
 
                     loc.updateMDB = true;
-                    var r = await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
-                    loc.updateMDB = false;
+
+                if (bd_data.path.Contains("mdb"))
+                {
+                    var r = await _bd.UPDATE_DATA(cts1.Token, 1, sel1, sel2, _mask);
+                }
+                else
+                {
+                    var r = await _bd.UPDATE_DATA(cts1.Token, 2, sel1, sel2, _mask);
+                }
+                loc.updateMDB = false;
                 }
         }
 
@@ -66,7 +78,16 @@ namespace IPTVman.ViewModel
             if (!_bd.is_connect()) { dialog.Show("НЕТ ВОЗМОЖНОСТИ ПОДКЛЮЧИТЬСЯ К БАЗЕ\n" + _bd.error); return; }
 
             loc.updateMDB = true;
-            string rez = await _bd.UPDATE_DATA(cts1.Token, sel1, sel2, _mask);
+
+            if (bd_data.path.Contains("mdb"))
+            {
+                var r = await _bd.UPDATE_DATA(cts1.Token, 1, sel1, sel2, _mask);
+            }
+            else
+            {
+                var r = await _bd.UPDATE_DATA(cts1.Token, 2, sel1, sel2, _mask);
+            }
+           
             loc.updateMDB = false;
         }
 

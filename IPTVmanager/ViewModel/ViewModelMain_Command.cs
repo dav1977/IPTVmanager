@@ -313,7 +313,8 @@ namespace IPTVman.ViewModel
                 Title = "Обновление базы Access",
                 Topmost = true,
                 WindowStyle = WindowStyle.ToolWindow,
-                Name = "update_mdb"
+                Name = "update_mdb",
+                
             };
 
             mdb.Closing += MDB_Closing;
@@ -568,7 +569,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                dialog.Show("ОШИБКА clb " + ex.Message.ToString());
+                dialog.Show("ОШИБКА clipboard " + ex.Message.ToString());
             }
 
             if (str == null) return;

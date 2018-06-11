@@ -33,7 +33,7 @@ namespace IPTVman.ViewModel
             textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             textBox.Text = "";
             pa.Content = Model.bd_data.path;
-            Access.Event_Print += Access_Event_Print;
+            DataBaseWork.Event_Print += Access_Event_Print;
             TEXTmask.Text = Model.bd_data.mask;
             TEXT1.Text = Model.bd_data.filter1;
             TEXT2.Text = Model.bd_data.filter2;

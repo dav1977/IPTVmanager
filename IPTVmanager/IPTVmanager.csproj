@@ -100,6 +100,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\System.Data.SQLite\2013\bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.ServiceModel" />
@@ -136,7 +140,7 @@
     <Compile Include="UserClass\FileWork.cs" />
     <Compile Include="UserClass\MemoryFile.cs" />
     <Compile Include="UserClass\Registy_Find.cs" />
-    <Compile Include="UserClass\BaseAccess.cs" />
+    <Compile Include="UserClass\mdbUPDATE.cs" />
     <Compile Include="UserClass\ScannerRadio.cs" />
     <Compile Include="UserClass\Scripts.cs" />
     <Compile Include="UserClass\Update.cs" />

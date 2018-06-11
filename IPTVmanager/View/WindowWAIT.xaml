@@ -12,7 +12,7 @@
     ResizeMode="NoResize" Height="127.5" Width="342" Closing="Window_Closing">
 
 
-    <StackPanel x:Uid="StackPanel_1" Margin="0,0,-1,-1" >
+    <StackPanel x:Uid="StackPanel_1" Margin="0,0,-1,0" >
         <StackPanel.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="Black" Offset="0"/>
@@ -21,12 +21,21 @@
         </StackPanel.Background>
 
 
-        <TextBlock x:Name="txtMessage" Width="326" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="Are you sure you're awesome?" Height="55" Margin="6,15,5,33" Background="Black" Foreground="#FF21BF9B"/>
+        <TextBlock x:Name="txtMessage" Width="326" FontSize="14" TextWrapping="Wrap" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   TextAlignment="Center" Height="51" Margin="6,15,5,33"
+                   Background="Black" Foreground="#FFBDD1BE">
+            
+            <Run Text="wait"/>         
+             <Run Text="you're awe"/>
+        </TextBlock>
+        
+        
         <ProgressBar x:Uid="ProgressBar_1"
                               x:Name="ProgressBar1"
                               Minimum="0"
                               Maximum="100"
-                              Value="0" Height="18" Foreground="#FF0F19B4" Margin="29,-40,29,0" RenderTransformOrigin="0.498,0.472">
+                              Value="0" Height="20" Foreground="#FF0F19B4" Margin="29,-40,29,0" RenderTransformOrigin="0.498,0.472">
 
 
             <ProgressBar.Background>
@@ -48,6 +57,7 @@
         <StackPanel x:Uid="StackPanel_0"
           Margin="10 10 10 10"
           Orientation="Horizontal"/>
+
 
     </StackPanel>
 </Window>

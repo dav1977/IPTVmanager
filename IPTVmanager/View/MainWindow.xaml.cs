@@ -184,7 +184,7 @@ namespace IPTVman.ViewModel
                 DataContext = new ViewModelWindow2(tb1.Text),
                 Topmost = true,
                 WindowStyle = WindowStyle.ToolWindow,
-                Name = "win2iptvMANAGER"
+                Name = "win2iptvMOVE"
             };
 
             win2.Closing += Win2_Closing;
@@ -203,7 +203,7 @@ namespace IPTVman.ViewModel
 
             foreach (Window win in Application.Current.Windows)
             {
-                if (win.Name == "win2iptvMANAGER3")
+                if (win.Name == "win2iptvMOVEred")
                 {
                     return;
                 }
@@ -214,15 +214,12 @@ namespace IPTVman.ViewModel
                 Title = "ПЕРЕМЕЩЕНИЕ",
                 Topmost = true,
                 //WindowStyle = WindowStyle.ToolWindow,
-                Name = "win2iptvMANAGER3"
+                Name = "win2iptvMOVEred"
             }.Show(); ;
 
 
         }
-        private void Button_ClickRadio(object sender, RoutedEventArgs e)
-        {
-  
-        }
+      
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
@@ -314,7 +311,7 @@ namespace IPTVman.ViewModel
                 DataContext = new ViewModelWindow1(tb1.Text),
                 Topmost = true,
                 //WindowStyle = WindowStyle.ToolWindow,
-                Name = "win1iptvMANAGER"
+                Name = "win2iptvEDIT"
             };
 
             win1.Closing += Win1_Closing;
@@ -339,7 +336,14 @@ namespace IPTVman.ViewModel
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-           SETTING.SaveInXmlFormat();
+            Model.data.Utils.Find_and_Close_Window("update_mdb");
+            Model.data.Utils.Find_and_Close_Window("winPING");
+            Model.data.Utils.Find_and_Close_Window("winReplace");
+            Model.data.Utils.Find_and_Close_Window("win2iptvMOVE");
+            Model.data.Utils.Find_and_Close_Window("win2iptvMOVEred");
+            Model.data.Utils.Find_and_Close_Window("win2iptvEDIT");
+
+            SETTING.SaveInXmlFormat();
         }
 
         Window about;
