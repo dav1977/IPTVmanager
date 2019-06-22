@@ -99,19 +99,46 @@ namespace IPTVman.ViewModel
             try
             {
                 await task1;
-                _ping.iswork = false;
+                if (_ping != null) _ping.iswork = false;
                 if (Task_Completed != null) Task_Completed(result);
-                Wait.Close();
-                task1.Dispose();
-                task1 = null;
+               
             }
             catch (Exception e)
             {
-                _ping.stop();
-                _ping.exit("");
-                dialog.Show("ОШИБКА pingPrepare " + e.Message.ToString());
-                _ping.stop();//без ошибки должна выполниться шататно
+                if (_ping != null)
+                {
+                    _ping.stop();
+                    _ping.exit("");
+                }
+                dialog.Show("ОШИБКА pingPrepare1 " + e.Message.ToString());
+                if (_ping != null)  _ping.stop();//без ошибки должна выполниться шататно
             }
+
+
+            string stat = "";
+
+            try
+            {
+              
+                Wait.Close();
+                if (task1 != null)
+                {
+                    stat = task1.Status.ToString();
+                    //task1.Dispose();
+                    task1 = null;
+                }
+            }
+            catch (Exception e)
+            {
+                if (_ping != null)
+                {
+                    _ping.stop();
+                    _ping.exit("");
+                }
+                dialog.Show("ОШИБКА pingPrepare2  stat="+ stat+"  " + e.Message.ToString());
+                if (_ping != null) _ping.stop();//без ошибки должна выполниться шататно
+            }
+
 
             return "";
         }

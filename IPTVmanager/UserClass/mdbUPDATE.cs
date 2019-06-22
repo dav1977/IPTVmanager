@@ -444,8 +444,8 @@ namespace IPTVman.ViewModel
                 sqlQuery = "SELECT * FROM "+ column;
                 adapterSQL = new SQLiteDataAdapter(sqlQuery, m_dbConn);
                 adapterSQL.Fill(dTable);
-              
-          
+
+            //string log = "";
            
             if (dTable.Rows.Count > 0)
             {
@@ -453,11 +453,14 @@ namespace IPTVman.ViewModel
                 for (int i = 0; i < dTable.Rows.Count; i++)
                 {
                     var d = dTable.Rows[i].ItemArray;
-                    
+
+                    Debug.WriteLine("  find=" + d[1].ToString());
+                    // log += d[1].ToString();
+
                     if (d[1].ToString() == val)
                     {
                         ret = d[0].ToString();
-                        Debug.WriteLine("____" + d[1].ToString() + "  find=" + val);
+                       
                         break;
                     }
                    // Debug.WriteLine(d[1].ToString()+" = "+ d[0].ToString());
@@ -465,6 +468,8 @@ namespace IPTVman.ViewModel
                 }
             }
             m_dbConn.Close();
+
+           // if (ret == "") MessageBox.Show("no data list: "+log);
             return ret;
 
         }

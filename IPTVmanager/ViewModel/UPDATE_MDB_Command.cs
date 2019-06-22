@@ -45,7 +45,7 @@ namespace IPTVman.ViewModel
         {
             if (loc.updateMDB) return;
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Symple v2|TvData.mdb| Symple v3|playlist.db";
+                openFileDialog.Filter = "Symple db v2 v3|TvData.mdb;playlist.db";
 
                 if (openFileDialog.ShowDialog() == true)
                 {
