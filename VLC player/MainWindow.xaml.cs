@@ -23,23 +23,24 @@ namespace IPTVman.ViewModel
     /// </summary>
     public partial class Player : Window
     {
-        //Application.StartupPath
         public static Window header;
         IMediaPlayerFactory m_factory;
         IVideoPlayer m_player;
         IMedia m_media;
-        System.Windows.Forms.Panel p;
+        Panel p;
         public static int timer_off = 0;
         int timer_ct = 0;
         int ct_update_tags = 0;
-        //string media_info = "";
         string play_link;
         Task taskPLAY, taskBASS;
+        DispatcherTimer timerDOWNLOAD = new DispatcherTimer();
+
 
         public Player()
         {
             header = this;
             InitializeComponent();
+
             if (!data.mode_scan)
             {
                 this.Activate();
@@ -69,12 +70,12 @@ namespace IPTVman.ViewModel
             if (data.mode_radio) data.title = data.name;
 
             //data.mode_scan = true;
-            //scan();
-            //return;
+            ////scan();
+            ////return;
 
-            //data.url = "http://newairhost.com:8034/listen.ram";
-            //data.name = "test";
-            //data.mode_radio = true;
+            data.url = @"https://air2.radiorecord.ru:9003/chil_320";// http://air.radiorecord.ru:8102/mdl_320";
+            data.name = "test";
+            data.mode_radio = true;
 
             if (data.mode_radio)
             {
@@ -88,6 +89,13 @@ namespace IPTVman.ViewModel
                 {
                     l2.Content = "";
                 }));
+
+
+                timerDOWNLOAD.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                timerDOWNLOAD.Tick += timerDLD_Tick;
+                //timerDOWNLOAD.Start();
+
+
             }
             else
             {
@@ -166,7 +174,6 @@ namespace IPTVman.ViewModel
         bool loc = false;
         bool mode_init_bass = false;
 
-        Task task1;
         public static CancellationTokenSource cts1 = new CancellationTokenSource();
         public static CancellationToken cancellationToken;
         bool loktimer = false;
@@ -174,13 +181,21 @@ namespace IPTVman.ViewModel
         string lastPRINT = "";
         bool CLOSE_PROGRAMM = false;
 
-        private async void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e)
         {
+
             if (CLOSE_PROGRAMM)
             {
                 Thread.Sleep(1000);
                 this.Close();
             }
+         
+            if (data.startTMRmanag && !timerDOWNLOAD.IsEnabled) 
+                timerDOWNLOAD.Start();
+            if (!data.startTMRmanag && timerDOWNLOAD.IsEnabled) 
+                timerDOWNLOAD.Stop();
+
+
             if (loktimer) return;
               if (data.mode_scan)
               {
@@ -218,35 +233,32 @@ namespace IPTVman.ViewModel
                 if (mode_init_bass)
                 {
                     if (data.mode_radio) this.Title = data.title;
-                    //this.Title = data.name + " " + data.url;
-
                 }
                 else
                 {
                     ct_update_tags++;
                     if (ct_update_tags > 30)
                     {
-                        ct_update_tags = 0;
-                        //taskTAG = Task.Factory.StartNew(() =>
-                        //{
-                        string bitr = "?";
-                        string s1 = data._bass.get_tags(data.url, ref bitr);
-                        string s2 = "";
+                    //ct_update_tags = 0;
 
-                        if (bitr == "?" || bitr == "0") s2 = data.name;
-                        else s2 = data.name + "   [" + bitr + " кбит/с ]";
+                    //string bitr = "?";
+                    //string s1 = data._bass.get_tags(data.url, ref bitr);
+                    //string s2 = "";
 
-                        l1.Dispatcher.Invoke(new Action(() =>
-                        {
-                            l1.Content = s2;
-                        }));
+                    //if (bitr == "?" || bitr == "0") s2 = data.name;
+                    //else s2 = data.name + "   [" + bitr + " кбит/с ]";
 
-                        l2.Dispatcher.Invoke(new Action(() =>
-                        {
-                            l2.Content = s1;
-                        }));
-                        //}
-                    }
+                    l1.Dispatcher.Invoke(new Action(() =>
+                    {
+                        l1.Content = data._bass.TitleAndArtist;
+                    }));
+
+                    //l2.Dispatcher.Invoke(new Action(() =>
+                    //{
+                    //    l2.Content = data._bass.Status;
+                    //}));
+
+                }
                 }
 
                 if (timer_off != 0)
@@ -272,27 +284,27 @@ namespace IPTVman.ViewModel
                     {
                         if (!WinPOP.init_ok)
                         {
-                            taskBASS = Task.Factory.StartNew(() =>
-                            {
-                                mode_init_bass = true;
-                                data._bass = new AudioBass();
-                                data._bass.init();
-                                data._bass.create_stream(data.url, data.mode_radio, this);
-                                mode_init_bass = false;
-
-                                data._bass.SET_All_Param_VST();
-
-                                if (data.mode_radio)
+                                taskBASS = Task.Factory.StartNew(() =>
                                 {
-                                    data._bass.playStream();
-                                }
+                                    mode_init_bass = true;
+                                    data._bass = new AudioBass();
+                                    data._bass.init();
 
-                            });
+
+                                    data._bass.create_stream(data.url, data.mode_radio, this);
+                                    mode_init_bass = false;
+
+                                    data._bass.updPlay();
+
+                                  
+
+                                });
                         }
-
                     }
                     catch (Exception ex)
-                   { System.Windows.MessageBox.Show("Ошибка библиотеки bass " + ex.ToString()); }
+                    { 
+                        System.Windows.MessageBox.Show("Ошибка библиотеки bass " + ex.ToString());
+                    }
 
                 }
 
@@ -335,8 +347,20 @@ namespace IPTVman.ViewModel
             loc = false;
         }
 
+        
+        private void timerDLD_Tick(object sender, EventArgs e)
+        {
 
-        void Events_PlayerStopped(object sender, EventArgs e)
+            if (data._bass != null) data._bass.TickBASSmanage();
+            l2.Dispatcher.Invoke(new Action(() =>
+            {
+                l2.Content = data._bass.Status;
+            }));
+        }
+
+
+
+            void Events_PlayerStopped(object sender, EventArgs e)
         {
             //this.Dispatcher.BeginInvoke(new Action(delegate
             //{

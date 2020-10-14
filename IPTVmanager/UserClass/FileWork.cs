@@ -287,7 +287,7 @@ namespace IPTVman.ViewModel
         }
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            Debug.WriteLine("start download COMPLETED!!");
+            Debug.WriteLine("start download COMPLETED!!  size="+ temppath.Length.ToString());
             //копия
             add_file_to_memory(temppath);
             wait_download = false;
@@ -413,6 +413,7 @@ namespace IPTVman.ViewModel
                 }
                 catch (Exception ex) { MessageBox.Show("ошибка сканирования " + ex.Message.ToString()); goto exit_open; }
                 Debug.WriteLine("size="+ all_str);
+             
                 Wait.set_ProgressBar(all_str);
                 //=========================================================
                 //ПОИСК каналов

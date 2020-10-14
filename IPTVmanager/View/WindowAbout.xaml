@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IPTVman.ViewModel"
         mc:Ignorable="d"
-        Background="Black" Width="500" Height="400" BorderThickness="0.0" 
+        Background="Black" Width="536.735" Height="452.041" BorderThickness="0.0" 
         WindowStartupLocation="CenterScreen" Cursor="Arrow" MouseDoubleClick="Window_MouseDoubleClick" ShowInTaskbar="False"
     >
 
@@ -14,9 +14,7 @@
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Background="#01000000" Grid.ColumnSpan="2">
-            <Image Visibility="Visible" x:Name="logo" Source="logo_cobra.png" Height="93" Margin="221,64,44,0" RenderTransformOrigin="0.533,-3.625"/>
-        </StackPanel>
+
         <Viewport3D Name="World" Grid.ColumnSpan="2">
             <Viewport3D.Camera>
                 <OrthographicCamera Position="0,0,32" LookDirection="0,0,-32" UpDirection="0,1,0" Width="128" />
@@ -35,8 +33,19 @@
 
 
         <StackPanel Background="#01000000" Grid.ColumnSpan="2">
-            <Label Visibility="Visible" Name="F1" DockPanel.Dock="Top" Content="**********" FontSize="36" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.775,3.308" FontFamily="Freestyle Script" Margin="88,0,70,0" Width="334" Foreground="#FFD6BEE6" Height="51"/>
-            <Label Visibility="Visible" x:Name="F2" Foreground="#FFF0FDFF" Content="**********" FontSize="20" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontFamily="Bookman Old Style" Height="299" Margin="30,0,23,0" Width="439" MouseDoubleClick="F2_MouseDoubleClick"/>
+            <Label Visibility="Visible" Name="F1" DockPanel.Dock="Top" Content="" FontSize="11" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.775,3.308" FontFamily="Arial Black" Margin="88,0,70,0" Width="334" Foreground="#FFD6BEE6" Height="51"/>
+            <Label Visibility="Visible" x:Name="F2" Foreground="#FFF0FDFF" Content="" FontSize="20" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontFamily="Bookman Old Style" Height="230" Margin="48,0,41,0" Width="440" MouseDoubleClick="F2_MouseDoubleClick"/>
+            <Image Visibility="Visible" x:Name="logo" Source="logo_cobra.png" Height="50" Margin="300,64,38,0" RenderTransformOrigin="0.533,-3.625">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-0.237"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
         </StackPanel>
+
     </Grid>
 </Window>

@@ -96,8 +96,8 @@ namespace IPTVman.ViewModel
                 frameCount = 0;
                 // this.FrameRateLabel.Content = "FPS: " + frameRate.ToString() + "  Particles: " + pm.ActiveParticleCount.ToString();
 
-                this.F1.Content = "IPTVmanager by COBRA";
-                this.F2.Content = "Press any key to open links";
+                this.F1.Content = "IPTVmanager by github.com/dav1977";
+                this.F2.Content = "yandex money 410015510109786";
 
             }
 

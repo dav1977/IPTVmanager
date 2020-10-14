@@ -33,12 +33,12 @@ namespace IPTVman.ViewModel
 
             if (!WinPOP.init_ok) this.Close();
             string def= "0";
-            for (byte i = 0; i < 10; i++)
+            for (byte i = 1; i < 10; i++)
             {
                 string name = data._bass.getNameDevice(i);
                 if (name == "") break;
                 _devices.Add(name);
-                if (i == 1) def = name;
+                if (i == 2) def = name;
             }
 
             comboBox.SelectedItem = def;
