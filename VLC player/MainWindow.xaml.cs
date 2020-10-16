@@ -69,13 +69,23 @@ namespace IPTVman.ViewModel
             }
             if (data.mode_radio) data.title = data.name;
 
-            //data.mode_scan = true;
-            ////scan();
-            ////return;
 
-            data.url = @"https://air2.radiorecord.ru:9003/chil_320";// http://air.radiorecord.ru:8102/mdl_320";
-            data.name = "test";
-            data.mode_radio = true;
+
+
+
+
+            //**************************** ТЕСТЫ
+            // 1  указать ссылки на lib
+            // 2  после build  скопировать bass.dll  bass_vst.dll  bass_vts.lib
+            //
+
+            //data.mode_scan = true;
+            //scan();
+            //return;
+
+            //data.url = @"https://air2.radiorecord.ru:9003/chil_320";// http://air.radiorecord.ru:8102/mdl_320";
+            //data.name = "test";
+            //data.mode_radio = true;
 
             if (data.mode_radio)
             {
