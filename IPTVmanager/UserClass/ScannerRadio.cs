@@ -85,7 +85,7 @@ namespace IPTVman.ViewModel
             try { await tasksc; }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  getPLAYING " + ex.Message.ToString());
+                System.Windows.MessageBox.Show("ОШИБКА  ScannerRadio  getPLAYING " + ex.Message);
             }
             return;
         }

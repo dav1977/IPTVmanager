@@ -24,9 +24,12 @@ namespace IPTVman.ViewModel
         {
             header = this;
             InitializeComponent();
-            this.Title = "IPTV manager v1.0";
+            this.Title = "IPTV manager v1.1";
 
-            SETTING.ReadFromXML();
+            ser_data dt = SETTING.ReadFromXML();
+            dt.Update_new_data();
+
+            data.temppath = System.IO.Path.GetTempPath() + "temp_m3u_IPTVmanager";
 
             ViewModelMain.Event_UpdateLIST += new Action<int>(updateLIST);
             ViewModelMain.EVENT_CLOSE_ALL += new Action(CLOSE_ALL);
@@ -343,7 +346,9 @@ namespace IPTVman.ViewModel
             Model.data.Utils.Find_and_Close_Window("win2iptvMOVEred");
             Model.data.Utils.Find_and_Close_Window("win2iptvEDIT");
 
-            SETTING.SaveInXmlFormat();
+            ser_data dt = new ser_data();
+            dt.Prepare_to_save();
+            SETTING.SaveInXmlFormat(dt);
         }
 
         Window about;

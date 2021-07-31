@@ -294,7 +294,7 @@ namespace IPTVman.ViewModel
                     }
                     catch(Exception ex)
                     {
-                        Trace.WriteLine($"my crash {ex.Message.ToString()} size={_pages.Count} i={index} ps={PageSize} ");
+                        Trace.WriteLine($"my crash {ex.Message} size={_pages.Count} i={index} ps={PageSize} ");
                         LoadPage(pageIndex);
                     }
                     finally { ok = true; }

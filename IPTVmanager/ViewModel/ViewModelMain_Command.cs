@@ -183,7 +183,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА SetBest " + e.Message.ToString());
+                dialog.Show("ОШИБКА SetBest " + e.Message);
             }
         }
 
@@ -473,7 +473,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА find_dublicate " + e.Message.ToString());
+                dialog.Show("ОШИБКА find_dublicate " + e.Message);
                 exit();
             }
 
@@ -513,7 +513,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                dialog.Show("Ошибка удаления \n" + ex.Message.ToString());
+                dialog.Show("Ошибка удаления \n" + ex.Message);
             }
 
             Update_collection(typefilter.last);
@@ -569,13 +569,15 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                dialog.Show("ОШИБКА clipboard " + ex.Message.ToString());
+                dialog.Show("ОШИБКА clipboard " + ex.Message);
             }
 
             if (str == null) return;
-            if (_file==null) _file = new FileWork();
-            _file.OPEN_FROM_CLIPBOARD(ViewModelMain.myLISTfull, str);
 
+
+            var cb = new Parse(Parse.mode.not_command," OPclipboa");
+            cb.OPEN_FROM_CLIPBOARD(ViewModelMain.myLISTfull, str);
+           
         }
 
 
@@ -601,11 +603,11 @@ namespace IPTVman.ViewModel
             loc.openfile = true;
             CollectionisCreate();
 
-            ModeWork.ResetMODEApplication();
+            Script.ResetMODEApplication();
             _file = new FileWork();
             _file.LOAD("", ViewModelMain.myLISTfull, text_title, chek_upd, chek__hoop);
 
-            text_title = _file.text_title;
+            text_title = Parse.text_title;
             loc.openfile = false;
         }
 
@@ -614,29 +616,28 @@ namespace IPTVman.ViewModel
         { 
             CollectionisCreate();
             
-            ModeWork.flag_add = true;
+            Script.flag_add = true;
 
             if (_file==null) _file = new FileWork();
 
             _file.Event_DownloadLinkCompleted += EVENT_OPENfinalize;
-            Trace.WriteLine("podpiska =" + path);
 
-            string fullpath = _file.ANALIZ_LINE(path, out bool type);
+
+            bool mode = Parse.mode.with_command;
+            if (Script.working) mode = Parse.mode.not_command;
+            var p = new Parse(mode, "OPevent");
+            string fullpath = p.ANALIZ_LINE(path, out bool type);
 
             if (type) EVENT_OPENfinalize(fullpath);
-
 
         }
 
         public void EVENT_OPENfinalize(string path)
         {
-            Trace.WriteLine("EVENTOPENfinalize =" + path);
             if (_file == null) _file = new FileWork();
             _file.LOAD(path, ViewModelMain.myLISTfull, text_title, chek_upd, chek__hoop);
-            text_title = _file.text_title;
+            text_title = Parse.text_title;
 
-            //ModeWork.en_skip_message_skiplinks = false; 
-            ModeWork.process_script = false;  
         }
 
     }//class

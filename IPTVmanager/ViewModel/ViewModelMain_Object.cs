@@ -50,7 +50,7 @@ namespace IPTVman.ViewModel
             set
             {
                 if (chek_upd) chek_upd = false;  else chek_upd = true;
-                Model.ModeWork.enable_update = chek_upd;
+                Model.Script.enable_update = chek_upd;
                 RaisePropertyChanged("CH1m");
             }
         }

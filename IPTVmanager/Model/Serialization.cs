@@ -59,10 +59,9 @@ namespace IPTVman.Model
     public static class SETTING 
     {   
         static string path = AppDomain.CurrentDomain.BaseDirectory + "//settings.xml";
-        public static void SaveInXmlFormat()
-        {
-            ser_data dt = new ser_data();
-            dt.Prepare_to_save();
+        
+        public static void SaveInXmlFormat(ser_data dt)
+        {         
             XmlSerializer formatter = new XmlSerializer(typeof(ser_data));
 
             using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -72,7 +71,7 @@ namespace IPTVman.Model
 
         }
 
-        public static void ReadFromXML()
+        public static ser_data ReadFromXML()
         {
             ser_data dt = new ser_data();
             XmlSerializer formatter = new XmlSerializer(typeof(ser_data));
@@ -80,14 +79,19 @@ namespace IPTVman.Model
             try
             {
                 FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
-                if (fs == null) return;
-                if (fs.Length == 0) return;
+                if (fs == null || fs.Length == 0) 
+                {
+                    //файл еще не создан
+                    dt.Prepare_to_save();
+                    SaveInXmlFormat(dt);
+                    return dt;
+                }
                 // десериализация
                 using (fs)
                 {
                     dt = (ser_data)formatter.Deserialize(fs);
                 }
-                dt.Update_new_data();
+                //dt.Update_new_data();
             }
             catch (Exception Ситуация)
             {
@@ -95,6 +99,7 @@ namespace IPTVman.Model
                 MessageBox.Show(Ситуация.Message, "Ошибка в файле настроек ",
                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+            return dt;
         }
 
         public static bool SaveToBin()

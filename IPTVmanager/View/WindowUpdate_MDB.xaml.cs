@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IPTVman.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -116,7 +117,10 @@ namespace IPTVman.ViewModel
             Model.bd_data.filter1 = ViewModelWindowMDB.sel1;
             Model.bd_data.filter2 = ViewModelWindowMDB.sel2;
             Model.bd_data.mask = ViewModelWindowMDB._mask;
-            Model.SETTING.SaveInXmlFormat();
+
+            ser_data dt = new ser_data();
+            dt.Prepare_to_save();
+            Model.SETTING.SaveInXmlFormat(dt);
         }
     }
 }

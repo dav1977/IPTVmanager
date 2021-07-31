@@ -10,7 +10,7 @@
         <local:ImageViewModel />
     </Window.DataContext>
 
-   
+
 
 
 
@@ -28,6 +28,7 @@
                 <GradientStop Color="Black" Offset="0"/>
                 <GradientStop Color="#FF00003E" Offset="1"/>
             </LinearGradientBrush>
+
         </Grid.Background>
 
         <Button Height="14" Name="bMUTE" Width="92" Click="button5_Click" FontSize="8" Foreground="#FFABB82A" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="12,0,0,0" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Grid.Column="3">
@@ -59,7 +60,7 @@
         </Slider>
         <Label Name="l1" Content="Label" HorizontalAlignment="Center" Margin="9,31,8,0" VerticalAlignment="Top" Grid.Column="3" HorizontalContentAlignment="Center" FontFamily="Century" FontSize="20" FontWeight="Bold" Foreground="#FF1CE8CC" Height="Auto" RenderTransformOrigin="-0.226,0.958" Width="622"/>
         <Label Name="l2" Content="Label" HorizontalAlignment="Center" Margin="11,92,10,0" VerticalAlignment="Top" Grid.Column="3" HorizontalContentAlignment="Center" FontFamily="Century" FontStyle="Italic" FontSize="22" Foreground="#FFC146C1" Height="Auto" Width="618"/>
-      
+
         <Button
             x:Name="bnSETTING" Grid.Column="3" HorizontalAlignment="Right" Margin="0,1,2,0" VerticalAlignment="Top" Width="25" Height="25" RenderTransformOrigin="0.5,0.5" Click="bnSETTING_Click">
             <Button.Background>
@@ -76,7 +77,7 @@
             </Button.RenderTransform>
         </Button>
 
-    </Grid>
-
+      
+        </Grid>
 
 </Window>

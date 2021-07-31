@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace IPTVman.Model
 {
 
-        public class ParamCanal : ICloneable , INotifyPropertyChanged //, IComparable<ParamCanal>
+    public class ParamCanal : ICloneable , INotifyPropertyChanged //, IComparable<ParamCanal>
     {
 
         /// <summary>

@@ -52,7 +52,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА замены " + e.Message.ToString());
+                dialog.Show("ОШИБКА замены " + e.Message);
             }
             
         }
@@ -105,7 +105,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА замены " + e.Message.ToString());
+                dialog.Show("ОШИБКА замены " + e.Message);
             }          
             return "";
         }

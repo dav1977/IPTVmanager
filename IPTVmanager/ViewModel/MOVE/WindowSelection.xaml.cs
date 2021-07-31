@@ -200,7 +200,7 @@ namespace ListViewDragDropManager
         {
             if (Wait.IsOpen) return;
             if (LongtaskPingCANCELING.isENABLE()) return;
-            if (IPTVman.Model.loc.openfile) return;
+            if (loc.openfile) return;
             loc.openfile = true;
             if (ViewModelMain.myLISTselect == null)
                 ViewModelMain.myLISTselect = new List<ParamCanal>();
@@ -213,7 +213,7 @@ namespace ListViewDragDropManager
         private void _file_Task_Completed()
         {
             BACK();
-            title = _file.text_title;
+            title = Parse.text_title;
             _file = null;
             loc.openfile = false;
         }
@@ -230,8 +230,8 @@ namespace ListViewDragDropManager
             int size = listView2.Items.Count;
             for (int i = 0; i < size; i++)
             {
-                ListViewDragDropManager.Task p = (ListViewDragDropManager.Task)listView2.Items[i];
-                IPTVman.Model.ParamCanal canal = new IPTVman.Model.ParamCanal
+                Task p = (Task)listView2.Items[i];
+                ParamCanal canal = new IPTVman.Model.ParamCanal
                 {
                     name = p.Name,
                     ExtFilter = "",
@@ -258,7 +258,6 @@ namespace ListViewDragDropManager
               
                 listView2.Dispatcher.Invoke(new Action(() =>
                 {
-                    
                     listView2.Items.Refresh();
                 }));
         }
@@ -281,8 +280,8 @@ namespace ListViewDragDropManager
           
             CONVERT();
 
-            IPTVman.Model.data.mode_radio_from_select = true;
-            new ListViewDragDropManager.WindowRadio
+            data.mode_radio_from_select = true;
+            new WindowRadio
             {
                 //DataContext = new ViewModelWindow2(tb1.Text),
                 Title = "Интернет РАДИО",

@@ -2,21 +2,11 @@
 using System;
 using System.Data;
 using System.Windows;
-using System.Linq;
 using System.Data.OleDb;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Threading;
-using System.Windows.Data;
 using System.Threading;
-using IPTVman.Helpers;
 using IPTVman.Model;
-using System.Net;
-using System.IO;
-using System.Net.Sockets;
-using System.Net.NetworkInformation;
 using System.Diagnostics;
 using System.Data.SQLite;
 
@@ -79,7 +69,7 @@ namespace IPTVman.ViewModel
                   
                 }
             }
-            catch (Exception ex) { error = ex.Message.ToString(); }
+            catch (Exception ex) { error = ex.Message; }
         }
 
         public bool is_connect()
@@ -229,7 +219,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                dialog.Show(ex.Message.ToString());
+                dialog.Show(ex.Message);
             }
 
             return kol;
@@ -386,7 +376,7 @@ namespace IPTVman.ViewModel
             try { await task1; }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА БД " + e.Message.ToString());
+                dialog.Show("ОШИБКА БД " + e.Message);
             }
             task1.Dispose();
             task1 = null;
@@ -406,7 +396,7 @@ namespace IPTVman.ViewModel
             {
                 adapter.Fill(data_set, column);
             }
-            catch (Exception ex) { dialog.Show("ошибка id " + ex.Message.ToString()); return ""; }
+            catch (Exception ex) { dialog.Show("ошибка id " + ex.Message); return ""; }
 
             DataTable dt = data_set.Tables[0];//выбираем первую таблицу
 

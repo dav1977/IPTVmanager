@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Xml.Serialization;
+
 
 namespace IPTVman.ViewModel
 {
@@ -43,13 +42,20 @@ namespace IPTVman.ViewModel
 
         public static void ReadFromXML(string path)
         {
+            FileStream fs = null;
             try
             {
                 ser_data dt = new ser_data();
                 XmlSerializer formatter = new XmlSerializer(typeof(ser_data));
-                FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
-                if (fs == null) return;
-                if (fs.Length == 0) return;
+                fs = new FileStream(path, FileMode.OpenOrCreate);
+                if (fs.Length == 0 || fs == null)
+                {
+                    //файл настроек VST еще  не создан
+                    if (fs != null) fs.Dispose();
+                    SAVEtoXML(path);
+                   return;
+                }
+
                 // десериализация
                 using (fs)
                 {
@@ -58,7 +64,8 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.Message, "Ошибка в файле настроек ");
+                System.Windows.Forms.MessageBox.Show(ex.Message, 
+                    "Ошибка в файле настроек ");
             }
         }
 

@@ -292,7 +292,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА Применения " + e.Message.ToString());
+                dialog.Show("ОШИБКА Применения " + e.Message);
             }          
             return "";
         }

@@ -349,7 +349,7 @@ namespace ListViewDragDropManager
             try { await task1; }
             catch (Exception ex)
             {
-               IPTVman.ViewModel.dialog.Show("ОШИБКА-СКАНЕРА " + ex.Message.ToString());
+               IPTVman.ViewModel.dialog.Show("ОШИБКА-СКАНЕРА " + ex.Message);
                waiting_result = false;
             }         
         }

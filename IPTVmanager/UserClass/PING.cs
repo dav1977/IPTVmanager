@@ -106,7 +106,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex)
             {
-                ip0 = "error "+data.NOT_URL+".  " + ex.Message.ToString();// Console.WriteLine(ex.ToString());
+                ip0 = "error "+data.NOT_URL+".  " + ex.Message;
             }
 
             return ip0;
@@ -214,7 +214,7 @@ namespace IPTVman.ViewModel
             catch (WebException ex)
             {        
                 string rez = "";
-                string error = ex.Message.ToString();
+                string error = ex.Message;
                 var regex1 = new Regex("(500)");//ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА
 
                 var r = regex1.Match(error);
@@ -232,15 +232,13 @@ namespace IPTVman.ViewModel
                     if (r.Success)
                     {
                     }
-                     else   rez = data.NOT_URL+". WebException " + ex.Message.ToString() + " ";
+                     else   rez = data.NOT_URL+". WebException " + ex.Message + " ";
                 }
                 return (exit(ip + rez));
             }
 
             catch (Exception ex)
             {
-                //MessageBox.Show(data.NOT_URL+" "+ ex.Message.ToString(), "",    
-                //                    MessageBoxButton.OK);
                 return (exit(" не определено ExceptionWebClient " + ex.Message));
             }    
         }

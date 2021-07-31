@@ -9,7 +9,7 @@
     WindowStartupLocation="CenterOwner"
     ShowInTaskbar="false"
     Title=""
-    ResizeMode="NoResize" Height="127.5" Width="342" Closing="Window_Closing">
+    ResizeMode="NoResize" Height="144.949" Width="342" Closing="Window_Closing">
 
 
     <StackPanel x:Uid="StackPanel_1" Margin="0,0,-1,0" >
@@ -23,14 +23,12 @@
 
         <TextBlock x:Name="txtMessage" Width="326" FontSize="14" TextWrapping="Wrap" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   TextAlignment="Center" Height="51" Margin="6,15,5,33"
+                   TextAlignment="Center" Height="66" Margin="6,15,5,33"
                    Background="Black" Foreground="#FFBDD1BE">
             
             <Run Text="wait"/>         
              <Run Text="you're awe"/>
         </TextBlock>
-        
-        
         <ProgressBar x:Uid="ProgressBar_1"
                               x:Name="ProgressBar1"
                               Minimum="0"

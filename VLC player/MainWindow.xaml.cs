@@ -15,6 +15,7 @@ using Implementation;
 using System.Threading.Tasks;
 using System.IO.MemoryMappedFiles;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace IPTVman.ViewModel
 {
@@ -34,7 +35,7 @@ namespace IPTVman.ViewModel
         string play_link;
         Task taskPLAY, taskBASS;
         DispatcherTimer timerDOWNLOAD = new DispatcherTimer();
-
+        
 
         public Player()
         {
@@ -46,6 +47,7 @@ namespace IPTVman.ViewModel
                 this.Activate();
                 this.Focus();
                 datafile.ReadFromXML(data.DefaultPath);
+                this.Title = data.name;
             }
             else
             {
@@ -81,7 +83,7 @@ namespace IPTVman.ViewModel
 
             //data.mode_scan = true;
             //scan();
-            //return;
+           // return;
 
             //data.url = @"https://air2.radiorecord.ru:9003/chil_320";// http://air.radiorecord.ru:8102/mdl_320";
             //data.name = "test";
@@ -360,6 +362,16 @@ namespace IPTVman.ViewModel
         
         private void timerDLD_Tick(object sender, EventArgs e)
         {
+            if (AudioBass._chan == 0)
+            {
+                //if (header != null) dialog.Show("Поток не поддерживается ", header);
+                l2.Dispatcher.Invoke(new Action(() =>
+                {
+                    l2.Content = "Поток не поддерживается ";
+                }));
+                return;
+            }
+               
 
             if (data._bass != null) data._bass.TickBASSmanage();
             l2.Dispatcher.Invoke(new Action(() =>
@@ -481,7 +493,7 @@ namespace IPTVman.ViewModel
 
         private void Window_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-           
+            
         }
 
         private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

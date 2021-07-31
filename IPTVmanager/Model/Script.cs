@@ -10,13 +10,13 @@ namespace IPTVman.Model
     /// <summary>
     /// Режим работы приложения
     /// </summary>
-    public static class ModeWork
+    public static class Script
     {
     
         /// <summary>
         ///  ИДЕТ ПРОЦЕСС скрипта (длительная операция)
         /// </summary>
-        public static bool process_script = false;
+        public static bool working = false;
 
         /// <summary>
         /// не выводить сообщения о пропущеных ссылках
@@ -45,8 +45,6 @@ namespace IPTVman.Model
         //---------------------------------------------
         public static bool OpenWindow_db_update = false;
         public static bool OpenWindow_radio = false;
-        public static bool OpenWindow_db_updateREADY = false;
-        public static bool OpenWindow_radioREADY = false;
 
         public static bool CLOSE_ALL = false;
 

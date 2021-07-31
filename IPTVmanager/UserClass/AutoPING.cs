@@ -108,7 +108,7 @@ namespace IPTVman.ViewModel
             }
             catch (Exception e)
             {
-                dialog.Show("ОШИБКА-АВТОПИНГ " + e.Message.ToString());
+                dialog.Show("ОШИБКА-АВТОПИНГ " + e.Message);
                 Dispose();
             }
             return result;
@@ -137,7 +137,11 @@ namespace IPTVman.ViewModel
                //Trace.WriteLine(data.ct_ping.ToString() + " ping " + i.name.ToString());
 
                 if (i.http == null || i.http == "") continue;
-               
+                Regex regex0 = new Regex("------");
+                var match0 = regex0.Match(i.name);
+                if (match0.Success) continue;
+
+
                 _ping.done = false;
                 _pingPREPARE.Task_Completed += _pingPREPARE_Task_Completed;
                 result_task = "";
@@ -147,14 +151,17 @@ namespace IPTVman.ViewModel
                 Regex regex3 = new Regex("udp:");
                 Regex regex4 = new Regex("rtmp:");
                 Regex regex5 = new Regex("mms:");
+                
 
                 var match1 = regex1.Match(i.http);
                 var match2 = regex2.Match(i.http);
                 var match3 = regex3.Match(i.http);
                 var match4 = regex4.Match(i.http);
                 var match5 = regex5.Match(i.http);
+               
 
-                if (match1.Success || match2.Success || match3.Success || match4.Success || match5.Success)
+                if (match1.Success || match2.Success || match3.Success
+                    || match4.Success || match5.Success )
                 {
                     int ct = 0;
                     _pingPREPARE.asyncGET(i.http);

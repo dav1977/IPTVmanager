@@ -100,7 +100,7 @@ namespace IPTVman.ViewModel
             Update_Collection.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ListViewDragDropManager.WindowMOVE.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
             ViewModelWindowReplace.Event_UpdateCollection += new Delegate_UpdateCollection(updateLIST);
-            FileWork.Event_UpdateLIST += new Action<typefilter>(Update_collection);
+            Parse.Event_UpdateLIST += new Action<typefilter>(Update_collection);
             scripts.Event_Update_GUI += Scripts_Event_Update_GUI;
 
             ini_command();
@@ -134,41 +134,48 @@ namespace IPTVman.ViewModel
                 data.arguments_start = false;
             }
 
-            if (ModeWork.OpenWindow_db_update && ModeWork.OpenWindow_db_updateREADY)
+            Task_work();
+            loc.timer_tmr = false;
+        }
+
+        void Task_work()
+        {
+
+            if (Script.OpenWindow_db_update)
             {
                 if (EVENT_OPENWIN_UpdateDB != null) EVENT_OPENWIN_UpdateDB();
-                ModeWork.OpenWindow_db_update = false;
+                Script.OpenWindow_db_update = false;
+                loc.MODE_RELEASE_SCRIPT = false;
             }
 
-            if (ModeWork.CLOSE_ALL)
+            if (Script.CLOSE_ALL)
             {
-                if (ModeWork.CLOSE_ALL) if (EVENT_CLOSE_ALL != null)
+                    if (Script.CLOSE_ALL) if (EVENT_CLOSE_ALL != null)
                     {
-                        ModeWork.CLOSE_ALL = false;
                         EVENT_CLOSE_ALL();
+                        Script.CLOSE_ALL = false;                        
                     }
             }
 
-            if (ModeWork.OpenWindow_radio && ModeWork.OpenWindow_radioREADY)
+            if (Script.OpenWindow_radio)
             {
-                ModeWork.OpenWindow_radio = false;
-                ModeWork.process_script = true;
                 if (EVENT_OPENWIN_Radio != null) EVENT_OPENWIN_Radio();
-                ModeWork.process_script = false;
+
+                Script.OpenWindow_radio = false;
+                loc.MODE_RELEASE_SCRIPT = false;
             }
 
-            if (ModeWork.add )
+            if (Script.add)
             {
                 if (EVENT_ADD != null)
                 {
-                    ModeWork.add = false;
-                    EVENT_ADD( IPTVman.Model.ModeWork.addpath);
+                    EVENT_ADD(Script.addpath);
+                    Script.add = false;
                 }
-            }
 
-            loc.timer_tmr = false;
+            }
         }
-      
+
         private void Create_Virtual_Collection()
             {
             int numItems=1000000;

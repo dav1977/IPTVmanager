@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IPTVman</RootNamespace>
     <AssemblyName>IPTVmanager</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -102,7 +102,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\System.Data.SQLite\2013\bin\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\lib\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
@@ -132,13 +132,14 @@
     <Compile Include="Helpers\DialogCloser.cs" />
     <Compile Include="Helpers\IClosableViewModel.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Model\ModeWork.cs" />
+    <Compile Include="Model\Script.cs" />
     <Compile Include="Model\Serialization.cs" />
     <Compile Include="UserClass\AutoPING.cs" />
     <Compile Include="Model\data.cs" />
     <Compile Include="Model\ParamCanal.cs" />
     <Compile Include="UserClass\FileWork.cs" />
     <Compile Include="UserClass\MemoryFile.cs" />
+    <Compile Include="UserClass\Parse.cs" />
     <Compile Include="UserClass\Registy_Find.cs" />
     <Compile Include="UserClass\mdbUPDATE.cs" />
     <Compile Include="UserClass\ScannerRadio.cs" />

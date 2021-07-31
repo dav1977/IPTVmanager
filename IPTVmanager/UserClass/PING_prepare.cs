@@ -110,7 +110,7 @@ namespace IPTVman.ViewModel
                     _ping.stop();
                     _ping.exit("");
                 }
-                dialog.Show("ОШИБКА pingPrepare1 " + e.Message.ToString());
+                dialog.Show("ОШИБКА pingPrepare1 " + e.Message);
                 if (_ping != null)  _ping.stop();//без ошибки должна выполниться шататно
             }
 
@@ -135,7 +135,7 @@ namespace IPTVman.ViewModel
                     _ping.stop();
                     _ping.exit("");
                 }
-                dialog.Show("ОШИБКА pingPrepare2  stat="+ stat+"  " + e.Message.ToString());
+                dialog.Show("ОШИБКА pingPrepare2  stat="+ stat+"  " + e.Message);
                 if (_ping != null) _ping.stop();//без ошибки должна выполниться шататно
             }
 

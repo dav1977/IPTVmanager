@@ -145,7 +145,7 @@ namespace IPTVman.ViewModel
 
         static readonly object Lock = new object();
         int _req=0; // request number/counter
-        int _chan=0; // stream handle
+        public static int _chan =0; // stream handle
         bool _directConnect;
 
         public bool DirectConnection
@@ -339,9 +339,9 @@ namespace IPTVman.ViewModel
                     r = ++_req; // increment the request counter for this request
 
                 data.startTMRmanag = false;// _timer.Stop(); // stop prebuffer monitoring
+
                 Thread.Sleep(100);
-
-
+       
                 Bass.StreamFree(_chan); // close old stream
 
                 if (currentdevice!=-1) Bass.CurrentDevice = currentdevice;
@@ -352,6 +352,8 @@ namespace IPTVman.ViewModel
                 var c = Bass.CreateStream(Url, 0,
                     BassFlags.StreamDownloadBlocks | BassFlags.StreamStatus | BassFlags.AutoFree, StatusProc,
                     new IntPtr(r));
+
+         
 
                 lock (Lock)
                 {
@@ -367,17 +369,21 @@ namespace IPTVman.ViewModel
                     _chan = c; // this is now the current stream
                 }
 
-                if (_chan == 0)
-                {
-                    // failed to open
-                    Status = "Can't play the stream";
-                   if (header!=null) dialog.Show("Поток не поддерживается ", header);
-                }
-                else
-                {
-                    data.startTMRmanag = true;// _timer.Stop(); // stop prebuffer monitoring
-                    Thread.Sleep(600);
-                }//_timer.Start(); // start prebuffer monitoring
+
+                //if (_chan < 0)
+                //{
+                //    // failed to open
+                //    Status = "Can't play the stream";
+                //   if (header!=null) dialog.Show("Поток не поддерживается ", header);
+                //}
+                //else
+                //{
+                //    data.startTMRmanag = true;// _timer.Stop(); // stop prebuffer monitoring
+                //    Thread.Sleep(600);
+                //}//_timer.Start(); // start prebuffer monitoring
+
+                data.startTMRmanag = true;
+                Thread.Sleep(600);
             });
 
             //_Stream = Bass.BASS_StreamCreateURL(_url, 0, BASSFlag.BASS_STREAM_STATUS, myStreamCreateURL, IntPtr.Zero);
@@ -514,6 +520,7 @@ namespace IPTVman.ViewModel
 
         void init_tag()
         {
+           
             try
             {
                 var info = Bass.ChannelGetInfo(_chan);
