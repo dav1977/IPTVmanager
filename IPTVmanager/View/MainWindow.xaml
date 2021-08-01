@@ -444,7 +444,7 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Button Content="Radio" Command="{Binding key_radio}"  CommandParameter=""  Margin="162,47,0,0" Focusable="False" Width="46" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E">
+        <Button Content="Radio" Command="{Binding key_radio}"  CommandParameter=""  Margin="181,50,0,0" Focusable="False" Width="46" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -458,11 +458,11 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        
-        <Button x:Name="button_newTITLE" Content="TITLE задать" HorizontalAlignment="Right" 
-                Margin="0,46,674,0" VerticalAlignment="Top" Width="105" Click="button_Click_5" Height="31"/>
 
-        <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="378,51,0,0"  Width="457" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" TextChanged="text_title_TextChanged" RenderTransformOrigin="0.5,0.5">
+        <Button x:Name="button_newTITLE" Content="TITLE задать" HorizontalAlignment="Left" 
+                Margin="261,51,0,0" VerticalAlignment="Top" Width="106" Click="button_Click_5" Height="25"/>
+
+        <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="374,54,0,0"  Width="457" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" TextChanged="text_title_TextChanged" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
