@@ -233,11 +233,7 @@ namespace IPTVman.ViewModel
         bool changefav = false;
         private void button_Click_5(object sender, RoutedEventArgs e)
         {
-            changefav = true;
-            best1.Text = data.favorite1_1;
-            best2.Text = data.favorite1_2;
-            data.current_favorites = 1;
-            changefav = false;
+            data.Title = text_title.Text;
         }
 
         private void button_Copy_Click(object sender, RoutedEventArgs e)

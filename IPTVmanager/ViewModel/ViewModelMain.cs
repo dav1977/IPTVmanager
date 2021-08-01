@@ -236,6 +236,7 @@ namespace IPTVman.ViewModel
         private object threadLock = new object();
         public void Update_collection(typefilter t)
         {
+            text_title = data.Title;
             lock (threadLock)
             {
                 _update.UPDATE_FILTER(t, myLISTbase, myLISTfull);

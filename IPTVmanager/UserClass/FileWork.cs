@@ -123,13 +123,14 @@ namespace IPTVman.ViewModel
             {
                 using (StreamWriter sr = new StreamWriter(openFileDialog.FileName))
                 {
-                    sr.Write(title + '\n');
+                    //TITLE
+                    if (title!="") sr.Write("#EXTM3U "+title + '\n');
 
                     string n = "";
                     foreach (var obj in lst)
                     {
                         n = "";
-                        if (title == @"#EXTM3U $BorpasFileFormat=" + '"' + '1' + '"') n += "#EXTINF:-1";
+                        if (title == @"$BorpasFileFormat=" + '"' + '1' + '"') n += "#EXTINF:-1";
                         else n += "#EXTINF:0";
 
                         if (obj.ExtFilter != "") n += " $ExtFilter=" + '"' + obj.ExtFilter + '"';
@@ -158,9 +159,8 @@ namespace IPTVman.ViewModel
         /// <param name="_text_title"></param>
         /// <param name="_chek1"></param>
         /// <param name="_chek2"></param>
-        public async void LOAD(string path, List<ParamCanal> lst, string _text_title, bool _chek1, bool _chek2)
+        public async void LOAD(string path, List<ParamCanal> lst, bool _chek1, bool _chek2)
         {
-            Parse.text_title = _text_title;
             Parse.chek_update = _chek1;
             Parse.chek_hoop = _chek2;
 
@@ -174,12 +174,13 @@ namespace IPTVman.ViewModel
                 {
                     name = openFileDialog.FileName;
                 }
-                else { loc.openfile = false; return; }
+                else { loc.openfile = false;  return; }
             }
             else name = path;
 
             pathM3u = name;
             await AsyncOPEN(lst, name);
+          
         }
 
         public async void LOAD(List<IPTVman.Model.ParamCanal> lst, string namefile)
@@ -202,7 +203,7 @@ namespace IPTVman.ViewModel
                 try
                 {
                     loc.asyncOPEN = true;
-                    Wait.Create("Идет анализ файла ", true);
+                    Wait.Create("Анализ файла ...", true);
 
                     if (name != null)
                     {
@@ -219,7 +220,7 @@ namespace IPTVman.ViewModel
                     else loc.openfile = false;
 
                     Thread.Sleep(300);
-    
+          
                     Wait.Close();
                    
                     Script.ResetMODEApplication();

@@ -147,7 +147,6 @@
 
                 <!-- </ScrollViewer>-->
                 <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,111,-42" TextChanged="tb1_TextChanged" Width="102" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="21" Grid.Column="2" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="244,-100,0,0"  Width="519" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" TextChanged="text_title_TextChanged"/>
                 <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-114,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best1_TextChanged"/>
                 <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-87,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best2_TextChanged"/>
 
@@ -459,6 +458,20 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <Label Content="Title" HorizontalAlignment="Left" Margin="224,49,0,0" VerticalAlignment="Top" Height="23"/>
+        
+        <Button x:Name="button_newTITLE" Content="TITLE задать" HorizontalAlignment="Right" 
+                Margin="0,46,674,0" VerticalAlignment="Top" Width="105" Click="button_Click_5" Height="31"/>
+
+        <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="378,51,0,0"  Width="457" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" TextChanged="text_title_TextChanged" RenderTransformOrigin="0.5,0.5">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="0.247"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="1.121"/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
+
     </Grid>
 </Window>

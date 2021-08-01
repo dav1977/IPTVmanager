@@ -161,7 +161,6 @@ namespace ListViewDragDropManager
         {
         }
 
-        string title = "selected";
         //save
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -207,13 +206,13 @@ namespace ListViewDragDropManager
 
             _file = new FileWork();
             _file.Task_Completed += _file_Task_Completed;
-            _file.LOAD("",ViewModelMain.myLISTselect, title, false, false);           
+            _file.LOAD("",ViewModelMain.myLISTselect,  false, false);
+
         }
 
         private void _file_Task_Completed()
         {
             BACK();
-            title = Parse.text_title;
             _file = null;
             loc.openfile = false;
         }

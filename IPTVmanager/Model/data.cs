@@ -74,6 +74,7 @@ namespace IPTVman.Model
         public static int ping_all = 0;
         public static int ping_waiting = 0;
         public static bool flag_adding_ok = false;
+        public static string Title = "";
 
         public static  void set_best()
         {

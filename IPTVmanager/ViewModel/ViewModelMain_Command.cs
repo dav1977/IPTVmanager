@@ -605,9 +605,8 @@ namespace IPTVman.ViewModel
 
             Script.ResetMODEApplication();
             _file = new FileWork();
-            _file.LOAD("", ViewModelMain.myLISTfull, text_title, chek_upd, chek__hoop);
+            _file.LOAD("", ViewModelMain.myLISTfull,  chek_upd, chek__hoop);
 
-            text_title = Parse.text_title;
             loc.openfile = false;
         }
 
@@ -635,9 +634,7 @@ namespace IPTVman.ViewModel
         public void EVENT_OPENfinalize(string path)
         {
             if (_file == null) _file = new FileWork();
-            _file.LOAD(path, ViewModelMain.myLISTfull, text_title, chek_upd, chek__hoop);
-            text_title = Parse.text_title;
-
+            _file.LOAD(path, ViewModelMain.myLISTfull, chek_upd, chek__hoop);
         }
 
     }//class

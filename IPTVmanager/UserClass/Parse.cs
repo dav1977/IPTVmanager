@@ -44,7 +44,6 @@ namespace IPTVman.ViewModel
             current_mode =  curr;//работа с режимом поиска скриптов или без
         }
 
-
         string name = "no";
         bool current_mode = mode.with_command;
         uint ct_dublicat = 0;
@@ -52,9 +51,7 @@ namespace IPTVman.ViewModel
         uint ct_ignore_update = 0;
         List<int> list_update_channels = new List<int>();
 
-        int ctIFLE = 0;
-
-
+ 
 
         bool analiz_str(List<ParamCanal> lst, string str, bool OFFscript, int num  )
         {
@@ -63,7 +60,7 @@ namespace IPTVman.ViewModel
                // Debug.WriteLine("БЕЗ СКРИП СТРОКА " + num + " - " + str);
 
                 if (num < 3)
-                    if (AnalizTYPElink(str))
+                    if (FindLINKinLine(str))
                     {
                     }
             }
@@ -72,7 +69,7 @@ namespace IPTVman.ViewModel
                // Debug.WriteLine("СТРОКА " + num + " - " + str);
 
                 if (num < 3)
-                    if (AnalizTYPElink(str))
+                    if (FindLINKinLine(str))
                     {
                         Debug.WriteLine("@@ FIND LINK ");
 
@@ -100,7 +97,12 @@ namespace IPTVman.ViewModel
             return false;
         }
 
-        bool  find_max_str(string file)
+        /// <summary>
+        /// //определение макс строк СКАНЕР ФАЙЛА
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        bool Find_max_str(string file)
         {
             int all_str = 0;
             byte null_str = 0;
@@ -108,32 +110,30 @@ namespace IPTVman.ViewModel
 
             try
             {
-
-                //определение макс строк СКАНЕР ФАЙЛА
-                Debug.WriteLine(name + "      ===ФАЙЛСКАН=== "+ ctIFLE.ToString() + "  " + file);
-               
-                Regex regex_link = new Regex("http://");
-                Regex regex_link2 = new Regex("https://");
-                Regex regex1 = new Regex("#EXTINF");
-                Regex regex2 = new Regex("#EXTM3U");
-                Match match = null;
-
                 using (StreamReader sr = new StreamReader(file))
                 {
                     while (!sr.EndOfStream)
                     {
                         string rez = sr.ReadLine();
                         if (sr.EndOfStream) { break; }
-                        //string rez = ReadFind_script(str, true);
+
                         if (rez != "" && rez != null)
                             if (new Regex("#EXTINF").Match(rez).Success) { all_str++; null_str = 0; }
                             else null_str++; if (null_str > 100 || all_str > 500000) { ns = true; break; }
-                        match = regex2.Match(rez);
-                        if (match.Success) text_title = rez;
+
+                        if (new Regex("#EXTM3").Match(rez).Success)
+                        { 
+                          var str=rez.Split(' ');
+                            int size = str.Length-2;
+                            data.Title = "";
+                            if (size > 0)
+                            {
+                                str[0] = "";
+                                foreach (var s in str) data.Title += s + ' ';
+                            } 
+                        } 
                     }
                 }
-
-                Debug.WriteLine(name + "        ===CLOSE СКАНФАЙЛ===");
 
             }
             catch (Exception ex) { MessageBox.Show("ошибка сканирования " + ex.Message);ns = true; }
@@ -155,9 +155,6 @@ namespace IPTVman.ViewModel
         /// <param name="OFFscript"></param>
         public void PARSING_FILE(List<ParamCanal> lst, string file, bool OFFscript)
         {
-          
-            ctIFLE++;
-            Debug.WriteLine("-START parsing "+name);
             if (lst== null) Debug.WriteLine("-START parsing CRASH lst  " + name);
 
             string line = null;
@@ -165,22 +162,14 @@ namespace IPTVman.ViewModel
 
             try
             {
-                Regex regex_link = new Regex("http://");
-                Regex regex_link2 = new Regex("https://");
-                Regex regex1 = new Regex("#EXTINF");
-                Regex regex2 = new Regex("#EXTM3U");
                 Match match = null;
-
                 Wait.set_ProgressBar(100);
 
-               if ( find_max_str(file) ) goto exit_open;
+               if ( Find_max_str(file) ) goto exit_open;
 
                 
                 //=========================================================
-                //ПОИСК каналов
-               
-
-                Debug.WriteLine(name + "        ===ФАЙЛ===" );
+                //ПОИСК каналов 
                 using (StreamReader sr = new StreamReader(file))
                 {
                   
@@ -205,8 +194,8 @@ namespace IPTVman.ViewModel
 
                         if (Script.CLOSE_ALL) { Debug.WriteLine("--EXIT-"); return; }
 
-                        match = regex1.Match(line);  
-                        
+                        match = new Regex("#EXTINF").Match(line);
+
                         razbor_read_next(match.Success, line, match, sr, lst);
 
 
@@ -509,7 +498,11 @@ namespace IPTVman.ViewModel
         }
 
 
-
+        /// <summary>
+        /// выявление исключений в m3u
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public static bool linkIsBad(string line)
         {
             if (line == "" || line == " ") return true;
@@ -525,23 +518,24 @@ namespace IPTVman.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// true  если в строке ссылка
         /// </summary>
         /// <param name="line">return true==link;  false=file</param>
         /// <returns></returns>
-        bool AnalizTYPElink(string line)
+        bool FindLINKinLine(string line)
         {
             Regex regex_link = new Regex("http://");
             Regex regex_link2 = new Regex("https://");
 
             if (!(new Regex("EXTM3U", RegexOptions.IgnoreCase).Match(line).Success) &&
-                      !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
-                      !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
-                      !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
-                      !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
-                      !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
-                      !(new Regex("#EXTGRP", RegexOptions.IgnoreCase).Match(line).Success) &&
-                        (regex_link.Match(line).Success || regex_link2.Match(line).Success)
+            !(new Regex("#EXTINF", RegexOptions.IgnoreCase).Match(line).Success) &&
+            !(new Regex("url-tvg", RegexOptions.IgnoreCase).Match(line).Success) &&
+            !(new Regex("#EXTSIZE:", RegexOptions.IgnoreCase).Match(line).Success) &&
+            !(new Regex("#EXTBG", RegexOptions.IgnoreCase).Match(line).Success) &&
+            !(new Regex("#EXTCTRL", RegexOptions.IgnoreCase).Match(line).Success) &&
+            !(new Regex("#EXTVLCOPT", RegexOptions.IgnoreCase).Match(line).Success) &&
+            !(new Regex("#EXTGRP", RegexOptions.IgnoreCase).Match(line).Success) &&
+            (regex_link.Match(line).Success || regex_link2.Match(line).Success)
                      ) return true;
             return false;
         }
@@ -549,13 +543,11 @@ namespace IPTVman.ViewModel
         public string ANALIZ_LINE(string line, out bool typelink)
         {
             string rezult = line;
-            Regex regex_link = new Regex("http://");
-            Regex regex_link2 = new Regex("https://");
             typelink = true;
 
             if (linkIsBad(line)) return FileWork.Get_m3uPath() + rezult;
 
-            if (AnalizTYPElink(line))
+            if (FindLINKinLine(line))
             {
                 Debug.WriteLine("find link >>>" + line);
                 rezult = data.temppath;
@@ -569,7 +561,6 @@ namespace IPTVman.ViewModel
 
 
         public static bool chek_update = false, chek_hoop = true;
-        public static string text_title = "";
         public static List<ParamCanal> wblst;
 
 
@@ -581,10 +572,8 @@ namespace IPTVman.ViewModel
         /// <param name="str"></param>
         public void OPEN_FROM_CLIPBOARD(List<ParamCanal> lst, string[] str)
         {
-
             if (str == null) { dialog.Show("Буфер пустой"); return; }
-            Regex regex1 = new Regex("#EXTINF");
-            Regex regex2 = new Regex("#EXTM3U");
+           
 
             if (str.Length == 1) //web ссылка
             {
