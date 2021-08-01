@@ -29,7 +29,7 @@ namespace IPTVman.ViewModel
 
     public static class Result
     {
-        public static event Action<string> print;
+        //public static event Action<string> print;
 
         public static bool data_ok = false;
 

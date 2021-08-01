@@ -147,7 +147,7 @@
 
                 <!-- </ScrollViewer>-->
                 <TextBox x:Name="tb1" Text="новый канал" Margin="0,0,111,-42" TextChanged="tb1_TextChanged" Width="102" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Height="21" Grid.Column="2" Grid.ColumnSpan="2"/>
-                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="223,-99,0,0"  Width="519" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="3" TextChanged="text_title_TextChanged"/>
+                <TextBox x:Name="text_title" Text="{Binding text_title}" Margin="244,-100,0,0"  Width="519" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" TextChanged="text_title_TextChanged"/>
                 <TextBox x:Name="best1" Text="{Binding best1}" Margin="0,-114,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best1_TextChanged"/>
                 <TextBox x:Name="best2" Text="{Binding best2}" Margin="0,-87,-8,0"  Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22" Grid.Column="3" TextChanged="best2_TextChanged"/>
 
@@ -379,7 +379,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1m,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,39,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Height="19" Width="148"/>
+        <CheckBox Content="только обновлять" IsChecked="{Binding Path=CH1m,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,39,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Height="19" Width="148" Background="#FF360689"/>
         <Button Content="дубликаты" Command="{Binding key_DelDUBLICATCommand}"   CommandParameter=""  Margin="540,0,0,15" Focusable="False" Height="19" VerticalAlignment="Bottom" BorderBrush="#FF092047" OpacityMask="#FFB4EC20" HorizontalAlignment="Left" Width="126" Grid.Row="1" Click="Button_Click_1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -414,7 +414,7 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
-        <CheckBox Content="обрезать скобки" IsChecked="{Binding CH2m, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,62,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Height="19" Width="148"/>
+        <CheckBox Content="обрезать скобки" IsChecked="{Binding CH2m, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="14,62,0,0" VerticalAlignment="Top" FontSize="14" Foreground="#FFB0C90F" Height="19" Width="148" Background="#FF280B46"/>
         <Button Content="DONATE"   CommandParameter=""  Margin="0,0,234,10" Focusable="False" Height="16" VerticalAlignment="Bottom" BorderBrush="#FF63115B" OpacityMask="#FF990E0E" Grid.Column="3" HorizontalAlignment="Right" Width="66" RenderTransformOrigin="2.992,1.2" Grid.Row="1" Click="Button_Click_2">
             <Button.Background>
                 <RadialGradientBrush>
@@ -445,7 +445,7 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <Button Content="R" Command="{Binding key_radio}"  CommandParameter=""  Margin="179,47,0,0" Focusable="False" Width="29" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E">
+        <Button Content="Radio" Command="{Binding key_radio}"  CommandParameter=""  Margin="162,47,0,0" Focusable="False" Width="46" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FF1BAC14" OpacityMask="#FF990E0E">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
@@ -459,5 +459,6 @@
                 </LinearGradientBrush>
             </Button.Foreground>
         </Button>
+        <Label Content="Title" HorizontalAlignment="Left" Margin="224,49,0,0" VerticalAlignment="Top" Height="23"/>
     </Grid>
 </Window>

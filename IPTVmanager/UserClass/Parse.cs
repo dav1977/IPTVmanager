@@ -60,7 +60,7 @@ namespace IPTVman.ViewModel
         {
             if (OFFscript)//АНАЛИЗ СТРОК БЕЗ СКРИПТОВ
             {
-                Debug.WriteLine("БЕЗ СКРИП СТРОКА " + num + " - " + str);
+               // Debug.WriteLine("БЕЗ СКРИП СТРОКА " + num + " - " + str);
 
                 if (num < 3)
                     if (AnalizTYPElink(str))
@@ -69,7 +69,7 @@ namespace IPTVman.ViewModel
             }
             else //С УЧЕТОМ СКРИПТОВ
             {
-                Debug.WriteLine("СТРОКА " + num + " - " + str);
+               // Debug.WriteLine("СТРОКА " + num + " - " + str);
 
                 if (num < 3)
                     if (AnalizTYPElink(str))
@@ -324,13 +324,12 @@ namespace IPTVman.ViewModel
                 }
 
 
-
                 //--------------------------------------------
                 //чтение ссылки
                 try
                 {
                     str_http = sr.ReadLine();
-                    Debug.WriteLine("//чтение ссылки RAZBOR "+ str_http);
+                   // Debug.WriteLine("//чтение ссылки RAZBOR "+ str_http);
                     ReadFind_script(str_http);
 
                 }
@@ -347,13 +346,12 @@ namespace IPTVman.ViewModel
                     }
 
                     str_http = sr.ReadLine();
-                    Debug.WriteLine("//чтение ссылки ПОВТОР  RAZBOR " + str_http);
+                   // Debug.WriteLine("//чтение ссылки ПОВТОР  RAZBOR " + str_http);
 
                 } else
                 { 
                     //URL OK
-                    Debug.WriteLine("lk-"+str_http);  
-                
+                    //Debug.WriteLine("lk-"+str_http);                 
                 }
 
                 if (linkIsBad(str_http))
@@ -492,8 +490,8 @@ namespace IPTVman.ViewModel
         {
             if (line != "") { Wait.progressbar++; Wait.viewstring = line; }
             if (current_mode==mode.not_command || line == "" ) { return line; }
-
-            Debug.WriteLine(name+" поиск наличия скрипта =" + line + ";    " + name);
+            
+           // Debug.WriteLine(name+" поиск наличия скрипта =" + line + ";    " + name);
             line = scripts.FIND_SCRIPT(line);
            
 
@@ -503,7 +501,7 @@ namespace IPTVman.ViewModel
             while (current_mode == mode.with_command)
             {   
                 tmerr++; Thread.Sleep(3000);
-                Debug.WriteLine("ожидание завершения скрипта " + name);
+               // Debug.WriteLine("ожидание завершения скрипта " + name);
                 if (!loc.MODE_RELEASE_SCRIPT) break;
             }
 
@@ -574,7 +572,7 @@ namespace IPTVman.ViewModel
         public static string text_title = "";
         public static List<ParamCanal> wblst;
 
-      
+
 
         /// /// <summary>
         /// from clipboard
@@ -584,21 +582,19 @@ namespace IPTVman.ViewModel
         public void OPEN_FROM_CLIPBOARD(List<ParamCanal> lst, string[] str)
         {
 
+            if (str == null) { dialog.Show("Буфер пустой"); return; }
             Regex regex1 = new Regex("#EXTINF");
             Regex regex2 = new Regex("#EXTM3U");
-            Match match = null;
 
-            if (str == null) { dialog.Show("Буфер пустой"); return; }
-            if (str.Length == 1)
+            if (str.Length == 1) //web ссылка
             {
                 Regex regex3 = new Regex("http:");
                 Regex regex4 = new Regex(".m3u");
-                match = regex3.Match(str[0]);
+                Regex regex5 = new Regex("https:");
 
-                if (match.Success)
+                if (regex3.Match(str[0]).Success || regex5.Match(str[0]).Success)
                 {
-                    match = regex4.Match(str[0]);
-                    if (match.Success)
+                    if (regex4.Match(str[0]).Success)
                     {
                         var web = new FileWork();
                         wblst = lst;
@@ -607,6 +603,12 @@ namespace IPTVman.ViewModel
                         Wait.Close();
                     }
                 }
+            }
+            else //список каналов 
+            {
+                var web = new FileWork();
+                web.add_stringS_to_file(data.temppath,str);
+                web.parse_temp_file(lst);
             }
 
 

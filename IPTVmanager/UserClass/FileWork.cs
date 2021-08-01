@@ -9,6 +9,7 @@ using IPTVman.Model;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using System.Net;
+using System.Windows.Shapes;
 
 namespace IPTVman.ViewModel
 {
@@ -203,7 +204,6 @@ namespace IPTVman.ViewModel
                     loc.asyncOPEN = true;
                     Wait.Create("Идет анализ файла ", true);
 
-                    bufferstring.Clear();
                     if (name != null)
                     {
                         //РЕЖИМ ЗАПУСКА ПАРСИНГА С ОБРАБОТКОЙ КОМАНД ИЛИ БЕЗ
@@ -221,8 +221,7 @@ namespace IPTVman.ViewModel
                     Thread.Sleep(300);
     
                     Wait.Close();
-                    bufferstring.Clear();
-
+                   
                     Script.ResetMODEApplication();
 
                     tcs.SetResult("ok");                 
@@ -257,53 +256,70 @@ namespace IPTVman.ViewModel
      
 
 
-        List<string> bufferstring = new List<string>();
-        public void add_file_to_memory(string name)
+       // List<string> bufferstring = new List<string>();
+        public void add_file_to_memory(string path)
         {
-            Debug.WriteLine("Start to MEMORY "+name);
+            //Debug.WriteLine("Start to MEMORY "+path);
 
-            try
-            {
-                using (StreamReader sr = new StreamReader(name))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        try
-                        {
-                            string s = sr.ReadLine();
+            //try
+            //{
+            //    using (StreamReader sr = new StreamReader(path))
+            //    {
+            //        while (!sr.EndOfStream)
+            //        {
+            //            try
+            //            {
+            //                string s = sr.ReadLine();
 
-                            Debug.WriteLine(s);
-                            bufferstring.Add(s);
-                        }
-                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-                    }
-                }
-            }
-            catch { Debug.WriteLine("CRASH to MEMORY " + name);  }
+            //                Debug.WriteLine(s);
+            //                bufferstring.Add(s);
+            //            }
+            //            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            //        }
+            //    }
+            //}
+            //catch { Debug.WriteLine("CRASH to MEMORY " + path);  }
 
-            Debug.WriteLine("END Start to MEMORY " + name);
+            //Debug.WriteLine("END Start to MEMORY " + path);
         }
 
-        void add_memory_to_file(string name)
+        void add_memory_to_file(string path)
         {
-            Debug.WriteLine("MEMORY TO FILE " + name);
+            //Debug.WriteLine("MEMORY TO FILE " + path);
+            //try
+            //{
+            //    using (StreamWriter sr = new StreamWriter(path))
+            //    {
+            //        foreach (string s in bufferstring)
+            //        {
+            //            sr.Write(s);
+            //            sr.WriteLine();
+            //        }
+            //    }
+            //}
+            //catch { Debug.WriteLine("CRASH MEMORY TO FILE " + path);  }
+            //Debug.WriteLine("END MEMORY TO FILE " + path);
+        }
+
+
+        public void add_stringS_to_file(string pathfile, string[] str)
+        {
             try
             {
-                using (StreamWriter sr = new StreamWriter(name))
+                using (StreamWriter sr = new StreamWriter(pathfile))
                 {
-                    foreach (string s in bufferstring)
+                    foreach (string s in str)
                     {
                         sr.Write(s);
                         sr.WriteLine();
                     }
                 }
             }
-            catch { Debug.WriteLine("CRASH MEMORY TO FILE " + name);  }
-            Debug.WriteLine("END MEMORY TO FILE " + name);
+            catch
+            {
+                Debug.WriteLine("CRASH stringS TO FILE ");
+            }
         }
-
-
-
 
 
         //---------------------------------------------------------------------------------------
@@ -354,9 +370,7 @@ namespace IPTVman.ViewModel
             return "";
         }
 
-        ///-------------------------------------
-        ///
-        
+
         public void WebClient_DownloadFileCompletedClipb(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             data.flag_adding_ok = false;
@@ -389,7 +403,6 @@ namespace IPTVman.ViewModel
 
         public void parse_temp_file(List<ParamCanal> lst)
         {
-            Debug.WriteLine("------PARSE TEMP FILE -------");
             var p = new Parse(Parse.mode.with_command," PArTEMPfile");
 
             if (lst==null) Debug.WriteLine("------PARSE TEMP FILE  CRASH lst-------");

@@ -49,8 +49,8 @@ namespace IPTVman.ViewModel
         //private TAG_INFO _tagInfo;
         //private SYNCPROC mySync;
         //private RECORDPROC myRecProc;
-        private int _wmaPlugIn = 0;
-       // bool isWMA = false;
+        //private int _wmaPlugIn = 0;
+        // bool isWMA = false;
 
         int currentdevice=-1;
 

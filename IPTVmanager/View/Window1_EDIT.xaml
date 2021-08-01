@@ -52,12 +52,12 @@
             <Button.Background>
                 <RadialGradientBrush GradientOrigin="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FFC2C759" Offset="0.082"/>
+                    <GradientStop Color="#FF08C32A" Offset="0.082"/>
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
-        <CheckBox Content="через aceplayer" IsChecked="{Binding CH1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,98" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center"/>
-        <CheckBox Content="через vlc" IsChecked="{Binding CH2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,78" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center"/>
+        <CheckBox Content="через aceplayer" IsChecked="{Binding CH1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,98" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center" Background="#FF0A2A40"/>
+        <CheckBox Content="через vlc" IsChecked="{Binding CH2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Margin="8,0,0,78" VerticalAlignment="Bottom" FontSize="14" Foreground="#FFB0C90F" RenderTransformOrigin="0.513,0.028" Checked="CheckBox_Checked" HorizontalContentAlignment="Center" Background="#FF242881"/>
     </Grid>
 
 </Window>

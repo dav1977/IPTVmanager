@@ -51,7 +51,7 @@ namespace IPTVman.ViewModel
             }
             else
             {
-                Result.print += Result_print;
+                //Result.print += Result_print;
                 //System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
 
                     Result.bass = new AudioBass();
