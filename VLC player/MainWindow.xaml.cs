@@ -225,7 +225,7 @@ namespace IPTVman.ViewModel
                 else
                 {
                     en = "";
-                    if (Result.data_ok) en = "ENDscan  ";
+                    if (Result.data_ok) en = "scan ";
                     if (lastPRINT != en + data.scanURL)
                     {
                         l1.Dispatcher.Invoke(new Action(() =>
@@ -446,8 +446,10 @@ namespace IPTVman.ViewModel
         {
             if (!data.mode_radio && m_player != null)
             {
+                
                 m_player.ToggleMute();
-                if (m_player.Mute) { bMUTE.FontSize += 4; } else { bMUTE.FontSize -= 4; }
+                if (m_player.Mute) {  bMUTE.FontSize += 7; } 
+                else {   bMUTE.FontSize -= 7; }
             }
 
             

@@ -94,7 +94,7 @@ namespace IPTVman.ViewModel
             try
             {
                 string bitr = "?";
-                message2_win_pop = data._bass.get_tags(data.url, ref bitr);
+                message2_win_pop = data._bass.scan_get_tags(data.url, ref bitr);
                 if (bitr == "?" || bitr == "0") message1_win_pop = mes;
                 else message1_win_pop = mes + "   [" + bitr + " кбит/с ]";
 

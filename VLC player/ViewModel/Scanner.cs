@@ -54,14 +54,16 @@ namespace IPTVman.ViewModel
                 int i = 1;
                 foreach (var s in datalist)
                 {
+
+                    if (s.Contains("----")) continue;
+
                     bass.create_stream(s, false, null);
-                    Thread.Sleep(500);
 
-                    data.scanURL = "[" + i.ToString() + " из " + datalist.Count + "]" + s;
+                    data.scanURL = //"[" + i.ToString() + " из " + datalist.Count + "]" +
+                        s;
             
-
                     string bitr = "";
-                    string play = bass.get_tags(s, ref bitr);
+                    string play = bass.scan_get_tags(s, ref bitr);
                     i++;
 
                     Result.listresult.Add(s);

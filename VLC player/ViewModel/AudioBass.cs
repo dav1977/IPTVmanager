@@ -205,8 +205,14 @@ namespace IPTVman.ViewModel
 
         void MetaSync(int Handle, int Channel, int Data, IntPtr User) => DoMeta();
 
+
+        /// <summary>
+        /// Playing info
+        /// </summary>
         void DoMeta()
         {
+            TitleAndArtist = "----";
+
             var meta = Bass.ChannelGetTags(_chan, TagType.META);
 
             if (meta != IntPtr.Zero)
@@ -308,32 +314,16 @@ namespace IPTVman.ViewModel
             else if (!stopbuff) Status = $"Buffering... {progress}%";
         }
 
-
-        public void create_stream(string nm, bool moderad, Window header)
+        /// <summary>
+        /// create the stream
+        /// </summary>
+        /// <param name="Url"></param>
+        void new_stream(string Url)
         {
-            //if (Bass.BASS_ErrorGetCode() != BASSError.BASS_OK)
-            //    System.Windows.MessageBox.Show("ErrBassStream4!    " +
-            //                    Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()));
-
-
-            _Stream = 0;
-         //  bool rez= Bass.BASS_StreamFree(_Stream);
-            _url = nm;
-
-
-            //if (Bass.BASS_ErrorGetCode() != BASSError.BASS_OK)
-            //    System.Windows.MessageBox.Show(rez.ToString()+ " ErrBassStream5!    " +
-            //                    Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()));
-
-            Bass.NetProxy = DirectConnection ? null : Proxy;
-
-            // create the stream
-            string Url = nm;
-
-
+   
             Task.Factory.StartNew(() =>
             {
-                int r=0;
+                int r = 0;
 
                 lock (Lock) // make sure only 1 thread at a time can do the following
                     r = ++_req; // increment the request counter for this request
@@ -341,10 +331,10 @@ namespace IPTVman.ViewModel
                 data.startTMRmanag = false;// _timer.Stop(); // stop prebuffer monitoring
 
                 Thread.Sleep(100);
-       
+
                 Bass.StreamFree(_chan); // close old stream
 
-                if (currentdevice!=-1) Bass.CurrentDevice = currentdevice;
+                if (currentdevice != -1) Bass.CurrentDevice = currentdevice;
 
 
                 Status = "Connecting...";
@@ -353,7 +343,7 @@ namespace IPTVman.ViewModel
                     BassFlags.StreamDownloadBlocks | BassFlags.StreamStatus | BassFlags.AutoFree, StatusProc,
                     new IntPtr(r));
 
-         
+
 
                 lock (Lock)
                 {
@@ -382,9 +372,45 @@ namespace IPTVman.ViewModel
                 //    Thread.Sleep(600);
                 //}//_timer.Start(); // start prebuffer monitoring
 
-                data.startTMRmanag = true;
-                Thread.Sleep(600);
+
+                //Thread.Sleep(600);
+
             });
+
+
+            int ct = 0;
+            while (true)
+            {
+                Thread.Sleep(50);
+                ct++;
+                if (ct > 15) break;
+                if (_chan != 0) break;
+
+
+            }
+            data.startTMRmanag = true;
+           
+        }
+
+        public void create_stream(string nm, bool moderad, Window header)
+        {
+            //if (Bass.BASS_ErrorGetCode() != BASSError.BASS_OK)
+            //    System.Windows.MessageBox.Show("ErrBassStream4!    " +
+            //                    Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()));
+
+
+            _Stream = 0;
+         //  bool rez= Bass.BASS_StreamFree(_Stream);
+            _url = nm;
+
+
+            //if (Bass.BASS_ErrorGetCode() != BASSError.BASS_OK)
+            //    System.Windows.MessageBox.Show(rez.ToString()+ " ErrBassStream5!    " +
+            //                    Enum.GetName(typeof(BASSError), Bass.BASS_ErrorGetCode()));
+
+            Bass.NetProxy = DirectConnection ? null : Proxy;
+
+            new_stream(nm);
 
             //_Stream = Bass.BASS_StreamCreateURL(_url, 0, BASSFlag.BASS_STREAM_STATUS, myStreamCreateURL, IntPtr.Zero);
             //if (_Stream == 0)
@@ -531,85 +557,98 @@ namespace IPTVman.ViewModel
             }
             catch (Exception ex) { System.Windows.MessageBox.Show(ex.ToString()); }
         }
-        public string get_tags(string nm, ref string bitr)
+
+        /// <summary>
+        /// Name Playing
+        /// </summary>
+        /// <param name="nm"></param>
+        /// <param name="bitr"></param>
+        /// <returns></returns>
+        public string scan_get_tags(string nm, ref string bitr)
         {
-            if (_Stream == 0) return "";
+         
             try
-            {              
-                //init_tag();
-
-                //if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
-                //{
-                //    bitr = _tagInfo.bitrate.ToString();
-
-                //    string artist = StrEncod(_tagInfo.artist);
-                //    string title = StrEncod(_tagInfo.title);
-                //    title = title.Replace("- 0:00","");
-                //    string rez = artist + " - " + title;
-
-                //    if (artist == "" || artist == " " || artist == ";") rez = title;
-                //    if (title == "" || title == " " || title == ";" || title == "0:00" || title == "0") rez = artist;
-
-                //    if (artist == "" && title == "") rez = "no artist";
-
-                //    if (rez == " ") rez = "none";
-                //    return (rez);
-                //}
-
-                // get the meta tags (manually - will not work for WMA streams here)
-                //string[] icy = Bass.BASS_ChannelGetTagsICY(_Stream);
-                //if (icy == null)
-                //{
-                //    // try http...
-                //    icy = Bass.BASS_ChannelGetTagsHTTP(_Stream);
-                //}
-                //if (icy != null)
-                //{
-                //    foreach (string tag in icy)
-                //    {
-                //        tags += "ICY: " + tag + Environment.NewLine;
-                //    }
-                //}
-                //// get the initial meta data (streamed title...)
-                //icy = Bass.BASS_ChannelGetTagsMETA(_Stream);
-                //if (icy != null)
-                //{
-                //    foreach (string tag in icy)
-                //    {
-                //        tags += "Meta: " + tag + Environment.NewLine;
-                //    }
-                //}
-                //else
-                //{
-                //    // an ogg stream meta can be obtained here
-                //    icy = Bass.BASS_ChannelGetTagsOGG(_Stream);
-                //    if (icy != null)
-                //    {
-                //        foreach (string tag in icy)
-                //        {
-                //            tags += "Meta: " + tag + Environment.NewLine;
-                //        }
-                //    }
-                //}
+            {
+                Thread.Sleep(1000);
+                DoMeta();
+                stop();
+                return TitleAndArtist;
 
 
+                // init_tag();
 
-                // alternatively to the above, you might use the TAG_INFO (see BassTags add-on)
-                // This will also work for WMA streams here ;-)
-                //if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
-                //{
-                //    // and display what we get
-                //    //this.textBoxAlbum.Text = _tagInfo.album;
-                //    //this.textBoxArtist.Text = _tagInfo.artist;
-                //    //this.textBoxTitle.Text = _tagInfo.title;
-                //    //this.textBoxComment.Text = _tagInfo.comment;
-                //    //this.textBoxGenre.Text = _tagInfo.genre;
-                //    //this.textBoxYear.Text = _tagInfo.year;
-                //}
+                // if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
+                // {
+                //     bitr = _tagInfo.bitrate.ToString();
+
+                //     string artist = StrEncod(_tagInfo.artist);
+                //     string title = StrEncod(_tagInfo.title);
+                //     title = title.Replace("- 0:00", "");
+                //     string rez = artist + " - " + title;
+
+                //     if (artist == "" || artist == " " || artist == ";") rez = title;
+                //     if (title == "" || title == " " || title == ";" || title == "0:00" || title == "0") rez = artist;
+
+                //     if (artist == "" && title == "") rez = "no artist";
+
+                //     if (rez == " ") rez = "none";
+                //     return (rez);
+                // }
+
+                // get the meta tags(manually -will not work for WMA streams here)
+                //     string[] icy = Bass.BASS_ChannelGetTagsICY(_Stream);
+                // if (icy == null)
+                // {
+                //     // try http...
+                //     icy = Bass.BASS_ChannelGetTagsHTTP(_Stream);
+                // }
+                // if (icy != null)
+                // {
+                //     foreach (string tag in icy)
+                //     {
+                //         tags += "ICY: " + tag + Environment.NewLine;
+                //     }
+                // }
+                // // get the initial meta data (streamed title...)
+                // icy = Bass.BASS_ChannelGetTagsMETA(_Stream);
+                // if (icy != null)
+                // {
+                //     foreach (string tag in icy)
+                //     {
+                //         tags += "Meta: " + tag + Environment.NewLine;
+                //     }
+                // }
+                // else
+                // {
+                //     // an ogg stream meta can be obtained here
+                //     icy = Bass.BASS_ChannelGetTagsOGG(_Stream);
+                //     if (icy != null)
+                //     {
+                //         foreach (string tag in icy)
+                //         {
+                //             tags += "Meta: " + tag + Environment.NewLine;
+                //         }
+                //     }
+                // }
+
+
+
+                ////// alternatively to the above, you might use the TAG_INFO(see BassTags add-on)
+                // //// This will also work for WMA streams here; -)
+                //     if (BassTags.BASS_TAG_GetFromURL(_Stream, _tagInfo))
+                //     {
+                //         // and display what we get
+                //         //this.textBoxAlbum.Text = _tagInfo.album;
+                //         //this.textBoxArtist.Text = _tagInfo.artist;
+                //         //this.textBoxTitle.Text = _tagInfo.title;
+                //         //this.textBoxComment.Text = _tagInfo.comment;
+                //         //this.textBoxGenre.Text = _tagInfo.genre;
+                //         //this.textBoxYear.Text = _tagInfo.year;
+                //     }
 
             }
             catch (Exception ex) { System.Windows.MessageBox.Show(ex.ToString()); }
-            return "null";
+            return "error stream";
         }
       
 
@@ -695,6 +734,7 @@ namespace IPTVman.ViewModel
 
            // Bass.Stop();
             Bass.StreamFree(_chan);
+            _chan = 0;
             //Bass.BASS_PluginFree(_wmaPlugIn);
             //// close bass
             //Bass.BASS_Stop();
