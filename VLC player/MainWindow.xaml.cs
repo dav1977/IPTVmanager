@@ -445,17 +445,23 @@ namespace IPTVman.ViewModel
         private void button5_Click(object sender, RoutedEventArgs e)
         {
             if (!data.mode_radio && m_player != null)
-            {
-                
+            {//VIDEO MODE
                 m_player.ToggleMute();
-                if (m_player.Mute) {  bMUTE.FontSize += 7; } 
-                else {   bMUTE.FontSize -= 7; }
+                if (m_player.Mute) { bMUTE.FontSize += 7; } 
+                else {  bMUTE.FontSize -= 7; }
             }
 
             
             if (data.mode_radio && data._bass != null)
-            {
-                if (mute)  mute = false;  else  mute = true; 
+            {//RADIO MODE
+                if (mute) { mute = false; data._bass.Status = "Playing"; }
+                else { mute = true; data._bass.Status = "-- MUTE --"; }
+
+                l2.Dispatcher.Invoke(new Action(() =>
+                {
+                    l2.Content = data._bass.Status;
+                }));
+
                 data._bass.mute(mute, (float)slider2.Value);
             }
         }
