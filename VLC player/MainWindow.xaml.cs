@@ -83,7 +83,7 @@ namespace IPTVman.ViewModel
 
             //data.mode_scan = true;
             //scan();
-           // return;
+            // return;
 
             //data.url = @"https://air2.radiorecord.ru:9003/chil_320";// http://air.radiorecord.ru:8102/mdl_320";
             //data.name = "test";

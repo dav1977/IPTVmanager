@@ -282,7 +282,7 @@ namespace IPTVman.ViewModel
                 if (s.handle > 0)
                 {
                     var rezult = VST_GET_PARAM(s.handle);
-                   
+          
                     data.listPARAM.Add(rezult);
                 }
             }
@@ -301,7 +301,7 @@ namespace IPTVman.ViewModel
                 foreach (var mylist in data.listPARAM)
                 {
                     if (VST_SET_PARAM(work_list_vst[index].handle, mylist))
-                        System.Windows.MessageBox.Show("Ошибка установки параметров");
+                        System.Windows.MessageBox.Show("Ошибка установки параметров VST МОДУЛЯ");
 
                     index++;
                 }
@@ -401,10 +401,9 @@ namespace IPTVman.ViewModel
         //}
 
 
-
+        //запуск предустановленных VST
         void enableVST()
         {
-            //запуск предустановленных VST
             foreach (var dsp in data.workVST)
             {
                 Trace.WriteLine("START VST " + dsp);

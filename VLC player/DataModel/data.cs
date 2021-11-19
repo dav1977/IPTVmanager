@@ -37,17 +37,18 @@ namespace IPTVman.ViewModel
             public static string scanURL = "init";
             public static bool exit_programm = false;
             public static bool startTMRmanag= false;
+            public static string rootpath = AppDomain.CurrentDomain.BaseDirectory;
             public static string DefaultPath = AppDomain.CurrentDomain.BaseDirectory + "playersettings.xml";
 
-        public static void UpdateLIST()
-        {
-            if (Upadate_LIST != null) Upadate_LIST(pathVST, workVST);
-        }
+            public static void UpdateLIST()
+            {
+                if (Upadate_LIST != null) Upadate_LIST(pathVST, workVST);
+            }
 
-        public static void UpdateSettings()
-        {
-            if (Upadate_Setting_Data != null) Upadate_Setting_Data("CURRENTVST");
-        }
+            public static void UpdateSettings()
+            {
+                if (Upadate_Setting_Data != null) Upadate_Setting_Data("CURRENTVST");
+            }
         
     }
 

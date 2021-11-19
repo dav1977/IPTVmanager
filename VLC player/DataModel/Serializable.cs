@@ -29,8 +29,27 @@ namespace IPTVman.ViewModel
         {
             try
             {
-                ser_data dt = new ser_data();
+                ser_data dt= new ser_data();
                 XmlSerializer formatter = new XmlSerializer(typeof(ser_data));
+
+                if (dt.pathVST.Count>0)
+                for (ushort i = 0; i < dt.pathVST.Count; i++)
+                {
+                    if (dt.pathVST[i].Contains(data.rootpath))
+                    {
+                            string s = dt.pathVST[i].Replace(data.rootpath,"*");
+                            dt.pathVST[i] = s;
+                    }
+                }
+                    if (dt.workVST.Count > 0)
+                    for (ushort i = 0; i < dt.workVST.Count; i++)
+                    {
+                        if (dt.workVST[i].Contains(data.rootpath))
+                        {
+                            string s = dt.workVST[i].Replace(data.rootpath, "*");
+                            dt.workVST[i] = s;
+                        }
+                    }
 
                 using (Stream fStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
@@ -61,6 +80,25 @@ namespace IPTVman.ViewModel
                 {
                     dt = (ser_data)formatter.Deserialize(fs);
                 }
+
+                if (dt.pathVST.Count > 0)
+                for (ushort i = 0; i < dt.pathVST.Count; i++)
+                {
+                    if (dt.pathVST[i].Contains("*"))
+                    {
+                        string s = dt.pathVST[i].Replace("*",data.rootpath);
+                        dt.pathVST[i] = s;
+                    }
+                }
+                if (dt.workVST.Count > 0)
+                    for (ushort i = 0; i < dt.workVST.Count; i++)
+                    {
+                        if (dt.workVST[i].Contains("*"))
+                        {
+                            string s = dt.workVST[i].Replace("*", data.rootpath);
+                            dt.workVST[i] = s;
+                        }
+                    }
             }
             catch (Exception ex)
             {
